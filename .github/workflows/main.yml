@@ -1,0 +1,34 @@
+name: Backend Deployment
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      #- name: Build Docker image
+        # working-directory: this/path
+        #run: docker build -t test/mygoapp:test .
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '6.0.x'
+    - name: Install dependencies
+      working-directory: phase04/Project
+      run: dotnet restore ./FullTextSearchProject.sln
+    - name: Build
+      working-directory: phase04/Project
+      run: dotnet build ./FullTextSearchProject.sln
+    - name: Test with the dotnet CLI
+      working-directory: phase04/Project
+      run: dotnet test ./FullTextSearchProject.sln

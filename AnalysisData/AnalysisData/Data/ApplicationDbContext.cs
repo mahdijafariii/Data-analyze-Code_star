@@ -1,14 +1,10 @@
-﻿using Domain.Entities;
+﻿using AnalysisData.UserManage.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Data;
+namespace AnalysisData.Data;
 
 public class ApplicationDbContext : DbContext
 {
-    /*public ApplicationDbContext()
-    {
-    }*/
-    
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {

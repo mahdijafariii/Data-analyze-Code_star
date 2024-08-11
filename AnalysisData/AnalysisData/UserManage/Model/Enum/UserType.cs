@@ -1,4 +1,4 @@
-﻿namespace Domain.Enums;
+﻿namespace AnalysisData.UserManage.Model.Enum;
 
 public enum UserType
 {

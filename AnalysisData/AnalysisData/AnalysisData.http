@@ -1,4 +1,4 @@
-@AnalysisData_HostAddress = http://localhost:5088
+@AnalysisData_HostAddress = http://localhost:5000
 
 GET {{AnalysisData_HostAddress}}/weatherforecast/
 Accept: application/json

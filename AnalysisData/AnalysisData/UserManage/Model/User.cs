@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AnalysisData.UserManage.Model.Enum;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnalysisData.UserManage.Model;
 
+[Index(nameof(UserName), IsUnique = true)] 
 public class User
 {
     [Key]

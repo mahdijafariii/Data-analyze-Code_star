@@ -3,13 +3,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AnalysisData.UserManage.Model;
 
-[Index(nameof(UserName), IsUnique = true)]
+
 public class User
 {
     [Key]
     public int Id { get; set; }
-    public string UserName { get; set; }
-    public string Password { get; set; }
 
-    public ICollection<UserRole> UserRole { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Username { get; set; }
+
+    [Required]
+    [StringLength(256)]
+    public string Password { get; set; } 
+
+    public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 }
+

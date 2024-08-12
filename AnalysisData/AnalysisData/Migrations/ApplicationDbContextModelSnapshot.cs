@@ -21,23 +21,6 @@ namespace AnalysisData.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("AnalysisData.UserManage.Model.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("RoleType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-                });
-
             modelBuilder.Entity("AnalysisData.UserManage.Model.User", b =>
                 {
                     b.Property<int>("Id")
@@ -48,21 +31,38 @@ namespace AnalysisData.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserName")
-                        .IsUnique();
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("AnalysisData.UserManage.Model.UserRole", b =>
+            modelBuilder.Entity("Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("UserRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -85,16 +85,16 @@ namespace AnalysisData.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("AnalysisData.UserManage.Model.UserRole", b =>
+            modelBuilder.Entity("UserRole", b =>
                 {
-                    b.HasOne("AnalysisData.UserManage.Model.Role", "Role")
-                        .WithMany("UserRole")
+                    b.HasOne("Role", "Role")
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AnalysisData.UserManage.Model.User", "User")
-                        .WithMany("UserRole")
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -104,14 +104,14 @@ namespace AnalysisData.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("AnalysisData.UserManage.Model.Role", b =>
-                {
-                    b.Navigation("UserRole");
-                });
-
             modelBuilder.Entity("AnalysisData.UserManage.Model.User", b =>
                 {
-                    b.Navigation("UserRole");
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Role", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

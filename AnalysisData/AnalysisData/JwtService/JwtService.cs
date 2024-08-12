@@ -21,18 +21,21 @@ public class JwtService
         _roleRepository = roleRepository;
     }
 
-    public string GenerateJwtToken(string userName)
+    public async Task<string> GenerateJwtToken(string userName)
     {
-        var roles = _userRepository.GetUser(userName).Result.UserRole.ToString();
+        var user =await _userRepository.GetUser(userName);
+        var roles = user.UserRoles;
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, userName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
+
+        Console.WriteLine("sadsada");
         foreach (var role in roles)
         {
-            var result = _roleRepository.GetRoles(role);
-            claims.Add(new Claim(ClaimTypes.Role, result.Result.RoleType));
+            var result = _roleRepository.GetRoles(role.Role.Id);
+            claims.Add(new Claim(ClaimTypes.Role, result.Result.RoleName));
         }
         
 

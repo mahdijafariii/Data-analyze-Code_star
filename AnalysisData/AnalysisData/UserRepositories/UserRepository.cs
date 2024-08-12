@@ -18,8 +18,8 @@ namespace AnalysisData.UserRepositories
         
         public async Task<User> GetUser(string userName)
         {
-            var result = await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName);
-            return result;
+            var test = await _context.Users.SingleOrDefaultAsync(x => x.Username == userName);
+            return test;
         }
         
         public async Task<IReadOnlyList<User>> GetAllUser()
@@ -29,7 +29,7 @@ namespace AnalysisData.UserRepositories
         
         public bool DeleteUser(string userName)
         {
-            var user = _context.Users.FirstOrDefault(x => x.UserName == userName);
+            var user = _context.Users.FirstOrDefault(x => x.Username == userName);
             if (user != null)
             {
                 _context.Users.Remove(user);

@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AnalysisData.JwtService;
 using AnalysisData.RoleRepository;
 using AnalysisData.UserRepositories.Abstraction;
 using Microsoft.IdentityModel.Tokens;

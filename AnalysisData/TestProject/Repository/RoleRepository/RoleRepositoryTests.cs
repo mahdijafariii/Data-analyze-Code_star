@@ -6,99 +6,84 @@ namespace TestProject.Repository.RoleRepository;
 
 public class RoleRepositoryTests
 {
+    private readonly DbContextOptions<ApplicationDbContext> _options;
+    private readonly ApplicationDbContext _context;
+    private readonly AnalysisData.Repository.RoleRepository.RoleRepository _sut;
+
+    public RoleRepositoryTests()
+    {
+        _options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase("TestDatabase").Options;
+        _context = new ApplicationDbContext(_options);
+        _sut = new AnalysisData.Repository.RoleRepository.RoleRepository(_context);
+    }
+
     [Fact]
     public async Task GetRole_ShouldReturnsRole_WhenRoleExists()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase")
-            .Options;
+        var role = new Role { Id = 1, RoleName = "Admin" };
+        _context.Roles.Add(role);
+        await _context.SaveChangesAsync();
 
-        await using (var context = new ApplicationDbContext(options))
-        {
-            context.Roles.Add(new Role { Id = 1, RoleName = "Admin" });
-            await context.SaveChangesAsync();
-        }
+        // Act
+        var result = await _sut.GetRole(1);
 
-        await using (var context = new ApplicationDbContext(options))
-        {
-            var repository = new AnalysisData.Repository.RoleRepository.RoleRepository(context);
-
-            // Act
-            var result = await repository.GetRole(1);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal("Admin", result.RoleName);
-        }
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("Admin", result.RoleName);
+        _context.Roles.Remove(role);
+        _context.SaveChangesAsync();
     }
 
     [Fact]
     public void AddRole_ShouldAddsRoleToDatabase_Whenever()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase")
-            .Options;
-
-        using var context = new ApplicationDbContext(options);
-        var repository = new AnalysisData.Repository.RoleRepository.RoleRepository(context);
-        var role = new Role { Id = 2, RoleName = "User" };
+        var role = new Role { Id = 1, RoleName = "Admin" };
 
         // Act
-        repository.AddRole(role);
+        _sut.AddRole(role);
 
         // Assert
-        Assert.Equal(3, context.Roles.Count());
-        Assert.Contains(context.Roles, r => r.RoleName == "User");
+        Assert.Equal(1, _context.Roles.Count());
+        Assert.Contains(_context.Roles, r => r.RoleName == "Admin");
+        _context.Roles.Remove(role);
+        _context.SaveChangesAsync();
     }
 
     [Fact]
     public void DeleteRole_ShouldRemovesRole_WhenRoleExists()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase")
-            .Options;
-
-        using var context = new ApplicationDbContext(options);
-        context.Roles.AddRange(
-            new Role { Id = 3, RoleName = "Manager" }
-        );
-        context.SaveChanges();
-
-        var repository = new AnalysisData.Repository.RoleRepository.RoleRepository(context);
+        var role = new Role { Id = 1, RoleName = "Admin" };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
 
         // Act
-        var result = repository.DeleteRole(3);
-
+        var result = _sut.DeleteRole(1);
         // Assert
         Assert.True(result);
-        Assert.Equal(2, context.Roles.Count());
-        Assert.DoesNotContain(context.Roles, r => r.Id == 3);
+        Assert.Equal(0, _context.Roles.Count());
+        Assert.DoesNotContain(_context.Roles, r => r.Id == 1);
+        _context.Roles.Remove(role);
+        _context.SaveChangesAsync();
     }
 
     [Fact]
     public void DeleteRole_ShouldReturnsFalse_WhenRoleDoesNotExist()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase")
-            .Options;
-
-        using var context = new ApplicationDbContext(options);
-        context.Roles.AddRange(
-            new Role { Id = 4, RoleName = "Editor" }
-        );
-        context.SaveChanges();
-
-        var repository = new AnalysisData.Repository.RoleRepository.RoleRepository(context);
+        var role = new Role { Id = 1, RoleName = "Editor" };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
 
         // Act
-        var result = repository.DeleteRole(5);
+        var result = _sut.DeleteRole(2);
 
         // Assert
         Assert.False(result);
-        Assert.Equal(1, context.Roles.Count());
+        Assert.Equal(1, _context.Roles.Count());
+        _context.Roles.Remove(role);
+        _context.SaveChangesAsync();
     }
 }

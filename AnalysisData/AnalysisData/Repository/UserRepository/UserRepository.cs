@@ -34,11 +34,10 @@ namespace AnalysisData.Repository.UserRepository
             return true;
         }
         
-        public bool AddUser(User user)
+        public void AddUser(User user)
         {
             _context.Users.Add(user);
             _context.SaveChanges(); 
-            return true;
         }
     }
 }

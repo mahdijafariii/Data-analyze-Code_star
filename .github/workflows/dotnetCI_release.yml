@@ -42,6 +42,8 @@ jobs:
         run: |  
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/dotnetdev:${{ steps.tag_version.outputs.new_tag }} .  
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/dotnetdev:${{ steps.tag_version.outputs.new_tag }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/dotnetdev:latest
+
 
         
   build:

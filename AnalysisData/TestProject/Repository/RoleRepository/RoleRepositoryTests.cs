@@ -17,7 +17,6 @@ public class RoleRepositoryTests
         await using (var context = new ApplicationDbContext(options))
         {
             context.Roles.Add(new Role { Id = 1, RoleName = "Admin" });
-            context.Roles.Add(new Role { Id = 2, RoleName = "User" });
             await context.SaveChangesAsync();
         }
 
@@ -26,11 +25,31 @@ public class RoleRepositoryTests
             var repository = new AnalysisData.Repository.RoleRepository.RoleRepository(context);
 
             // Act
-            var result = await repository.GetRole(2);
+            var result = await repository.GetRole(1);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("User", result.RoleName);
+            Assert.Equal("Admin", result.RoleName);
         }
+    }
+
+    [Fact]
+    public void AddRole_ShouldAddsRoleToDatabase_Whenever()
+    {
+        // Arrange
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseInMemoryDatabase(databaseName: "TestDatabase")
+            .Options;
+
+        using var context = new ApplicationDbContext(options);
+        var repository = new AnalysisData.Repository.RoleRepository.RoleRepository(context);
+        var role = new Role { Id = 2, RoleName = "User" };
+
+        // Act
+        repository.AddRole(role);
+
+        // Assert
+        Assert.Equal(2, context.Roles.Count());
+        Assert.Contains(context.Roles, r => r.RoleName == "User");
     }
 }

@@ -16,7 +16,8 @@ namespace AnalysisData.Repository.UserRepository
         
         public async Task<User> GetUser(string userName)
         {
-            var test = await _context.Users.Include(u=> u.UserRoles).SingleOrDefaultAsync(x => x.Username == userName);
+            var test = await _context.Users.Include(u=> u.UserRoles)
+                .SingleOrDefaultAsync(x => x.Username == userName);
             return test;
         }
         

@@ -12,8 +12,7 @@ public class JwtService : IJwtService
     private readonly IConfiguration _configuration;
     private readonly IUserRepository _userRepository;
     private readonly IRoleRepository _roleRepository;
-
-
+    
     public JwtService(IConfiguration configuration , IUserRepository userRepository,IRoleRepository roleRepository)
     {
         _configuration = configuration;

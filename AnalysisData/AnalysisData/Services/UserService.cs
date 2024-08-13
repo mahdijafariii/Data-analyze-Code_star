@@ -1,5 +1,6 @@
 using AnalysisData.CookieSevice.abstractions;
 using AnalysisData.Data;
+using AnalysisData.Exception;
 using AnalysisData.JwtService;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
@@ -23,14 +24,10 @@ public class UserService : IUserService
     }
     public async Task<List<string>> Login(UserLoginModel userLoginModel)
     {
-        if (userLoginModel.userName.Length > 255)
-        {
-            return null;
-        }
         var user = await _userRepository.GetUser(userLoginModel.userName);
-        if (user == null || user.Password != userLoginModel.password)
+        if (user == null )
         {
-            return null; 
+            throw new NotFoundUserException(); 
         }
         var token = await _jwtService.GenerateJwtToken(userLoginModel.userName);
 

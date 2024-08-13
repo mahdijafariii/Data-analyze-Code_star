@@ -13,3 +13,4 @@ FROM mcr.microsoft.com/dotnet/sdk:latest
 WORKDIR /app
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "AnalysisData.dll"]
+

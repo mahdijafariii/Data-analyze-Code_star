@@ -24,11 +24,11 @@ jobs:
       with:
         dotnet-version: '6.0.x'
     - name: Install dependencies
-      working-directory: phase04/Project
-      run: dotnet restore ./FullTextSearchProject.sln
+      working-directory: AnalysisData
+      run: dotnet restore ./AnalysisData.sln
     - name: Build
-      working-directory: phase04/Project
-      run: dotnet build ./FullTextSearchProject.sln
+      working-directory: AnalysisData
+      run: dotnet build ./AnalysisData.sln
     - name: Test with the dotnet CLI
-      working-directory: phase04/Project
-      run: dotnet test ./FullTextSearchProject.sln
+      working-directory: AnalysisData
+      run: dotnet test ./AnalysisData.sln

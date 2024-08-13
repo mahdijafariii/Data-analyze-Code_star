@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Authentication;
 
-public class JwtService
+public class JwtService : IJwtService
 {
     private readonly IConfiguration _configuration;
     private readonly IUserRepository _userRepository;

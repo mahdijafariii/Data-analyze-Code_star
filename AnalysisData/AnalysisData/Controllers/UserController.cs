@@ -14,6 +14,7 @@ public class UserController : ControllerBase
         _userService = userService;
     }
     [HttpPost("login")]
+    [ValidateAntiForgeryToken]
     public IActionResult Login([FromBody] UserLoginModel userLoginModel)
     {
         var userRoles = _userService.Login(userLoginModel);

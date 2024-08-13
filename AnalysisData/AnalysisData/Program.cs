@@ -1,3 +1,5 @@
+
+using System.Text;
 using AnalysisData;
 using AnalysisData.CookieSevice;
 using AnalysisData.CookieSevice.abstractions;
@@ -9,7 +11,9 @@ using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -23,6 +27,26 @@ builder.Services.AddScoped<ICookieService, CookieService>();
 builder.Services.AddHttpContextAccessor();
 
 
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        var secretKey = builder.Configuration["Jwt:Key"];
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+    
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false, 
+            ValidateAudience = false,
+            ValidateLifetime = true, 
+            ValidateIssuerSigningKey = true, 
+
+            IssuerSigningKey = key 
+        };
+    });
 
 
 

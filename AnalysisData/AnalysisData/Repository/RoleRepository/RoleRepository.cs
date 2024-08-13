@@ -19,11 +19,10 @@ public class RoleRepository : IRoleRepository
         return await _context.Roles.SingleOrDefaultAsync(x => x.Id == rolId);
     }
 
-    public bool AddRole(Role role)
+    public void AddRole(Role role)
     {
         _context.Roles.Add(role);
         _context.SaveChanges();
-        return true;
     }
 
     public bool DeleteRole(int roleId)

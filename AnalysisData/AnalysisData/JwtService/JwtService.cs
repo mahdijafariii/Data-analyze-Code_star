@@ -27,7 +27,7 @@ public class JwtService
         var roles = user.UserRoles;
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, userName),
+            new Claim("Name", userName),
         };
         foreach (var role in roles)
         {

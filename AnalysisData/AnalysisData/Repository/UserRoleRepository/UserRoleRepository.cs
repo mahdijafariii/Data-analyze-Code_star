@@ -13,11 +13,10 @@ public class UserRoleRepository : IUserRoleRepository
         _context = context;
     }
 
-    public bool Add(UserRole userRole)
+    public void Add(UserRole userRole)
     {
         _context.UserRoles.Add(userRole);
         _context.SaveChanges();
-        return true;
     }
 
     public bool DeleteUserInUserRole(int userId)

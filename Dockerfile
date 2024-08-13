@@ -1,16 +1,16 @@
-# Build
-FROM mcr.microsoft.com/dotnet/sdk:latest AS build
+FROM mcr.microsoft.com/dotnet/sdk:latest AS build-env
 WORKDIR /app
-COPY . .
+EXPOSE 80
+EXPOSE 443
+# Copy the csproj and restore all of the nugets
+COPY . ./
 RUN dotnet restore ./AnalysisData/AnalysisData.sln
-
+# Copy everything else and build
+#COPY . ./
 RUN dotnet publish -c Release -o out ./AnalysisData/AnalysisData.sln
-
-# Run
-FROM mcr.microsoft.com/dotnet/aspnet:latest
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/sdk:latest
 WORKDIR /app
-COPY --from=build /app/out .
-#ENV ASPNETCORE_URLS=http://*:8080
-CMD dotnet AnalysisData.dll
-# CMD /bin/bash
+COPY --from=build-env /app/out .
+ENTRYPOINT ["dotnet", "AnalysisData.dll"]
 

@@ -49,7 +49,56 @@ public class RoleRepositoryTests
         repository.AddRole(role);
 
         // Assert
-        Assert.Equal(2, context.Roles.Count());
+        Assert.Equal(3, context.Roles.Count());
         Assert.Contains(context.Roles, r => r.RoleName == "User");
+    }
+
+    [Fact]
+    public void DeleteRole_ShouldRemovesRole_WhenRoleExists()
+    {
+        // Arrange
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseInMemoryDatabase(databaseName: "TestDatabase")
+            .Options;
+
+        using var context = new ApplicationDbContext(options);
+        context.Roles.AddRange(
+            new Role { Id = 3, RoleName = "Manager" }
+        );
+        context.SaveChanges();
+
+        var repository = new AnalysisData.Repository.RoleRepository.RoleRepository(context);
+
+        // Act
+        var result = repository.DeleteRole(3);
+
+        // Assert
+        Assert.True(result);
+        Assert.Equal(2, context.Roles.Count());
+        Assert.DoesNotContain(context.Roles, r => r.Id == 3);
+    }
+
+    [Fact]
+    public void DeleteRole_ShouldReturnsFalse_WhenRoleDoesNotExist()
+    {
+        // Arrange
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseInMemoryDatabase(databaseName: "TestDatabase")
+            .Options;
+
+        using var context = new ApplicationDbContext(options);
+        context.Roles.AddRange(
+            new Role { Id = 4, RoleName = "Editor" }
+        );
+        context.SaveChanges();
+
+        var repository = new AnalysisData.Repository.RoleRepository.RoleRepository(context);
+
+        // Act
+        var result = repository.DeleteRole(5);
+
+        // Assert
+        Assert.False(result);
+        Assert.Equal(1, context.Roles.Count());
     }
 }

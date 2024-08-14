@@ -39,19 +39,18 @@ public class JwtMiddleware
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_jwtSecret);
-            
-        tokenHandler.ValidateToken(token, new TokenValidationParameters
+
+        var validationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key),
             ValidateIssuer = false,
             ValidateAudience = false,
-        }, out SecurityToken validatedToken);
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
 
-        var jwtToken = (JwtSecurityToken)validatedToken;
-        var userName = jwtToken.Claims.First(x => x.Type == "Name").Value;
-        var roles = jwtToken.Claims.Where(x => x.Type == "Roles").Select(x => x.Value).ToList();
-        context.Items["UserName"] = userName;
-        context.Items["Roles"] = roles;
+        var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
+        context.User = principal;
     }
 }

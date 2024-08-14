@@ -22,7 +22,7 @@ public class UserController : ControllerBase
         return Ok(new { roles = userRoles });
     }
     
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "user")]
     [HttpGet("login2")]
     public IActionResult Login2()
     {

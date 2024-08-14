@@ -45,9 +45,22 @@ builder.Services.AddAuthentication(options =>
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"])),
-            ClockSkew = TimeSpan.Zero
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var cookie = context.Request.Cookies["AuthToken"];
+                if (!string.IsNullOrEmpty(cookie))
+                {
+                    context.Token = cookie;
+                }
+        
+                return Task.CompletedTask;
+            }
         };
     });
+
 
 var app = builder.Build();
 
@@ -61,8 +74,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseRouting();
-app.UseAuthorization();
-app.UseAuthentication();
 app.UseMiddleware<JwtMiddleware>();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();

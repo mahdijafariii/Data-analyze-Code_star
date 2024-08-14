@@ -1,16 +1,21 @@
-FROM mcr.microsoft.com/dotnet/sdk:latest AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-# Copy the csproj and restore all of the nugets
-COPY . ./
-RUN dotnet restore ./AnalysisData/AnalysisData.sln
-# Copy everything else and build
-#COPY . ./
-RUN dotnet publish -c Release -o out ./AnalysisData/AnalysisData.sln
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/sdk:latest
-WORKDIR /app
-COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "AnalysisData.dll"]
 
+COPY ./AnalysisData/ ./
+RUN dotnet restore
+COPY . .
+
+RUN dotnet publish ./AnalysisData/AnalysisData/AnalysisData.csproj -c Release -o out
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
+COPY --from=build /app/out ./
+
+ENV ASPNETCORE_ENVIRONMENT=Development
+#ENV ConnectionStrings__DefaultConnection=Host=db;Database=YourDatabaseName;Username=yourusername;Password=yourpassword
+ENV ASPNETCORE_URLS=http://*:80
+EXPOSE 80
+
+
+# Start the application
+ENTRYPOINT ["dotnet", "AnalysisData.dll"]

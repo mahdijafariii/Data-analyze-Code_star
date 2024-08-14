@@ -1,4 +1,4 @@
-namespace AnalysisData.JwtService;
+namespace AnalysisData.JwtService.abstractions;
 
 public interface IJwtService
 {

@@ -1,4 +1,4 @@
-﻿namespace AnalysisData.JwtService.Controllers;
+﻿namespace AnalysisData.JwtService;
 public static class ActionRole
 {
     public static List<string> GetActionByRole(string role)

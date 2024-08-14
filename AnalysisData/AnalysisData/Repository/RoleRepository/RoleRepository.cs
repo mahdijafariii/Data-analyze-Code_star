@@ -14,9 +14,14 @@ public class RoleRepository : IRoleRepository
         _context = context;
     }
 
-    public async Task<Role> GetRole(int rolId)
+    public async Task<Role> GetRoleByID(int roleId)
     {
-        return await _context.Roles.SingleOrDefaultAsync(x => x.Id == rolId);
+        return await _context.Roles.SingleOrDefaultAsync(x => x.Id == roleId);
+    }
+
+    public async Task<Role> GetRoleByName(string roleName)
+    {
+        return await _context.Roles.SingleOrDefaultAsync(x => x.RoleName == roleName);
     }
 
     public bool AddRole(Role role)

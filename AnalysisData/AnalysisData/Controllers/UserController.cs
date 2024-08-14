@@ -1,6 +1,6 @@
 using AnalysisData.Services;
 using AnalysisData.UserManage.LoginModel;
-using Microsoft.AspNetCore.Authorization;
+using AnalysisData.UserManage.RegisterModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.Controllers;
@@ -14,18 +14,22 @@ public class UserController : ControllerBase
     {
         _userService = userService;
     }
-    
     [HttpPost("login")]
     public IActionResult Login([FromBody] UserLoginModel userLoginModel)
     {
         var userRoles = _userService.Login(userLoginModel);
         return Ok(new { roles = userRoles });
     }
-    
-    [Authorize(Roles = "user")]
-    [HttpGet("login2")]
-    public IActionResult Login2()
+
+    [HttpPost("register")]
+    public IActionResult Register([FromBody] UserRegisterModel userRegisterModel)
     {
-        return Ok(new { massage = "salam" });
+        var check =  _userService.Register(userRegisterModel);
+        if (check.Result )
+        {
+            return Ok("success");
+        }
+
+        return Ok("not success");
     }
 }

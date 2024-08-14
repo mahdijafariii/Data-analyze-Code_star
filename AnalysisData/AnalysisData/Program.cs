@@ -1,15 +1,18 @@
 
 using System.Text;
 using AnalysisData;
-using AnalysisData.CookieSevice;
-using AnalysisData.CookieSevice.abstractions;
+using AnalysisData.CookieService;
+using AnalysisData.CookieService.abstractions;
 using AnalysisData.Data;
 using AnalysisData.Exception;
 using AnalysisData.JwtService;
+using AnalysisData.JwtService.abstractions;
 using AnalysisData.Repository.RoleRepository;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository;
 using AnalysisData.Repository.UserRepository.Abstraction;
+using AnalysisData.Repository.UserRoleRepository;
+using AnalysisData.Repository.UserRoleRepository.Abstraction;
 using AnalysisData.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +25,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IJwtService,JwtService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICookieService, CookieService>();
 builder.Services.AddHttpContextAccessor();

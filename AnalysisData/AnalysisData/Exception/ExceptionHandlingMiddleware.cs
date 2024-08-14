@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.IdentityModel.Tokens;
+
 namespace AnalysisData.Exception;
 
 public class ExceptionHandlingMiddleware
@@ -32,6 +34,20 @@ public class ExceptionHandlingMiddleware
         {
             await HandleExceptionAsync(httpContext, ex, StatusCodes.Status408RequestTimeout);
         }
+        catch (SecurityTokenExpiredException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
+        }
+        catch (SecurityTokenInvalidSignatureException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex ,StatusCodes.Status401Unauthorized);
+        }
+        catch (SecurityTokenInvalidAudienceException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex,StatusCodes.Status401Unauthorized);
+        }
+    
+        
     }
 
     private Task HandleExceptionAsync(HttpContext context, System.Exception exception, int statusCode)

@@ -29,6 +29,11 @@ public class UserService : IUserService
         {
             throw new NotFoundUserException(); 
         }
+
+        if (user.Password != userLoginModel.password)
+        {
+            throw new InvalidPasswordException();
+        }
         var token = await _jwtService.GenerateJwtToken(userLoginModel.userName);
 
         _cookieService.SetCookie("AuthToken", token, userLoginModel.rememberMe);

@@ -60,6 +60,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password is invalid !.
+        /// </summary>
+        internal static string InvalidPasswordException {
+            get {
+                return ResourceManager.GetString("InvalidPasswordException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to user not found ! .
         /// </summary>
         internal static string NotFoundUserException {

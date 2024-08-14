@@ -40,11 +40,15 @@ public class ExceptionHandlingMiddleware
         }
         catch (SecurityTokenInvalidSignatureException ex)
         {
-            await HandleExceptionAsync(httpContext, ex ,StatusCodes.Status401Unauthorized);
+            await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
         }
         catch (SecurityTokenInvalidAudienceException ex)
         {
-            await HandleExceptionAsync(httpContext, ex,StatusCodes.Status401Unauthorized);
+            await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
+        }
+        catch (InvalidPasswordException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
         }
     
         

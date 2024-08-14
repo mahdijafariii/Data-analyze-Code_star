@@ -14,9 +14,15 @@ public class JwtMiddleware
         _next = next;
         _jwtSecret = configuration["Jwt:Key"];
     }
+    
 
     public async Task InvokeAsync(HttpContext context)
     {
+        if (context.Request.Path.StartsWithSegments("/api/User/login"))
+        {
+            await _next(context);
+            return;
+        }
         var token = context.Request.Cookies["AuthToken"];
         if (token != null)
         {

@@ -14,7 +14,6 @@ public class UserController : ControllerBase
     {
         _userService = userService;
     }
-    
     [HttpPost("login")]
     public IActionResult Login([FromBody] UserLoginModel userLoginModel)
     {
@@ -22,7 +21,6 @@ public class UserController : ControllerBase
         return Ok(new { roles = userRoles });
     }
     
-    [Authorize(Roles = "user")]
     [HttpGet("login2")]
     public IActionResult Login2()
     {

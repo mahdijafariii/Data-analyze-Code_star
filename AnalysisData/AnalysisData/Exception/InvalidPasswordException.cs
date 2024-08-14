@@ -2,9 +2,9 @@ namespace AnalysisData.Exception;
 using System;
 
 
-public class PasswordIsInvalid : Exception
+public class InvalidPasswordException : Exception
 {
-    public PasswordIsInvalid() : base(Resources.PasswordIsInvalid , new ArgumentException())
+    public InvalidPasswordException() : base(Resources.InvalidPasswordException , new ArgumentException())
     {
     }
 }

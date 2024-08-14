@@ -21,4 +21,7 @@
     <data name="NotFoundUserException" xml:space="preserve">
         <value>user not found ! </value>
     </data>
+    <data name="InvalidPasswordException" xml:space="preserve">
+        <value>Password is invalid !</value>
+    </data>
 </root>

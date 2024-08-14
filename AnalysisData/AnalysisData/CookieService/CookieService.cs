@@ -1,6 +1,6 @@
-using AnalysisData.CookieSevice.abstractions;
+using AnalysisData.CookieService.abstractions;
 
-namespace AnalysisData.CookieSevice;
+namespace AnalysisData.CookieService;
 
 public class CookieService : ICookieService
 {

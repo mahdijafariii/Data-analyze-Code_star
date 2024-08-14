@@ -13,7 +13,7 @@ public class UserRoleRepository : IUserRoleRepository
         _context = context;
     }
 
-    public bool Add(UserRole userRole)
+    public async Task<bool> Add(UserRole userRole)
     {
         _context.UserRoles.Add(userRole);
         _context.SaveChanges();

@@ -24,13 +24,12 @@ public class JwtService : IJwtService
         var user =await _userRepository.GetUser(userName);
         var claims = new List<Claim>
         {
-            new Claim("username", userName),
-            new Claim("email", user.Email),
+            new Claim("username", user.Username),
             new Claim("firstname", user.FirstName),
             new Claim("lastname", user.LastName),
-            new Claim("phone-number", user.PhoneNumber),
-            new Claim("email", user.Email),
-            new Claim("role", user.Role.RoleName),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
+            new Claim(ClaimTypes.Role, user.Role.RoleName),
         };
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

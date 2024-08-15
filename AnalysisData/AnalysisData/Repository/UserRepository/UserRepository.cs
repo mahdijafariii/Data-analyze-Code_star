@@ -15,8 +15,9 @@ namespace AnalysisData.Repository.UserRepository
         
         public async Task<User> GetUser(string userName)
         {
-            return _context.Users.FirstOrDefault(x => x.Username == userName);
+            return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(x => x.Username == userName);
         }
+
         
         public async Task<IReadOnlyList<User>> GetAllUser()
         {

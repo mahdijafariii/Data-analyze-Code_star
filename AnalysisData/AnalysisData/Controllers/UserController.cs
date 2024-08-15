@@ -21,9 +21,10 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login([FromBody] UserLoginModel userLoginModel)
     {
-        var userRoles = _userService.Login(userLoginModel);
-        return Ok(new { roles = userRoles });
+        var userRole = _userService.Login(userLoginModel);
+        return Ok(new { userRole });
     }
+    [Authorize(Roles = "admin")]
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegisterModel)
     {
@@ -38,8 +39,9 @@ public class UserController : ControllerBase
     
     
     [HttpGet("permissions")]
-    public IActionResult GetPermissions(ClaimsPrincipal userClaims)
+    public IActionResult GetPermissions()
     {
+        var userClaims = User;
         var permission = _permissionService.GetPermission(userClaims);
         return Ok(new { permission });
     }

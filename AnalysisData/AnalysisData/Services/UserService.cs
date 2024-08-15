@@ -39,8 +39,6 @@ public class UserService : IUserService
         var token = await _jwtService.GenerateJwtToken(userLoginModel.userName);
 
         _cookieService.SetCookie("AuthToken", token, userLoginModel.rememberMe);
-
-
         return user.Role.RoleName;
     }
     public async Task<bool> Register(UserRegisterModel userRegisterModel)
@@ -89,7 +87,7 @@ public class UserService : IUserService
         return role;
     }
 
-    public string HashPassword(string password)
+    private string HashPassword(string password)
     {
         using (SHA256 sha256 = SHA256.Create())
         {

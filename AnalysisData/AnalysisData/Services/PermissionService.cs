@@ -50,7 +50,10 @@ public class PermissionService : IPermissionService
     {
         var role = userClaims.FindFirstValue(ClaimTypes.Role);
         var rolePermissions = GetRolePermissions(Assembly.GetExecutingAssembly(), role);
-        return string.Join(" ", rolePermissions.Values);
+        var joinedPermissions = rolePermissions.Values
+            .Select(permissionList => string.Join(" ", permissionList))
+            .ToList();
+        return string.Join(" ", joinedPermissions);
     }
    
 }

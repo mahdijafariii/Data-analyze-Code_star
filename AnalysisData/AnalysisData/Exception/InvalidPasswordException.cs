@@ -4,7 +4,7 @@ using System;
 
 public class InvalidPasswordException : Exception
 {
-    public InvalidPasswordException() : base(Resources.InvalidPasswordException , new ArgumentException())
+    public InvalidPasswordException() : base(Resources.InvalidPasswordException)
     {
     }
 }

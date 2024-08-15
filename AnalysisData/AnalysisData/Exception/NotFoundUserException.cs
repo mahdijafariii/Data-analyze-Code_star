@@ -3,7 +3,7 @@ using System;
 
 public class NotFoundUserException : Exception
 {
-    public NotFoundUserException() : base(Resources.NotFoundUserException , new NotFoundUserException())
+    public NotFoundUserException() : base(Resources.NotFoundUserException)
     {
     }
 }

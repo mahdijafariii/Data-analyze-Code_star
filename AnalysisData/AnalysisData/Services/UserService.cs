@@ -25,7 +25,7 @@ public class UserService : IUserService
         _jwtService = jwtService;
         _roleRepository = roleRepository;
     }
-    public async Task<string> Login(UserLoginModel userLoginModel)
+    public async Task<User> Login(UserLoginModel userLoginModel)
     {
         var user = await _userRepository.GetUser(userLoginModel.userName);
         if (user == null )
@@ -39,7 +39,7 @@ public class UserService : IUserService
         var token = await _jwtService.GenerateJwtToken(userLoginModel.userName);
 
         _cookieService.SetCookie("AuthToken", token, userLoginModel.rememberMe);
-        return user.Role.RoleName;
+        return user;
     }
     public async Task<bool> Register(UserRegisterModel userRegisterModel)
     {

@@ -21,8 +21,8 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login([FromBody] UserLoginModel userLoginModel)
     {
-        var userRole = _userService.Login(userLoginModel);
-        return Ok(new { userRole });
+        var user = _userService.Login(userLoginModel);
+        return Ok(new { user });
     }
     [Authorize(Roles = "admin")]
     [HttpPost("register")]

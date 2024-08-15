@@ -22,7 +22,7 @@ public class UserController : ControllerBase
     public IActionResult Login([FromBody] UserLoginModel userLoginModel)
     {
         var user = _userService.Login(userLoginModel);
-        return Ok(new { user });
+        return Ok(new { user.Result.FirstName , user.Result.LastName , user.Result.ImageURL });
     }
     [Authorize(Roles = "admin")]
     [HttpPost("register")]

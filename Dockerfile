@@ -1,16 +1,21 @@
-# Build
-FROM mcr.microsoft.com/dotnet/sdk:latest AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
+
+COPY ./AnalysisData/ ./
+RUN dotnet restore
 COPY . .
-RUN dotnet restore ./AnalysisData/AnalysisData.sln
 
-RUN dotnet publish -c Release -o out ./AnalysisData/AnalysisData.sln
+RUN dotnet publish ./AnalysisData/AnalysisData/AnalysisData.csproj -c Release -o out
 
-# Run
-FROM mcr.microsoft.com/dotnet/aspnet:latest
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=build /app/out .
-#ENV ASPNETCORE_URLS=http://*:8080
-CMD dotnet AnalysisData.dll
-# CMD /bin/bash
+COPY --from=build /app/out ./
 
+ENV ASPNETCORE_ENVIRONMENT=Development
+#ENV ConnectionStrings__DefaultConnection=Host=postgres;Database=mohaymen;Username=postgres;Password=1234;
+ENV ASPNETCORE_URLS=http://*:80
+EXPOSE 80
+
+
+# Start the application
+ENTRYPOINT ["dotnet", "AnalysisData.dll"]

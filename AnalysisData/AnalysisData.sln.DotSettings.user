@@ -1,3 +1,54 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AnalysisData_002FResources/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean></wpf:ResourceDictionary>
+
+	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\kimia\AppData\Local\JetBrains\Rider2024.1\resharper-host\temp\Rider\vAny\CoverageData\_AnalysisData.-35481945\Snapshot\snapshot.utdcvr</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=02d9fd71_002D0a38_002D43c7_002Da834_002Dc2e3e53d102a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="RoleRepositoryTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1e8f93b2_002D4572_002D4c58_002Db711_002Dacb713304847/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="GetRole_ShouldReturnsRole_WhenRoleExists #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests.GetAllUser_ShouldReturnsAllUsers_Whenever&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests.GetUser_ShouldReturnsNull_WhenUserDoesNotExist&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests.GetUser_ShouldReturnsUser_WhenUserExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRoleRepository.UserRoleRepositoryTests.DeleteRoleInUserRole_ShouldRemoveAllUsersWithRole_WhenRemoveRole&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRoleRepository.UserRoleRepositoryTests.DeleteUserInUserRole_ShouldRemoveAllRolesOfUser_WhenRemoveUser&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRoleRepository.UserRoleRepositoryTests.Add_ShouldAddUserRoleToDatabase_WhenAddNewUser&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRoleRepository.UserRoleRepositoryTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=282f0196_002Dd9ab_002D4d1c_002Db9ba_002D372bc37ea58a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddRole_ShouldAddsRoleToDatabase_Whenever #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.AddRole_ShouldAddsRoleToDatabase_Whenever&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2c41609a_002D70c7_002D48cb_002D9eed_002D07fa2ea2f4f4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetRole_ShouldReturnsRole_WhenRoleExists" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.GetRole_ShouldReturnsRole_WhenRoleExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.AddRole_ShouldAddsRoleToDatabase_Whenever&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.DeleteRole_ShouldRemovesRole_WhenRoleExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.DeleteRole_ShouldReturnsFalse_WhenRoleDoesNotExist&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests.AddUser_ShouldAddsUserToDatabase_Whenever&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests.GetUser_ShouldReturnsNull_WhenUserDoesNotExist&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests.GetUser_ShouldReturnsUser_WhenUserExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests.GetAllUser_ShouldReturnsAllUsers_Whenever&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=648b354f_002D77fb_002D41ba_002D80a0_002D6eeb12c1c94d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetRole_ShouldReturnsRole_WhenRoleExists #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.GetRole_ShouldReturnsRole_WhenRoleExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.AddRole_ShouldAddsRoleToDatabase_Whenever&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.DeleteRole_ShouldRemovesRole_WhenRoleExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests.GetUser_ShouldReturnsUser_WhenUserExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.DeleteRole_ShouldReturnsFalse_WhenRoleDoesNotExist&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8ae15fa0_002Dd719_002D4ce1_002D847c_002De586feccc67f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddRole_ShouldAddsRoleToDatabase_Whenever" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.AddRole_ShouldAddsRoleToDatabase_Whenever&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+

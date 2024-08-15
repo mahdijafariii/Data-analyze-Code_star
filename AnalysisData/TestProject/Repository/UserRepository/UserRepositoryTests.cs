@@ -1,5 +1,4 @@
 ﻿using AnalysisData.Data;
-using AnalysisData.UserManage.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace TestProject.Repository.UserRepository;

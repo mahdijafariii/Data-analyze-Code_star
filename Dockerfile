@@ -12,7 +12,7 @@ WORKDIR /app
 COPY --from=build /app/out ./
 
 ENV ASPNETCORE_ENVIRONMENT=Development
-#ENV ConnectionStrings__DefaultConnection=Host=db;Database=YourDatabaseName;Username=yourusername;Password=yourpassword
+#ENV ConnectionStrings__DefaultConnection=Host=postgres;Database=mohaymen;Username=postgres;Password=1234;
 ENV ASPNETCORE_URLS=http://*:80
 EXPOSE 80
 

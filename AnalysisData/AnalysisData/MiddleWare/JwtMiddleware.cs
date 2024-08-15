@@ -18,7 +18,7 @@ public class JwtMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        if (context.Request.Path.StartsWithSegments("/api/User/login"))
+        if (context.Request.Path.StartsWithSegments("/api/User/login") || context.Request.Path.StartsWithSegments("/api/User/register"))
         {
             await _next(context);
             return;

@@ -1,5 +1,4 @@
-﻿using AnalysisData.UserManage.Model;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace AnalysisData.Data;
 
@@ -9,9 +8,7 @@ public class ApplicationDbContext : DbContext
         : base(options)
     {
     }
-
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
-    public DbSet<UserRole> UserRoles { get; set; }
     
 }

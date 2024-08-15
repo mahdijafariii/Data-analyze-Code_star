@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using AnalysisData.Services;
 using AnalysisData.UserManage.LoginModel;
 using AnalysisData.UserManage.RegisterModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.Controllers;
@@ -9,10 +11,12 @@ namespace AnalysisData.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IPermissionService _permissionService;
 
-    public UserController(IUserService userService)
+    public UserController(IUserService userService,IPermissionService permissionService)
     {
         _userService = userService;
+        _permissionService = permissionService;
     }
     [HttpPost("login")]
     public IActionResult Login([FromBody] UserLoginModel userLoginModel)
@@ -20,16 +24,23 @@ public class UserController : ControllerBase
         var userRoles = _userService.Login(userLoginModel);
         return Ok(new { roles = userRoles });
     }
-
     [HttpPost("register")]
-    public IActionResult Register([FromBody] UserRegisterModel userRegisterModel)
+    public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegisterModel)
     {
-        var check =  _userService.Register(userRegisterModel);
-        if (check.Result )
+        var check =  await _userService.Register(userRegisterModel);
+        if (check)
         {
             return Ok("success");
         }
 
-        return Ok("not success");
+        return NotFound("not success");
+    }
+    
+    
+    [HttpGet("permissions")]
+    public IActionResult GetPermissions(ClaimsPrincipal userClaims)
+    {
+        var permission = _permissionService.GetPermission(userClaims);
+        return Ok(new { permission });
     }
 }

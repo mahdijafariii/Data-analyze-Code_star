@@ -12,29 +12,26 @@ public class JwtService : IJwtService
 {
     private readonly IConfiguration _configuration;
     private readonly IUserRepository _userRepository;
-    private readonly IRoleRepository _roleRepository;
     
-    public JwtService(IConfiguration configuration , IUserRepository userRepository,IRoleRepository roleRepository)
+    public JwtService(IConfiguration configuration , IUserRepository userRepository)
     {
         _configuration = configuration;
         _userRepository = userRepository;
-        _roleRepository = roleRepository;
     }
 
     public async Task<string> GenerateJwtToken(string userName)
     {
         var user =await _userRepository.GetUser(userName);
-        var roles = user.UserRoles;
         var claims = new List<Claim>
         {
-            new Claim("Name", userName),
+            new Claim("username", userName),
+            new Claim("email", user.Email),
+            new Claim("firstname", user.FirstName),
+            new Claim("lastname", user.LastName),
+            new Claim("phone-number", user.PhoneNumber),
+            new Claim("email", user.Email),
+            new Claim("role", user.Role.RoleName),
         };
-        foreach (var role in roles)
-        {
-            var result = await _roleRepository.GetRoleByID(role.Id);
-            claims.Add(new Claim("Roles", result.RoleName));
-        }
-        
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         

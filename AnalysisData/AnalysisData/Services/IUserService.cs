@@ -5,6 +5,6 @@ namespace AnalysisData.Services;
 
 public interface IUserService
 {
-    Task<List<string>> Login(UserLoginModel userLoginModel);
+    Task<string> Login(UserLoginModel userLoginModel);
     Task<bool> Register(UserRegisterModel userRegisterModel);
 }

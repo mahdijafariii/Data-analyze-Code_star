@@ -1,11 +1,12 @@
+using System.Data;
+using System.Security.Cryptography;
+using System.Text;
 using AnalysisData.CookieService.abstractions;
 using AnalysisData.Exception;
 using AnalysisData.JwtService.abstractions;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Repository.UserRoleRepository.Abstraction;
 using AnalysisData.UserManage.LoginModel;
-using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.RegisterModel;
 
 namespace AnalysisData.Services;
@@ -13,27 +14,25 @@ namespace AnalysisData.Services;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
-    private readonly IUserRoleRepository _userRoleRepository;
-    private readonly IRoleRepository _roleRepository;
     private readonly ICookieService _cookieService;
     private readonly IJwtService _jwtService;
+    private IRoleRepository _roleRepository;
 
-    public UserService(IUserRepository userRepository, ICookieService cookieService,IJwtService jwtService,IUserRoleRepository userRoleRepository,IRoleRepository roleRepository)
+    public UserService(IUserRepository userRepository, ICookieService cookieService,IJwtService jwtService,IRoleRepository roleRepository)
     {
         _userRepository = userRepository;
         _cookieService = cookieService;
         _jwtService = jwtService;
-        _userRoleRepository = userRoleRepository;
         _roleRepository = roleRepository;
     }
-    public async Task<List<string>> Login(UserLoginModel userLoginModel)
+    public async Task<string> Login(UserLoginModel userLoginModel)
     {
         var user = await _userRepository.GetUser(userLoginModel.userName);
         if (user == null )
         {
             throw new NotFoundUserException(); 
         }
-        if (user.Password != userLoginModel.password)
+        if (user.Password != HashPassword(userLoginModel.password))
         {
             throw new InvalidPasswordException();
         }
@@ -41,39 +40,63 @@ public class UserService : IUserService
 
         _cookieService.SetCookie("AuthToken", token, userLoginModel.rememberMe);
 
-        var roles = user.UserRoles.Select(ur => ur.Role.RoleName).ToList();
 
-        return roles;
+        return user.Role.RoleName;
     }
     public async Task<bool> Register(UserRegisterModel userRegisterModel)
     {
+        var role = await GetRole(userRegisterModel);
         var allUsers = await _userRepository.GetAllUser();
         var existingUser = allUsers.FirstOrDefault(u =>
             u.Username == userRegisterModel.Username || u.Email == userRegisterModel.Email);
         if (existingUser != null)
-            return false; //exception duplicate user(email or username)
+            throw new DuplicateUserException(); 
         if (userRegisterModel.Password != userRegisterModel.ConfirmPassword)
-            return false; //exception not equal
+            throw new PasswordMismatchException();
+        if (role != null)
+        {
+            var user = MakeUser(userRegisterModel,role);
+            _userRepository.AddUser(user);
+        }
 
+        return true;
+    }
+
+    private User MakeUser(UserRegisterModel userRegisterModel,Role role)
+    {
         var user = new User
         {
             Username = userRegisterModel.Username,
-            Password = userRegisterModel.Password, //hash password needed
+            Password = HashPassword(userRegisterModel.Password),
             FirstName = userRegisterModel.FirstName,
             LastName = userRegisterModel.LastName,
             Email = userRegisterModel.Email,
             PhoneNumber = userRegisterModel.PhoneNumber,
+            Role = role,
             ImageURL = null
         };
-        _userRepository.AddUser(user);
-        var role = await _roleRepository.GetRoleByName(userRegisterModel.RoleName);
-        var userRole = new UserRole
+        return user;
+    }
+
+    private async Task<Role?> GetRole(UserRegisterModel userRegisterModel)
+    {
+        var role = await _roleRepository.GetRoleByName(userRegisterModel.RoleName.ToLower());
+        if (role is null)
         {
-            UserId = user.Id,
-            RoleId = role.Id
-        };
-        await _userRoleRepository.Add(userRole);
-        return true;
+            throw new RoleNotFoundException();
+        }
+
+        return role;
+    }
+
+    public string HashPassword(string password)
+    {
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] passwordBytes = System.Text.Encoding.UTF8.GetBytes(password);
+            byte[] hashBytes = sha256.ComputeHash(passwordBytes);
+            return Convert.ToBase64String(hashBytes);
+        }
     }
     
 }

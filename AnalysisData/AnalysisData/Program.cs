@@ -1,4 +1,5 @@
 
+using System.Reflection;
 using System.Text;
 using AnalysisData;
 using AnalysisData.CookieService;
@@ -11,8 +12,7 @@ using AnalysisData.Repository.RoleRepository;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository;
 using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Repository.UserRoleRepository;
-using AnalysisData.Repository.UserRoleRepository.Abstraction;
+
 using AnalysisData.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -25,9 +25,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IJwtService,JwtService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICookieService, CookieService>();
+builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -64,7 +64,6 @@ builder.Services.AddAuthentication(options =>
             }
         };
     });
-
 
 var app = builder.Build();
 

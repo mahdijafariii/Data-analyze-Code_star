@@ -1,6 +1,5 @@
 ﻿using AnalysisData.Data;
 using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.UserManage.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace AnalysisData.Repository.UserRepository
@@ -16,9 +15,7 @@ namespace AnalysisData.Repository.UserRepository
         
         public async Task<User> GetUser(string userName)
         {
-            var test = await _context.Users.Include(u=> u.UserRoles)
-                .SingleOrDefaultAsync(x => x.Username == userName);
-            return test;
+            return _context.Users.FirstOrDefault(x => x.Username == userName);
         }
         
         public async Task<IReadOnlyList<User>> GetAllUser()

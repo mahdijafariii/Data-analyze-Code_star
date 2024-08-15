@@ -50,9 +50,18 @@ public class ExceptionHandlingMiddleware
         {
             await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
         }
-    
+        catch (DuplicateUserException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
+        }
+        catch (PasswordMismatchException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
+        }
         
-    }
+        {}
+
+}
 
     private Task HandleExceptionAsync(HttpContext context, System.Exception exception, int statusCode)
     {

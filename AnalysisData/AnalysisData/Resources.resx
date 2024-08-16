@@ -33,4 +33,13 @@
     <data name="RoleNotFoundException" xml:space="preserve">
         <value>We do not have this role !</value>
     </data>
+    <data name="InvalidEmailFormatException" xml:space="preserve">
+        <value>Invalid Email format !</value>
+    </data>
+    <data name="InvalidPhoneNumberFormatException" xml:space="preserve">
+        <value>Invalid Phone number format !</value>
+    </data>
+    <data name="InvalidPasswordFormatException" xml:space="preserve">
+        <value>Invalid password format ! </value>
+    </data>
 </root>

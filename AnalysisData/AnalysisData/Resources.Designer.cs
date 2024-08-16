@@ -69,11 +69,38 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid Email format !.
+        /// </summary>
+        internal static string InvalidEmailFormatException {
+            get {
+                return ResourceManager.GetString("InvalidEmailFormatException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password is invalid !.
         /// </summary>
         internal static string InvalidPasswordException {
             get {
                 return ResourceManager.GetString("InvalidPasswordException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid password format ! .
+        /// </summary>
+        internal static string InvalidPasswordFormatException {
+            get {
+                return ResourceManager.GetString("InvalidPasswordFormatException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Phone number format !.
+        /// </summary>
+        internal static string InvalidPhoneNumberFormatException {
+            get {
+                return ResourceManager.GetString("InvalidPhoneNumberFormatException", resourceCulture);
             }
         }
         

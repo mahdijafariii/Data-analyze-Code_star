@@ -1,52 +1,43 @@
 using System.Text.RegularExpressions;
+using AnalysisData.Exception;
+using AnalysisData.UserManage.Model;
 
 namespace AnalysisData.Services;
 
 public class RegexService : IRegexService
 {
-    public bool EmailCheck(string email)
+    public void EmailCheck(string email)
     {
-        string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+        string pattern = RegexPatterns.EmailRegex;
 
         Regex regex = new Regex(pattern);
-
-        // بررسی مطابقت ایمیل با الگو
         bool isMatch = regex.IsMatch(email);
-
-        // نمایش نتیجه
-        if (isMatch)
+        if (!isMatch)
         {
-            Console.WriteLine("ایمیل معتبر است.");
+            throw new InvalidEmailFormatException();
         }
-        else
-        {
-            Console.WriteLine("ایمیل نامعتبر است.");
-        }
-
-        return true;
     }
-    public bool PhoneNumberCheck(string phoneNumber)
+
+    public void PhoneNumberCheck(string phoneNumber)
     {
-        string pattern = @"^09\d{9}$";
+        string pattern = RegexPatterns.PhoneNumberRegex;
         Regex regex = new Regex(pattern);
         bool isMatch = regex.IsMatch(phoneNumber);
-        if (isMatch)
+        if (!isMatch)
         {
-            return true;
+            throw new InvalidPhoneNumberFormatException();
         }
-        throw new System.Exception();
     }
-    
-    public bool PasswordCheck(string password)
+
+    public void PasswordCheck(string password)
     {
-        string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$";
+        string pattern = RegexPatterns.PasswordRegex;
         Regex regex = new Regex(pattern);
         bool isMatch = regex.IsMatch(password);
-        if (isMatch)
+        if (!isMatch)
         {
-            return true;
+            throw new InvalidPasswordFormatException();
         }
-        throw new System.Exception();
+
     }
-    
 }

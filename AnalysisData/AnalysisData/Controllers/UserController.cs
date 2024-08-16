@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using AnalysisData.Exception;
 using AnalysisData.Services;
 using AnalysisData.UserManage.LoginModel;
 using AnalysisData.UserManage.RegisterModel;
@@ -24,7 +25,6 @@ public class UserController : ControllerBase
         var user = _userService.Login(userLoginModel);
         return Ok(new { user.Result.FirstName , user.Result.LastName , user.Result.ImageURL });
     }
-    [Authorize(Roles = "admin")]
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegisterModel)
     {

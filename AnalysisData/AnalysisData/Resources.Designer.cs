@@ -87,7 +87,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid password format ! .
+        ///   Looks up a localized string similar to password format is invlaid ! .
         /// </summary>
         internal static string InvalidPasswordFormatException {
             get {
@@ -101,15 +101,6 @@ namespace AnalysisData {
         internal static string InvalidPhoneNumberFormatException {
             get {
                 return ResourceManager.GetString("InvalidPhoneNumberFormatException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to user not found ! .
-        /// </summary>
-        internal static string NotFoundUserException {
-            get {
-                return ResourceManager.GetString("NotFoundUserException", resourceCulture);
             }
         }
         
@@ -128,6 +119,15 @@ namespace AnalysisData {
         internal static string RoleNotFoundException {
             get {
                 return ResourceManager.GetString("RoleNotFoundException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to user not found ! .
+        /// </summary>
+        internal static string UserNotFoundException {
+            get {
+                return ResourceManager.GetString("UserNotFoundException", resourceCulture);
             }
         }
     }

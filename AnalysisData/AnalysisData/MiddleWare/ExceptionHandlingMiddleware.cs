@@ -18,7 +18,7 @@ public class ExceptionHandlingMiddleware
         {
             await _next(httpContext);
         }
-        catch (NotFoundUserException ex)
+        catch (UserNotFoundException ex)
         {
             await HandleExceptionAsync(httpContext, ex, StatusCodes.Status404NotFound);
         }
@@ -58,19 +58,28 @@ public class ExceptionHandlingMiddleware
         {
             await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
         }
-        
-        {}
+        catch (InvalidEmailFormatException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
+        }
+        catch (InvalidPasswordFormatException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
+        }
+        catch (InvalidPhoneNumberFormatException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
+        }
+    }
 
-}
-
-    private Task HandleExceptionAsync(HttpContext context, System.Exception exception, int statusCode)
+    private Task HandleExceptionAsync(HttpContext context, System.Exception exception, int _statusCode)
     {
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = statusCode;
+        context.Response.StatusCode = _statusCode;
 
         var response = new
         {
-            statusCode = statusCode,
+            statusCode = _statusCode,
             message = exception.Message,
         };
 

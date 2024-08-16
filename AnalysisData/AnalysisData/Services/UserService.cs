@@ -16,31 +16,38 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly ICookieService _cookieService;
     private readonly IJwtService _jwtService;
-    private IRoleRepository _roleRepository;
+    private readonly IRoleRepository _roleRepository;
+    private readonly IRegexService _regexService;
 
-    public UserService(IUserRepository userRepository, ICookieService cookieService,IJwtService jwtService,IRoleRepository roleRepository)
+    public UserService(IUserRepository userRepository, ICookieService cookieService, IJwtService jwtService,
+        IRoleRepository roleRepository, IRegexService regexService)
     {
         _userRepository = userRepository;
         _cookieService = cookieService;
         _jwtService = jwtService;
         _roleRepository = roleRepository;
+        _regexService = regexService;
     }
+
     public async Task<User> Login(UserLoginModel userLoginModel)
     {
         var user = await _userRepository.GetUser(userLoginModel.userName);
-        if (user == null )
+        if (user == null)
         {
-            throw new NotFoundUserException(); 
+            throw new UserNotFoundException();
         }
+
         if (user.Password != HashPassword(userLoginModel.password))
         {
             throw new InvalidPasswordException();
         }
+
         var token = await _jwtService.GenerateJwtToken(userLoginModel.userName);
 
         _cookieService.SetCookie("AuthToken", token, userLoginModel.rememberMe);
         return user;
     }
+
     public async Task<bool> Register(UserRegisterModel userRegisterModel)
     {
         var role = await GetRole(userRegisterModel);
@@ -48,19 +55,24 @@ public class UserService : IUserService
         var existingUser = allUsers.FirstOrDefault(u =>
             u.Username == userRegisterModel.Username || u.Email == userRegisterModel.Email);
         if (existingUser != null)
-            throw new DuplicateUserException(); 
+            throw new DuplicateUserException();
+        _regexService.EmailCheck(userRegisterModel.Email);
+        _regexService.PasswordCheck(userRegisterModel.Password);
+        _regexService.PhoneNumberCheck(userRegisterModel.PhoneNumber);
         if (userRegisterModel.Password != userRegisterModel.ConfirmPassword)
             throw new PasswordMismatchException();
+
+
         if (role != null)
         {
-            var user = MakeUser(userRegisterModel,role);
+            var user = MakeUser(userRegisterModel, role);
             _userRepository.AddUser(user);
         }
 
         return true;
     }
 
-    private User MakeUser(UserRegisterModel userRegisterModel,Role role)
+    private User MakeUser(UserRegisterModel userRegisterModel, Role role)
     {
         var user = new User
         {
@@ -96,5 +108,4 @@ public class UserService : IUserService
             return Convert.ToBase64String(hashBytes);
         }
     }
-    
 }

@@ -5,11 +5,16 @@ using AnalysisData;
 using AnalysisData.CookieService;
 using AnalysisData.CookieService.abstractions;
 using AnalysisData.Data;
+using AnalysisData.DataProcessService;
 using AnalysisData.Exception;
 using AnalysisData.JwtService;
 using AnalysisData.JwtService.abstractions;
+using AnalysisData.Repository.AccountRepository;
+using AnalysisData.Repository.AccountRepository.Abstraction;
 using AnalysisData.Repository.RoleRepository;
 using AnalysisData.Repository.RoleRepository.Abstraction;
+using AnalysisData.Repository.TrancsactionRepository;
+using AnalysisData.Repository.TrancsactionRepository.Abstraction;
 using AnalysisData.Repository.UserRepository;
 using AnalysisData.Repository.UserRepository.Abstraction;
 
@@ -29,7 +34,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICookieService, CookieService>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddScoped<IDataProcessor, DataReadProcessor>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllers();

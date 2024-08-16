@@ -69,6 +69,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid Email format !.
+        /// </summary>
+        internal static string InvalidEmailFormatException {
+            get {
+                return ResourceManager.GetString("InvalidEmailFormatException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password is invalid !.
         /// </summary>
         internal static string InvalidPasswordException {
@@ -78,11 +87,20 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to user not found ! .
+        ///   Looks up a localized string similar to password format is invlaid ! .
         /// </summary>
-        internal static string NotFoundUserException {
+        internal static string InvalidPasswordFormatException {
             get {
-                return ResourceManager.GetString("NotFoundUserException", resourceCulture);
+                return ResourceManager.GetString("InvalidPasswordFormatException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Phone number format !.
+        /// </summary>
+        internal static string InvalidPhoneNumberFormatException {
+            get {
+                return ResourceManager.GetString("InvalidPhoneNumberFormatException", resourceCulture);
             }
         }
         
@@ -101,6 +119,15 @@ namespace AnalysisData {
         internal static string RoleNotFoundException {
             get {
                 return ResourceManager.GetString("RoleNotFoundException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to user not found ! .
+        /// </summary>
+        internal static string UserNotFoundException {
+            get {
+                return ResourceManager.GetString("UserNotFoundException", resourceCulture);
             }
         }
     }

@@ -24,19 +24,25 @@ namespace AnalysisData.Repository.UserRepository
             return await _context.Users.ToListAsync();
         }
         
-        public bool DeleteUser(string userName)
+        public async Task<bool> DeleteUser(string userName)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Username == userName);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Username == userName);
             if (user == null) return false;
             _context.Users.Remove(user);
-            _context.SaveChanges(); 
+            await _context.SaveChangesAsync(); 
             return true;
         }
         
-        public void AddUser(User user)
+        public async void AddUser(User user)
         {
             _context.Users.Add(user);
-            _context.SaveChanges(); 
+            await _context.SaveChangesAsync(); 
+        }
+        
+        public async Task UpdateUser(User user)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
         }
     }
 }

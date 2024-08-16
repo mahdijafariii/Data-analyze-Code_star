@@ -5,6 +5,7 @@ public interface IUserRepository
 {
     Task<User> GetUser(string userName);
     Task<IReadOnlyList<User>> GetAllUser();
-    bool DeleteUser(string userName);
+    Task<bool> DeleteUser(string userName);
     void AddUser(User user);
+    Task UpdateUser(User user);
 }

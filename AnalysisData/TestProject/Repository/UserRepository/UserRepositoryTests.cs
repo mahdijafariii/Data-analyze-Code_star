@@ -78,7 +78,7 @@ public class UserRepositoryTests
         var result = _sut.DeleteUser("user1");
 
         // Assert
-        Assert.True(result);
+        Assert.True(result.Result);
         Assert.Equal(0, _context.Users.Count());
     }
 
@@ -91,7 +91,7 @@ public class UserRepositoryTests
         var result = _sut.DeleteUser("NoOne");
 
         // Assert
-        Assert.False(result);
+        Assert.False(result.Result);
     }
     
     [Fact]

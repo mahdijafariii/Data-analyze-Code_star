@@ -18,7 +18,7 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="NotFoundUserException" xml:space="preserve">
+    <data name="UserNotFoundException" xml:space="preserve">
         <value>user not found ! </value>
     </data>
     <data name="InvalidPasswordException" xml:space="preserve">
@@ -32,5 +32,14 @@
     </data>
     <data name="RoleNotFoundException" xml:space="preserve">
         <value>We do not have this role !</value>
+    </data>
+    <data name="InvalidEmailFormatException" xml:space="preserve">
+        <value>Invalid Email format !</value>
+    </data>
+    <data name="InvalidPhoneNumberFormatException" xml:space="preserve">
+        <value>Invalid Phone number format !</value>
+    </data>
+    <data name="InvalidPasswordFormatException" xml:space="preserve">
+        <value>password format is invlaid ! </value>
     </data>
 </root>

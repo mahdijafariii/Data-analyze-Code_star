@@ -1,22 +1,26 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-
-namespace AnalysisData.UserManage.Model;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class User
 {
     [Key]
     public int Id { get; set; }
 
-    [Required]
-    [StringLength(50)]
     public string Username { get; set; }
 
-    [Required]
-    [StringLength(256)]
-    public string Password { get; set; } 
+    public string Password { get; set; }
 
-    public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+    public string FirstName { get; set; }
+
+    public string LastName { get; set; }
+
+    public string Email { get; set; }
+
+    public string PhoneNumber { get; set; }
+
+    public string? ImageURL { get; set; }
+
+    public int RoleId { get; set; }
+    [ForeignKey("RoleId")]
+    public Role Role { get; set; }
 }
-

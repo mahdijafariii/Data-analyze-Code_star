@@ -1,5 +1,4 @@
 ﻿using AnalysisData.Data;
-using AnalysisData.UserManage.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace TestProject.Repository.RoleRepository;
@@ -26,7 +25,7 @@ public class RoleRepositoryTests
         await _context.SaveChangesAsync();
 
         // Act
-        var result = await _sut.GetRole(1);
+        var result = await _sut.GetRoleByID(1);
 
         // Assert
         Assert.NotNull(result);

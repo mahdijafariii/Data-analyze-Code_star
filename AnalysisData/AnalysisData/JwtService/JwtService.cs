@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AnalysisData.JwtService.abstractions;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using Microsoft.IdentityModel.Tokens;
@@ -11,30 +12,25 @@ public class JwtService : IJwtService
 {
     private readonly IConfiguration _configuration;
     private readonly IUserRepository _userRepository;
-    private readonly IRoleRepository _roleRepository;
-
-
-    public JwtService(IConfiguration configuration , IUserRepository userRepository,IRoleRepository roleRepository)
+    
+    public JwtService(IConfiguration configuration , IUserRepository userRepository)
     {
         _configuration = configuration;
         _userRepository = userRepository;
-        _roleRepository = roleRepository;
     }
 
     public async Task<string> GenerateJwtToken(string userName)
     {
         var user =await _userRepository.GetUser(userName);
-        var roles = user.UserRoles;
         var claims = new List<Claim>
         {
-            new Claim("Name", userName),
+            new Claim("username", user.Username),
+            new Claim("firstname", user.FirstName),
+            new Claim("lastname", user.LastName),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
+            new Claim(ClaimTypes.Role, user.Role.RoleName),
         };
-        foreach (var role in roles)
-        {
-            var result = await _roleRepository.GetRole(role.Id);
-            claims.Add(new Claim("Roles", result.RoleName));
-        }
-        
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         

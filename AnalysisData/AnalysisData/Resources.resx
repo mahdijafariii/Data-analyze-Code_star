@@ -21,4 +21,16 @@
     <data name="NotFoundUserException" xml:space="preserve">
         <value>user not found ! </value>
     </data>
+    <data name="InvalidPasswordException" xml:space="preserve">
+        <value>Password is invalid !</value>
+    </data>
+    <data name="DuplicateUserException" xml:space="preserve">
+        <value>We have user with this information !</value>
+    </data>
+    <data name="PasswordMismatchException" xml:space="preserve">
+        <value>Password is not match ! </value>
+    </data>
+    <data name="RoleNotFoundException" xml:space="preserve">
+        <value>We do not have this role !</value>
+    </data>
 </root>

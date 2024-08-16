@@ -1,6 +1,5 @@
 using AnalysisData.Data;
 using AnalysisData.Repository.RoleRepository.Abstraction;
-using AnalysisData.UserManage.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace AnalysisData.Repository.RoleRepository;
@@ -14,15 +13,21 @@ public class RoleRepository : IRoleRepository
         _context = context;
     }
 
-    public async Task<Role> GetRole(int roleId)
+    public async Task<Role> GetRoleByID(int roleId)
     {
         return await _context.Roles.SingleOrDefaultAsync(x => x.Id == roleId);
     }
 
-    public void AddRole(Role role)
+    public async Task<Role> GetRoleByName(string roleName)
+    {
+        return await _context.Roles.SingleOrDefaultAsync(x => x.RoleName == roleName);
+    }
+
+    public bool AddRole(Role role)
     {
         _context.Roles.Add(role);
         _context.SaveChanges();
+        return true;
     }
 
     public bool DeleteRole(int roleId)
@@ -33,5 +38,4 @@ public class RoleRepository : IRoleRepository
         _context.SaveChanges();
         return true;
     }
-    
 }

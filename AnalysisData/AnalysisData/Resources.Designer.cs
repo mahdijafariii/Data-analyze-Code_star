@@ -60,11 +60,47 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We have user with this information !.
+        /// </summary>
+        internal static string DuplicateUserException {
+            get {
+                return ResourceManager.GetString("DuplicateUserException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password is invalid !.
+        /// </summary>
+        internal static string InvalidPasswordException {
+            get {
+                return ResourceManager.GetString("InvalidPasswordException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to user not found ! .
         /// </summary>
         internal static string NotFoundUserException {
             get {
                 return ResourceManager.GetString("NotFoundUserException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password is not match ! .
+        /// </summary>
+        internal static string PasswordMismatchException {
+            get {
+                return ResourceManager.GetString("PasswordMismatchException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We do not have this role !.
+        /// </summary>
+        internal static string RoleNotFoundException {
+            get {
+                return ResourceManager.GetString("RoleNotFoundException", resourceCulture);
             }
         }
     }

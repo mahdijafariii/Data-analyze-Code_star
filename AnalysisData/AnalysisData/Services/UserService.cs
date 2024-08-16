@@ -1,4 +1,5 @@
 using System.Data;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using AnalysisData.CookieService.abstractions;
@@ -8,6 +9,8 @@ using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.UserManage.LoginModel;
 using AnalysisData.UserManage.RegisterModel;
+using AnalysisData.UserManage.ResetPasswordModel;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.Services;
 
@@ -27,6 +30,24 @@ public class UserService : IUserService
         _jwtService = jwtService;
         _roleRepository = roleRepository;
         _regexService = regexService;
+    }
+
+    public async Task<bool> ResetPassword(ClaimsPrincipal userClaim, string password, string confirmPassword)
+    {
+        var userName = userClaim.FindFirstValue("username");
+        var user = await _userRepository.GetUser(userName);
+        if (user == null)
+        {
+            throw new UserNotFoundException();
+        }
+        if (password != confirmPassword)
+        {
+            throw new PasswordMismatchException();
+        }
+        _regexService.PasswordCheck(password);
+        user.Password = HashPassword(password);
+        await _userRepository.UpdateUser(user);
+        return true;
     }
 
     public async Task<User> Login(UserLoginModel userLoginModel)
@@ -58,6 +79,10 @@ public class UserService : IUserService
             throw new DuplicateUserException();
         _regexService.EmailCheck(userRegisterModel.Email);
         _regexService.PasswordCheck(userRegisterModel.Password);
+        if (userRegisterModel.Password != userRegisterModel.ConfirmPassword)
+        {
+            throw new PasswordMismatchException();
+        }
         _regexService.PhoneNumberCheck(userRegisterModel.PhoneNumber);
         if (userRegisterModel.Password != userRegisterModel.ConfirmPassword)
             throw new PasswordMismatchException();

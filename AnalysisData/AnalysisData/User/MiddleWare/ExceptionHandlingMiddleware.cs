@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using AnalysisData.Exception;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AnalysisData.Exception;
+namespace AnalysisData.MiddleWare;
 
 public class ExceptionHandlingMiddleware
 {
@@ -17,6 +18,22 @@ public class ExceptionHandlingMiddleware
         try
         {
             await _next(httpContext);
+        }
+        catch (AggregateException aggEx)
+        {
+            foreach (var ex in aggEx.InnerExceptions)
+            {
+                if (ex is UserNotFoundException)
+                {
+                    await HandleExceptionAsync(httpContext, ex, StatusCodes.Status404NotFound);
+                    return;
+                }
+                if (ex is RoleNotFoundException)
+                {
+                    await HandleExceptionAsync(httpContext, ex, StatusCodes.Status404NotFound);
+                    return;
+                }
+            }
         }
         catch (UserNotFoundException ex)
         {
@@ -67,6 +84,10 @@ public class ExceptionHandlingMiddleware
             await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
         }
         catch (InvalidPhoneNumberFormatException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
+        }
+        catch (RoleNotFoundException ex)
         {
             await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
         }

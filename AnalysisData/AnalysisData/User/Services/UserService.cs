@@ -8,6 +8,7 @@ using AnalysisData.JwtService.abstractions;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.UserManage.LoginModel;
+using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.RegisterModel;
 using AnalysisData.UserManage.ResetPasswordModel;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +40,29 @@ public class UserService : IUserService
         if (user == null)
         {
             throw new UserNotFoundException();
+        }
+        if (password != confirmPassword)
+        {
+            throw new PasswordMismatchException();
+        }
+        _regexService.PasswordCheck(password);
+        user.Password = HashPassword(password);
+        await _userRepository.UpdateUser(user);
+        return true;
+    }
+    
+    public async Task<bool> NewPassword(ClaimsPrincipal userClaim,string oldPassword, string password, string confirmPassword)
+    {
+        var userName = userClaim.FindFirstValue("username");
+        var user = await _userRepository.GetUser(userName);
+        if (user == null)
+        {
+            throw new UserNotFoundException();
+        }
+
+        if (user.Password == HashPassword(oldPassword))
+        {
+            throw new PasswordMismatchException();
         }
         if (password != confirmPassword)
         {

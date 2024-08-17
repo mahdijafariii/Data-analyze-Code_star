@@ -1,8 +1,9 @@
 ﻿using AnalysisData.Data;
-using AnalysisData.DataManage.Model;
-using AnalysisData.Repository.TrancsactionRepository.Abstraction;
+using AnalysisData.Graph.DataManage.Model;
+using AnalysisData.Repository.TransactionRepository.Abstraction;
+using Microsoft.EntityFrameworkCore;
 
-namespace AnalysisData.Repository.TrancsactionRepository;
+namespace AnalysisData.Repository.TransactionRepository;
 
 public class TransactionRepository : ITransactionRepository
 {
@@ -17,5 +18,15 @@ public class TransactionRepository : ITransactionRepository
     {
         _context.Transactions.AddRange(transactions);
         await _context.SaveChangesAsync();
+    }
+
+
+    public async Task<IEnumerable<Transaction>> GetAllTransaction()
+    {
+        return await _context.Transactions.ToListAsync();
+    }
+    public async Task<Transaction> GetById(string id)
+    {
+        return await _context.Transactions.SingleOrDefaultAsync(x => x.TransactionID == id);
     }
 }

@@ -2,6 +2,7 @@ using System.Security.Claims;
 using AnalysisData.Exception;
 using AnalysisData.Services;
 using AnalysisData.UserManage.LoginModel;
+using AnalysisData.UserManage.NewPasswordModel;
 using AnalysisData.UserManage.RegisterModel;
 using AnalysisData.UserManage.ResetPasswordModel;
 using Microsoft.AspNetCore.Authorization;
@@ -29,7 +30,6 @@ public class UserController : ControllerBase
         return Ok(new { user.Result.FirstName, user.Result.LastName, user.Result.ImageURL });
     }
 
-    [Authorize(Roles = "admin")]
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegisterModel)
     {
@@ -68,4 +68,19 @@ public class UserController : ControllerBase
 
         return BadRequest("not success");
     }
+    
+    [HttpPost("new-password")]
+    public async Task<IActionResult> NewPassword([FromBody] NewPasswordModel newPasswordModel)
+    {
+        var userClaim = User;
+        var check = await _userService.NewPassword(userClaim, newPasswordModel.OldPassword,newPasswordModel.NewPassword,
+            newPasswordModel.ConfirmPassword);
+        if (check)
+        {
+            return Ok("success");
+        }
+
+        return BadRequest("not success");
+    }
+    
 }

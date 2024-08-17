@@ -1,4 +1,6 @@
 
+using AnalysisData.UserManage.Model;
+
 namespace AnalysisData.Repository.RoleRepository.Abstraction;
 
 public interface IRoleRepository

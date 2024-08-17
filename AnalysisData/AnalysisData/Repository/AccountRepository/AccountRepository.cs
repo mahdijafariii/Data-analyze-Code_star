@@ -1,6 +1,7 @@
 ﻿using AnalysisData.Data;
-using AnalysisData.DataManage.Model;
+using AnalysisData.Graph.DataManage.Model;
 using AnalysisData.Repository.AccountRepository.Abstraction;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnalysisData.Repository.AccountRepository;
 
@@ -17,5 +18,15 @@ public class AccountRepository : IAccountRepository
     {
         _context.Accounts.AddRange(accounts);
         await _context.SaveChangesAsync();
+    }
+    
+    
+    public async Task<IEnumerable<Account>> GetAllAccounts()
+    {
+        return await _context.Accounts.ToListAsync();
+    }
+    public async Task<Account> GetAccountById(string id)
+    {
+        return await _context.Accounts.SingleOrDefaultAsync(x => x.AccountID == id);
     }
 }

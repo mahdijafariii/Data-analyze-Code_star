@@ -43,6 +43,41 @@ public class AdminController : ControllerBase
 
         return Ok(roles);
     }
+    [HttpDelete("DeleteUser/{username}")]
+    public IActionResult DeleteUser(string username)
+    {
+        var result = _adminService.DeleteUser(username);
+        if (result)
+        {
+            return Ok(new { message = "User deleted successfully." });
+        }
+
+        return NotFound(new { message = "User not found." });
+    }
+
+    [HttpDelete("DeleteRole/{roleName}")]
+    public IActionResult DeleteRole(string roleName)
+    {
+        var result = _adminService.DeleteRole(roleName);
+        if (result)
+        {
+            return Ok(new { message = "Role deleted successfully." });
+        }
+    
+        return NotFound(new { message = "Role not found." });
+    }
+
+    [HttpPost("AddRole/{roleName}")]
+    public IActionResult AddRole(string roleName)
+    {
+        var result = _adminService.AddRole(roleName);
+        if (result)
+        {
+            return Ok("success");
+        }
+
+        return BadRequest("not success");
+    }
     
     
 }

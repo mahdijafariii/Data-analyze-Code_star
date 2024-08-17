@@ -49,6 +49,29 @@ public class UserService : IUserService
         await _userRepository.UpdateUser(user);
         return true;
     }
+    
+    public async Task<bool> NewPassword(ClaimsPrincipal userClaim,string oldPassword, string password, string confirmPassword)
+    {
+        var userName = userClaim.FindFirstValue("username");
+        var user = await _userRepository.GetUser(userName);
+        if (user == null)
+        {
+            throw new UserNotFoundException();
+        }
+
+        if (user.Password == HashPassword(oldPassword))
+        {
+            throw new PasswordMismatchException();
+        }
+        if (password != confirmPassword)
+        {
+            throw new PasswordMismatchException();
+        }
+        _regexService.PasswordCheck(password);
+        user.Password = HashPassword(password);
+        await _userRepository.UpdateUser(user);
+        return true;
+    }
 
     public async Task<User> Login(UserLoginModel userLoginModel)
     {

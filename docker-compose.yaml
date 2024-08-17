@@ -12,6 +12,7 @@ services:
 
   migrate:
     image: mcr.microsoft.com/dotnet/sdk:8.0
+    #image: mcr.microsoft.com/dotnet/aspnet:8.0
     depends_on:
       - postgres
     working_dir: /app

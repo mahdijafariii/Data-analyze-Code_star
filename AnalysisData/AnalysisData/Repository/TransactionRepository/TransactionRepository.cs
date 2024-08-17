@@ -1,9 +1,9 @@
 ﻿using AnalysisData.Data;
-using AnalysisData.DataManage.Model;
-using AnalysisData.Repository.TrancsactionRepository.Abstraction;
+using AnalysisData.Graph.DataManage.Model;
+using AnalysisData.Repository.TransactionRepository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
-namespace AnalysisData.Repository.TrancsactionRepository;
+namespace AnalysisData.Repository.TransactionRepository;
 
 public class TransactionRepository : ITransactionRepository
 {

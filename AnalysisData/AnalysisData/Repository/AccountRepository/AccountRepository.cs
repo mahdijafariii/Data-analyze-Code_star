@@ -1,5 +1,5 @@
 ﻿using AnalysisData.Data;
-using AnalysisData.DataManage.Model;
+using AnalysisData.Graph.DataManage.Model;
 using AnalysisData.Repository.AccountRepository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 

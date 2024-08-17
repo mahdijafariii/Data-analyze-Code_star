@@ -1,4 +1,4 @@
-﻿namespace AnalysisData.DataManage.Model;
+﻿namespace AnalysisData.Graph.DataManage.Model;
 
 public class Account
 {

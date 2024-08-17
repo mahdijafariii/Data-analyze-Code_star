@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using AnalysisData.Exception;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AnalysisData.Exception;
+namespace AnalysisData.MiddleWare;
 
 public class ExceptionHandlingMiddleware
 {

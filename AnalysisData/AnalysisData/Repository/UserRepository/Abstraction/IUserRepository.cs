@@ -1,4 +1,6 @@
 ﻿
+using AnalysisData.UserManage.Model;
+
 namespace AnalysisData.Repository.UserRepository.Abstraction;
 
 public interface IUserRepository

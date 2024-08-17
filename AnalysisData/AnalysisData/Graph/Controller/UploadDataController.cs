@@ -1,8 +1,7 @@
-﻿using AnalysisData.DataProcessService;
-using Microsoft.AspNetCore.Authorization;
+﻿using AnalysisData.Graph.DataProcessService;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnalysisData.Controllers;
+namespace AnalysisData.Graph.Controller;
 
 [ApiController]
 [Route("api/[controller]")]

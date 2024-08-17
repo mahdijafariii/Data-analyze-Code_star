@@ -1,4 +1,4 @@
-using AnalysisData.DataManage.Model;
+using AnalysisData.Graph.DataManage.Model;
 using QuickGraph;
 
 namespace AnalysisData.Graph;

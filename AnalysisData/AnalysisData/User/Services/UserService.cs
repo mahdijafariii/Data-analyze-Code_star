@@ -8,6 +8,7 @@ using AnalysisData.JwtService.abstractions;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.UserManage.LoginModel;
+using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.RegisterModel;
 using AnalysisData.UserManage.ResetPasswordModel;
 using Microsoft.AspNetCore.Mvc;

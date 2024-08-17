@@ -1,6 +1,8 @@
 
 using System.ComponentModel.DataAnnotations;
 
+namespace AnalysisData.UserManage.Model;
+
 public class Role
 {
     [Key]

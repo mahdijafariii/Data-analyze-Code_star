@@ -1,6 +1,6 @@
-using AnalysisData.DataManage.Model;
+using AnalysisData.Graph.DataManage.Model;
 using AnalysisData.Repository.AccountRepository;
-using AnalysisData.Repository.TrancsactionRepository;
+using AnalysisData.Repository.TransactionRepository;
 using QuickGraph;
 
 namespace AnalysisData.Graph;

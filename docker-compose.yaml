@@ -11,7 +11,8 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   migrate:
-    image: mcr.microsoft.com/dotnet/sdk:8.0
+    image: mcr.microsoft.com/dotnet/runtime:8.0-windowsservercore-ltsc2022
+     #mcr.microsoft.com/dotnet/sdk:latest
     depends_on:
       - postgres
     working_dir: /app

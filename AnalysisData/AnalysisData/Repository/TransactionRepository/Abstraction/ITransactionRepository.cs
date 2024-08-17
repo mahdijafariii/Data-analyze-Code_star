@@ -1,6 +1,6 @@
 ﻿using AnalysisData.DataManage.Model;
 
-namespace AnalysisData.Repository.TrancsactionRepository.Abstraction;
+namespace AnalysisData.Repository.TransactionRepository.Abstraction;
 
 public interface ITransactionRepository
 {

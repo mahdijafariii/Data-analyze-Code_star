@@ -1,4 +1,4 @@
-namespace AnalysisData.Services;
+namespace AnalysisData.Services.Abstraction;
 
 public interface IRegexService
 {

@@ -1,8 +1,9 @@
 using System.Security.Claims;
 using AnalysisData.UserManage.LoginModel;
+using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.RegisterModel;
 
-namespace AnalysisData.Services;
+namespace AnalysisData.Services.Abstraction;
 
 public interface IUserService
 {

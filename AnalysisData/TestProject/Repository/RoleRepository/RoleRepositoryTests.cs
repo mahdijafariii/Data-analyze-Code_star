@@ -1,4 +1,5 @@
 ﻿using AnalysisData.Data;
+using AnalysisData.UserManage.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace TestProject.Repository.RoleRepository;
@@ -25,7 +26,7 @@ public class RoleRepositoryTests
         await _context.SaveChangesAsync();
 
         // Act
-        var result = await _sut.GetRoleByID(1);
+        var result = await _sut.GetRoleById(1);
 
         // Assert
         Assert.NotNull(result);
@@ -59,7 +60,7 @@ public class RoleRepositoryTests
         _context.SaveChanges();
 
         // Act
-        var result = _sut.DeleteRole(1);
+        var result = _sut.DeleteRole("Admin");
         // Assert
         Assert.True(result);
         Assert.Equal(0, _context.Roles.Count());
@@ -77,7 +78,7 @@ public class RoleRepositoryTests
         _context.SaveChanges();
 
         // Act
-        var result = _sut.DeleteRole(2);
+        var result = _sut.DeleteRole("admin");
 
         // Assert
         Assert.False(result);

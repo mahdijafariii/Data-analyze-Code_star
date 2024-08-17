@@ -2,7 +2,7 @@
 using System.Globalization;
 using AnalysisData.DataManage.Model;
 using AnalysisData.Repository.AccountRepository.Abstraction;
-using AnalysisData.Repository.TrancsactionRepository.Abstraction;
+using AnalysisData.Repository.TransactionRepository.Abstraction;
 using CsvHelper.Configuration;
 
 namespace AnalysisData.DataProcessService;

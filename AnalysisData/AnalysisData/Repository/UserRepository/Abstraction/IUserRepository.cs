@@ -1,11 +1,13 @@
 ﻿
+using AnalysisData.UserManage.Model;
+
 namespace AnalysisData.Repository.UserRepository.Abstraction;
 
 public interface IUserRepository
 {
     Task<User> GetUser(string userName);
     Task<IReadOnlyList<User>> GetAllUser();
-    Task<bool> DeleteUser(string userName);
+    bool DeleteUser(string userName);
     void AddUser(User user);
     Task UpdateUser(User user);
 }

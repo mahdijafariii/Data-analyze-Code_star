@@ -7,7 +7,9 @@ using AnalysisData.Exception;
 using AnalysisData.JwtService.abstractions;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
+using AnalysisData.Services.Abstraction;
 using AnalysisData.UserManage.LoginModel;
+using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.RegisterModel;
 using AnalysisData.UserManage.ResetPasswordModel;
 using Microsoft.AspNetCore.Mvc;
@@ -88,11 +90,9 @@ public class UserService : IUserService
             throw new PasswordMismatchException();
 
 
-        if (role != null)
-        {
-            var user = MakeUser(userRegisterModel, role);
-            _userRepository.AddUser(user);
-        }
+        if (role == null) return true;
+        var user = MakeUser(userRegisterModel, role);
+        _userRepository.AddUser(user);
 
         return true;
     }
@@ -126,11 +126,9 @@ public class UserService : IUserService
 
     private string HashPassword(string password)
     {
-        using (SHA256 sha256 = SHA256.Create())
-        {
-            byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
-            byte[] hashBytes = sha256.ComputeHash(passwordBytes);
-            return Convert.ToBase64String(hashBytes);
-        }
+        using var sha256 = SHA256.Create();
+        var passwordBytes = Encoding.UTF8.GetBytes(password);
+        var hashBytes = sha256.ComputeHash(passwordBytes);
+        return Convert.ToBase64String(hashBytes);
     }
 }

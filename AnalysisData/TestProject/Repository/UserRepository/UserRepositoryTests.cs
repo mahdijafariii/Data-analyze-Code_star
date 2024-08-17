@@ -1,4 +1,5 @@
 ﻿using AnalysisData.Data;
+using AnalysisData.UserManage.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace TestProject.Repository.UserRepository;
@@ -78,7 +79,7 @@ public class UserRepositoryTests
         var result = _sut.DeleteUser("user1");
 
         // Assert
-        Assert.True(result.Result);
+        Assert.True(result);
         Assert.Equal(0, _context.Users.Count());
     }
 
@@ -91,7 +92,7 @@ public class UserRepositoryTests
         var result = _sut.DeleteUser("NoOne");
 
         // Assert
-        Assert.False(result.Result);
+        Assert.False(result);
     }
     
     [Fact]

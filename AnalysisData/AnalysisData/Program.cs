@@ -1,24 +1,21 @@
-
-using System.Reflection;
 using System.Text;
-using AnalysisData;
 using AnalysisData.CookieService;
 using AnalysisData.CookieService.abstractions;
 using AnalysisData.Data;
 using AnalysisData.DataProcessService;
-using AnalysisData.Exception;
 using AnalysisData.JwtService;
 using AnalysisData.JwtService.abstractions;
+using AnalysisData.MiddleWare;
 using AnalysisData.Repository.AccountRepository;
 using AnalysisData.Repository.AccountRepository.Abstraction;
 using AnalysisData.Repository.RoleRepository;
 using AnalysisData.Repository.RoleRepository.Abstraction;
-using AnalysisData.Repository.TrancsactionRepository;
-using AnalysisData.Repository.TrancsactionRepository.Abstraction;
+using AnalysisData.Repository.TransactionRepository;
+using AnalysisData.Repository.TransactionRepository.Abstraction;
 using AnalysisData.Repository.UserRepository;
 using AnalysisData.Repository.UserRepository.Abstraction;
-
 using AnalysisData.Services;
+using AnalysisData.Services.Abstraction;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -33,6 +30,7 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICookieService, CookieService>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
+builder.Services.AddScoped<IAdminService,AdminService>();
 builder.Services.AddScoped<IRegexService, RegexService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IDataProcessor, DataReadProcessor>();
@@ -90,16 +88,16 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    context.Database.EnsureCreated();
-
-    if (context.Database.GetPendingMigrations().Any())
-    {
-        context.Database.Migrate();
-    }
-}
+// using (var scope = app.Services.CreateScope())
+// {
+//     var services = scope.ServiceProvider;
+//
+//     var context = services.GetRequiredService<ApplicationDbContext>();
+//     context.Database.EnsureCreated();
+//
+//     if (context.Database.GetPendingMigrations().Any())
+//     {
+//         context.Database.Migrate();
+//     }
+// }
 app.Run();

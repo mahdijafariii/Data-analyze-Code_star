@@ -8,7 +8,7 @@ public class GraphController : ControllerBase
     private readonly IGraphUtility _graphUtility;
     private readonly IGraphService _graphService;
 
-    public GraphController(IGraphUtility graphUtility,IGraphService graphService)
+    public GraphController(IGraphUtility graphUtility, IGraphService graphService)
     {
         _graphUtility = graphUtility;
         _graphService = graphService;
@@ -23,6 +23,27 @@ public class GraphController : ControllerBase
             Accounts = result.Item1,
             page = result.Item2,
             Count = result.Item3
+        });
+    }
+
+    [HttpGet("special-node")]
+    public async Task<IActionResult> GetSpecialNode([FromQuery] string id)
+    {
+        var result = await _graphService.GetSpecialNode(id);
+        return Ok(new
+        {
+            id = result.AccountID,
+            firstName = result.OwnerName,
+            lastName = result.OwnerLastName,
+            other = new 
+            {
+                result.BranchAdress,
+                result.BranchName,
+                result.AccountType,
+                result.BranchTelephone,
+                result.IBAN,
+                result.CardID
+            }
         });
     }
 }

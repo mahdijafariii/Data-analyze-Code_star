@@ -24,10 +24,9 @@ public class GraphServices : IGraphService
          return (paginationData,page,count);
     }
 
-    // public async Task<Account> GetSpecialNode(string id)
-    // {
-    //     var account = await _accountRepository.GetSpecialNode(id);
-    //
-    // }
+    public async Task<Account> GetSpecialNode(string id)
+    {
+        return  await _accountRepository.GetSpecialNode(id);
+    }
     
 }

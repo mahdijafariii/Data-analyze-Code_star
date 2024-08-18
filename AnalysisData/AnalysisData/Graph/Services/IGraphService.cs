@@ -6,4 +6,5 @@ namespace AnalysisData.Graph.Services;
 public interface IGraphService
 {
     Task<(List<PaginationDto>, int, int)> GetAllAccountPagination(int page = 0);
+    Task<Account> GetSpecialNode(string id);
 }

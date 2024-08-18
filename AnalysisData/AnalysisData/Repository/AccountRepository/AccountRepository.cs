@@ -21,9 +21,14 @@ public class AccountRepository : IAccountRepository
     }
     
     
-    public async Task<IEnumerable<Account>> GetAllAccounts()
+    public async Task<IEnumerable<Account>> GetAllAccountPagination(int page)
     {
-        return await _context.Accounts.ToListAsync();
+        return await _context.Accounts.Skip(10*page).Take(10).ToListAsync();
+    }
+    
+    public async Task<int> GetAllAccountPagination()
+    {
+        return await _context.Accounts.CountAsync();
     }
     public async Task<Account> GetAccountById(string id)
     {

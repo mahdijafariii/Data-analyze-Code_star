@@ -6,6 +6,7 @@ using AnalysisData.CookieService;
 using AnalysisData.CookieService.abstractions;
 using AnalysisData.Data;
 using AnalysisData.Exception;
+using AnalysisData.Graph;
 using AnalysisData.Graph.DataProcessService;
 using AnalysisData.JwtService;
 using AnalysisData.JwtService.abstractions;
@@ -37,6 +38,9 @@ builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<IRegexService, RegexService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IDataProcessor, DataReadProcessor>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<IGraphUtility, GraphUtility>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

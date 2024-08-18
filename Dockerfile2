@@ -1,0 +1,19 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+    
+RUN dotnet tool install --global dotnet-ef --version 8.0
+ENV PATH="${PATH}:/root/.dotnet/tools"
+    
+WORKDIR /build
+    
+# Copy solution file
+#COPY ./AnalysisData/AnalysisData.sln ./
+    
+# Copy src .csproj files
+#COPY ./AnalysisData/AnalysisData/AnalysisData.csproj ./src/AnalysisData/
+    
+# Copy everything and build
+COPY . .
+    
+WORKDIR /build
+    
+CMD ["dotnet", "ef", "--project", "AnalysisData/AnalysisData/AnalysisData.csproj", "database", "update"]

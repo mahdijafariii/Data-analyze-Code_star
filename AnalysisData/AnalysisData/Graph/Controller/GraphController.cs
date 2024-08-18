@@ -20,8 +20,9 @@ public class GraphController : ControllerBase
         var result = await _graphService.GetAllAccountPagination(page);
         return Ok(new
         {
-            Count = result.Item1,
-            Accounts = result.Item2
+            Accounts = result.Item1,
+            page = result.Item2,
+            Count = result.Item3
         });
     }
 }

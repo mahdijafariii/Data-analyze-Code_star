@@ -15,11 +15,19 @@ public class GraphServices : IGraphService
         _accountRepository = accountRepository;
     }
 
-    public async Task<(int,List<PaginationDto>)> GetAllAccountPagination(int page)
+    public async Task<(List<PaginationDto>,int,int)> GetAllAccountPagination(int page = 0)
     {
-         var count = await _accountRepository.GetCountNodes();
+        var count = await _accountRepository.GetCountNodes();
          var accounts = await _accountRepository.GetAllAccountPagination(page);
-         return (count, accounts);
+         var paginationData = accounts.Select(x => new PaginationDto()
+             { AccountID = x.AccountID, OwnerName = x.OwnerName, OwnerLastName = x.OwnerLastName }).ToList();
+         return (paginationData,page,count);
     }
+
+    // public async Task<Account> GetSpecialNode(string id)
+    // {
+    //     var account = await _accountRepository.GetSpecialNode(id);
+    //
+    // }
     
 }

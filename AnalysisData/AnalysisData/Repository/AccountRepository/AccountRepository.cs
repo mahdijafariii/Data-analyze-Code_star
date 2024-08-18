@@ -22,10 +22,20 @@ public class AccountRepository : IAccountRepository
     }
 
 
-    public async Task<List<PaginationDto>> GetAllAccountPagination(int page)
+    public async Task<List<Account>> GetAllAccountPagination(int page)
+    {
+        return await _context.Accounts.Skip(10 * page).Take(10).ToListAsync();
+    }
+    
+    public async Task<List<PaginationDto>> SearchAccountPagination(int page)
     {
         return await _context.Accounts.Skip(10 * page).Take(10).Select(x => new PaginationDto()
             { AccountID = x.AccountID, OwnerName = x.OwnerName, OwnerLastName = x.OwnerLastName }).ToListAsync();
+    }
+    
+    public async Task<Account> GetSpecialNode(string id)
+    {
+        return await _context.Accounts.SingleOrDefaultAsync(x => x.AccountID == id);
     }
 
     public async Task<int> GetCountNodes()

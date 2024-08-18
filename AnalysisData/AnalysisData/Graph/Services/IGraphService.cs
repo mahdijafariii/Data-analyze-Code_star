@@ -5,5 +5,5 @@ namespace AnalysisData.Graph.Services;
 
 public interface IGraphService
 {
-    Task<(int, List<PaginationDto>)> GetAllAccountPagination(int page);
+    Task<(List<PaginationDto>, int, int)> GetAllAccountPagination(int page = 0);
 }

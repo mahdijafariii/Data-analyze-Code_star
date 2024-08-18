@@ -6,7 +6,8 @@ namespace AnalysisData.Repository.AccountRepository.Abstraction;
 public interface IAccountRepository
 {
     Task AddAccountsAsync(IEnumerable<Account> accounts);
-    Task<List<PaginationDto>> GetAllAccountPagination(int page);
+    Task<List<Account>> GetAllAccountPagination(int page);
+    Task<Account> GetSpecialNode(string id);
     Task<Account> GetAccountById(string id);
     Task<int> GetCountNodes();
 

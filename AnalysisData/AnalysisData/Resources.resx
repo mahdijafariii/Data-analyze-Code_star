@@ -42,4 +42,7 @@
     <data name="InvalidPasswordFormatException" xml:space="preserve">
         <value>password format is invlaid ! </value>
     </data>
+    <data name="AdminExistenceException" xml:space="preserve">
+        <value>There is an admin!</value>
+    </data>
 </root>

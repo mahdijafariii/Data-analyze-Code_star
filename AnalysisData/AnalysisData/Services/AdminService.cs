@@ -1,66 +1,127 @@
-﻿using System.Xml.Schema;
-using AnalysisData.Repository.RoleRepository;
-using AnalysisData.Repository.RoleRepository.Abstraction;
-using AnalysisData.Repository.UserRepository;
+﻿using System.Security.Cryptography;
+using System.Text;
+using AnalysisData.Exception;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services.Abstraction;
 using AnalysisData.UserManage.Model;
+using AnalysisData.UserManage.RegisterModel;
+using AnalysisData.UserManage.UpdateModel;
 
 namespace AnalysisData.Services;
 
 public class AdminService : IAdminService
 {
     private readonly IUserRepository _userRepository;
-    private readonly IRoleRepository _roleRepository;
+    private readonly IRegexService _regexService;
 
-
-    public AdminService(IUserRepository userRepository, IRoleRepository roleRepository)
+    public AdminService(IUserRepository userRepository, IRegexService regexService)
     {
         _userRepository = userRepository;
-        _roleRepository = roleRepository;
+        _regexService = regexService;
     }
 
-    public Task<IReadOnlyList<User>> GetAllUsers()
+    public async Task<bool> Register(UserRegisterModel userRegisterModel)
     {
-        return _userRepository.GetAllUser(); // maybe null??
-    }
-
-    public Task<IReadOnlyList<Role>> GetAllRoles()
-    {
-        return _roleRepository.GetAllRole(); // maybe null??
-    }
-
-    // public User UpdateUserInformation(string username)
-    // {
-    //     
-    // }
-    //
-    // public Role UpdateRoleInformation(string roleName)
-    // {
-    // }
-
-    public bool DeleteUser(string username)
-    {
-        if (_userRepository.DeleteUser(username))
+        var allUsers = await _userRepository.GetAllUser();
+        var existingUser = allUsers.FirstOrDefault(u =>
+            u.Username == userRegisterModel.Username);
+        if (existingUser != null)
+            throw new DuplicateUserException();
+        _regexService.EmailCheck(userRegisterModel.Email);
+        _regexService.PasswordCheck(userRegisterModel.Password);
+        if (userRegisterModel.Password != userRegisterModel.ConfirmPassword)
         {
-            return true;
+            throw new PasswordMismatchException();
         }
 
-        return false; //exception
+        _regexService.PhoneNumberCheck(userRegisterModel.PhoneNumber);
+        if (userRegisterModel.Password != userRegisterModel.ConfirmPassword)
+            throw new PasswordMismatchException();
+
+
+        var user = MakeUser(userRegisterModel);
+        await _userRepository.AddUser(user);
+        return true;
     }
 
-    public bool DeleteRole(string roleName)
+    private User MakeUser(UserRegisterModel userRegisterModel)
     {
-        if (_roleRepository.DeleteRole(roleName))
-            return true;
-        return false; //exception
+        var user = new User
+        {
+            Username = userRegisterModel.Username,
+            Password = HashPassword(userRegisterModel.Password),
+            FirstName = userRegisterModel.FirstName,
+            LastName = userRegisterModel.LastName,
+            Email = userRegisterModel.Email,
+            PhoneNumber = userRegisterModel.PhoneNumber,
+            Role = userRegisterModel.RoleName,
+            ImageURL = null
+        };
+        return user;
     }
 
-    public bool AddRole(string roleName)
+    private string HashPassword(string password)
     {
-        var role = new Role { RoleName = roleName };
-        var check = _roleRepository.AddRole(role);
-        if (check) return true;
-        return false;
+        using var sha256 = SHA256.Create();
+        var passwordBytes = Encoding.UTF8.GetBytes(password);
+        var hashBytes = sha256.ComputeHash(passwordBytes);
+        return Convert.ToBase64String(hashBytes);
+    }
+
+    public async Task<IReadOnlyList<User>> GetAllUsers()
+    {
+        return await _userRepository.GetAllUser();
+    }
+
+
+    public Task<bool> UpdateUserInformationByAdmin(Guid id, UpdateAdminModel updateAdminModel)
+    {
+        var user = _userRepository.GetUserById(id);
+        var checkUsername = _userRepository.GetUserByUsername(updateAdminModel.Username);
+        var checkEmail = _userRepository.GetUserByEmail(updateAdminModel.Email);
+
+        if (checkUsername != null || checkEmail != null)
+            throw new DuplicateUserException();
+
+        _regexService.EmailCheck(updateAdminModel.Email);
+        _regexService.PhoneNumberCheck(updateAdminModel.PhoneNumber);
+        SetUpdatedInformation(user, updateAdminModel);
+        return Task.FromResult(true);
+    }
+
+    private void SetUpdatedInformation(User user, UpdateAdminModel updateAdminModel)
+    {
+        user.FirstName = updateAdminModel.FirstName;
+        user.LastName = updateAdminModel.LastName;
+        user.Email = updateAdminModel.Email;
+        user.PhoneNumber = updateAdminModel.PhoneNumber;
+        user.Username = updateAdminModel.Username;
+        _userRepository.UpdateUser(user.Id, user);
+    }
+
+    public async Task<bool> DeleteUser(Guid id)
+    {
+        var isDelete = await _userRepository.DeleteUser(id);
+        if (!isDelete)
+            throw new UserNotFoundException();
+        return true;
+    }
+
+
+    public async Task AddFirstAdmin()
+    {
+        var admin = _userRepository.GetAllUser().Result.FirstOrDefault(u =>
+            u.Username == "admin");
+        if (admin != null)
+        {
+            throw new AdminExistenceException();
+        }
+
+        var firstAdmin = new User()
+        {
+            Username = "admin", Password = HashPassword("admin"), PhoneNumber = "09131111111",
+            FirstName = "admin", LastName = "admin", Email = "admin@gmail.com", Role = "admin"
+        };
+        await _userRepository.AddUser(firstAdmin);
     }
 }

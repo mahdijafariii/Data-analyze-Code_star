@@ -1,5 +1,6 @@
 ﻿using AnalysisData.Services.Abstraction;
-using AnalysisData.UserManage.Model;
+using AnalysisData.UserManage.RegisterModel;
+using AnalysisData.UserManage.UpdateModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,10 +19,23 @@ public class AdminController : ControllerBase
     }
 
     //[Authorize(Roles = "admin")]
-    [HttpGet("GetUsers")]
-    public IActionResult GetAllUsers()
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegisterModel)
     {
-        var users = _adminService.GetAllUsers().Result;
+        var isRegister = await _adminService.Register(userRegisterModel);
+        if (isRegister)
+        {
+            return Ok("success");
+        }
+
+        return BadRequest("not success");
+    }
+
+    //[Authorize(Roles = "admin")]
+    [HttpGet("GetUsers")]
+    public async Task<IActionResult> GetAllUsers()
+    {
+        var users = await _adminService.GetAllUsers();
 
         if (users == null || users.Count == 0)
         {
@@ -31,23 +45,11 @@ public class AdminController : ControllerBase
         return Ok(users);
     }
 
-    [HttpGet("GetRoles")]
-    public IActionResult GetAllRoles()
+    [HttpDelete("DeleteUser")]
+    public async Task<IActionResult> DeleteUser(Guid id)
     {
-        var roles = _adminService.GetAllRoles().Result;
-
-        if (roles == null || roles.Count == 0)
-        {
-            return NoContent();
-        }
-
-        return Ok(roles);
-    }
-    [HttpDelete("DeleteUser/{username}")]
-    public IActionResult DeleteUser(string username)
-    {
-        var result = _adminService.DeleteUser(username);
-        if (result)
+        var isDeleted = await _adminService.DeleteUser(id);
+        if (isDeleted)
         {
             return Ok(new { message = "User deleted successfully." });
         }
@@ -55,29 +57,23 @@ public class AdminController : ControllerBase
         return NotFound(new { message = "User not found." });
     }
 
-    [HttpDelete("DeleteRole/{roleName}")]
-    public IActionResult DeleteRole(string roleName)
+    [HttpPut("UpdateUser")]
+    public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateAdminModel updateAdminModel)
     {
-        var result = _adminService.DeleteRole(roleName);
-        if (result)
-        {
-            return Ok(new { message = "Role deleted successfully." });
-        }
-    
-        return NotFound(new { message = "Role not found." });
-    }
-
-    [HttpPost("AddRole/{roleName}")]
-    public IActionResult AddRole(string roleName)
-    {
-        var result = _adminService.AddRole(roleName);
-        if (result)
+        var isUpdated = await _adminService.UpdateUserInformationByAdmin(id, updateAdminModel);
+        if (isUpdated)
         {
             return Ok("success");
         }
 
         return BadRequest("not success");
     }
-    
-    
+
+    [HttpGet("firstAdmin")]
+    [AllowAnonymous]
+    public async Task<IActionResult> FirstAdmin()
+    {
+        await _adminService.AddFirstAdmin();
+        return Ok("success");
+    }
 }

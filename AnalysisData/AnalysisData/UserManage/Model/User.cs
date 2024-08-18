@@ -5,8 +5,7 @@ namespace AnalysisData.UserManage.Model;
 
 public class User
 {
-    [Key]
-    public int Id { get; set; }
+    [Key] public Guid Id { get; set; } = new Guid();
 
     public string Username { get; set; }
 
@@ -21,8 +20,5 @@ public class User
     public string PhoneNumber { get; set; }
 
     public string? ImageURL { get; set; }
-
-    public int RoleId { get; set; }
-    [ForeignKey("RoleId")]
-    public Role Role { get; set; }
+    public string Role { get; set; }
 }

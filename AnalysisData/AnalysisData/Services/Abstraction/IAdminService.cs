@@ -1,14 +1,18 @@
 ﻿using AnalysisData.UserManage.Model;
+using AnalysisData.UserManage.RegisterModel;
+using AnalysisData.UserManage.UpdateModel;
 
 namespace AnalysisData.Services.Abstraction;
 
 public interface IAdminService
 {
-    Task<IReadOnlyList<User>> GetAllUsers();
-    Task<IReadOnlyList<Role>> GetAllRoles();
-    // User UpdateUserInformation(string username);
-    // Role UpdateRoleInformation(string roleName);
-    bool DeleteUser(string username);
-    bool DeleteRole(string roleName);
-    bool AddRole(string roleName);
+    Task<bool> Register(UserRegisterModel userRegisterModel);
+    Task<IReadOnlyList<User>> GetAllUsers(); 
+    Task<bool> UpdateUserInformationByAdmin(Guid id, UpdateAdminModel updateAdminModel);
+    Task<bool> DeleteUser(Guid id);
+    
+    Task AddFirstAdmin();
+
+    
+    
 }

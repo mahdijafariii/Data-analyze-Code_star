@@ -24,6 +24,7 @@ public class JwtService : IJwtService
         var user =await _userRepository.GetUser(userName);
         var claims = new List<Claim>
         {
+            new Claim("id",user.Id.ToString()),
             new Claim("username", user.Username),
             new Claim("firstname", user.FirstName),
             new Claim("lastname", user.LastName),

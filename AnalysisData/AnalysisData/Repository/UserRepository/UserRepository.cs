@@ -34,7 +34,7 @@ namespace AnalysisData.Repository.UserRepository
             return true;
         }
 
-        public async void AddUser(User user)
+        public async Task AddUser(User user)
         {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

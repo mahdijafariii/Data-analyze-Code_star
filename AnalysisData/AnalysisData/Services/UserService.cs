@@ -76,7 +76,7 @@ public class UserService : IUserService
         var role = await GetRole(userRegisterModel);
         var allUsers = await _userRepository.GetAllUser();
         var existingUser = allUsers.FirstOrDefault(u =>
-            u.Username == userRegisterModel.Username || u.Email == userRegisterModel.Email);
+            u.Username == userRegisterModel.Username);
         if (existingUser != null)
             throw new DuplicateUserException();
         _regexService.EmailCheck(userRegisterModel.Email);
@@ -92,7 +92,7 @@ public class UserService : IUserService
 
         if (role == null) return true;
         var user = MakeUser(userRegisterModel, role);
-        _userRepository.AddUser(user);
+        await _userRepository.AddUser(user);
 
         return true;
     }

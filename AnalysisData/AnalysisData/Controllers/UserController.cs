@@ -27,6 +27,19 @@ public class UserController : ControllerBase
         return Ok(new { user.Result.FirstName, user.Result.LastName, user.Result.ImageURL });
     }
 
+    //[Authorize(Roles = "admin")]
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegisterModel)
+    {
+        var check = await _userService.Register(userRegisterModel);
+        if (check)
+        {
+            return Ok("success");
+        }
+
+        return BadRequest("not success");
+    }
+
 
     [HttpGet("permissions")]
     public IActionResult GetPermissions()

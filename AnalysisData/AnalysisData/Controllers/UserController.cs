@@ -1,8 +1,8 @@
 using System.Security.Claims;
 using AnalysisData.Services.Abstraction;
 using AnalysisData.UserManage.LoginModel;
-using AnalysisData.UserManage.RegisterModel;
 using AnalysisData.UserManage.ResetPasswordModel;
+using AnalysisData.UserManage.UpdateModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.Controllers;
@@ -26,21 +26,7 @@ public class UserController : ControllerBase
         var user = _userService.Login(userLoginModel);
         return Ok(new { user.Result.FirstName, user.Result.LastName, user.Result.ImageURL });
     }
-
-    //[Authorize(Roles = "admin")]
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegisterModel)
-    {
-        var check = await _userService.Register(userRegisterModel);
-        if (check)
-        {
-            return Ok("success");
-        }
-
-        return BadRequest("not success");
-    }
-
-
+    
     [HttpGet("permissions")]
     public IActionResult GetPermissions()
     {
@@ -64,6 +50,18 @@ public class UserController : ControllerBase
             return Ok("success");
         }
 
+        return BadRequest("not success");
+    }
+    
+    [HttpPut("UpdateUser")]
+    public IActionResult UpdateUser(Guid id, [FromBody] UpdateUserModel updateUserModel)
+    {
+        var updatedUser = _userService.UpdateUserInformationByUser(id, updateUserModel);
+        if (updatedUser!=null)
+        {
+            return Ok("success");
+        }
+    
         return BadRequest("not success");
     }
 }

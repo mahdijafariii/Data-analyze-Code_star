@@ -14,9 +14,20 @@ namespace AnalysisData.Repository.UserRepository
             _context = context;
         }
 
-        public async Task<User> GetUser(string userName)
+        public User GetUserByUsername(string userName)
         {
-            return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(x => x.Username == userName);
+            return _context.Users.FirstOrDefault(x => x.Username == userName);
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            return _context.Users.FirstOrDefault(x => x.Email == email);
+        }
+
+
+        public User GetUserById(Guid id)
+        {
+            return _context.Users.FirstOrDefault(x => x.Id == id);
         }
 
 
@@ -25,25 +36,29 @@ namespace AnalysisData.Repository.UserRepository
             return await _context.Users.ToListAsync();
         }
 
-        public bool DeleteUser(string userName)
+        public async Task<bool> DeleteUser(Guid id)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Username == userName);
+            var user = GetUserById(id);
             if (user == null) return false;
             _context.Users.Remove(user);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return true;
         }
 
-        public async void AddUser(User user)
+        public async Task<bool> AddUser(User user)
         {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
+            return true;
         }
 
-        public async Task UpdateUser(User user)
+        public async Task<bool> UpdateUser(Guid id, User newUser)
         {
-            _context.Users.Update(user);
+            var user = GetUserById(id);
+            newUser.Id = user.Id;
+            _context.Users.Update(newUser);
             await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

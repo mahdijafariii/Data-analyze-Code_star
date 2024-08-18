@@ -8,6 +8,7 @@ using AnalysisData.Data;
 using AnalysisData.Exception;
 using AnalysisData.Graph;
 using AnalysisData.Graph.DataProcessService;
+using AnalysisData.Graph.Services;
 using AnalysisData.JwtService;
 using AnalysisData.JwtService.abstractions;
 using AnalysisData.MiddleWare;
@@ -43,6 +44,7 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IGraphUtility, GraphUtility>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<IGraphService, GraphServices>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllers();

@@ -1,5 +1,6 @@
 ﻿using AnalysisData.Data;
 using AnalysisData.Graph.DataManage.Model;
+using AnalysisData.Graph.Dto;
 using AnalysisData.Repository.AccountRepository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,17 +20,19 @@ public class AccountRepository : IAccountRepository
         _context.Accounts.AddRange(accounts);
         await _context.SaveChangesAsync();
     }
-    
-    
-    public async Task<IEnumerable<Account>> GetAllAccountPagination(int page)
+
+
+    public async Task<List<PaginationDto>> GetAllAccountPagination(int page)
     {
-        return await _context.Accounts.Skip(10*page).Take(10).ToListAsync();
+        return await _context.Accounts.Skip(10 * page).Take(10).Select(x => new PaginationDto()
+            { AccountID = x.AccountID, OwnerName = x.OwnerName, OwnerLastName = x.OwnerLastName }).ToListAsync();
     }
-    
-    public async Task<int> GetAllAccountPagination()
+
+    public async Task<int> GetCountNodes()
     {
         return await _context.Accounts.CountAsync();
     }
+
     public async Task<Account> GetAccountById(string id)
     {
         return await _context.Accounts.SingleOrDefaultAsync(x => x.AccountID == id);

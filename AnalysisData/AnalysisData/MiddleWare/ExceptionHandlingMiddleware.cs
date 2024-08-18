@@ -19,6 +19,22 @@ public class ExceptionHandlingMiddleware
         {
             await _next(httpContext);
         }
+        catch (AggregateException aggEx)
+        {
+            foreach (var ex in aggEx.InnerExceptions)
+            {
+                if (ex is UserNotFoundException)
+                {
+                    await HandleExceptionAsync(httpContext, ex, StatusCodes.Status404NotFound);
+                    return;
+                }
+                if (ex is RoleNotFoundException)
+                {
+                    await HandleExceptionAsync(httpContext, ex, StatusCodes.Status404NotFound);
+                    return;
+                }
+            }
+        }
         catch (UserNotFoundException ex)
         {
             await HandleExceptionAsync(httpContext, ex, StatusCodes.Status404NotFound);
@@ -68,6 +84,10 @@ public class ExceptionHandlingMiddleware
             await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
         }
         catch (InvalidPhoneNumberFormatException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
+        }
+        catch (RoleNotFoundException ex)
         {
             await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
         }

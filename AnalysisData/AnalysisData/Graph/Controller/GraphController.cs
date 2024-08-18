@@ -46,4 +46,36 @@ public class GraphController : ControllerBase
             }
         });
     }
+    
+    [HttpGet("get-node-transactions")]
+    public async Task<IActionResult> GetNodeTransactions([FromQuery] string id)
+    {
+        var result = await _graphService.GetSpecialNode(id);
+        return Ok(new
+        {
+            id = result.AccountID,
+            firstName = result.OwnerName,
+            lastName = result.OwnerLastName,
+            other = new 
+            {
+                result.BranchAdress,
+                result.BranchName,
+                result.AccountType,
+                result.BranchTelephone,
+                result.IBAN,
+                result.CardID
+            }
+        });
+    }
+    
+    [HttpGet("get-transaction-base-on-node-id")]
+    public async Task<IActionResult> GetTransactionBaseOnNodeId([FromQuery] string nodeId)
+    {
+        var result = await _graphService.GetTransactionBasedOnNodeId(nodeId);
+        return Ok(new
+        {
+            Account = result.accounts,
+            Tranasction = result.transactions
+        });
+    }
 }

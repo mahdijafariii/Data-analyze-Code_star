@@ -10,5 +10,6 @@ public interface IAccountRepository
     Task<Account> GetSpecialNode(string id);
     Task<Account> GetAccountById(string id);
     Task<int> GetCountNodes();
+    Task<List<Account>> GetAccountsWithTransactionIdes(List<string> ides);
 
 }

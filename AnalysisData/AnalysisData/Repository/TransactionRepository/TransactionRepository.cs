@@ -25,6 +25,11 @@ public class TransactionRepository : ITransactionRepository
     {
         return await _context.Transactions.ToListAsync();
     }
+    public async Task<HashSet<Transaction>> GetTransactionBasedOnNodeId(string nodeId)
+    { 
+        var result = await _context.Transactions.Where(x => x.SourceAccount == nodeId || x.DestinationAccount == nodeId).ToListAsync();
+        return result.ToHashSet();
+    }
     public async Task<Transaction> GetById(string id)
     {
         return await _context.Transactions.SingleOrDefaultAsync(x => x.TransactionID == id);

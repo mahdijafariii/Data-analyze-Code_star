@@ -20,5 +20,14 @@ public class Transaction
     public string TransactionID { get; set; }
     
     public string Type { get; set; }
+    
+    public override bool Equals(object obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+            return false;
+
+        Transaction other = (Transaction)obj;
+        return TransactionID == other.TransactionID;
+    }
 
 }

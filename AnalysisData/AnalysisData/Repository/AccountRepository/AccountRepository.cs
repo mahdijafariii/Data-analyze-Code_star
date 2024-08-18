@@ -38,6 +38,18 @@ public class AccountRepository : IAccountRepository
         return await _context.Accounts.SingleOrDefaultAsync(x => x.AccountID == id);
     }
 
+    
+    public async Task<List<Account>> GetAccountsWithTransactionIdes(List<string> ides)
+    {
+        List<Account> accounts = new List<Account>();
+        foreach (var id in ides)
+        {
+            var account = await GetSpecialNode(id);
+            accounts.Add(account);   
+        }
+        return accounts;
+    }
+    
     public async Task<int> GetCountNodes()
     {
         return await _context.Accounts.CountAsync();

@@ -5,8 +5,12 @@ using AnalysisData;
 using AnalysisData.CookieService;
 using AnalysisData.CookieService.abstractions;
 using AnalysisData.Data;
-using AnalysisData.DataProcessService;
+using AnalysisData.EAV.Model;
+using AnalysisData.EAV.Repository;
+using AnalysisData.EAV.Repository.Abstraction;
 using AnalysisData.Exception;
+using AnalysisData.FileManage.Service;
+using AnalysisData.FileManage.Service.Abstraction;
 using AnalysisData.Graph;
 using AnalysisData.Graph.DataProcessService;
 using AnalysisData.Graph.Services;
@@ -43,6 +47,16 @@ builder.Services.AddScoped<IGraphUtility, GraphUtility>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IGraphService, GraphServices>();
+////
+builder.Services.AddScoped<IUploadRepository, UploadRepository>();
+builder.Services.AddScoped<IFileManagementService, FileManagementService>();
+builder.Services.AddScoped<IEntityNodeRepository, EntityNodeRepository>();
+builder.Services.AddScoped<IAttributeNodeRepository, AttributeNodeRepository>();
+builder.Services.AddScoped<IValueNodeRepository, ValueNodeRepository>();
+builder.Services.AddScoped<IEntityEdgeRepository, EntityEdgeRepository>();
+builder.Services.AddScoped<IAttributeEdgeRepository, AttributeEdgeRepository>();
+builder.Services.AddScoped<IValueEdgeRepository, ValueEdgeRepository>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 // builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<ApplicationDbContext>(options => 

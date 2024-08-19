@@ -45,4 +45,7 @@
     <data name="AdminExistenceException" xml:space="preserve">
         <value>There is an admin!</value>
     </data>
+    <data name="FileExistenceException" xml:space="preserve">
+        <value>We have file with this information !</value>
+    </data>
 </root>

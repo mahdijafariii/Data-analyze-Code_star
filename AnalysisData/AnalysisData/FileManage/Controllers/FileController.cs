@@ -42,7 +42,7 @@ public class FileController : ControllerBase
         var uniqueAttribute = nodeUpload.Header;
         var file = nodeUpload.File;
 
-        if (file == null || file.Length == 0)
+        if (file == null || file.Length == 0 || uniqueAttribute == null)
         {
             return BadRequest("No file uploaded.");
         }
@@ -59,5 +59,9 @@ public class FileController : ControllerBase
     }
     
     
-    
+    [HttpPost("upload-file-edge")]
+    public async Task<IActionResult> UploadNodeFile([FromForm] EdgeUploadDto edgeUploadDto)
+    {
+        return Ok("implement...");
+    }
 }

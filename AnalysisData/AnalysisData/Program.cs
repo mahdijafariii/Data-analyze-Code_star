@@ -26,35 +26,6 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Services registration
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// Authentication and Authorization
-builder.Services.AddScoped<IJwtService, JwtService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ICookieService, CookieService>();
-builder.Services.AddScoped<IPermissionService, PermissionService>();
-builder.Services.AddScoped<IRegexService, RegexService>();
-builder.Services.AddScoped<IDataProcessor, DataReadProcessor>();
-builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
-builder.Services.AddScoped<IGraphUtility, GraphUtility>();
-builder.Services.AddScoped<IGraphService, GraphServices>();
-builder.Services.AddScoped<INodeService, NodeService>();
-builder.Services.AddScoped<IEntityNodeRepository, EntityNodeRepository>();
-builder.Services.AddScoped<IAttributeNodeRepository, AttributeNodeRepository>();
-builder.Services.AddScoped<IValueNodeRepository, ValueNodeRepository>();
-builder.Services.AddScoped<IEntityEdgeRepository, EntityEdgeRepository>();
-builder.Services.AddScoped<IAttributeEdgeRepository, AttributeEdgeRepository>();
-builder.Services.AddScoped<IValueEdgeRepository, ValueEdgeRepository>();
-builder.Services.AddScoped<IAdminService, AdminService>();
-builder.Services.AddScoped<ICsvReaderService, CsvReaderService>();
-builder.Services.AddScoped<IHeaderProcessor, HeaderProcessor>();
-builder.Services.AddScoped<IRecordProcessor, RecordProcessor>();
-
 ConfigureServices(builder.Services, builder.Configuration);
 
 void ConfigureServices(IServiceCollection services, IConfiguration configuration)

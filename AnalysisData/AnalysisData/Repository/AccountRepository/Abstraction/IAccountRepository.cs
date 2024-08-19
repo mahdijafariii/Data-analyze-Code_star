@@ -11,5 +11,6 @@ public interface IAccountRepository
     Task<Account> GetAccountById(string id);
     Task<int> GetCountNodes();
     Task<List<Account>> GetAccountsWithTransactionIdes(List<string> ides);
+    Task<IEnumerable<Account>> SearchNodesAsNameAndId(string search);
 
 }

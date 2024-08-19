@@ -10,4 +10,6 @@ public interface IGraphService
 
     Task<(IEnumerable<AccountContractDto> accounts, IEnumerable<TransactionsContractDto> transactions)>
         GetTransactionBasedOnNodeId(string id);
+
+    Task<IEnumerable<string>> SearchNodesAsNameAndId(string searchInput);
 }

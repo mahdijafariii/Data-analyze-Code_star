@@ -78,4 +78,11 @@ public class GraphController : ControllerBase
             Tranasction = result.transactions
         });
     }
+    
+    [HttpGet("Search-Nodes-Contain-Name-And-Id")]
+    public async Task<IActionResult> SearchNodeContainNameAndId([FromQuery] string searchInput)
+    {
+        var accountId = await _graphService.SearchNodesAsNameAndId(searchInput);
+        return Ok(accountId);
+    }
 }

@@ -44,5 +44,13 @@ public class GraphServices : IGraphService
             { From = x.SourceAccount,To = x.DestinationAccount, Lable =  $"{x.Amount}" });
         return (accountsDto, transactionDto);
     }
-    
+
+
+    public async Task<IEnumerable<string>> SearchNodesAsNameAndId(string searchInput)
+    {
+        var accounts =await _accountRepository.SearchNodesAsNameAndId(searchInput);
+        var accountIdes = accounts.Select(x => x.AccountID);
+        return accountIdes;
+    }
+
 }

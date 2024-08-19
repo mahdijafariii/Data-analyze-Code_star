@@ -37,6 +37,7 @@ builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<IRegexService, RegexService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IDataProcessor, DataReadProcessor>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IGraphUtility, GraphUtility>();

@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using AnalysisData.Exception;
 using AnalysisData.Services;
+using AnalysisData.Services.Abstraction;
 using AnalysisData.UserManage.LoginModel;
 using AnalysisData.UserManage.NewPasswordModel;
 using AnalysisData.UserManage.RegisterModel;
@@ -30,19 +31,6 @@ public class UserController : ControllerBase
         var user = _userService.Login(userLoginModel);
         return Ok(new { user.Result.FirstName, user.Result.LastName, user.Result.ImageURL });
     }
-
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegisterModel)
-    {
-        var check = await _userService.Register(userRegisterModel);
-        if (check)
-        {
-            return Ok("success");
-        }
-
-        return BadRequest("not success");
-    }
-
 
     [HttpGet("permissions")]
     public IActionResult GetPermissions()

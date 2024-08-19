@@ -1,17 +1,15 @@
-using System.Data;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using AnalysisData.CookieService.abstractions;
 using AnalysisData.Exception;
 using AnalysisData.JwtService.abstractions;
-using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
+using AnalysisData.Services.Abstraction;
 using AnalysisData.UserManage.LoginModel;
 using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.RegisterModel;
-using AnalysisData.UserManage.ResetPasswordModel;
-using Microsoft.AspNetCore.Mvc;
+using AnalysisData.UserManage.UpdateModel;
 
 namespace AnalysisData.Services;
 
@@ -20,23 +18,21 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly ICookieService _cookieService;
     private readonly IJwtService _jwtService;
-    private readonly IRoleRepository _roleRepository;
     private readonly IRegexService _regexService;
 
-    public UserService(IUserRepository userRepository, ICookieService cookieService, IJwtService jwtService,
-        IRoleRepository roleRepository, IRegexService regexService)
+    public UserService(IUserRepository userRepository, ICookieService cookieService,
+        IJwtService jwtService, IRegexService regexService)
     {
         _userRepository = userRepository;
         _cookieService = cookieService;
         _jwtService = jwtService;
-        _roleRepository = roleRepository;
         _regexService = regexService;
     }
 
     public async Task<bool> ResetPassword(ClaimsPrincipal userClaim, string password, string confirmPassword)
     {
         var userName = userClaim.FindFirstValue("username");
-        var user = await _userRepository.GetUser(userName);
+        var user = _userRepository.GetUserByUsername(userName);
         if (user == null)
         {
             throw new UserNotFoundException();
@@ -47,14 +43,14 @@ public class UserService : IUserService
         }
         _regexService.PasswordCheck(password);
         user.Password = HashPassword(password);
-        await _userRepository.UpdateUser(user);
+        await _userRepository.UpdateUser(user.Id, user);
         return true;
     }
     
     public async Task<bool> NewPassword(ClaimsPrincipal userClaim,string oldPassword, string password, string confirmPassword)
     {
         var userName = userClaim.FindFirstValue("username");
-        var user = await _userRepository.GetUser(userName);
+        var user = _userRepository.GetUserByUsername(userName);
         if (user == null)
         {
             throw new UserNotFoundException();
@@ -70,13 +66,13 @@ public class UserService : IUserService
         }
         _regexService.PasswordCheck(password);
         user.Password = HashPassword(password);
-        await _userRepository.UpdateUser(user);
+        await _userRepository.UpdateUser(user.Id,user);
         return true;
     }
 
     public async Task<User> Login(UserLoginModel userLoginModel)
     {
-        var user = await _userRepository.GetUser(userLoginModel.userName);
+        var user = _userRepository.GetUserByUsername(userLoginModel.userName);
         if (user == null)
         {
             throw new UserNotFoundException();
@@ -93,68 +89,49 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<bool> Register(UserRegisterModel userRegisterModel)
-    {
-        var role = await GetRole(userRegisterModel);
-        var allUsers = await _userRepository.GetAllUser();
-        var existingUser = allUsers.FirstOrDefault(u =>
-            u.Username == userRegisterModel.Username || u.Email == userRegisterModel.Email);
-        if (existingUser != null)
-            throw new DuplicateUserException();
-        _regexService.EmailCheck(userRegisterModel.Email);
-        _regexService.PasswordCheck(userRegisterModel.Password);
-        if (userRegisterModel.Password != userRegisterModel.ConfirmPassword)
-        {
-            throw new PasswordMismatchException();
-        }
-        _regexService.PhoneNumberCheck(userRegisterModel.PhoneNumber);
-        if (userRegisterModel.Password != userRegisterModel.ConfirmPassword)
-            throw new PasswordMismatchException();
-
-
-        if (role != null)
-        {
-            var user = MakeUser(userRegisterModel, role);
-            _userRepository.AddUser(user);
-        }
-
-        return true;
-    }
-
-    private User MakeUser(UserRegisterModel userRegisterModel, Role role)
-    {
-        var user = new User
-        {
-            Username = userRegisterModel.Username,
-            Password = HashPassword(userRegisterModel.Password),
-            FirstName = userRegisterModel.FirstName,
-            LastName = userRegisterModel.LastName,
-            Email = userRegisterModel.Email,
-            PhoneNumber = userRegisterModel.PhoneNumber,
-            Role = role,
-            ImageURL = null
-        };
-        return user;
-    }
-
-    private async Task<Role?> GetRole(UserRegisterModel userRegisterModel)
-    {
-        var role = await _roleRepository.GetRoleByName(userRegisterModel.RoleName.ToLower());
-        if (role is null)
-        {
-            throw new RoleNotFoundException();
-        }
-
-        return role;
-    }
-
     private string HashPassword(string password)
     {
-        using (SHA256 sha256 = SHA256.Create())
+        using var sha256 = SHA256.Create();
+        var passwordBytes = Encoding.UTF8.GetBytes(password);
+        var hashBytes = sha256.ComputeHash(passwordBytes);
+        return Convert.ToBase64String(hashBytes);
+    }
+
+
+    public Task<bool> UpdateUserInformationByUser(Guid id, UpdateUserModel updateUserModel)
+    {
+        
+        var user = _userRepository.GetUserById(id);
+        var checkEmail = _userRepository.GetUserByEmail(updateUserModel.Email);
+    
+        if (checkEmail != null)
+            throw new DuplicateUserException();
+    
+        _regexService.EmailCheck(updateUserModel.Email);
+        _regexService.PhoneNumberCheck(updateUserModel.PhoneNumber);
+        SetUpdatedInformation(user, updateUserModel);
+        return Task.FromResult(true);
+    }
+
+    private void SetUpdatedInformation(User user, UpdateUserModel updateUserModel)
+    {
+        user.FirstName = updateUserModel.FirstName;
+        user.LastName = updateUserModel.LastName;
+        user.Email = updateUserModel.Email;
+        user.PhoneNumber = updateUserModel.PhoneNumber;
+        _userRepository.UpdateUser(user.Id, user);
+    }
+    
+    public async Task<bool> UploadImage(Guid id,string imageUrl)
+    {
+        var user = _userRepository.GetUserById(id);
+        if (user == null)
         {
-            byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
-            byte[] hashBytes = sha256.ComputeHash(passwordBytes);
-            return Convert.ToBase64String(hashBytes);
+            throw new UserNotFoundException();
         }
+
+        user.ImageURL = imageUrl;
+        await _userRepository.UpdateUser(user.Id, user);
+        return true;
     }
 }

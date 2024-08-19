@@ -1,10 +1,12 @@
-﻿using System.Globalization;
+﻿using CsvHelper;
+using System.Globalization;
 using AnalysisData.Graph.DataManage.Model;
+using AnalysisData.Graph.DataProcessService;
 using AnalysisData.Repository.AccountRepository.Abstraction;
 using AnalysisData.Repository.TransactionRepository.Abstraction;
-using CsvHelper;
+using CsvHelper.Configuration;
 
-namespace AnalysisData.Graph.DataProcessService;
+namespace AnalysisData.DataProcessService;
 
 public class DataReadProcessor : IDataProcessor
 {

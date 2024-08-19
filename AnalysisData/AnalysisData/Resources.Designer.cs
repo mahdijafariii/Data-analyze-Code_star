@@ -60,6 +60,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is an admin!.
+        /// </summary>
+        internal static string AdminExistenceException {
+            get {
+                return ResourceManager.GetString("AdminExistenceException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We have user with this information !.
         /// </summary>
         internal static string DuplicateUserException {

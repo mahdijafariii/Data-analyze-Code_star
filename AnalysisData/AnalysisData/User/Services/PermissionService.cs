@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Security.Claims;
+using AnalysisData.Services.Abstraction;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,18 +27,16 @@ public class PermissionService : IPermissionService
 
                 foreach (var authorizeAttribute in authorizeAttributes)
                 {
-                    if (authorizeAttribute.Roles?.Split(',').Contains(roleName) == true)
+                    if (authorizeAttribute.Roles?.Split(',').Contains(roleName) != true) continue;
+                    var controllerName = controller.Name.Replace("Controller", "");
+                    var actionName = action.Name;
+
+                    if (!rolePermissions.ContainsKey(controllerName))
                     {
-                        var controllerName = controller.Name.Replace("Controller", "");
-                        var actionName = action.Name;
-
-                        if (!rolePermissions.ContainsKey(controllerName))
-                        {
-                            rolePermissions[controllerName] = new List<string>();
-                        }
-
-                        rolePermissions[controllerName].Add(actionName);
+                        rolePermissions[controllerName] = new List<string>();
                     }
+
+                    rolePermissions[controllerName].Add(actionName);
                 }
             }
         }

@@ -45,4 +45,10 @@
     <data name="AdminExistenceException" xml:space="preserve">
         <value>There is an admin!</value>
     </data>
+    <data name="TokenNotFoundInCookieException" xml:space="preserve">
+        <value>Token not found in cookies !</value>
+    </data>
+    <data name="TokenExpiredException" xml:space="preserve">
+        <value>Token expired  !</value>
+    </data>
 </root>

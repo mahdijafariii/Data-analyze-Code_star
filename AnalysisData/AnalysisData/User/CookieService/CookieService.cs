@@ -42,4 +42,10 @@ public class CookieService : ICookieService
     {
         _httpContextAccessor.HttpContext.Response.Cookies.Delete(name);
     }
+    
+    public void UpdateCookie(string name, string newToken, bool rememberMe)
+    {
+        RemoveCookie(name); 
+        SetCookie(name, newToken, rememberMe); 
+    }
 }

@@ -10,4 +10,5 @@ public interface IUploadRepository
     Task<Upload> GetByContentAsync(string content);
     Task DeleteAsync(int id);
     
+    
 }

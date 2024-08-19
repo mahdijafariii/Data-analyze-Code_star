@@ -1,10 +1,11 @@
-﻿using System.Globalization;
+﻿/*using System.Globalization;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using AnalysisData.EAV.Model;
 using AnalysisData.EAV.Repository.Abstraction;
 using AnalysisData.Exception;
 using AnalysisData.FileManage.Service.Abstraction;
+using AnalysisData.FileManage.Service.Business;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Mvc;
@@ -15,57 +16,60 @@ namespace AnalysisData.FileManage.Service;
 public class FileManagementService : IFileManagementService
 {
     private readonly IUploadRepository _uploadRepository;
+    private readonly IFileHasher _fileHasher;
+    private readonly ICsvProcessor _csvProcessor;
 
-    public FileManagementService(IUploadRepository uploadRepository)
+    public FileManagementService(IUploadRepository uploadRepository, IFileHasher fileHasher, ICsvProcessor csvProcessor)
     {
         _uploadRepository = uploadRepository;
+        _fileHasher = fileHasher;
+        _csvProcessor = csvProcessor;
     }
 
-    public async Task<string> FileUpload(ClaimsPrincipal claimsPrincipal, Stream fileStream)
+    public async Task<(string, string)> FileUpload(ClaimsPrincipal claimsPrincipal, Stream fileStream)
     {
-        var id = claimsPrincipal.FindFirstValue("id");
-
-        if (!Guid.TryParse(id, out var userId))
-        {
-            throw new ArgumentException("Invalid user ID in token");
-        }
-        
+        var userId = GetUserIdFromClaims(claimsPrincipal);
         using var fileStreamCopy = new MemoryStream();
-        await fileStream.CopyToAsync(fileStreamCopy);
-        fileStreamCopy.Seek(0, SeekOrigin.Begin);
-    
+        await CopyStreamAsync(fileStream, fileStreamCopy);
 
-        using var reader = new StreamReader(fileStreamCopy);
-        using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            HasHeaderRecord = true,
-        });
-        
-        
-        csv.Read();
-        csv.ReadHeader();
-    
-        var hashString = HashContentFile(fileStreamCopy);
-        var existFile= _uploadRepository.GetByContentAsync(hashString);
-        if (existFile != null)
-            throw new FileExistenceException();
+        var hashString = _fileHasher.Hash(fileStreamCopy);
+        await CheckFileExistenceAsync(hashString);
 
-        var temp = new Upload
+        var csvHeader = _csvProcessor.ReadHeader(fileStreamCopy);
+
+        var newFile = new Upload
         {
             UserId = userId,
             Content = hashString,
         };
 
-        await _uploadRepository.AddAsync(temp);
+        await _uploadRepository.AddAsync(newFile);
 
-        return string.Join("-", csv.HeaderRecord);
+        return (csvHeader, newFile.Id.ToString());
     }
 
-    private static string HashContentFile(MemoryStream fileStreamCopy)
+    private static Guid GetUserIdFromClaims(ClaimsPrincipal claimsPrincipal)
     {
-        var sha256 = SHA256.Create();
-        var hashBytes = sha256.ComputeHash(fileStreamCopy);
-        var hashString = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
-        return hashString;
+        var id = claimsPrincipal.FindFirstValue("id");
+        if (!Guid.TryParse(id, out var userId))
+        {
+            throw new ArgumentException("Invalid user ID in token");// exception
+        }
+        return userId;
     }
-}
+
+    private static async Task CopyStreamAsync(Stream sourceStream, Stream targetStream)
+    {
+        await sourceStream.CopyToAsync(targetStream);
+        targetStream.Seek(0, SeekOrigin.Begin);
+    }
+
+    private async Task CheckFileExistenceAsync(string hashString)
+    {
+        var existFile = await _uploadRepository.GetByContentAsync(hashString);
+        if (existFile != null)
+        {
+            throw new FileExistenceException();
+        }
+    }
+}*/

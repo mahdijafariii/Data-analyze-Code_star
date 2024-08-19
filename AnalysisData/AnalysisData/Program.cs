@@ -1,16 +1,11 @@
-
-using System.Reflection;
 using System.Text;
-using AnalysisData;
 using AnalysisData.CookieService;
 using AnalysisData.CookieService.abstractions;
 using AnalysisData.Data;
-using AnalysisData.EAV.Model;
 using AnalysisData.EAV.Repository;
 using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.Exception;
 using AnalysisData.FileManage.Service;
-using AnalysisData.FileManage.Service.Abstraction;
+using AnalysisData.FileManage.Service.Business;
 using AnalysisData.Graph;
 using AnalysisData.Graph.DataProcessService;
 using AnalysisData.Graph.Services;
@@ -30,10 +25,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Services registration
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IJwtService,JwtService>();
+
+// Authentication and Authorization
+builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICookieService, CookieService>();
@@ -44,12 +43,9 @@ builder.Services.AddScoped<IDataProcessor, DataReadProcessor>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IGraphUtility, GraphUtility>();
-builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IGraphService, GraphServices>();
-////
+builder.Services.AddScoped<INodeService, NodeService>();
 builder.Services.AddScoped<IUploadRepository, UploadRepository>();
-builder.Services.AddScoped<IFileManagementService, FileManagementService>();
 builder.Services.AddScoped<IEntityNodeRepository, EntityNodeRepository>();
 builder.Services.AddScoped<IAttributeNodeRepository, AttributeNodeRepository>();
 builder.Services.AddScoped<IValueNodeRepository, ValueNodeRepository>();
@@ -57,6 +53,9 @@ builder.Services.AddScoped<IEntityEdgeRepository, EntityEdgeRepository>();
 builder.Services.AddScoped<IAttributeEdgeRepository, AttributeEdgeRepository>();
 builder.Services.AddScoped<IValueEdgeRepository, ValueEdgeRepository>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<ICsvReaderService, CsvReaderService>();
+builder.Services.AddScoped<IHeaderProcessor, HeaderProcessor>();
+builder.Services.AddScoped<IRecordProcessor, RecordProcessor>();
 // builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<ApplicationDbContext>(options => 

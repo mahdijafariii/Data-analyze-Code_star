@@ -1,14 +1,17 @@
+using System.Data;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using AnalysisData.CookieService.abstractions;
 using AnalysisData.Exception;
 using AnalysisData.JwtService.abstractions;
+using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services.Abstraction;
 using AnalysisData.UserManage.LoginModel;
-using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.UpdateModel;
+using AnalysisData.UserManage.RegisterModel;
+using AnalysisData.UserManage.ResetPasswordModel;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.Services;
 
@@ -25,6 +28,7 @@ public class UserService : IUserService
         _userRepository = userRepository;
         _cookieService = cookieService;
         _jwtService = jwtService;
+        _roleRepository = roleRepository;
         _regexService = regexService;
     }
 
@@ -36,15 +40,36 @@ public class UserService : IUserService
         {
             throw new UserNotFoundException();
         }
-
         if (password != confirmPassword)
         {
             throw new PasswordMismatchException();
         }
-
         _regexService.PasswordCheck(password);
         user.Password = HashPassword(password);
         await _userRepository.UpdateUser(user.Id, user);
+        return true;
+    }
+    
+    public async Task<bool> NewPassword(ClaimsPrincipal userClaim,string oldPassword, string password, string confirmPassword)
+    {
+        var userName = userClaim.FindFirstValue("username");
+        var user = await _userRepository.GetUser(userName);
+        if (user == null)
+        {
+            throw new UserNotFoundException();
+        }
+
+        if (user.Password == HashPassword(oldPassword))
+        {
+            throw new PasswordMismatchException();
+        }
+        if (password != confirmPassword)
+        {
+            throw new PasswordMismatchException();
+        }
+        _regexService.PasswordCheck(password);
+        user.Password = HashPassword(password);
+        await _userRepository.UpdateUser(user);
         return true;
     }
 
@@ -110,5 +135,42 @@ public class UserService : IUserService
         user.ImageURL = imageUrl;
         await _userRepository.UpdateUser(user.Id, user);
         return true;
+    }
+
+    private User MakeUser(UserRegisterModel userRegisterModel, Role role)
+    {
+        var user = new User
+        {
+            Username = userRegisterModel.Username,
+            Password = HashPassword(userRegisterModel.Password),
+            FirstName = userRegisterModel.FirstName,
+            LastName = userRegisterModel.LastName,
+            Email = userRegisterModel.Email,
+            PhoneNumber = userRegisterModel.PhoneNumber,
+            Role = role,
+            ImageURL = null
+        };
+        return user;
+    }
+
+    private async Task<Role?> GetRole(UserRegisterModel userRegisterModel)
+    {
+        var role = await _roleRepository.GetRoleByName(userRegisterModel.RoleName.ToLower());
+        if (role is null)
+        {
+            throw new RoleNotFoundException();
+        }
+
+        return role;
+    }
+
+    private string HashPassword(string password)
+    {
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+            byte[] hashBytes = sha256.ComputeHash(passwordBytes);
+            return Convert.ToBase64String(hashBytes);
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace AnalysisData.DataProcessService;
+﻿namespace AnalysisData.Graph.DataProcessService;
 
 public interface IDataProcessor
 {

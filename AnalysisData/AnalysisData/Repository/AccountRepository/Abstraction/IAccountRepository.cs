@@ -1,4 +1,4 @@
-﻿using AnalysisData.DataManage.Model;
+﻿using AnalysisData.Graph.DataManage.Model;
 
 namespace AnalysisData.Repository.AccountRepository.Abstraction;
 

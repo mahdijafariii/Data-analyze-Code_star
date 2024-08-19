@@ -10,22 +10,26 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+
   migrate:
-    image: mcr.microsoft.com/dotnet/sdk:8.0
+    #image: migrateimage
+    image: yaghooli/migrateimage:latest
     depends_on:
       - postgres
-    working_dir: /app
-    volumes:
-      - .:/app
     environment:
       ConnectionStrings__DefaultConnection: Host=postgres;Database=mohaymen;Username=postgres;Password=1234;
-    command: >
-      bash -c "dotnet tool install --global dotnet-ef &&
-               export PATH=\"$PATH:/root/.dotnet/tools\" &&
-               dotnet ef database update --project AnalysisData/AnalysisData/AnalysisData.csproj"
+  
+  admin:
+    image: adminer
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - 8089:8080
 
   web:
     image: yaghooli/dotnetdev:latest
+    #build: .
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -37,3 +41,4 @@ services:
 
 volumes:
   pgdata:
+

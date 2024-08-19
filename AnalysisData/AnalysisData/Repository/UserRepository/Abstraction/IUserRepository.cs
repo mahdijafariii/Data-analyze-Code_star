@@ -1,4 +1,4 @@
-﻿using AnalysisData.UserManage.Model;
+using AnalysisData.UserManage.Model;
 
 namespace AnalysisData.Repository.UserRepository.Abstraction;
 

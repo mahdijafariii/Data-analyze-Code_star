@@ -1,10 +1,12 @@
-﻿using AnalysisData.DataProcessService;
-using CsvHelper.Configuration.Attributes;
+﻿using CsvHelper.Configuration.Attributes;
+using QuickGraph;
 
-namespace AnalysisData.DataManage.Model;
+namespace AnalysisData.Graph.DataManage.Model;
 
-public class Transaction
+public class Transaction 
 {
+    private IEdge<Account> _edgeImplementation;
+    
     [Name("SourceAcount")]
     public string SourceAccount { get; set; }
 
@@ -18,4 +20,5 @@ public class Transaction
     public string TransactionID { get; set; }
     
     public string Type { get; set; }
+
 }

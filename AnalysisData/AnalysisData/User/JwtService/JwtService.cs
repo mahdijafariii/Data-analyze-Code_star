@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AnalysisData.Exception;
 using AnalysisData.JwtService.abstractions;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using Microsoft.IdentityModel.Tokens;

@@ -1,10 +1,12 @@
 using System.Security.Claims;
 using AnalysisData.Exception;
 using AnalysisData.Services;
+using AnalysisData.Services.Abstraction;
 using AnalysisData.UserManage.LoginModel;
 using AnalysisData.UserManage.NewPasswordModel;
 using AnalysisData.UserManage.RegisterModel;
 using AnalysisData.UserManage.ResetPasswordModel;
+using AnalysisData.UserManage.UpdateModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,19 +32,6 @@ public class UserController : ControllerBase
         return Ok(new { user.Result.FirstName, user.Result.LastName, user.Result.ImageURL });
     }
 
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegisterModel)
-    {
-        var check = await _userService.Register(userRegisterModel);
-        if (check)
-        {
-            return Ok("success");
-        }
-
-        return BadRequest("not success");
-    }
-
-
     [HttpGet("permissions")]
     public IActionResult GetPermissions()
     {
@@ -66,6 +55,31 @@ public class UserController : ControllerBase
             return Ok("success");
         }
 
+        return BadRequest("not success");
+    }
+    
+    [HttpPost("UploadImage")]
+    public IActionResult UploadImage(Guid id,IFormFile file)
+    {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            _userService.UploadImage(id, file.FileName);
+        
+            return Ok("Uploaded successfully.");
+    }
+    
+    [HttpPut("UpdateUser")]
+    public IActionResult UpdateUser(Guid id, [FromBody] UpdateUserModel updateUserModel)
+    {
+        var updatedUser = _userService.UpdateUserInformationByUser(id, updateUserModel);
+        if (updatedUser!=null)
+        {
+            return Ok("success");
+        }
+    
         return BadRequest("not success");
     }
     

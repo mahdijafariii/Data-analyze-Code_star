@@ -65,8 +65,8 @@ public class UserController : ControllerBase
             {
                 return BadRequest("No file uploaded.");
             }
-
-            _userService.UploadImage(id, file.FileName);
+    
+            // _userService.UploadImage(id, file.FileName);
         
             return Ok("Uploaded successfully.");
     }

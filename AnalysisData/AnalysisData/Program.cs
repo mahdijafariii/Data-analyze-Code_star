@@ -37,14 +37,13 @@ builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<IRegexService, RegexService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IDataProcessor, DataReadProcessor>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IGraphUtility, GraphUtility>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IGraphService, GraphServices>();
-// builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")),
     ServiceLifetime.Scoped);
@@ -58,37 +57,37 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowCredentials());
 });
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(options =>
-    {
-        options.RequireHttpsMetadata = false;
-        options.SaveToken = true;
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"])),
-        };
-        options.Events = new JwtBearerEvents
-        {
-            OnMessageReceived = context =>
-            {
-                var cookie = context.Request.Cookies["AuthToken"];
-                if (!string.IsNullOrEmpty(cookie))
-                {
-                    context.Token = cookie;
-                }
-        
-                return Task.CompletedTask;
-            }
-        };
-    });
+// builder.Services.AddAuthentication(options =>
+//     {
+//         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//     })
+//     .AddJwtBearer(options =>
+//     {
+//         options.RequireHttpsMetadata = false;
+//         options.SaveToken = true;
+//         options.TokenValidationParameters = new TokenValidationParameters
+//         {
+//             ValidateIssuer = false,
+//             ValidateAudience = false,
+//             ValidateLifetime = true,
+//             ValidateIssuerSigningKey = true,
+//             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"])),
+//         };
+//         options.Events = new JwtBearerEvents
+//         {
+//             OnMessageReceived = context =>
+//             {
+//                 var cookie = context.Request.Cookies["AuthToken"];
+//                 if (!string.IsNullOrEmpty(cookie))
+//                 {
+//                     context.Token = cookie;
+//                 }
+//         
+//                 return Task.CompletedTask;
+//             }
+//         };
+//     });
 
 var app = builder.Build();
 

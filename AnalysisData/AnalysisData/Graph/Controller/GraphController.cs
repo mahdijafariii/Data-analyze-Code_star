@@ -1,4 +1,5 @@
 using AnalysisData.Graph.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.Graph.Controller;
@@ -13,9 +14,8 @@ public class GraphController : ControllerBase
         _graphUtility = graphUtility;
         _graphService = graphService;
     }
-
     [HttpGet("pagination")]
-    public async Task<IActionResult> GetGraph([FromQuery] int page)
+    public async Task<IActionResult> GetGraph([FromQuery] int page = 1)
     {
         var result = await _graphService.GetAllAccountPagination(page);
         return Ok(new

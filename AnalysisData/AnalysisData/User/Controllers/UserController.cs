@@ -17,7 +17,6 @@ namespace AnalysisData.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
-    private readonly IWebHostEnvironment _environment;
     private readonly IPermissionService _permissionService;
 
     public UserController(IUserService userService, IPermissionService permissionService)
@@ -58,50 +57,38 @@ public class UserController : ControllerBase
 
         return BadRequest("not success");
     }
-
+    
     [HttpPost("UploadImage")]
-    public async Task<IActionResult> UploadImage(IFormFile file)
+    public IActionResult UploadImage(Guid id,IFormFile file)
     {
-        if (file == null || file.Length == 0)
-            return BadRequest("Please upload a valid image file.");
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+    
+            // _userService.UploadImage(id, file.FileName);
         
-        var userClaim = User;
-        await _userService.UploadImage(userClaim, file.FileName);
-        // var resourcesFolderPath = Path.Combine(_environment.ContentRootPath);
-        // if (!Directory.Exists(resourcesFolderPath))
-        // {
-        //     Directory.CreateDirectory(resourcesFolderPath);
-        // }
-        //
-        // var uniqueFileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
-        // var filePath = Path.Combine(resourcesFolderPath, uniqueFileName);
-        //
-        // await using (var stream = new FileStream(filePath, FileMode.Create))
-        // {
-        //     await file.CopyToAsync(stream);
-        // }
-        return Ok("Uploaded successfully.");
+            return Ok("Uploaded successfully.");
     }
-
+    
     [HttpPut("UpdateUser")]
     public IActionResult UpdateUser([FromBody] UpdateUserModel updateUserModel)
     {
-        var userClaim = User;
-        var updatedUser = _userService.UpdateUserInformationByUser(userClaim, updateUserModel);
-        if (updatedUser != null)
+        var user = User;
+        var updatedUser = _userService.UpdateUserInformationByUser(user, updateUserModel);
+        if (updatedUser!=null)
         {
             return Ok("success");
         }
-
+    
         return BadRequest("not success");
     }
-
+    
     [HttpPost("new-password")]
     public async Task<IActionResult> NewPassword([FromBody] NewPasswordModel newPasswordModel)
     {
         var userClaim = User;
-        var check = await _userService.NewPassword(userClaim, newPasswordModel.OldPassword,
-            newPasswordModel.NewPassword,
+        var check = await _userService.NewPassword(userClaim, newPasswordModel.OldPassword,newPasswordModel.NewPassword,
             newPasswordModel.ConfirmPassword);
         if (check)
         {
@@ -110,4 +97,13 @@ public class UserController : ControllerBase
 
         return BadRequest("not success");
     }
+    
+    
+    [HttpGet("log-out")]
+    public IActionResult Logout()
+    {
+        Response.Cookies.Delete("AuthToken");
+        return Ok(new { message = "Logout successful" });
+    }
+    
 }

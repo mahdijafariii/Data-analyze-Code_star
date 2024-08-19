@@ -6,6 +6,7 @@ using AnalysisData.Services.Abstraction;
 using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.RegisterModel;
 using AnalysisData.UserManage.UpdateModel;
+using AnalysisData.UserManage.UserPaginationModel;
 
 namespace AnalysisData.Services;
 
@@ -22,10 +23,9 @@ public class AdminService : IAdminService
 
     public async Task<bool> Register(UserRegisterModel userRegisterModel)
     {
-        var allUsers = await _userRepository.GetAllUser();
-        var existingUser = allUsers.FirstOrDefault(u =>
-            u.Username == userRegisterModel.Username);
-        if (existingUser != null)
+        var existingUserByEmail = _userRepository.GetUserByEmail(userRegisterModel.Email);
+        var existingUserByUsername = _userRepository.GetUserByUsername(userRegisterModel.Username);
+        if (existingUserByEmail != null && existingUserByUsername != null)
             throw new DuplicateUserException();
         _regexService.EmailCheck(userRegisterModel.Email);
         _regexService.PasswordCheck(userRegisterModel.Password);
@@ -68,10 +68,7 @@ public class AdminService : IAdminService
         return Convert.ToBase64String(hashBytes);
     }
 
-    public async Task<IReadOnlyList<User>> GetAllUsers()
-    {
-        return await _userRepository.GetAllUser();
-    }
+
 
 
     public Task<bool> UpdateUserInformationByAdmin(Guid id, UpdateAdminModel updateAdminModel)
@@ -106,12 +103,23 @@ public class AdminService : IAdminService
             throw new UserNotFoundException();
         return true;
     }
+    public async Task<int> GetUserCount()
+    {
+        return await _userRepository.GetUsersCount();
+    }
+    
+    
+    public async Task<List<UserPaginationModel>> GetUserPagination(int limit , int page)
+    {
+        var users = await _userRepository.GetAllUserPagination(page,limit);
+        var paginationUsers = users.Select(x => new UserPaginationModel() {Username = x.Username , FirstName = x.FirstName , LastName = x.LastName , Email = x.Email , PhoneNumber = x.PhoneNumber , RoleName = x.Role});
+        return paginationUsers.ToList();
+    }
 
 
     public async Task AddFirstAdmin()
     {
-        var admin = _userRepository.GetAllUser().Result.FirstOrDefault(u =>
-            u.Username == "admin");
+        var admin = _userRepository.GetUserByUsername("admin");
         if (admin != null)
         {
             throw new AdminExistenceException();

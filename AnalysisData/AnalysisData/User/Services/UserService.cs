@@ -102,12 +102,8 @@ public class UserService : IUserService
     {
         var userName = userClaim.FindFirstValue("username");
         var user = _userRepository.GetUserByUsername(userName);
-        if (user == null)
-        {
-            throw new UserNotFoundException();
-        }
-
         var checkEmail = _userRepository.GetUserByEmail(updateUserModel.Email);
+    
         if (checkEmail != null)
             throw new DuplicateUserException();
     
@@ -126,10 +122,9 @@ public class UserService : IUserService
         _userRepository.UpdateUser(user.Id, user);
     }
     
-    public async Task<bool> UploadImage(ClaimsPrincipal userClaim,string imageUrl)
+    public async Task<bool> UploadImage(Guid id,string imageUrl)
     {
-        var userName = userClaim.FindFirstValue("username");
-        var user = _userRepository.GetUserByUsername(userName);
+        var user = _userRepository.GetUserById(id);
         if (user == null)
         {
             throw new UserNotFoundException();

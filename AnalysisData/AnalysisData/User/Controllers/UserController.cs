@@ -98,4 +98,12 @@ public class UserController : ControllerBase
         return BadRequest("not success");
     }
     
+    
+    [HttpGet("log-out")]
+    public IActionResult Logout()
+    {
+        Response.Cookies.Delete("AuthToken");
+        return Ok(new { message = "Logout successful" });
+    }
+    
 }

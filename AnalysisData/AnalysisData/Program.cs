@@ -38,14 +38,12 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICookieService, CookieService>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<IRegexService, RegexService>();
-builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IDataProcessor, DataReadProcessor>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IGraphUtility, GraphUtility>();
 builder.Services.AddScoped<IGraphService, GraphServices>();
 builder.Services.AddScoped<INodeService, NodeService>();
-builder.Services.AddScoped<IUploadRepository, UploadRepository>();
 builder.Services.AddScoped<IEntityNodeRepository, EntityNodeRepository>();
 builder.Services.AddScoped<IAttributeNodeRepository, AttributeNodeRepository>();
 builder.Services.AddScoped<IValueNodeRepository, ValueNodeRepository>();
@@ -56,11 +54,54 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<ICsvReaderService, CsvReaderService>();
 builder.Services.AddScoped<IHeaderProcessor, HeaderProcessor>();
 builder.Services.AddScoped<IRecordProcessor, RecordProcessor>();
-// builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddDbContext<ApplicationDbContext>(options => 
-        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")),
-    ServiceLifetime.Scoped);
+
+ConfigureServices(builder.Services, builder.Configuration);
+
+void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+{
+    services.AddControllers();
+    services.AddEndpointsApiExplorer();
+    services.AddSwaggerGen();
+
+
+    services.AddScoped<IJwtService, JwtService>();
+    services.AddScoped<IUserService, UserService>();
+    services.AddScoped<ICookieService, CookieService>();
+
+
+    services.AddScoped<IDataProcessor, DataReadProcessor>();
+    services.AddScoped<ICsvReaderService, CsvReaderService>();
+    services.AddScoped<IHeaderProcessor, HeaderProcessor>();
+    services.AddScoped<IRecordProcessor, RecordProcessor>();
+
+
+    services.AddScoped<IUserRepository, UserRepository>();
+    services.AddScoped<IAccountRepository, AccountRepository>();
+    services.AddScoped<ITransactionRepository, TransactionRepository>();
+    services.AddScoped<IEntityNodeRepository, EntityNodeRepository>();
+    services.AddScoped<IAttributeNodeRepository, AttributeNodeRepository>();
+    services.AddScoped<IValueNodeRepository, ValueNodeRepository>();
+    services.AddScoped<IEntityEdgeRepository, EntityEdgeRepository>();
+    services.AddScoped<IAttributeEdgeRepository, AttributeEdgeRepository>();
+    services.AddScoped<IValueEdgeRepository, ValueEdgeRepository>();
+
+
+    services.AddScoped<IPermissionService, PermissionService>();
+    services.AddScoped<IRegexService, RegexService>();
+    services.AddScoped<IGraphUtility, GraphUtility>();
+    services.AddScoped<IGraphService, GraphServices>();
+    services.AddScoped<INodeService, NodeService>();
+    services.AddScoped<IAdminService, AdminService>();
+
+
+    services.AddHttpContextAccessor();
+
+
+    services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")),
+        ServiceLifetime.Scoped);
+}
+
 
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>

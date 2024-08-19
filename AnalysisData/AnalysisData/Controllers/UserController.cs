@@ -53,6 +53,19 @@ public class UserController : ControllerBase
         return BadRequest("not success");
     }
     
+    [HttpPost("UploadImage")]
+    public IActionResult UploadImage(Guid id,IFormFile file)
+    {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            _userService.UploadImage(id, file.FileName);
+        
+            return Ok("Uploaded successfully.");
+    }
+    
     [HttpPut("UpdateUser")]
     public IActionResult UpdateUser(Guid id, [FromBody] UpdateUserModel updateUserModel)
     {

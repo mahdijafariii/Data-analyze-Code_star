@@ -63,10 +63,10 @@ public class AdminController : ControllerBase
         var isUpdated = await _adminService.UpdateUserInformationByAdmin(id, updateAdminModel);
         if (isUpdated)
         {
-            return Ok("success");
+            return Ok(new { message = "success" });
         }
 
-        return BadRequest("not success");
+        return BadRequest(new { message ="not success"});
     }
 
     [HttpGet("firstAdmin")]
@@ -74,6 +74,6 @@ public class AdminController : ControllerBase
     public async Task<IActionResult> FirstAdmin()
     {
         await _adminService.AddFirstAdmin();
-        return Ok("success");
+        return Ok(new { message = "success" });
     }
 }

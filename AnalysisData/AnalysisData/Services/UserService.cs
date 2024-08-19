@@ -98,4 +98,17 @@ public class UserService : IUserService
         user.PhoneNumber = updateUserModel.PhoneNumber;
         _userRepository.UpdateUser(user.Id, user);
     }
+    
+    public async Task<bool> UploadImage(Guid id,string imageUrl)
+    {
+        var user = _userRepository.GetUserById(id);
+        if (user == null)
+        {
+            throw new UserNotFoundException();
+        }
+
+        user.ImageURL = imageUrl;
+        await _userRepository.UpdateUser(user.Id, user);
+        return true;
+    }
 }

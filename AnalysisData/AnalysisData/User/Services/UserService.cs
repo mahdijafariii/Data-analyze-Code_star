@@ -37,17 +37,20 @@ public class UserService : IUserService
         {
             throw new UserNotFoundException();
         }
+
         if (password != confirmPassword)
         {
             throw new PasswordMismatchException();
         }
+
         _regexService.PasswordCheck(password);
         user.Password = HashPassword(password);
         await _userRepository.UpdateUser(user.Id, user);
         return true;
     }
-    
-    public async Task<bool> NewPassword(ClaimsPrincipal userClaim,string oldPassword, string password, string confirmPassword)
+
+    public async Task<bool> NewPassword(ClaimsPrincipal userClaim, string oldPassword, string password,
+        string confirmPassword)
     {
         var userName = userClaim.FindFirstValue("username");
         var user = _userRepository.GetUserByUsername(userName);
@@ -60,13 +63,15 @@ public class UserService : IUserService
         {
             throw new PasswordMismatchException();
         }
+
         if (password != confirmPassword)
         {
             throw new PasswordMismatchException();
         }
+
         _regexService.PasswordCheck(password);
         user.Password = HashPassword(password);
-        await _userRepository.UpdateUser(user.Id,user);
+        await _userRepository.UpdateUser(user.Id, user);
         return true;
     }
 
@@ -80,7 +85,7 @@ public class UserService : IUserService
 
         if (user.Password != HashPassword(userLoginModel.password))
         {
-            throw new InvalidPasswordException();
+            throw new PasswordMismatchException();
         }
 
         var token = await _jwtService.GenerateJwtToken(userLoginModel.userName);
@@ -103,10 +108,10 @@ public class UserService : IUserService
         var userName = userClaim.FindFirstValue("username");
         var user = _userRepository.GetUserByUsername(userName);
         var checkEmail = _userRepository.GetUserByEmail(updateUserModel.Email);
-    
+
         if (checkEmail != null)
             throw new DuplicateUserException();
-    
+
         _regexService.EmailCheck(updateUserModel.Email);
         _regexService.PhoneNumberCheck(updateUserModel.PhoneNumber);
         SetUpdatedInformation(user, updateUserModel);
@@ -121,8 +126,8 @@ public class UserService : IUserService
         user.PhoneNumber = updateUserModel.PhoneNumber;
         _userRepository.UpdateUser(user.Id, user);
     }
-    
-    public async Task<bool> UploadImage(Guid id,string imageUrl)
+
+    public async Task<bool> UploadImage(Guid id, string imageUrl)
     {
         var user = _userRepository.GetUserById(id);
         if (user == null)

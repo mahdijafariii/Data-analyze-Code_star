@@ -28,8 +28,10 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login([FromBody] UserLoginModel userLoginModel)
     {
-        var user = _userService.Login(userLoginModel);
-        return Ok(new { user.Result.FirstName, user.Result.LastName, user.Result.ImageURL });
+        var user = _userService.Login(userLoginModel).Result;
+        var userClaim = User;
+        var permissions = _permissionService.GetPermission(userClaim);
+        return Ok(new { user.FirstName, user.LastName, user.ImageURL , permissions});
     }
 
     [HttpGet("permissions")]
@@ -37,13 +39,14 @@ public class UserController : ControllerBase
     {
         var userClaims = User;
         var permission = _permissionService.GetPermission(userClaims);
-        var username = userClaims.FindFirstValue("username");
         var firstName = userClaims.FindFirstValue("firstname");
         var lastName = userClaims.FindFirstValue("lastname");
-        return Ok(new { username, firstName, lastName, permission });
+        var image = userClaims.FindFirstValue("image");
+
+        return Ok(new { image, firstName, lastName, permission });
     }
 
-
+    [Authorize(Roles = "admin")]
     [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel resetPasswordModel)
     {
@@ -58,6 +61,7 @@ public class UserController : ControllerBase
         return BadRequest("not success");
     }
     
+    [Authorize(Roles = "admin")]
     [HttpPost("UploadImage")]
     public IActionResult UploadImage(Guid id,IFormFile file)
     {

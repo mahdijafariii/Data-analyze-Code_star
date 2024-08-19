@@ -6,6 +6,7 @@ using AnalysisData.Services.Abstraction;
 using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.RegisterModel;
 using AnalysisData.UserManage.UpdateModel;
+using AnalysisData.UserManage.UserPaginationModel;
 
 namespace AnalysisData.Services;
 
@@ -108,9 +109,11 @@ public class AdminService : IAdminService
     }
     
     
-    public async Task<List<User>> GetUserPagination(int limit , int page)
+    public async Task<List<UserPaginationModel>> GetUserPagination(int limit , int page)
     {
-        return await _userRepository.GetAllUserPagination(limit,page);
+        var users = await _userRepository.GetAllUserPagination(page,limit);
+        var paginationUsers = users.Select(x => new UserPaginationModel() {Username = x.Username , FirstName = x.FirstName , LastName = x.LastName , Email = x.Email , PhoneNumber = x.PhoneNumber , RoleName = x.Role});
+        return paginationUsers.ToList();
     }
 
 

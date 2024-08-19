@@ -38,9 +38,17 @@ public class AdminService : IAdminService
         if (userRegisterModel.Password != userRegisterModel.ConfirmPassword)
             throw new PasswordMismatchException();
 
-
-        var user = MakeUser(userRegisterModel);
-        await _userRepository.AddUser(user);
+        if (userRegisterModel.RoleName == "admin" || userRegisterModel.RoleName == "dataManager" ||
+            userRegisterModel.RoleName == "systemManager")
+        {
+            var user = MakeUser(userRegisterModel);
+            await _userRepository.AddUser(user);
+        }
+        else
+        {
+            throw new RoleNotFoundException();
+        }
+        
         return true;
     }
 

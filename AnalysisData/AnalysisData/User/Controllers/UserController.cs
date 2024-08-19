@@ -29,7 +29,6 @@ public class UserController : ControllerBase
     public IActionResult Login([FromBody] UserLoginModel userLoginModel)
     {
         var user = _userService.Login(userLoginModel).Result;
-        var userClaim = User;
         return Ok(new { user.FirstName, user.LastName, user.ImageURL });
     }
 

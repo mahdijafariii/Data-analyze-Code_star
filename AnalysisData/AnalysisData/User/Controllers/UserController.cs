@@ -30,8 +30,7 @@ public class UserController : ControllerBase
     {
         var user = _userService.Login(userLoginModel).Result;
         var userClaim = User;
-        var permissions = _permissionService.GetPermission(userClaim);
-        return Ok(new { user.FirstName, user.LastName, user.ImageURL , permissions});
+        return Ok(new { user.FirstName, user.LastName, user.ImageURL });
     }
 
     [HttpGet("permissions")]
@@ -60,39 +59,41 @@ public class UserController : ControllerBase
 
         return BadRequest("not success");
     }
-    
+
     [Authorize(Roles = "admin")]
     [HttpPost("UploadImage")]
-    public IActionResult UploadImage(Guid id,IFormFile file)
+    public IActionResult UploadImage(IFormFile file)
     {
-            if (file == null || file.Length == 0)
-            {
-                return BadRequest("No file uploaded.");
-            }
-    
-            // _userService.UploadImage(id, file.FileName);
-        
-            return Ok("Uploaded successfully.");
+        var user = User;
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest("No file uploaded.");
+        }
+
+        _userService.UploadImage(user, file.FileName);
+
+        return Ok("Uploaded successfully.");
     }
-    
+
     [HttpPut("UpdateUser")]
     public IActionResult UpdateUser([FromBody] UpdateUserModel updateUserModel)
     {
         var user = User;
         var updatedUser = _userService.UpdateUserInformationByUser(user, updateUserModel);
-        if (updatedUser!=null)
+        if (updatedUser != null)
         {
             return Ok("success");
         }
-    
+
         return BadRequest("not success");
     }
-    
+
     [HttpPost("new-password")]
     public async Task<IActionResult> NewPassword([FromBody] NewPasswordModel newPasswordModel)
     {
         var userClaim = User;
-        var check = await _userService.NewPassword(userClaim, newPasswordModel.OldPassword,newPasswordModel.NewPassword,
+        var check = await _userService.NewPassword(userClaim, newPasswordModel.OldPassword,
+            newPasswordModel.NewPassword,
             newPasswordModel.ConfirmPassword);
         if (check)
         {
@@ -101,13 +102,12 @@ public class UserController : ControllerBase
 
         return BadRequest("not success");
     }
-    
-    
+
+
     [HttpGet("log-out")]
     public IActionResult Logout()
     {
         Response.Cookies.Delete("AuthToken");
         return Ok(new { message = "Logout successful" });
     }
-    
 }

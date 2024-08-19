@@ -127,9 +127,10 @@ public class UserService : IUserService
         _userRepository.UpdateUser(user.Id, user);
     }
 
-    public async Task<bool> UploadImage(Guid id, string imageUrl)
+    public async Task<bool> UploadImage(ClaimsPrincipal claimsPrincipal, string imageUrl)
     {
-        var user = _userRepository.GetUserById(id);
+        var userName = claimsPrincipal.FindFirstValue("username");
+        var user = _userRepository.GetUserByUsername(userName);
         if (user == null)
         {
             throw new UserNotFoundException();

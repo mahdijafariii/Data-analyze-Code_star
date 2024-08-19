@@ -72,9 +72,10 @@ public class UserController : ControllerBase
     }
     
     [HttpPut("UpdateUser")]
-    public IActionResult UpdateUser(Guid id, [FromBody] UpdateUserModel updateUserModel)
+    public IActionResult UpdateUser([FromBody] UpdateUserModel updateUserModel)
     {
-        var updatedUser = _userService.UpdateUserInformationByUser(id, updateUserModel);
+        var user = User;
+        var updatedUser = _userService.UpdateUserInformationByUser(user, updateUserModel);
         if (updatedUser!=null)
         {
             return Ok("success");

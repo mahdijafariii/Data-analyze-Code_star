@@ -98,10 +98,10 @@ public class UserService : IUserService
     }
 
 
-    public Task<bool> UpdateUserInformationByUser(Guid id, UpdateUserModel updateUserModel)
+    public Task<bool> UpdateUserInformationByUser(ClaimsPrincipal userClaim, UpdateUserModel updateUserModel)
     {
-        
-        var user = _userRepository.GetUserById(id);
+        var userName = userClaim.FindFirstValue("username");
+        var user = _userRepository.GetUserByUsername(userName);
         var checkEmail = _userRepository.GetUserByEmail(updateUserModel.Email);
     
         if (checkEmail != null)

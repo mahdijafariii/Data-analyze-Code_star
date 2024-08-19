@@ -1,9 +1,9 @@
 ﻿using AnalysisData.Data;
 using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
+using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
-namespace AnalysisData.EAV.Repository;
+namespace AnalysisData.EAV.Repository.EdgeRepository;
 
 public class AttributeEdgeRepository : IAttributeEdgeRepository
 {
@@ -29,8 +29,13 @@ public class AttributeEdgeRepository : IAttributeEdgeRepository
     {
         return await _context.AttributeEdges.FindAsync(id);
     }
-    
 
+    public async Task<AttributeEdge> GetByNameAttributeAsync(string name)
+    {
+        return await _context.AttributeEdges.FirstOrDefaultAsync(x => x.Name == name);
+
+    }
+    
     public async Task DeleteAsync(int id)
     {
         var entity = await _context.AttributeEdges.FindAsync(id);

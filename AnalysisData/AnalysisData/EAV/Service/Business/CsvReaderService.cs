@@ -1,9 +1,10 @@
 ﻿using System.Globalization;
 using System.Text;
+using AnalysisData.EAV.Service.Business.Abstraction;
 using CsvHelper;
 using CsvHelper.Configuration;
 
-namespace AnalysisData.FileManage.Service.Business;
+namespace AnalysisData.EAV.Service.Business;
 
 public class CsvReaderService : ICsvReaderService
 {

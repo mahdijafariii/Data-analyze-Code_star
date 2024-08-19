@@ -1,8 +1,8 @@
 ﻿using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.FileManage.Service.Business;
+using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
+using AnalysisData.EAV.Service.Business.Abstraction;
 
-namespace AnalysisData.FileManage.Service;
+namespace AnalysisData.EAV.Service.Business;
 
 public class HeaderProcessor : IHeaderProcessor
 {

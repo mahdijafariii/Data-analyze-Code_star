@@ -1,16 +1,17 @@
 ﻿using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
+using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
+using AnalysisData.EAV.Service.Business.Abstraction;
 using CsvHelper;
 
-namespace AnalysisData.FileManage.Service.Business;
+namespace AnalysisData.EAV.Service.Business;
 
-public class RecordProcessor : IRecordProcessor
+public class NodeRecordProcessor : INodeRecordProcessor
 {
     private readonly IEntityNodeRepository _entityNodeRepository;
     private readonly IAttributeNodeRepository _attributeNodeRepository;
     private readonly IValueNodeRepository _valueNodeRepository;
 
-    public RecordProcessor(IEntityNodeRepository entityNodeRepository, IAttributeNodeRepository attributeNodeRepository, IValueNodeRepository valueNodeRepository)
+    public NodeRecordProcessor(IEntityNodeRepository entityNodeRepository, IAttributeNodeRepository attributeNodeRepository, IValueNodeRepository valueNodeRepository)
     {
         _entityNodeRepository = entityNodeRepository;
         _attributeNodeRepository = attributeNodeRepository;

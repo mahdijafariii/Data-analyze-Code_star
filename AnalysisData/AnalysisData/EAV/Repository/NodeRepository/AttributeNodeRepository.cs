@@ -1,9 +1,9 @@
 ﻿using AnalysisData.Data;
 using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
+using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
-namespace AnalysisData.EAV.Repository;
+namespace AnalysisData.EAV.Repository.NodeRepository;
 
 public class AttributeNodeRepository : IAttributeNodeRepository
 {

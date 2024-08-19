@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AnalysisData.FileManage.Dto;
+namespace AnalysisData.EAV.Dto;
 
 public class EdgeUploadDto
 {

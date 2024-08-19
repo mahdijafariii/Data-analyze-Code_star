@@ -1,6 +1,6 @@
 ﻿using CsvHelper;
 
-namespace AnalysisData.FileManage.Service.Business;
+namespace AnalysisData.EAV.Service.Business.Abstraction;
 
 public interface ICsvReaderService
 {

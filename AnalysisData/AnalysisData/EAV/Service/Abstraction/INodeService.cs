@@ -1,4 +1,4 @@
-﻿namespace AnalysisData.FileManage.Service;
+﻿namespace AnalysisData.EAV.Service.Abstraction;
 
 public interface INodeService
 {

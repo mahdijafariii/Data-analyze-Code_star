@@ -1,24 +1,19 @@
-﻿using System.Globalization;
-using System.Text;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.FileManage.Service.Business;
-using CsvHelper;
-using CsvHelper.Configuration;
+﻿using AnalysisData.EAV.Service.Abstraction;
+using AnalysisData.EAV.Service.Business.Abstraction;
 
-namespace AnalysisData.FileManage.Service;
+namespace AnalysisData.EAV.Service;
 
 public class NodeService : INodeService
 {
     private readonly ICsvReaderService _csvReaderService;
     private readonly IHeaderProcessor _headerProcessor;
-    private readonly IRecordProcessor _recordProcessor;
+    private readonly INodeRecordProcessor _nodeRecordProcessor;
 
-    public NodeService(ICsvReaderService csvReaderService, IHeaderProcessor headerProcessor, IRecordProcessor recordProcessor)
+    public NodeService(ICsvReaderService csvReaderService, IHeaderProcessor headerProcessor, INodeRecordProcessor nodeRecordProcessor)
     {
         _csvReaderService = csvReaderService;
         _headerProcessor = headerProcessor;
-        _recordProcessor = recordProcessor;
+        _nodeRecordProcessor = nodeRecordProcessor;
     }
 
 
@@ -28,7 +23,7 @@ public class NodeService : INodeService
         var headers = _csvReaderService.ReadHeaders(csv);
 
         await _headerProcessor.ProcessHeadersAsync(headers, id);
-        await _recordProcessor.ProcessRecordsAsync(csv, headers, id);
+        await _nodeRecordProcessor.ProcessRecordsAsync(csv, headers, id);
     }
     
 }

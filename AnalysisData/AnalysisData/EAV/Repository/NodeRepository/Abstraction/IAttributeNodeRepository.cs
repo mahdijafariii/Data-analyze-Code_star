@@ -1,6 +1,6 @@
 ﻿using AnalysisData.EAV.Model;
 
-namespace AnalysisData.EAV.Repository.Abstraction;
+namespace AnalysisData.EAV.Repository.NodeRepository.Abstraction;
 
 public interface IAttributeNodeRepository
 {

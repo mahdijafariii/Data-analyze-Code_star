@@ -3,9 +3,14 @@ using AnalysisData.CookieService;
 using AnalysisData.CookieService.abstractions;
 using AnalysisData.Data;
 using AnalysisData.EAV.Repository;
-using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.FileManage.Service;
-using AnalysisData.FileManage.Service.Business;
+using AnalysisData.EAV.Repository.EdgeRepository;
+using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
+using AnalysisData.EAV.Repository.NodeRepository;
+using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
+using AnalysisData.EAV.Service;
+using AnalysisData.EAV.Service.Abstraction;
+using AnalysisData.EAV.Service.Business;
+using AnalysisData.EAV.Service.Business.Abstraction;
 using AnalysisData.Graph;
 using AnalysisData.Graph.DataProcessService;
 using AnalysisData.Graph.Services;
@@ -43,8 +48,11 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     services.AddScoped<IDataProcessor, DataReadProcessor>();
     services.AddScoped<ICsvReaderService, CsvReaderService>();
     services.AddScoped<IHeaderProcessor, HeaderProcessor>();
-    services.AddScoped<IRecordProcessor, RecordProcessor>();
-
+    services.AddScoped<INodeRecordProcessor, NodeRecordProcessor>();
+    
+    services.AddScoped<IEdgeRecordProcessor, EdgeRecordProcessor>();
+    services.AddScoped<IFromToProcessor, FromToProcessor>();
+    services.AddScoped<IEdgeService, EdgeService>();
 
     services.AddScoped<IUserRepository, UserRepository>();
     services.AddScoped<IAccountRepository, AccountRepository>();

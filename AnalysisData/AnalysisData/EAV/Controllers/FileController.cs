@@ -1,8 +1,8 @@
-﻿using AnalysisData.FileManage.Dto;
-using AnalysisData.FileManage.Service;
+﻿using AnalysisData.EAV.Dto;
+using AnalysisData.EAV.Service.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnalysisData.FileManage.Controllers;
+namespace AnalysisData.EAV.Controllers;
 
 
 [ApiController]
@@ -11,6 +11,8 @@ public class FileController : ControllerBase
 {
     //private readonly IFileManagementService _fileManagementService;
     private readonly INodeService _nodeService;
+    private readonly IEdgeService _edgeService;
+
     
     public FileController(INodeService nodeService)
     {
@@ -62,6 +64,23 @@ public class FileController : ControllerBase
     [HttpPost("upload-file-edge")]
     public async Task<IActionResult> UploadNodeFile([FromForm] EdgeUploadDto edgeUploadDto)
     {
-        return Ok("implement...");
+        var from = edgeUploadDto.From;
+        var to = edgeUploadDto.To;
+        var file = edgeUploadDto.File;
+
+        if (file == null || file.Length == 0 || from == null || to==null)
+        {
+            return BadRequest("No file uploaded.");
+        }
+
+        try
+        {
+            await _edgeService.ProcessCsvFileAsync(file, from,to); 
+            return Ok("Node account saved successfully in the database."); 
+        }
+        catch (System.Exception e)
+        {
+            return StatusCode(400, $"An error occurred while processing the file: {e.Message}");
+        }
     }
 }

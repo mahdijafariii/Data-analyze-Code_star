@@ -25,25 +25,20 @@ public class EdgeRecordProcessor : IEdgeRecordProcessor
 
     public async Task ProcessRecordsAsync(CsvReader csv, string[] headers, string from, string to)
     {
-        while (csv.Read())
+        while (await csv.ReadAsync())
         {
             var fromId = csv.GetField(from);
             var toId = csv.GetField(to);
             if (string.IsNullOrEmpty(fromId) || string.IsNullOrEmpty(toId)) continue;
-
-            var sourceEntityNode = (await _entityNodeRepository.GetAllAsync())
-                .FirstOrDefault(a => a.Name == fromId);
-
-            var targetEntityNode = (await _entityNodeRepository.GetAllAsync())
-                .FirstOrDefault(a => a.Name == toId);
-            var entityEdge = await CreateEntityEdgeAsync(sourceEntityNode, targetEntityNode);
+            
+            var entityEdge = await CreateEntityEdgeAsync(fromId, toId);
             await ProcessValuesAsync(csv, headers, from, to, entityEdge);
         }
     }
 
-    private async Task<EntityEdge> CreateEntityEdgeAsync(EntityNode sourceEntityNode, EntityNode targetEntityNode)
+    private async Task<EntityEdge> CreateEntityEdgeAsync(string fromId, string toId)
     {
-        var entityEdge = new EntityEdge { EntityIDSource = sourceEntityNode.Id, EntityIDTarget = targetEntityNode.Id };
+        var entityEdge = new EntityEdge { EntityIDSource = fromId, EntityIDTarget =toId };
         await _entityEdgeRepository.AddAsync(entityEdge);
         return entityEdge;
     }
@@ -56,7 +51,7 @@ public class EdgeRecordProcessor : IEdgeRecordProcessor
             if (header.Equals(from, StringComparison.OrdinalIgnoreCase) ||
                 header.Equals(to, StringComparison.OrdinalIgnoreCase)) continue;
 
-            var attribute = _attributeEdgeRepository.GetByNameAttributeAsync(header);
+            var attribute = await _attributeEdgeRepository.GetByNameAttributeAsync(header);
             if (attribute == null) continue;
 
             var valueString = csv.GetField(header);

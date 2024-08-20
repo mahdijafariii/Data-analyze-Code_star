@@ -8,8 +8,8 @@ public class EntityEdge
     public int Id { get; set; }
 
     [Required]
-    public int EntityIDSource { get; set; }
+    public string EntityIDSource { get; set; }
 
     [Required]
-    public int EntityIDTarget { get; set; }
+    public string EntityIDTarget { get; set; }
 }

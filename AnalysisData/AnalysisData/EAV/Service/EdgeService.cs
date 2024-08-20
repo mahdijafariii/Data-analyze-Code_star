@@ -5,8 +5,8 @@ namespace AnalysisData.EAV.Service;
 
 public class EdgeService:IEdgeService
 {
-    private IEdgeRecordProcessor _edgeRecordProcessor;
-    private IFromToProcessor _fromToProcessor;
+    private readonly IEdgeRecordProcessor _edgeRecordProcessor;
+    private readonly IFromToProcessor _fromToProcessor;
     private readonly ICsvReaderService _csvReaderService;
 
     public EdgeService(IEdgeRecordProcessor edgeRecordProcessor, IFromToProcessor fromToProcessor, ICsvReaderService csvReaderService)
@@ -16,7 +16,7 @@ public class EdgeService:IEdgeService
         _csvReaderService = csvReaderService;
     }
 
-    public async Task ProcessCsvFileAsync(IFormFile file, string from = "From", string to = "To")
+    public async Task ProcessCsvFileAsync(IFormFile file, string from, string to)
     {
         var csv=_csvReaderService.CreateCsvReader(file);
         var headers = _csvReaderService.ReadHeaders(csv);

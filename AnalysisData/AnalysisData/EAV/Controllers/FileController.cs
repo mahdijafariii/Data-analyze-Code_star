@@ -14,9 +14,10 @@ public class FileController : ControllerBase
     private readonly IEdgeService _edgeService;
 
     
-    public FileController(INodeService nodeService)
+    public FileController(INodeService nodeService,IEdgeService edgeService)
     {
         _nodeService = nodeService;
+        _edgeService = edgeService;
     }
     
     /*[HttpPost("upload-file")]
@@ -62,7 +63,7 @@ public class FileController : ControllerBase
     
     
     [HttpPost("upload-file-edge")]
-    public async Task<IActionResult> UploadNodeFile([FromForm] EdgeUploadDto edgeUploadDto)
+    public async Task<IActionResult> UploadEdgeFile([FromForm] EdgeUploadDto edgeUploadDto)
     {
         var from = edgeUploadDto.From;
         var to = edgeUploadDto.To;

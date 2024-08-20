@@ -2,5 +2,5 @@
 
 public interface IFromToProcessor
 {
-    Task ProcessFromToAsync(string[] headers, string from, string to);
+    Task ProcessFromToAsync(IEnumerable<string> headers, string from, string to);
 }

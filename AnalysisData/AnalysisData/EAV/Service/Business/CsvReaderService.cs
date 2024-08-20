@@ -18,7 +18,7 @@ public class CsvReaderService : ICsvReaderService
         });
     }
     
-    public string[] ReadHeaders(CsvReader csv)
+    public IEnumerable<string> ReadHeaders(CsvReader csv)
     {
         csv.Read();
         csv.ReadHeader();

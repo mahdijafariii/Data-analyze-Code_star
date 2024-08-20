@@ -18,8 +18,10 @@ public class NodeRecordProcessor : INodeRecordProcessor
         _valueNodeRepository = valueNodeRepository;
     }
 
-    public async Task ProcessRecordsAsync(CsvReader csv, string[] headers, string id)
+    public async Task ProcessRecordsAsync(CsvReader csv, IEnumerable<string> headers, string id, string fileName)
     {
+        var typeAttribute = await EnsureTypeAttributeExistsAsync();
+
         while (csv.Read())
         {
             var entityId = csv.GetField(id);
@@ -27,9 +29,22 @@ public class NodeRecordProcessor : INodeRecordProcessor
 
             var entityNode = await CreateEntityNodeAsync(entityId);
             await ProcessValuesAsync(csv, headers, id, entityNode);
+            await AddFileNameAsValueNodeAsync(entityNode, typeAttribute, fileName);
         }
     }
 
+    private async Task<AttributeNode> EnsureTypeAttributeExistsAsync()
+    {
+        var typeAttribute = await _attributeNodeRepository.GetByNameAttributeAsync("type");
+        
+        if (typeAttribute == null)
+        {
+            typeAttribute = new AttributeNode { Name = "type" };
+            await _attributeNodeRepository.AddAsync(typeAttribute);
+        }
+    
+        return typeAttribute;
+    }
     private async Task<EntityNode> CreateEntityNodeAsync(string entityId)
     {
         var entityNode = new EntityNode { Name = entityId };
@@ -37,24 +52,35 @@ public class NodeRecordProcessor : INodeRecordProcessor
         return entityNode;
     }
 
-    private async Task ProcessValuesAsync(CsvReader csv, string[] headers, string id, EntityNode entityNode)
+    private async Task ProcessValuesAsync(CsvReader csv, IEnumerable<string> headers, string id, EntityNode entityNode)
     {
         foreach (var header in headers)
         {
-            if (header == id) continue; 
+            if (header == id) continue;
 
             var attribute = await _attributeNodeRepository.GetByNameAttributeAsync(header);
             if (attribute == null) continue;
 
             var valueString = csv.GetField(header);
+
             var valueNode = new ValueNode
             {
                 EntityId = entityNode.Id,
                 AttributeId = attribute.Id,
                 ValueString = valueString
             };
-
             await _valueNodeRepository.AddAsync(valueNode);
         }
+    }
+
+    private async Task AddFileNameAsValueNodeAsync(EntityNode entityNode, AttributeNode typeAttribute, string fileName)
+    {
+        var valueNode = new ValueNode
+        {
+            EntityId = entityNode.Id,
+            AttributeId = typeAttribute.Id,
+            ValueString = fileName
+        };
+        await _valueNodeRepository.AddAsync(valueNode);
     }
 }

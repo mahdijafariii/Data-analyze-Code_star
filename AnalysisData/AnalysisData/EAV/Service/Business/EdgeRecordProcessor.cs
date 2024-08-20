@@ -23,7 +23,7 @@ public class EdgeRecordProcessor : IEdgeRecordProcessor
         _entityNodeRepository = entityNodeRepository;
     }
 
-    public async Task ProcessRecordsAsync(CsvReader csv, string[] headers, string from, string to)
+    public async Task ProcessRecordsAsync(CsvReader csv, IEnumerable<string> headers, string from, string to)
     {
         while (await csv.ReadAsync())
         {
@@ -43,7 +43,7 @@ public class EdgeRecordProcessor : IEdgeRecordProcessor
         return entityEdge;
     }
 
-    private async Task ProcessValuesAsync(CsvReader csv, string[] headers, string from, string to,
+    private async Task ProcessValuesAsync(CsvReader csv, IEnumerable<string> headers, string from, string to,
         EntityEdge entityEdge)
     {
         foreach (var header in headers)
@@ -65,4 +65,5 @@ public class EdgeRecordProcessor : IEdgeRecordProcessor
             await _valueEdgeRepository.AddAsync(valueEdge);
         }
     }
+    
 }

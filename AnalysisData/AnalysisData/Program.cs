@@ -60,10 +60,7 @@ builder.Services.AddScoped<IHeaderProcessor, HeaderProcessor>();
 builder.Services.AddScoped<INodeRecordProcessor, NodeRecordProcessor>();
 builder.Services.AddScoped<IFromToProcessor, FromToProcessor>();
 builder.Services.AddScoped<IGraphServiceEav, GraphServiceEav>();
-
-
-
-
+builder.Services.AddScoped<IAdminService, AdminService>();
 // builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
@@ -92,7 +89,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseRouting();
-// app.UseCors("AllowAngularApp");
+app.UseCors("AllowAngularApp");
 app.UseMiddleware<JwtMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();

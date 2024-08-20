@@ -3,13 +3,13 @@ using AnalysisData.EAV.Service.Business.Abstraction;
 
 namespace AnalysisData.EAV.Service;
 
-public class Node2Db2DbService : INode2DBService
+public class NodeToDbService : INodeToDbService
 {
     private readonly ICsvReaderService _csvReaderService;
     private readonly IHeaderProcessor _headerProcessor;
     private readonly INodeRecordProcessor _nodeRecordProcessor;
 
-    public Node2Db2DbService(ICsvReaderService csvReaderService, IHeaderProcessor headerProcessor, INodeRecordProcessor nodeRecordProcessor)
+    public NodeToDbService(ICsvReaderService csvReaderService, IHeaderProcessor headerProcessor, INodeRecordProcessor nodeRecordProcessor)
     {
         _csvReaderService = csvReaderService;
         _headerProcessor = headerProcessor;

@@ -25,11 +25,23 @@ public class EntityNodeRepository : IEntityNodeRepository
         return await _context.EntityNodes.ToListAsync();
     }
     
-    public async Task<EntityNode> GetByEntityNameAsync(string id)
+    public async Task<EntityNode> GetEntityByNameAsync(string id)
     {
         return await _context.EntityNodes.FindAsync(id);
     }
-    
+    public async Task<List<EntityNode>> GetNodesOfEdgeList(List<string> nodeIdes)
+    {
+        List<EntityNode> entityNodes = new List<EntityNode>();
+        foreach (var nodeId in nodeIdes)
+        {
+            var node = await GetEntityByNameAsync(nodeId);
+            if (nodeId != null)
+            {
+                entityNodes.Add(node);
+            }
+        }
+        return entityNodes;
+    }
 
     public async Task DeleteAsync(int id)
     {

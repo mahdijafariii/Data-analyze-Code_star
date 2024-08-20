@@ -1,5 +1,7 @@
 using AnalysisData.EAV.Dto;
 using AnalysisData.EAV.Repository;
+using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
+using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
 using AnalysisData.Graph.Services;
 
 namespace AnalysisData.EAV.Service;
@@ -7,10 +9,15 @@ namespace AnalysisData.EAV.Service;
 public class GraphServiceEav : IGraphServiceEav
 {
     private readonly IGraphNodeRepository _graphNodeRepository;
+    private readonly IEntityNodeRepository _entityNodeRepository;
+    private readonly IEntityEdgeRepository _entityEdgeRepository;
 
-    public GraphServiceEav(IGraphNodeRepository graphNodeRepository)
+
+    public GraphServiceEav(IEntityNodeRepository entityNodeRepository, IGraphNodeRepository graphNodeRepository,IEntityEdgeRepository entityEdgeRepository)
     {
+        _entityNodeRepository = entityNodeRepository;
         _graphNodeRepository = graphNodeRepository;
+        _entityEdgeRepository = entityEdgeRepository;
     }
 
     public async Task<PaginatedListDto> GetNodesPaginationAsync(int pageIndex, int pageSize)
@@ -33,21 +40,15 @@ public class GraphServiceEav : IGraphServiceEav
     }
     
     
-    public async Task GetRelationalEdgeBaseNode(int pageIndex, int pageSize)
+    public async Task GetRelationalEdgeBaseNode(string id)
     {
-        var valueNodes =  _graphNodeRepository.GetEntityNodesAsync();
+        var node =await  _entityNodeRepository.GetEntityByNameAsync(id);
+        var edges = await _entityEdgeRepository.FindNodeLoopsAsync(node.Id);
+        var uniqueNodes = edges.SelectMany(x => new[] { x.EntityIDTarget , x.EntityIDSource }).Distinct().ToList();
+        var nodes = await _entityNodeRepository.GetNodesOfEdgeList(uniqueNodes);
 
 
-        var groupedNodes = valueNodes.Select(g => new NodeDto
-            {
-                EntityName = g.Name,
-            })
-            .ToList(); 
-        
-        var count = groupedNodes.Count;
-        var items = groupedNodes.Skip((pageIndex - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
+
 
     }
 }

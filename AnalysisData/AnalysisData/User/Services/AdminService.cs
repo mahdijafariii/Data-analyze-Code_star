@@ -38,8 +38,7 @@ public class AdminService : IAdminService
         if (userRegisterModel.Password != userRegisterModel.ConfirmPassword)
             throw new PasswordMismatchException();
 
-        if (userRegisterModel.RoleName == "admin" || userRegisterModel.RoleName == "dataManager" ||
-            userRegisterModel.RoleName == "systemManager")
+        if (userRegisterModel.RoleName is "admin" or "dataManager" or "systemManager")
         {
             var user = MakeUser(userRegisterModel);
             await _userRepository.AddUser(user);
@@ -85,7 +84,7 @@ public class AdminService : IAdminService
         var checkUsername = _userRepository.GetUserByUsername(updateAdminModel.Username);
         var checkEmail = _userRepository.GetUserByEmail(updateAdminModel.Email);
 
-        if (checkUsername != null || checkEmail != null)
+        if (checkUsername != null || (checkEmail != null && user.Email!=updateAdminModel.Email))
             throw new DuplicateUserException();
 
         _regexService.EmailCheck(updateAdminModel.Email);

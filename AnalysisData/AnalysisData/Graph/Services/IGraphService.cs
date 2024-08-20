@@ -5,7 +5,7 @@ namespace AnalysisData.Graph.Services;
 
 public interface IGraphService
 {
-    Task<(List<PaginationDto>, int, int)> GetAllAccountPagination(int page = 1);
+    Task<(List<PaginationDto>, int, int)> GetAllAccountPagination(int page, int limit);
     Task<Account> GetSpecialNode(string id);
 
     Task<(IEnumerable<AccountContractDto> accounts, IEnumerable<TransactionsContractDto> transactions)>

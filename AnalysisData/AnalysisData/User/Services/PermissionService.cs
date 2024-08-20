@@ -45,14 +45,12 @@ public class PermissionService : IPermissionService
     }
 
 
-    public string GetPermission(ClaimsPrincipal userClaims)
+    public IEnumerable<string> GetPermission(ClaimsPrincipal userClaims)
     {
         var role = userClaims.FindFirstValue(ClaimTypes.Role);
         var rolePermissions = GetRolePermissions(Assembly.GetExecutingAssembly(), role);
-        var joinedPermissions = rolePermissions.Values
-            .Select(permissionList => string.Join(" ", permissionList))
-            .ToList();
-        return string.Join(" ", joinedPermissions);
+        var permissions = rolePermissions.Values.SelectMany(x=>x);
+        return permissions;
     }
    
 }

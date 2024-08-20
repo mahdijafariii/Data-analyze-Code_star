@@ -38,9 +38,17 @@ public class AdminService : IAdminService
         if (userRegisterModel.Password != userRegisterModel.ConfirmPassword)
             throw new PasswordMismatchException();
 
-
-        var user = MakeUser(userRegisterModel);
-        await _userRepository.AddUser(user);
+        if (userRegisterModel.RoleName == "admin" || userRegisterModel.RoleName == "dataManager" ||
+            userRegisterModel.RoleName == "systemManager")
+        {
+            var user = MakeUser(userRegisterModel);
+            await _userRepository.AddUser(user);
+        }
+        else
+        {
+            throw new RoleNotFoundException();
+        }
+        
         return true;
     }
 
@@ -109,10 +117,10 @@ public class AdminService : IAdminService
     }
     
     
-    public async Task<List<UserPaginationModel>> GetUserPagination(int limit , int page)
+    public async Task<List<UserPaginationModel>> GetUserPagination(int page , int limit)
     {
         var users = await _userRepository.GetAllUserPagination(page,limit);
-        var paginationUsers = users.Select(x => new UserPaginationModel() {Username = x.Username , FirstName = x.FirstName , LastName = x.LastName , Email = x.Email , PhoneNumber = x.PhoneNumber , RoleName = x.Role});
+        var paginationUsers = users.Select(x => new UserPaginationModel() {Guid = x.Id.ToString(),Username = x.Username , FirstName = x.FirstName , LastName = x.LastName , Email = x.Email , PhoneNumber = x.PhoneNumber , RoleName = x.Role });
         return paginationUsers.ToList();
     }
 

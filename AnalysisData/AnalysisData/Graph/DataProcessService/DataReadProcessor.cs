@@ -19,7 +19,7 @@ public class DataReadProcessor : IDataProcessor
         _transactionRepository = transactionRepository;
     }
 
-    public async Task ProcessDataAsync(Stream fileStream, string fileType)
+    public async Task<List<string>> ProcessDataAsync(Stream fileStream, string fileType)
     {
         var reader = new StreamReader(fileStream);
         var csv = new CsvReader(reader, new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture));
@@ -38,5 +38,19 @@ public class DataReadProcessor : IDataProcessor
         {
             throw new ArgumentException("Invalid file type");
         }
+        fileStream.Position = 0;
+        return await ReadHeader(fileStream);
+    }
+
+    private async Task<List<string>> ReadHeader(Stream fileStream)
+    {
+        var reader = new StreamReader(fileStream);
+        var headerLine = await reader.ReadLineAsync();
+        if (string.IsNullOrEmpty(headerLine))
+        {
+            throw new FileNotFoundException();
+        }
+        var headers = headerLine.Split(',').ToList();
+        return headers;
     }
 }

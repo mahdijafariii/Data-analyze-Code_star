@@ -2,5 +2,5 @@
 
 public interface IDataProcessor
 {
-    Task ProcessDataAsync(Stream fileStream, string fileType);
+    Task<List<string>> ProcessDataAsync(Stream fileStream, string fileType);
 }

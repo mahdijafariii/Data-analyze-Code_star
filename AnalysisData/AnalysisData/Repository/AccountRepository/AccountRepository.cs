@@ -22,9 +22,9 @@ public class AccountRepository : IAccountRepository
     }
 
 
-    public async Task<List<Account>> GetAllAccountPagination(int page)
+    public async Task<List<Account>> GetAllAccountPagination(int page , int limit)
     {
-        return await _context.Accounts.Skip(10 * page).Take(10).ToListAsync();
+        return await _context.Accounts.Skip((page - 1)*limit).Take(limit).ToListAsync();
     }
 
     public async Task<List<PaginationDto>> SearchAccountPagination(int page)

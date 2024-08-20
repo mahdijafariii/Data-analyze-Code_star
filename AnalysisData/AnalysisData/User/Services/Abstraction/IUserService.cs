@@ -11,5 +11,5 @@ public interface IUserService
     Task<bool> ResetPassword(ClaimsPrincipal userClaim, string password, string confirmPassword);
     Task<bool> UpdateUserInformationByUser(ClaimsPrincipal userClaim, UpdateUserModel updateUserModel);
     Task<bool> NewPassword(ClaimsPrincipal userClaim, string oldPassword, string password, string confirmPassword);
-    Task<bool> UploadImage(Guid id, string imageUrl);
+    Task<bool> UploadImage(ClaimsPrincipal claimsPrincipal, string imageUrl);
 }

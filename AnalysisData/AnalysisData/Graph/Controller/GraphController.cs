@@ -14,10 +14,10 @@ public class GraphController : ControllerBase
         _graphUtility = graphUtility;
         _graphService = graphService;
     }
-    [HttpGet("pagination")]
-    public async Task<IActionResult> GetGraph([FromQuery] int page = 1)
+    [HttpGet("get-nodes-pagination")]
+    public async Task<IActionResult> GetGraph([FromQuery] int page = 1 , int limit = 10)
     {
-        var result = await _graphService.GetAllAccountPagination(page);
+        var result = await _graphService.GetAllAccountPagination(page , limit);
         return Ok(new
         {
             Accounts = result.Item1,
@@ -26,49 +26,14 @@ public class GraphController : ControllerBase
         });
     }
 
-    [HttpGet("special-node")]
-    public async Task<IActionResult> GetSpecialNode([FromQuery] string id)
+    [HttpGet("special-node-information")]
+    public async Task<IActionResult> GetSpecialNodeInformation([FromQuery] string id)
     {
         var result = await _graphService.GetSpecialNode(id);
-        return Ok(new
-        {
-            id = result.AccountID,
-            firstName = result.OwnerName,
-            lastName = result.OwnerLastName,
-            other = new 
-            {
-                result.BranchAdress,
-                result.BranchName,
-                result.AccountType,
-                result.BranchTelephone,
-                result.IBAN,
-                result.CardID
-            }
-        });
+        return Ok(result);
     }
-    
-    [HttpGet("get-node-transactions")]
-    public async Task<IActionResult> GetNodeTransactions([FromQuery] string id)
-    {
-        var result = await _graphService.GetSpecialNode(id);
-        return Ok(new
-        {
-            id = result.AccountID,
-            firstName = result.OwnerName,
-            lastName = result.OwnerLastName,
-            other = new 
-            {
-                result.BranchAdress,
-                result.BranchName,
-                result.AccountType,
-                result.BranchTelephone,
-                result.IBAN,
-                result.CardID
-            }
-        });
-    }
-    
-    [HttpGet("get-transaction-base-on-node-id")]
+
+    [HttpGet("get-transaction-of-special-node")]
     public async Task<IActionResult> GetTransactionBaseOnNodeId([FromQuery] string nodeId)
     {
         var result = await _graphService.GetTransactionBasedOnNodeId(nodeId);

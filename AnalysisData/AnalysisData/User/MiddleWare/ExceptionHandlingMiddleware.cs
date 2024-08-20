@@ -33,6 +33,10 @@ public class ExceptionHandlingMiddleware
                     await HandleExceptionAsync(httpContext, ex, StatusCodes.Status404NotFound);
                     return;
                 }
+                if (ex is PasswordMismatchException)
+                {
+                    await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
+                }
             }
         }
         catch (UserNotFoundException ex)
@@ -90,6 +94,10 @@ public class ExceptionHandlingMiddleware
         catch (RoleNotFoundException ex)
         {
             await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
+        }
+        catch (AdminExistenceException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex, StatusCodes.Status403Forbidden);
         }
     }
 

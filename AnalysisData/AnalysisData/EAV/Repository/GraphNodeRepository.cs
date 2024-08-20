@@ -13,12 +13,8 @@ public class GraphNodeRepository : IGraphNodeRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<ValueNode>> GetValueNodesByAttributeAsync(params string[] attributeNames)
+    public IEnumerable<EntityNode> GetValueNodesAsync()
     {
-        return await _context.ValueNodes
-            .Include(v => v.Entity)
-            .Include(v => v.Attribute)
-            .Where(v => attributeNames.Contains(v.Attribute.Name))
-            .ToListAsync();
+        return _context.EntityNodes;
     }
 }

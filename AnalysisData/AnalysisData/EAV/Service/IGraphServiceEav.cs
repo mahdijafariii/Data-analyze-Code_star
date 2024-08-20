@@ -1,0 +1,8 @@
+using AnalysisData.EAV.Dto;
+
+namespace AnalysisData.EAV.Service;
+
+public interface IGraphServiceEav
+{
+    Task<PaginatedListDto> GetNodesAsync(int pageIndex, int pageSize);
+}

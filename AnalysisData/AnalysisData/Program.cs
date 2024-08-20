@@ -1,7 +1,6 @@
 using AnalysisData.CookieService;
 using AnalysisData.CookieService.abstractions;
 using AnalysisData.Data;
-using AnalysisData.EAV.Model;
 using AnalysisData.EAV.Repository;
 using AnalysisData.EAV.Repository.EdgeRepository;
 using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
@@ -44,9 +43,11 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IGraphUtility, GraphUtility>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<IGraphServices, GraphServices>();
 builder.Services.AddScoped<IEdgeService, EdgeService>();
 builder.Services.AddScoped<INodeService,NodeService>();
 builder.Services.AddScoped<ICsvReaderService, CsvReaderService>();
+
 builder.Services.AddScoped<IGraphNodeRepository, GraphNodeRepository>();
 builder.Services.AddScoped<IAttributeNodeRepository, AttributeNodeRepository>();
 builder.Services.AddScoped<IValueNodeRepository, ValueNodeRepository>();
@@ -58,6 +59,7 @@ builder.Services.AddScoped<IEdgeRecordProcessor, EdgeRecordProcessor>();
 builder.Services.AddScoped<IHeaderProcessor, HeaderProcessor>();
 builder.Services.AddScoped<INodeRecordProcessor, NodeRecordProcessor>();
 builder.Services.AddScoped<IFromToProcessor, FromToProcessor>();
+builder.Services.AddScoped<IGraphServiceEav, GraphServiceEav>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 // builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));

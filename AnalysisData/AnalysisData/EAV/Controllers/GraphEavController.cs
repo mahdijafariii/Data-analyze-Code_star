@@ -20,4 +20,15 @@ public class GraphEavController : ControllerBase
         var paginatedNodes = await _graphServiceEav.GetNodesPaginationAsync(pageIndex, pageSize);
         return Ok(paginatedNodes);
     }
+    
+    [HttpGet("GetRelationalEdgeByNodeName")]
+    public async Task<IActionResult> GetRelationalEdgeByNodeName([FromQuery] string nodeID)
+    {
+        var result = await _graphServiceEav.GetRelationalEdgeBaseNode(nodeID);
+        return Ok(new
+        {
+            nodes = result.Item1,
+            edges = result.Item2
+        });
+    }
 }

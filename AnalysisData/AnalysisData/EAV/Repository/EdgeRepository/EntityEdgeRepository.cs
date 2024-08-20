@@ -33,7 +33,7 @@ public class EntityEdgeRepository : IEntityEdgeRepository
     public async Task<List<EntityEdge>> FindNodeLoopsAsync(int id)
     {
         return await _context.EntityEdges
-            .Where(x => x.EntityIDSource == id.ToString() && x.EntityIDTarget == id.ToString())
+            .Where(x => x.EntityIDSource == id.ToString() || x.EntityIDTarget == id.ToString())
             .ToListAsync();
     }
 

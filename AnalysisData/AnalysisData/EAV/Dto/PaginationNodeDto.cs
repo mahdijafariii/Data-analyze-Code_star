@@ -1,8 +1,6 @@
 namespace AnalysisData.EAV.Dto;
 
-public class NodeDto
+public class PaginationNodeDto
 {
-    public string EntityID{ get; set; }
     public string EntityName { get; set; }
-
 }

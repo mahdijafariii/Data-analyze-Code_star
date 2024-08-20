@@ -13,9 +13,9 @@ public class GraphServiceEav : IGraphServiceEav
         _graphNodeRepository = graphNodeRepository;
     }
 
-    public async Task<PaginatedListDto> GetNodesAsync(int pageIndex, int pageSize)
+    public async Task<PaginatedListDto> GetNodesPaginationAsync(int pageIndex, int pageSize)
     {
-        var valueNodes =  _graphNodeRepository.GetValueNodesAsync();
+        var valueNodes =  _graphNodeRepository.GetEntityNodesAsync();
 
 
         var groupedNodes = valueNodes.Select(g => new NodeDto
@@ -30,5 +30,24 @@ public class GraphServiceEav : IGraphServiceEav
             .ToList();
 
         return new PaginatedListDto(items, pageIndex, count, pageSize);
+    }
+    
+    
+    public async Task GetRelationalEdgeBaseNode(int pageIndex, int pageSize)
+    {
+        var valueNodes =  _graphNodeRepository.GetEntityNodesAsync();
+
+
+        var groupedNodes = valueNodes.Select(g => new NodeDto
+            {
+                EntityName = g.Name,
+            })
+            .ToList(); 
+        
+        var count = groupedNodes.Count;
+        var items = groupedNodes.Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
     }
 }

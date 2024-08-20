@@ -6,6 +6,6 @@ public interface IEntityNodeRepository
 {
     Task AddAsync(EntityNode entity);
     Task<IEnumerable<EntityNode>> GetAllAsync();
-    Task<EntityNode> GetByIdAsync(int id);
+    Task<EntityNode> GetByEntityNameAsync(string id);
     Task DeleteAsync(int id);
 }

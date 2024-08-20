@@ -24,8 +24,8 @@ public class EntityNodeRepository : IEntityNodeRepository
     {
         return await _context.EntityNodes.ToListAsync();
     }
-
-    public async Task<EntityNode> GetByIdAsync(int id)
+    
+    public async Task<EntityNode> GetByEntityNameAsync(string id)
     {
         return await _context.EntityNodes.FindAsync(id);
     }

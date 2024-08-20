@@ -4,5 +4,5 @@ namespace AnalysisData.EAV.Service;
 
 public interface IGraphServiceEav
 {
-    Task<PaginatedListDto> GetNodesAsync(int pageIndex, int pageSize);
+    Task<PaginatedListDto> GetNodesPaginationAsync(int pageIndex, int pageSize);
 }

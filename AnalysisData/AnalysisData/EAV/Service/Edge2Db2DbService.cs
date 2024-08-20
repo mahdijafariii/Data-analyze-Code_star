@@ -3,13 +3,13 @@ using AnalysisData.EAV.Service.Business.Abstraction;
 
 namespace AnalysisData.EAV.Service;
 
-public class EdgeService:IEdgeService
+public class Edge2Db2DbService:IEdge2DBService
 {
     private readonly IEdgeRecordProcessor _edgeRecordProcessor;
     private readonly IFromToProcessor _fromToProcessor;
     private readonly ICsvReaderService _csvReaderService;
 
-    public EdgeService(IEdgeRecordProcessor edgeRecordProcessor, IFromToProcessor fromToProcessor, ICsvReaderService csvReaderService)
+    public Edge2Db2DbService(IEdgeRecordProcessor edgeRecordProcessor, IFromToProcessor fromToProcessor, ICsvReaderService csvReaderService)
     {
         _edgeRecordProcessor = edgeRecordProcessor;
         _fromToProcessor = fromToProcessor;

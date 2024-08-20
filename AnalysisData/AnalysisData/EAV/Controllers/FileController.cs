@@ -10,14 +10,14 @@ namespace AnalysisData.EAV.Controllers;
 public class FileController : ControllerBase
 {
     //private readonly IFileManagementService _fileManagementService;
-    private readonly INodeService _nodeService;
-    private readonly IEdgeService _edgeService;
+    private readonly INode2DBService _node2DbService;
+    private readonly IEdge2DBService _edge2DbService;
 
     
-    public FileController(INodeService nodeService,IEdgeService edgeService)
+    public FileController(INode2DBService node2DbService,IEdge2DBService edge2DbService)
     {
-        _nodeService = nodeService;
-        _edgeService = edgeService;
+        _node2DbService = node2DbService;
+        _edge2DbService = edge2DbService;
     }
     
     /*[HttpPost("upload-file")]
@@ -52,7 +52,7 @@ public class FileController : ControllerBase
 
         try
         {
-            await _nodeService.ProcessCsvFileAsync(file, uniqueAttribute, file.FileName); 
+            await _node2DbService.ProcessCsvFileAsync(file, uniqueAttribute, file.FileName); 
             return Ok("Node account saved successfully in the database."); 
         }
         catch (System.Exception e)
@@ -76,7 +76,7 @@ public class FileController : ControllerBase
 
         try
         {
-            await _edgeService.ProcessCsvFileAsync(file, from,to); 
+            await _edge2DbService.ProcessCsvFileAsync(file, from,to); 
             return Ok("Node account saved successfully in the database."); 
         }
         catch (System.Exception e)

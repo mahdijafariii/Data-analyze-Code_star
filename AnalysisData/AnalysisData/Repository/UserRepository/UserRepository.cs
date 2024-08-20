@@ -31,7 +31,7 @@ namespace AnalysisData.Repository.UserRepository
         }
 
 
-        public async Task<List<User>> GetAllUserPagination(int page , int limit)
+        public async Task<List<User>> GetAllUserPagination(int page, int limit)
         {
             return await _context.Users.Skip((page - 1)*limit).Take(limit).ToListAsync();
         }

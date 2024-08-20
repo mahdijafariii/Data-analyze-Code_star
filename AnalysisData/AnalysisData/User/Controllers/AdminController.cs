@@ -33,9 +33,9 @@ public class AdminController : ControllerBase
 
     //[Authorize(Roles = "admin")]
     [HttpGet("GetUsersPagination")]
-    public async Task<IActionResult> GetAllUsers(int limit , int page)
+    public async Task<IActionResult> GetAllUsers(int page = 1, int limit = 10)
     {
-        var usersPagination = await _adminService.GetUserPagination(limit, page);
+        var usersPagination = await _adminService.GetUserPagination(page, limit);
         var userCount = await _adminService.GetUserCount();
         return Ok(new
         {

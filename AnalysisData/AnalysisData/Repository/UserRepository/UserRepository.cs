@@ -31,9 +31,13 @@ namespace AnalysisData.Repository.UserRepository
         }
 
 
-        public async Task<IReadOnlyList<User>> GetAllUser()
+        public async Task<List<User>> GetAllUserPagination(int page, int limit)
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.Skip((page - 1)*limit).Take(limit).ToListAsync();
+        }
+        public async Task<int> GetUsersCount()
+        {
+            return await _context.Users.CountAsync();
         }
 
         public async Task<bool> DeleteUser(Guid id)

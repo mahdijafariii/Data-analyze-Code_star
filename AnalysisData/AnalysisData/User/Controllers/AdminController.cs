@@ -18,31 +18,31 @@ public class AdminController : ControllerBase
         _adminService = adminService;
     }
 
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegisterModel)
     {
         var isRegister = await _adminService.Register(userRegisterModel);
         if (isRegister)
         {
-            return Ok("success");
+            return Ok(new {massage = "User added successfully"});
         }
 
         return BadRequest("not success");
     }
 
     //[Authorize(Roles = "admin")]
-    [HttpGet("GetUsers")]
-    public async Task<IActionResult> GetAllUsers()
+    [HttpGet("GetUsersPagination")]
+    public async Task<IActionResult> GetAllUsers(int page = 1, int limit = 10)
     {
-        var users = await _adminService.GetAllUsers();
-
-        if (users == null || users.Count == 0)
+        var usersPagination = await _adminService.GetUserPagination(page, limit);
+        var userCount = await _adminService.GetUserCount();
+        return Ok(new
         {
-            return NoContent();
-        }
-
-        return Ok(users);
+            users = usersPagination,
+            count = userCount,
+            thisPage = page,
+        });
     }
 
     [HttpDelete("DeleteUser")]
@@ -56,7 +56,8 @@ public class AdminController : ControllerBase
 
         return NotFound(new { message = "User not found." });
     }
-
+    
+    [Authorize(Roles = "admin")]
     [HttpPut("UpdateUser")]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateAdminModel updateAdminModel)
     {

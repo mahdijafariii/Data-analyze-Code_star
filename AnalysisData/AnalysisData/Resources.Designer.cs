@@ -78,7 +78,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We have file with this information !.
+        ///   Looks up a localized string similar to We have this file ! .
         /// </summary>
         internal static string FileExistenceException {
             get {
@@ -137,6 +137,24 @@ namespace AnalysisData {
         internal static string RoleNotFoundException {
             get {
                 return ResourceManager.GetString("RoleNotFoundException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Token expired  !.
+        /// </summary>
+        internal static string TokenExpiredException {
+            get {
+                return ResourceManager.GetString("TokenExpiredException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Token not found in cookies !.
+        /// </summary>
+        internal static string TokenNotFoundInCookieException {
+            get {
+                return ResourceManager.GetString("TokenNotFoundInCookieException", resourceCulture);
             }
         }
         

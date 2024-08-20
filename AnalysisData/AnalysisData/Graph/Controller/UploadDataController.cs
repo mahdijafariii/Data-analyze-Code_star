@@ -23,9 +23,9 @@ public class DataController : ControllerBase
         }
 
         var stream = file.OpenReadStream();
-        await _dataProcessor.ProcessDataAsync(stream, "account");
+        var result = await _dataProcessor.ProcessDataAsync(stream, "account");
 
-        return Ok("Account data processed successfully.");
+        return Ok(result);
     }
 
     [HttpPost("upload/transaction")]
@@ -37,8 +37,8 @@ public class DataController : ControllerBase
         }
 
         var stream = file.OpenReadStream();
-        await _dataProcessor.ProcessDataAsync(stream, "transaction");
+        var result = await _dataProcessor.ProcessDataAsync(stream, "account");
 
-        return Ok("Transaction data processed successfully.");
+        return Ok(result);
     }
 }

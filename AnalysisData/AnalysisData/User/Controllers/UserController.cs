@@ -28,8 +28,8 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login([FromBody] UserLoginModel userLoginModel)
     {
-        var user = _userService.Login(userLoginModel);
-        return Ok(new { user.Result.FirstName, user.Result.LastName, user.Result.ImageURL });
+        var user = _userService.Login(userLoginModel).Result;
+        return Ok(new { user.FirstName, user.LastName, user.ImageURL });
     }
 
     [HttpGet("permissions")]
@@ -37,13 +37,14 @@ public class UserController : ControllerBase
     {
         var userClaims = User;
         var permission = _permissionService.GetPermission(userClaims);
-        var username = userClaims.FindFirstValue("username");
         var firstName = userClaims.FindFirstValue("firstname");
         var lastName = userClaims.FindFirstValue("lastname");
-        return Ok(new { username, firstName, lastName, permission });
+        var image = userClaims.FindFirstValue("image");
+
+        return Ok(new { image, firstName, lastName, permission });
     }
 
-
+    [Authorize(Roles = "admin")]
     [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel resetPasswordModel)
     {
@@ -52,49 +53,60 @@ public class UserController : ControllerBase
             resetPasswordModel.ConfirmPassword);
         if (check)
         {
-            return Ok("success");
+            return Ok(new {massage = "success"});
         }
 
-        return BadRequest("not success");
+        return BadRequest(new {massage = "not success"});
     }
-    
-    [HttpPost("UploadImage")]
-    public IActionResult UploadImage(Guid id,IFormFile file)
-    {
-            if (file == null || file.Length == 0)
-            {
-                return BadRequest("No file uploaded.");
-            }
 
-            _userService.UploadImage(id, file.FileName);
-        
-            return Ok("Uploaded successfully.");
+    [Authorize(Roles = "admin")]
+    [HttpPost("UploadImage")]
+    public IActionResult UploadImage(IFormFile file)
+    {
+        var user = User;
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest(new {massage = "No file uploaded."});
+        }
+
+        _userService.UploadImage(user, file.FileName);
+
+        return Ok(new {massage = "Uploaded successfully."});
     }
     
     [HttpPut("UpdateUser")]
-    public IActionResult UpdateUser(Guid id, [FromBody] UpdateUserModel updateUserModel)
+    public IActionResult UpdateUser([FromBody] UpdateUserModel updateUserModel)
     {
-        var updatedUser = _userService.UpdateUserInformationByUser(id, updateUserModel);
-        if (updatedUser!=null)
+        var user = User;
+        var updatedUser = _userService.UpdateUserInformationByUser(user, updateUserModel);
+        if (updatedUser != null)
         {
-            return Ok("success");
+            return Ok(new {massage = "updated successfully"});
         }
-    
-        return BadRequest("not success");
+
+        return BadRequest(new {massage = "not success"});
     }
-    
+
     [HttpPost("new-password")]
     public async Task<IActionResult> NewPassword([FromBody] NewPasswordModel newPasswordModel)
     {
         var userClaim = User;
-        var check = await _userService.NewPassword(userClaim, newPasswordModel.OldPassword,newPasswordModel.NewPassword,
+        var check = await _userService.NewPassword(userClaim, newPasswordModel.OldPassword,
+            newPasswordModel.NewPassword,
             newPasswordModel.ConfirmPassword);
         if (check)
         {
-            return Ok("success");
+            return Ok(new {massage = "reset successfully"});
         }
 
-        return BadRequest("not success");
+        return BadRequest(new {massage = "not success"});
     }
-    
+
+
+    [HttpGet("log-out")]
+    public IActionResult Logout()
+    {
+        Response.Cookies.Delete("AuthToken");
+        return Ok(new { message = "Logout successful" });
+    }
 }

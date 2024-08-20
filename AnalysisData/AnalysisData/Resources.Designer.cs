@@ -78,6 +78,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We have this file ! .
+        /// </summary>
+        internal static string FileExistenceException {
+            get {
+                return ResourceManager.GetString("FileExistenceException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Email format !.
         /// </summary>
         internal static string InvalidEmailFormatException {

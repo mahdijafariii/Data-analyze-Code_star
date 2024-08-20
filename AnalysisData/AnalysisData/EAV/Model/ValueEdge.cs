@@ -1,0 +1,19 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AnalysisData.EAV.Model;
+
+public class ValueEdge
+{
+    [Key]
+    public int Id { get; set; }
+        
+    public int EntityId { get; set; }
+    public int AttributeId { get; set; }
+        
+    [Required]
+    public string ValueString { get; set; }
+
+    // Navigation properties
+    public EntityEdge Entity { get; set; }
+    public AttributeEdge Attribute { get; set; }
+}

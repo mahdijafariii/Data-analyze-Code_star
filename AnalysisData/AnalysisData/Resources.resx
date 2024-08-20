@@ -51,4 +51,7 @@
     <data name="TokenExpiredException" xml:space="preserve">
         <value>Token expired  !</value>
     </data>
+    <data name="FileExistenceException" xml:space="preserve">
+        <value>We have this file ! </value>
+    </data>
 </root>

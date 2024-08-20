@@ -53,10 +53,10 @@ public class UserController : ControllerBase
             resetPasswordModel.ConfirmPassword);
         if (check)
         {
-            return Ok("success");
+            return Ok(new {massage = "success"});
         }
 
-        return BadRequest("not success");
+        return BadRequest(new {massage = "not success"});
     }
 
     [Authorize(Roles = "admin")]
@@ -66,12 +66,12 @@ public class UserController : ControllerBase
         var user = User;
         if (file == null || file.Length == 0)
         {
-            return BadRequest("No file uploaded.");
+            return BadRequest(new {massage = "No file uploaded."});
         }
 
         _userService.UploadImage(user, file.FileName);
 
-        return Ok("Uploaded successfully.");
+        return Ok(new {massage = "Uploaded successfully."});
     }
 
     [HttpPut("UpdateUser")]
@@ -81,10 +81,10 @@ public class UserController : ControllerBase
         var updatedUser = _userService.UpdateUserInformationByUser(user, updateUserModel);
         if (updatedUser != null)
         {
-            return Ok("success");
+            return Ok(new {massage = "updated successfully"});
         }
 
-        return BadRequest("not success");
+        return BadRequest(new {massage = "not success"});
     }
 
     [HttpPost("new-password")]
@@ -96,10 +96,10 @@ public class UserController : ControllerBase
             newPasswordModel.ConfirmPassword);
         if (check)
         {
-            return Ok("success");
+            return Ok(new {massage = "reset successfully"});
         }
 
-        return BadRequest("not success");
+        return BadRequest(new {massage = "not success"});
     }
 
 

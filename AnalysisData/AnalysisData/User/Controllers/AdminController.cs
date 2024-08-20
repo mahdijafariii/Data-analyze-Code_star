@@ -25,7 +25,7 @@ public class AdminController : ControllerBase
         var isRegister = await _adminService.Register(userRegisterModel);
         if (isRegister)
         {
-            return Ok("success");
+            return Ok(new {massage = "User added successfully"});
         }
 
         return BadRequest("not success");

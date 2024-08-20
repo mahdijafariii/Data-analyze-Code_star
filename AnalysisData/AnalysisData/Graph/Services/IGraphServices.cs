@@ -3,7 +3,7 @@ using AnalysisData.Graph.Dto;
 
 namespace AnalysisData.Graph.Services;
 
-public interface IGraphService
+public interface IGraphServices
 {
     Task<(List<PaginationDto>, int, int)> GetAllAccountPagination(int page, int limit);
     Task<Account> GetSpecialNode(string id);

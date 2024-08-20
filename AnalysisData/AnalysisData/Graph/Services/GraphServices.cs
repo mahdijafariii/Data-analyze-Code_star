@@ -6,7 +6,7 @@ using Transaction = System.Transactions.Transaction;
 
 namespace AnalysisData.Graph.Services;
 
-public class GraphServices : IGraphService
+public class GraphServices : IGraphServices
 {
     private readonly IGraphUtility _graphUtility;
     private readonly IAccountRepository _accountRepository;

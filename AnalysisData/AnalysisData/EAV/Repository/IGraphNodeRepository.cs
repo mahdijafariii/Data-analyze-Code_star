@@ -4,5 +4,5 @@ namespace AnalysisData.EAV.Repository;
 
 public interface IGraphNodeRepository
 {
-    Task<IEnumerable<ValueNode>> GetValueNodesByAttributeAsync(params string[] attributeNames);
+    IEnumerable<EntityNode> GetValueNodesAsync();
 }

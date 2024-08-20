@@ -103,7 +103,7 @@ public class UserController : ControllerBase
     }
 
 
-    [HttpGet("log-out")]
+    [HttpPost("logOut")]
     public IActionResult Logout()
     {
         Response.Cookies.Delete("AuthToken");

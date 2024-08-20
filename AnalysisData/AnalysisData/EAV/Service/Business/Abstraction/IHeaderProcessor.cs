@@ -2,5 +2,5 @@
 
 public interface IHeaderProcessor
 {
-    Task ProcessHeadersAsync(string[] headers, string uniqueAttribute);
+    Task ProcessHeadersAsync(IEnumerable<string> headers, string uniqueAttribute);
 }

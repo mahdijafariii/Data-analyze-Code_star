@@ -52,7 +52,7 @@ public class FileController : ControllerBase
 
         try
         {
-            await _nodeService.ProcessCsvFileAsync(file, uniqueAttribute); 
+            await _nodeService.ProcessCsvFileAsync(file, uniqueAttribute, file.FileName); 
             return Ok("Node account saved successfully in the database."); 
         }
         catch (System.Exception e)

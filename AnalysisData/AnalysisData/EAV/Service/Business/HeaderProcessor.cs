@@ -13,7 +13,7 @@ public class HeaderProcessor : IHeaderProcessor
         _attributeNodeRepository = attributeNodeRepository;
     }
     
-    public async Task ProcessHeadersAsync(string[] headers, string uniqueAttribute)
+    public async Task ProcessHeadersAsync(IEnumerable<string> headers, string uniqueAttribute)
     {
         foreach (var header in headers)
         {

@@ -73,7 +73,7 @@ public class UserController : ControllerBase
 
         return Ok(new {massage = "Uploaded successfully."});
     }
-
+    
     [HttpPut("UpdateUser")]
     public IActionResult UpdateUser([FromBody] UpdateUserModel updateUserModel)
     {

@@ -18,7 +18,7 @@ public class AdminController : ControllerBase
         _adminService = adminService;
     }
 
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegisterModel)
     {
@@ -56,7 +56,8 @@ public class AdminController : ControllerBase
 
         return NotFound(new { message = "User not found." });
     }
-
+    
+    [Authorize(Roles = "admin")]
     [HttpPut("UpdateUser")]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateAdminModel updateAdminModel)
     {

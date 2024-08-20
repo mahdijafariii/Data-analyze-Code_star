@@ -109,7 +109,7 @@ public class UserService : IUserService
         var user = _userRepository.GetUserByUsername(userName);
         var checkEmail = _userRepository.GetUserByEmail(updateUserModel.Email);
 
-        if (checkEmail != null)
+        if (checkEmail != null && user.Email!=updateUserModel.Email)
             throw new DuplicateUserException();
 
         _regexService.EmailCheck(updateUserModel.Email);

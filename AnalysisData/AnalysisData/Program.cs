@@ -34,6 +34,7 @@ builder.Services.AddScoped<IEdgeToDbService, EdgeToDBService>();
 builder.Services.AddScoped<INodeToDbService,NodeToDbService>();
 builder.Services.AddScoped<ICsvReaderService, CsvReaderService>();
 builder.Services.AddScoped<IGraphNodeRepository, GraphNodeRepository>();
+builder.Services.AddScoped<IGraphEdgeRepository, GraphEdgeRepository>();
 builder.Services.AddScoped<IAttributeNodeRepository, AttributeNodeRepository>();
 builder.Services.AddScoped<IValueNodeRepository, ValueNodeRepository>();
 builder.Services.AddScoped<IEntityNodeRepository, EntityNodeRepository>();

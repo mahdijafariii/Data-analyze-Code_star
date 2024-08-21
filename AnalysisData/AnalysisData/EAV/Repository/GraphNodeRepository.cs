@@ -13,7 +13,7 @@ public class GraphNodeRepository : IGraphNodeRepository
         _context = context;
     }
 
-    public IEnumerable<EntityNode> GetValueNodesAsync()
+    public IEnumerable<EntityNode> GetEntityNodesAsync()
     {
         return _context.EntityNodes;
     }

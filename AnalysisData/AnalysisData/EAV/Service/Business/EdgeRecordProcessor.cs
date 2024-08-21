@@ -38,7 +38,9 @@ public class EdgeRecordProcessor : IEdgeRecordProcessor
 
     private async Task<EntityEdge> CreateEntityEdgeAsync(string fromId, string toId)
     {
-        var entityEdge = new EntityEdge { EntityIDSource = fromId, EntityIDTarget =toId };
+        var fromNode = _entityNodeRepository.GetEntityByNameAsync(fromId);
+        var toNode = _entityNodeRepository.GetEntityByNameAsync(toId);
+        var entityEdge = new EntityEdge { EntityIDSource = fromNode.Id.ToString(), EntityIDTarget =toNode.Id.ToString() };
         await _entityEdgeRepository.AddAsync(entityEdge);
         return entityEdge;
     }

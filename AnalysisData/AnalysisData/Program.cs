@@ -44,8 +44,8 @@ builder.Services.AddScoped<IGraphUtility, GraphUtility>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IGraphServices, GraphServices>();
-builder.Services.AddScoped<IEdgeService, EdgeService>();
-builder.Services.AddScoped<INodeService,NodeService>();
+builder.Services.AddScoped<IEdgeToDbService, EdgeToDBService>();
+builder.Services.AddScoped<INodeToDbService,NodeToDbService>();
 builder.Services.AddScoped<ICsvReaderService, CsvReaderService>();
 
 builder.Services.AddScoped<IGraphNodeRepository, GraphNodeRepository>();

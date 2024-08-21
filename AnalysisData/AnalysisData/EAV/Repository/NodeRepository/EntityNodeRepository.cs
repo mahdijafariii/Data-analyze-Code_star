@@ -24,12 +24,29 @@ public class EntityNodeRepository : IEntityNodeRepository
     {
         return await _context.EntityNodes.ToListAsync();
     }
-
-    public async Task<EntityNode> GetByIdAsync(int id)
+    
+    public async Task<EntityNode> GetByIdAsync(string id)
     {
-        return await _context.EntityNodes.FindAsync(id);
+        return await _context.EntityNodes.FirstOrDefaultAsync(x => x.Id.ToString() == id);
     }
     
+    public async Task<EntityNode> GetEntityByNameAsync(string id)
+    {
+        return await _context.EntityNodes.FirstOrDefaultAsync(x=> x.Name == id);
+    }
+    public async Task<List<EntityNode>> GetNodesOfEdgeList(List<string> nodeIdes)
+    {
+        List<EntityNode> entityNodes = new List<EntityNode>();
+        foreach (var nodeId in nodeIdes)
+        {
+            var node = await GetByIdAsync(nodeId);
+            if (nodeId != null)
+            {
+                entityNodes.Add(node);
+            }
+        }
+        return entityNodes;
+    }
 
     public async Task DeleteAsync(int id)
     {

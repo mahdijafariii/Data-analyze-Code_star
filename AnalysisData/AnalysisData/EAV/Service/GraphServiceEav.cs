@@ -55,11 +55,11 @@ public class GraphServiceEav : IGraphServiceEav
         return (nodeDto, edgeDto);
     }
 
-    public async Task<Dictionary<string, object>> GetNodeInformation(string headerUniqueId)
+    public async Task<Dictionary<string, string>> GetNodeInformation(string headerUniqueId)
     {
         var result = await _graphNodeRepository.GetAttributeValues(headerUniqueId);
          
-        var output = new Dictionary<string, object>();
+        var output = new Dictionary<string, string>();
 
         foreach (var item in result)
         {
@@ -69,11 +69,11 @@ public class GraphServiceEav : IGraphServiceEav
         return output;
     }
     
-    public async Task<Dictionary<string, object>> GetEdgeInformation(int edgeId)
+    public async Task<Dictionary<string, string>> GetEdgeInformation(int edgeId)
     {
         var result = await _graphEdgeRepository.GetAttributeValues(edgeId);
          
-        var output = new Dictionary<string, object>();
+        var output = new Dictionary<string, string>();
 
         foreach (var item in result)
         {

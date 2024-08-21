@@ -8,8 +8,8 @@ using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services.Abstraction;
 using AnalysisData.UserManage.LoginModel;
 using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.RegisterModel;
 using AnalysisData.UserManage.UpdateModel;
+using AnalysisData.UserManage.UserPaginationModel;
 
 namespace AnalysisData.Services;
 
@@ -32,7 +32,7 @@ public class UserService : IUserService
     public async Task<bool> ResetPassword(ClaimsPrincipal userClaim, string password, string confirmPassword)
     {
         var userName = userClaim.FindFirstValue("username");
-        var user = _userRepository.GetUserByUsername(userName);
+        var user =  _userRepository.GetUserByUsername(userName);
         if (user == null)
         {
             throw new UserNotFoundException();
@@ -103,34 +103,34 @@ public class UserService : IUserService
     }
 
 
-    public Task<bool> UpdateUserInformationByUser(ClaimsPrincipal userClaim, UpdateUserModel updateUserModel)
+    public async Task<bool> UpdateUserInformationByUser(ClaimsPrincipal userClaim, UpdateUserModel updateUserModel)
     {
         var userName = userClaim.FindFirstValue("username");
-        var user = _userRepository.GetUserByUsername(userName);
-        var checkEmail = _userRepository.GetUserByEmail(updateUserModel.Email);
+        var user =  _userRepository.GetUserByUsername(userName);
+        var checkEmail =  _userRepository.GetUserByEmail(updateUserModel.Email);
 
-        if (checkEmail != null && user.Email!=updateUserModel.Email)
+        if (checkEmail != null && user.Email != updateUserModel.Email)
             throw new DuplicateUserException();
 
         _regexService.EmailCheck(updateUserModel.Email);
         _regexService.PhoneNumberCheck(updateUserModel.PhoneNumber);
-        SetUpdatedInformation(user, updateUserModel);
-        return Task.FromResult(true);
+        await SetUpdatedInformation(user, updateUserModel);
+        return true;
     }
 
-    private void SetUpdatedInformation(User user, UpdateUserModel updateUserModel)
+    private async Task SetUpdatedInformation(User user, UpdateUserModel updateUserModel)
     {
         user.FirstName = updateUserModel.FirstName;
         user.LastName = updateUserModel.LastName;
         user.Email = updateUserModel.Email;
         user.PhoneNumber = updateUserModel.PhoneNumber;
-        _userRepository.UpdateUser(user.Id, user);
+        await _userRepository.UpdateUser(user.Id, user);
     }
 
     public async Task<bool> UploadImage(ClaimsPrincipal claimsPrincipal, string imageUrl)
     {
         var userName = claimsPrincipal.FindFirstValue("username");
-        var user = _userRepository.GetUserByUsername(userName);
+        var user =  _userRepository.GetUserByUsername(userName);
         if (user == null)
         {
             throw new UserNotFoundException();
@@ -139,5 +139,16 @@ public class UserService : IUserService
         user.ImageURL = imageUrl;
         await _userRepository.UpdateUser(user.Id, user);
         return true;
+    }
+
+    public async Task<UserPaginationModel> GetUserById(Guid id)
+    {
+        var user = _userRepository.GetUserById(id);
+        var paginationUser = new UserPaginationModel
+        {
+            Guid = user.Id.ToString(), Username = user.Username, FirstName = user.FirstName, LastName = user.LastName,
+            Email = user.Email, PhoneNumber = user.PhoneNumber, RoleName = user.Role
+        };
+        return paginationUser;
     }
 }

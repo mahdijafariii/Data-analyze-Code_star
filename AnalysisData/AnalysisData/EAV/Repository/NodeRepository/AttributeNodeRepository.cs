@@ -43,4 +43,14 @@ public class AttributeNodeRepository : IAttributeNodeRepository
             await _context.SaveChangesAsync();
         }
     }
+    
+    public async Task<IEnumerable<string>> GetTypeOfCategory()
+    {
+        var result = await _context.ValueNodes
+            .Where(v => v.Attribute.Name == "type")
+            .Select(v => v.ValueString)
+            .Distinct()
+            .ToListAsync();
+        return result;
+    } 
 }

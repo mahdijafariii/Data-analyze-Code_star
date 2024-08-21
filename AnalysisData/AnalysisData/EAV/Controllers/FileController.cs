@@ -1,5 +1,6 @@
 ﻿using AnalysisData.EAV.Dto;
 using AnalysisData.EAV.Service.Abstraction;
+using AnalysisData.Exception;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.EAV.Controllers;
@@ -9,7 +10,6 @@ namespace AnalysisData.EAV.Controllers;
 [Route("api/[controller]")]
 public class FileController : ControllerBase
 {
-    //private readonly IFileManagementService _fileManagementService;
     private readonly INodeToDbService _nodeToDbService;
     private readonly IEdgeToDbService _edgeToDbService;
 
@@ -19,41 +19,25 @@ public class FileController : ControllerBase
         _nodeToDbService = nodeToDbService;
         _edgeToDbService = edgeToDbService;
     }
-    
-    /*[HttpPost("upload-file")]
-    public async Task<IActionResult> UploadFile(IFormFile file)
-    {
-        if (file == null || file.Length == 0)
-        {
-            return BadRequest("File is empty or not provided.");
-        }
-
-        var user = User;
-        var stream = file.OpenReadStream();
-        var result = await _fileManagementService.FileUpload(user, stream);
-
-        return Ok(new
-        {
-            headres = result.Item1,
-            recordNumber = result.Item2
-        });
-    }*/
 
     [HttpPost("upload-file-node")]
-    public async Task<IActionResult> UploadNodeFile([FromForm] NodeUploadDto nodeUpload)
+    public async Task<IActionResult> UploadNodeFile([FromForm] NodeUploadDto nodeUpload , string categoryFile)
     {
         var uniqueAttribute = nodeUpload.Header;
         var file = nodeUpload.File;
 
         if (file == null || file.Length == 0 || uniqueAttribute == null)
         {
-            return BadRequest("No file uploaded.");
+            throw new NoFileUploadedException();
         }
 
         try
         {
-            await _nodeToDbService.ProcessCsvFileAsync(file, uniqueAttribute, file.FileName); 
-            return Ok("Node account saved successfully in the database."); 
+            await _nodeToDbService.ProcessCsvFileAsync(file, uniqueAttribute, categoryFile); 
+            return Ok(new
+            {
+                massage = "File uploaded successfully !"
+            }); 
         }
         catch (System.Exception e)
         {
@@ -71,13 +55,16 @@ public class FileController : ControllerBase
 
         if (file == null || file.Length == 0 || from == null || to==null)
         {
-            return BadRequest("No file uploaded.");
+            throw new NoFileUploadedException();
         }
 
         try
         {
             await _edgeToDbService.ProcessCsvFileAsync(file, from,to); 
-            return Ok("Node account saved successfully in the database."); 
+            return Ok(new
+            {
+                massage = "Node account saved successfully in the database."
+            }); 
         }
         catch (System.Exception e)
         {

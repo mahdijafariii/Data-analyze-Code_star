@@ -23,7 +23,7 @@ public class GraphEdgeRepository: IGraphEdgeRepository
         return _context.EntityEdges;
     }
 
-    public async Task<IEnumerable<dynamic>> GetAttributeValues(int id)
+    public async Task<IEnumerable<dynamic>> GetEdgeAttributeValues(int id)
     {
         var result = await _context.ValueEdges
             .Include(vn => vn.Entity)    

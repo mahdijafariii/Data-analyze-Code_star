@@ -17,13 +17,13 @@ public class NodeToDbService : INodeToDbService
     }
 
 
-    public async Task ProcessCsvFileAsync(IFormFile file, string id, string fileName)
+    public async Task ProcessCsvFileAsync(IFormFile file, string id, string category)
     {
         var csv = _csvReaderService.CreateCsvReader(file);
         var headers = _csvReaderService.ReadHeaders(csv);
         
         await _headerProcessor.ProcessHeadersAsync(headers, id);
-        await _nodeRecordProcessor.ProcessRecordsAsync(csv, headers, id, fileName);
+        await _nodeRecordProcessor.ProcessRecordsAsync(csv, headers, id, category);
     }
     
 }

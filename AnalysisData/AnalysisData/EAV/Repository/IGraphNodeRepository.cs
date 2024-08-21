@@ -4,7 +4,8 @@ namespace AnalysisData.EAV.Repository;
 
 public interface IGraphNodeRepository
 {
-    IEnumerable<EntityNode> GetValueNodesAsync();
+    IEnumerable<ValueNode> GetValueNodesAsync();
     Task<IEnumerable<dynamic>> GetAttributeValues(string headerUniqueId);
 
+    IEnumerable<EntityNode> GetEntityNodesAsync();
 }

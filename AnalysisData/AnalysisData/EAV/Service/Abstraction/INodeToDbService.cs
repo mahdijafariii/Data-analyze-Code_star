@@ -1,6 +1,6 @@
 ﻿namespace AnalysisData.EAV.Service.Abstraction;
 
-public interface INodeService
+public interface INodeToDbService
 {
     Task ProcessCsvFileAsync(IFormFile file, string id, string fileName);
 }

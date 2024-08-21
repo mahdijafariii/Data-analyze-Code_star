@@ -30,6 +30,12 @@ public class EntityEdgeRepository : IEntityEdgeRepository
         return await _context.EntityEdges.FindAsync(id);
     }
     
+    public async Task<List<EntityEdge>> FindNodeLoopsAsync(int id)
+    {
+        return await _context.EntityEdges
+            .Where(x => x.EntityIDSource == id.ToString() || x.EntityIDTarget == id.ToString())
+            .ToListAsync();
+    }
 
     public async Task DeleteAsync(int id)
     {

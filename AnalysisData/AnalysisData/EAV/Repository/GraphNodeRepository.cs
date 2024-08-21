@@ -13,9 +13,14 @@ public class GraphNodeRepository : IGraphNodeRepository
         _context = context;
     }
 
-    public IEnumerable<EntityNode> GetValueNodesAsync()
+    public IEnumerable<EntityNode> GetEntityNodesAsync()
     {
         return _context.EntityNodes;
+    }
+
+    public IEnumerable<ValueNode> GetValueNodesAsync()
+    {
+        return _context.ValueNodes;
     }
 
     public async Task<IEnumerable<object>> GetAttributeValues(string headerUniqueId)

@@ -20,7 +20,7 @@ public class NodeRecordProcessor : INodeRecordProcessor
 
     public async Task ProcessRecordsAsync(CsvReader csv, IEnumerable<string> headers, string id, string fileName)
     {
-        var typeAttribute = await EnsureTypeAttributeExistsAsync();
+        var typeAttribute = await EnsureTypeAttributeExistsInDbAsync();
 
         while (csv.Read())
         {
@@ -33,7 +33,7 @@ public class NodeRecordProcessor : INodeRecordProcessor
         }
     }
 
-    private async Task<AttributeNode> EnsureTypeAttributeExistsAsync()
+    private async Task<AttributeNode> EnsureTypeAttributeExistsInDbAsync()
     {
         var typeAttribute = await _attributeNodeRepository.GetByNameAttributeAsync("type");
         

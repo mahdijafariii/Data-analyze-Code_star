@@ -1,4 +1,6 @@
+using AnalysisData.Data;
 using AnalysisData.EAV.Service;
+using AnalysisData.EAV.Service.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.EAV.Controllers;
@@ -19,6 +21,13 @@ public class GraphEavController : ControllerBase
         var paginatedNodes = await _graphServiceEav.GetNodesPaginationAsync(pageIndex, pageSize);
         return Ok(paginatedNodes);
     }
+    
+    [HttpGet("Search/GetNode")]
+     public async Task<IActionResult> GetEntityNodeWithAttributes(string headerUniqueId)
+     {
+         var output = await _graphServiceEav.GetNodeInformation(headerUniqueId);
+         return Ok(output);
+     }
     
     [HttpGet("GetRelationalEdgeByNodeName")]
     public async Task<IActionResult> GetRelationalEdgeByNodeName([FromQuery] string nodeID)

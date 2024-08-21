@@ -1,7 +1,10 @@
 using AnalysisData.EAV.Dto;
+using AnalysisData.EAV.Model;
 using AnalysisData.EAV.Repository;
+using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
 using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
 using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
+using AnalysisData.EAV.Service.Abstraction;
 
 namespace AnalysisData.EAV.Service;
 
@@ -10,9 +13,8 @@ public class GraphServiceEav : IGraphServiceEav
     private readonly IGraphNodeRepository _graphNodeRepository;
     private readonly IEntityNodeRepository _entityNodeRepository;
     private readonly IEntityEdgeRepository _entityEdgeRepository;
-
-
-    public GraphServiceEav(IEntityNodeRepository entityNodeRepository, IGraphNodeRepository graphNodeRepository,IEntityEdgeRepository entityEdgeRepository)
+    
+    public GraphServiceEav(IGraphNodeRepository graphNodeRepository, IEntityNodeRepository entityNodeRepository,IEntityEdgeRepository entityEdgeRepository)
     {
         _entityNodeRepository = entityNodeRepository;
         _graphNodeRepository = graphNodeRepository;
@@ -41,7 +43,7 @@ public class GraphServiceEav : IGraphServiceEav
     
     public async Task<(IEnumerable<NodeDto> , IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(string id)
     {
-        var node =await  _entityNodeRepository.GetEntityByNameAsync(id);
+        var node =await  _entityNodeRepository.GetByIdAsync(id);
         var edges = await _entityEdgeRepository.FindNodeLoopsAsync(node.Id);
         var uniqueNodes = edges.SelectMany(x => new[] { x.EntityIDTarget , x.EntityIDSource }).Distinct().ToList();
         var nodes = await _entityNodeRepository.GetNodesOfEdgeList(uniqueNodes);
@@ -50,4 +52,19 @@ public class GraphServiceEav : IGraphServiceEav
             { From = x.EntityIDSource, To = x.EntityIDTarget, EdgeId = x.Id.ToString() });
         return (nodeDto, edgeDto);
     }
+
+    public async Task<Dictionary<string, object>> GetNodeInformation(string headerUniqueId)
+    {
+        var result = await _graphNodeRepository.GetAttributeValues(headerUniqueId);
+         
+        var output = new Dictionary<string, object>();
+
+        foreach (var item in result)
+        {
+            output[item.Attribute] = item.Value;
+        }
+
+        return output;
+    }
+
 }

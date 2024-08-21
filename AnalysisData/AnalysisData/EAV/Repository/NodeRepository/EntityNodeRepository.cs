@@ -24,16 +24,12 @@ public class EntityNodeRepository : IEntityNodeRepository
     {
         return await _context.EntityNodes.ToListAsync();
     }
-    
+
     public async Task<EntityNode> GetByIdAsync(string id)
     {
         return await _context.EntityNodes.FirstOrDefaultAsync(x => x.Id.ToString() == id);
     }
-    
-    public async Task<EntityNode> GetEntityByNameAsync(string id)
-    {
-        return await _context.EntityNodes.FirstOrDefaultAsync(x=> x.Name == id);
-    }
+
     public async Task<List<EntityNode>> GetNodesOfEdgeList(List<string> nodeIdes)
     {
         List<EntityNode> entityNodes = new List<EntityNode>();
@@ -48,6 +44,12 @@ public class EntityNodeRepository : IEntityNodeRepository
         return entityNodes;
     }
 
+    public async Task<EntityNode> GetByNameAsync(string name)
+    {
+        return await _context.EntityNodes.FindAsync(name);
+    }
+
+
     public async Task DeleteAsync(int id)
     {
         var entity = await _context.EntityNodes.FindAsync(id);
@@ -57,4 +59,5 @@ public class EntityNodeRepository : IEntityNodeRepository
             await _context.SaveChangesAsync();
         }
     }
+    
 }

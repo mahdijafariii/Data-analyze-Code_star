@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240820141134_Initial")]
-    partial class Initial
+    [Migration("20240820092004_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

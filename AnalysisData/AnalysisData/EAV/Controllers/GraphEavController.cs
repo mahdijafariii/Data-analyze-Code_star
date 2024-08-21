@@ -1,7 +1,10 @@
-using AnalysisData.EAV.Service;
+using AnalysisData.Data;
+
+using AnalysisData.EAV.Service.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.EAV.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
 public class GraphEavController : ControllerBase
@@ -19,11 +22,25 @@ public class GraphEavController : ControllerBase
         var paginatedNodes = await _graphServiceEav.GetNodesPaginationAsync(pageIndex, pageSize , category);
         return Ok(paginatedNodes);
     }
-    
-    [HttpGet("GetRelationalEdgeByNodeName")]
-    public async Task<IActionResult> GetRelationalEdgeByNodeName([FromQuery] string nodeID)
+
+    [HttpGet("GetNodeInformation")]
+    public async Task<IActionResult> GetEntityNodeWithAttributes(string headerUniqueId)
     {
-        var result = await _graphServiceEav.GetRelationalEdgeBaseNode(nodeID);
+        var output = await _graphServiceEav.GetNodeInformation(headerUniqueId);
+        return Ok(output);
+    }
+
+    [HttpGet("GetEdgeInformation")]
+    public async Task<IActionResult> GetEntityEdgeWithAttributes(int edgeId)
+    {
+        var output = await _graphServiceEav.GetEdgeInformation(edgeId);
+        return Ok(output);
+    }
+
+    [HttpGet("GetRelationalEdgeByNodeName")]
+    public async Task<IActionResult> GetRelationalEdgeByNodeName([FromQuery] string nodeId)
+    {
+        var result = await _graphServiceEav.GetRelationalEdgeBaseNode(nodeId);
         return Ok(new
         {
             nodes = result.Item1,

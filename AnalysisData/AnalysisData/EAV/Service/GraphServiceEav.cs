@@ -1,8 +1,9 @@
 using AnalysisData.EAV.Dto;
 using AnalysisData.EAV.Model;
 using AnalysisData.EAV.Repository;
-using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
 using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
+using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
+using AnalysisData.EAV.Service.Abstraction;
 using AnalysisData.Exception;
 
 namespace AnalysisData.EAV.Service;
@@ -10,18 +11,20 @@ namespace AnalysisData.EAV.Service;
 public class GraphServiceEav : IGraphServiceEav
 {
     private readonly IGraphNodeRepository _graphNodeRepository;
+    private readonly IGraphEdgeRepository _graphEdgeRepository;
     private readonly IEntityNodeRepository _entityNodeRepository;
     private readonly IEntityEdgeRepository _entityEdgeRepository;
     private readonly IAttributeNodeRepository _attributeNodeRepository;
 
 
-    public GraphServiceEav(IEntityNodeRepository entityNodeRepository, IGraphNodeRepository graphNodeRepository,
-        IEntityEdgeRepository entityEdgeRepository, IAttributeNodeRepository attributeNodeRepository)
+    
+    public GraphServiceEav(IGraphNodeRepository graphNodeRepository, IGraphEdgeRepository graphEdgeRepository, IEntityNodeRepository entityNodeRepository, IEntityEdgeRepository entityEdgeRepository,IAttributeNodeRepository attributeNodeRepository)
     {
-        _entityNodeRepository = entityNodeRepository;
         _graphNodeRepository = graphNodeRepository;
+        _entityNodeRepository = entityNodeRepository;
         _entityEdgeRepository = entityEdgeRepository;
         _attributeNodeRepository = attributeNodeRepository;
+        _graphEdgeRepository = graphEdgeRepository;
     }
 
     public async Task<PaginatedListDto> GetNodesPaginationAsync(int pageIndex, int pageSize, string category)
@@ -61,7 +64,7 @@ public class GraphServiceEav : IGraphServiceEav
 
     public async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(string id)
     {
-        var node = await _entityNodeRepository.GetEntityByNameAsync(id);
+        var node = await _entityNodeRepository.GetByIdAsync(id);
         if (node is null)
         {
             throw new NodeNotFoundException();
@@ -74,4 +77,39 @@ public class GraphServiceEav : IGraphServiceEav
             { From = x.EntityIDSource, To = x.EntityIDTarget, Id = x.Id.ToString() });
         return (nodeDto, edgeDto);
     }
+
+    public async Task<Dictionary<string, string>> GetNodeInformation(string headerUniqueId)
+    {
+        var result = await _graphNodeRepository.GetNodeAttributeValue(headerUniqueId);
+        if (result is null)
+        {
+            throw new NodeNotFoundException();
+        }
+        var output = new Dictionary<string, string>();
+
+        foreach (var item in result)
+        {
+            output[item.Attribute] = item.Value;
+        }
+
+        return output;
+    }
+    
+    public async Task<Dictionary<string, string>> GetEdgeInformation(int edgeId)
+    {
+        var result = await _graphEdgeRepository.GetEdgeAttributeValues(edgeId);
+        if (result is null)
+        {
+            throw new EdgeNotFoundException();
+        }
+        var output = new Dictionary<string, string>();
+
+        foreach (var item in result)
+        {
+            output[item.Attribute] = item.Value;
+        }
+
+        return output;
+    }
+
 }

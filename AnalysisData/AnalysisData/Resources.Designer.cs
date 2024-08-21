@@ -87,6 +87,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edge not found exception !.
+        /// </summary>
+        internal static string EdgeNotFoundException {
+            get {
+                return ResourceManager.GetString("EdgeNotFoundException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We have this file ! .
         /// </summary>
         internal static string FileExistenceException {

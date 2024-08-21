@@ -103,6 +103,10 @@ public class ExceptionHandlingMiddleware
         {
             await HandleExceptionAsync(httpContext, ex, StatusCodes.Status404NotFound);
         }
+        catch (NodeNotFoundException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex, StatusCodes.Status404NotFound);
+        }
     }
     
     // private static List<Type> GetCustomExceptions()

@@ -33,7 +33,7 @@ namespace AnalysisData.Repository.UserRepository
 
         public async Task<List<User>> GetAllUserPagination(int page, int limit)
         {
-            return await _context.Users.Skip((page - 1)*limit).Take(limit).ToListAsync();
+            return await _context.Users.Skip((page)*limit).Take(limit).ToListAsync();
         }
         public async Task<int> GetUsersCount()
         {

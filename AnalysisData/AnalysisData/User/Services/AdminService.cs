@@ -76,15 +76,14 @@ public class AdminService : IAdminService
     }
 
 
-
-
+    
     public Task<bool> UpdateUserInformationByAdmin(Guid id, UpdateAdminModel updateAdminModel)
     {
         var user = _userRepository.GetUserById(id);
         var checkUsername = _userRepository.GetUserByUsername(updateAdminModel.Username);
         var checkEmail = _userRepository.GetUserByEmail(updateAdminModel.Email);
 
-        if (checkUsername != null || (checkEmail != null && user.Email!=updateAdminModel.Email))
+        if ((checkUsername != null && user.Username!=updateAdminModel.Username) || (checkEmail != null && user.Email!=updateAdminModel.Email))
             throw new DuplicateUserException();
 
         _regexService.EmailCheck(updateAdminModel.Email);
@@ -100,6 +99,7 @@ public class AdminService : IAdminService
         user.Email = updateAdminModel.Email;
         user.PhoneNumber = updateAdminModel.PhoneNumber;
         user.Username = updateAdminModel.Username;
+        user.Role = updateAdminModel.RoleName;
         _userRepository.UpdateUser(user.Id, user);
     }
 

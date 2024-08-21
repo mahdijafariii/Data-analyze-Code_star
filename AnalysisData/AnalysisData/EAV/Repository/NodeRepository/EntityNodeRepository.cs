@@ -29,7 +29,12 @@ public class EntityNodeRepository : IEntityNodeRepository
     {
         return await _context.EntityNodes.FindAsync(id);
     }
-    
+
+    public async Task<EntityNode> GetByNameAsync(string name)
+    {
+        return await _context.EntityNodes.FindAsync(name);
+    }
+
 
     public async Task DeleteAsync(int id)
     {
@@ -40,4 +45,5 @@ public class EntityNodeRepository : IEntityNodeRepository
             await _context.SaveChangesAsync();
         }
     }
+    
 }

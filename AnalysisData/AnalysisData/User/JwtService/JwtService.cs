@@ -23,7 +23,7 @@ public class JwtService : IJwtService
         _cookieService = cookieService;
     }
 
-    public Task<string> GenerateJwtToken(string userName)
+    public async Task<string> GenerateJwtToken(string userName)
     {
         var user = _userRepository.GetUserByUsername(userName);
         var claims = new List<Claim>
@@ -37,14 +37,14 @@ public class JwtService : IJwtService
             new Claim(ClaimTypes.Role, user.Role.ToLower()),
         };
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var creeds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
             claims: claims,
             expires: DateTime.Now.AddDays(7),
-            signingCredentials: creds);
+            signingCredentials: creeds);
 
-        return Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
     
 }

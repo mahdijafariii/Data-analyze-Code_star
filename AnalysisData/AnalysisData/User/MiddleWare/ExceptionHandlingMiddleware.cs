@@ -99,7 +99,23 @@ public class ExceptionHandlingMiddleware
         {
             await HandleExceptionAsync(httpContext, ex, StatusCodes.Status403Forbidden);
         }
+        catch (CategoryResultNotFoundException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex, StatusCodes.Status404NotFound);
+        }
     }
+    
+    // private static List<Type> GetCustomExceptions()
+    // {
+    //     var baseType = typeof(System.Exception);
+    //     var exceptionTypes = AppDomain.CurrentDomain.GetAssemblies()
+    //         .SelectMany(assembly => assembly.GetTypes())
+    //         .Where(type => type.IsSubclassOf(baseType) && !type.IsAbstract)
+    //         .ToList();
+    //
+    //     return exceptionTypes;
+    // }
+
 
     private Task HandleExceptionAsync(HttpContext context, System.Exception exception, int _statusCode)
     {

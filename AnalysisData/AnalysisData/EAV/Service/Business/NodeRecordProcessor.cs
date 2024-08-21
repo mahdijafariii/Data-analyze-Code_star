@@ -18,7 +18,7 @@ public class NodeRecordProcessor : INodeRecordProcessor
         _valueNodeRepository = valueNodeRepository;
     }
 
-    public async Task ProcessRecordsAsync(CsvReader csv, IEnumerable<string> headers, string id, string fileName)
+    public async Task ProcessRecordsAsync(CsvReader csv, IEnumerable<string> headers, string id, string category)
     {
         var typeAttribute = await EnsureTypeAttributeExistsAsync();
 
@@ -29,7 +29,7 @@ public class NodeRecordProcessor : INodeRecordProcessor
 
             var entityNode = await CreateEntityNodeAsync(entityId);
             await ProcessValuesAsync(csv, headers, id, entityNode);
-            await AddFileNameAsValueNodeAsync(entityNode, typeAttribute, fileName);
+            await AddFileNameAsValueNodeAsync(entityNode, typeAttribute, category);
         }
     }
 

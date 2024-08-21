@@ -54,4 +54,13 @@
     <data name="FileExistenceException" xml:space="preserve">
         <value>We have this file ! </value>
     </data>
+    <data name="CategoryResultNotFoundException" xml:space="preserve">
+        <value>Category not exists in our system!</value>
+    </data>
+    <data name="NodeNotFoundException" xml:space="preserve">
+        <value>Node not found Exception ! </value>
+    </data>
+    <data name="NoFileUploadedException" xml:space="preserve">
+        <value>No file uploaded exception !</value>
+    </data>
 </root>

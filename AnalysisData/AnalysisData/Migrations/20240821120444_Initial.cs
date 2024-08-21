@@ -7,31 +7,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Accounts",
-                columns: table => new
-                {
-                    AccountID = table.Column<string>(type: "text", nullable: false),
-                    CardID = table.Column<string>(type: "text", nullable: false),
-                    IBAN = table.Column<string>(type: "text", nullable: false),
-                    AccountType = table.Column<string>(type: "text", nullable: false),
-                    BranchTelephone = table.Column<string>(type: "text", nullable: false),
-                    BranchAdress = table.Column<string>(type: "text", nullable: false),
-                    BranchName = table.Column<string>(type: "text", nullable: false),
-                    OwnerName = table.Column<string>(type: "text", nullable: false),
-                    OwnerLastName = table.Column<string>(type: "text", nullable: false),
-                    OwnerID = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Accounts", x => x.AccountID);
-                });
-
             migrationBuilder.CreateTable(
                 name: "AttributeEdges",
                 columns: table => new
@@ -83,22 +63,6 @@ namespace AnalysisData.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EntityNodes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Transactions",
-                columns: table => new
-                {
-                    TransactionID = table.Column<string>(type: "text", nullable: false),
-                    SourceAccount = table.Column<string>(type: "text", nullable: false),
-                    DestinationAccount = table.Column<string>(type: "text", nullable: false),
-                    Amount = table.Column<decimal>(type: "numeric", nullable: false),
-                    Date = table.Column<string>(type: "text", nullable: false),
-                    Type = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Transactions", x => x.TransactionID);
                 });
 
             migrationBuilder.CreateTable(
@@ -198,12 +162,6 @@ namespace AnalysisData.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Accounts");
-
-            migrationBuilder.DropTable(
-                name: "Transactions");
-
             migrationBuilder.DropTable(
                 name: "Users");
 

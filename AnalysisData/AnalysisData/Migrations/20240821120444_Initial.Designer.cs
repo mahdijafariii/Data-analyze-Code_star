@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240820140015_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240821120444_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -150,81 +150,6 @@ namespace AnalysisData.Migrations
                     b.HasIndex("EntityId");
 
                     b.ToTable("ValueNodes");
-                });
-
-            modelBuilder.Entity("AnalysisData.Graph.DataManage.Model.Account", b =>
-                {
-                    b.Property<string>("AccountID")
-                        .HasColumnType("text");
-
-                    b.Property<string>("AccountType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("BranchAdress")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("BranchName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("BranchTelephone")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CardID")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("IBAN")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("OwnerID")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("OwnerLastName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("OwnerName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("AccountID");
-
-                    b.ToTable("Accounts");
-                });
-
-            modelBuilder.Entity("AnalysisData.Graph.DataManage.Model.Transaction", b =>
-                {
-                    b.Property<string>("TransactionID")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("Date")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("DestinationAccount")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SourceAccount")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("TransactionID");
-
-                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("AnalysisData.UserManage.Model.User", b =>

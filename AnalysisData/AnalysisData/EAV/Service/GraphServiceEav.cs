@@ -11,13 +11,15 @@ namespace AnalysisData.EAV.Service;
 public class GraphServiceEav : IGraphServiceEav
 {
     private readonly IGraphNodeRepository _graphNodeRepository;
+    private readonly IGraphEdgeRepository _graphEdgeRepository;
     private readonly IEntityNodeRepository _entityNodeRepository;
     private readonly IEntityEdgeRepository _entityEdgeRepository;
-    
-    public GraphServiceEav(IGraphNodeRepository graphNodeRepository, IEntityNodeRepository entityNodeRepository,IEntityEdgeRepository entityEdgeRepository)
+
+    public GraphServiceEav(IGraphNodeRepository graphNodeRepository, IGraphEdgeRepository graphEdgeRepository, IEntityNodeRepository entityNodeRepository, IEntityEdgeRepository entityEdgeRepository)
     {
-        _entityNodeRepository = entityNodeRepository;
         _graphNodeRepository = graphNodeRepository;
+        _graphEdgeRepository = graphEdgeRepository;
+        _entityNodeRepository = entityNodeRepository;
         _entityEdgeRepository = entityEdgeRepository;
     }
 
@@ -56,6 +58,20 @@ public class GraphServiceEav : IGraphServiceEav
     public async Task<Dictionary<string, object>> GetNodeInformation(string headerUniqueId)
     {
         var result = await _graphNodeRepository.GetAttributeValues(headerUniqueId);
+         
+        var output = new Dictionary<string, object>();
+
+        foreach (var item in result)
+        {
+            output[item.Attribute] = item.Value;
+        }
+
+        return output;
+    }
+    
+    public async Task<Dictionary<string, object>> GetEdgeInformation(int edgeId)
+    {
+        var result = await _graphEdgeRepository.GetAttributeValues(edgeId);
          
         var output = new Dictionary<string, object>();
 

@@ -4,31 +4,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AnalysisData.EAV.Repository;
 
-public class GraphNodeRepository : IGraphNodeRepository
+public class GraphEdgeRepository: IGraphEdgeRepository
 {
     private readonly ApplicationDbContext _context;
 
-    public GraphNodeRepository(ApplicationDbContext context)
+    public GraphEdgeRepository(ApplicationDbContext context)
     {
         _context = context;
     }
 
-    public IEnumerable<EntityNode> GetEntityNodesAsync()
+    public IEnumerable<ValueEdge> GetValueEdgeAsync()
     {
-        return _context.EntityNodes;
+        return _context.ValueEdges;
     }
 
-    public IEnumerable<ValueNode> GetValueNodesAsync()
+    public IEnumerable<EntityEdge> GetEntityEdgeAsync()
     {
-        return _context.ValueNodes;
+        return _context.EntityEdges;
     }
 
-    public async Task<IEnumerable<dynamic>> GetAttributeValues(string headerUniqueId)
+    public async Task<IEnumerable<dynamic>> GetAttributeValues(int id)
     {
-        var result = await _context.ValueNodes
+        var result = await _context.ValueEdges
             .Include(vn => vn.Entity)    
             .Include(vn => vn.Attribute) 
-            .Where(vn => vn.Entity.Name == headerUniqueId) 
+            .Where(vn => vn.Entity.Id == id) 
             .Select(vn => new
             {
                 Attribute = vn.Attribute.Name,
@@ -36,5 +36,4 @@ public class GraphNodeRepository : IGraphNodeRepository
             }).ToListAsync();
         return result;
     }
-    
 }

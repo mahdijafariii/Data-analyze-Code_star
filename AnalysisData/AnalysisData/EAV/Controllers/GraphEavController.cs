@@ -1,5 +1,6 @@
 using AnalysisData.Data;
 using AnalysisData.EAV.Service;
+using AnalysisData.EAV.Service.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.EAV.Controllers;

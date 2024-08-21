@@ -4,6 +4,7 @@ using AnalysisData.EAV.Repository;
 using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
 using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
 using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
+using AnalysisData.EAV.Service.Abstraction;
 
 namespace AnalysisData.EAV.Service;
 
@@ -50,12 +51,6 @@ public class GraphServiceEav : IGraphServiceEav
         var edgeDto = edges.Select(x => new EdgeDto()
             { From = x.EntityIDSource, To = x.EntityIDTarget, EdgeId = x.Id.ToString() });
         return (nodeDto, edgeDto);
-    }
-
-
-    public Task<PaginatedListDto> GetNodesAsync(int pageIndex, int pageSize)
-    {
-        throw new NotImplementedException();
     }
 
     public async Task<Dictionary<string, object>> GetNodeInformation(string headerUniqueId)

@@ -14,9 +14,9 @@ public class GraphEavController : ControllerBase
     }
 
     [HttpGet("GetNodesPaginationEav")]
-    public async Task<IActionResult> GetNodesAsync([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10)
+    public async Task<IActionResult> GetNodesAsync([FromQuery] int pageIndex = 0, [FromQuery] int pageSize = 10,[FromQuery] string category = "all" )
     {
-        var paginatedNodes = await _graphServiceEav.GetNodesPaginationAsync(pageIndex, pageSize);
+        var paginatedNodes = await _graphServiceEav.GetNodesPaginationAsync(pageIndex, pageSize , category);
         return Ok(paginatedNodes);
     }
     

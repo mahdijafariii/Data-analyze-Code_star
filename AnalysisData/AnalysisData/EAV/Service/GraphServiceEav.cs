@@ -1,4 +1,5 @@
 using AnalysisData.EAV.Dto;
+using AnalysisData.EAV.Model;
 using AnalysisData.EAV.Repository;
 using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
 using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
@@ -10,42 +11,61 @@ public class GraphServiceEav : IGraphServiceEav
     private readonly IGraphNodeRepository _graphNodeRepository;
     private readonly IEntityNodeRepository _entityNodeRepository;
     private readonly IEntityEdgeRepository _entityEdgeRepository;
+    private readonly IAttributeNodeRepository _attributeNodeRepository;
 
 
-    public GraphServiceEav(IEntityNodeRepository entityNodeRepository, IGraphNodeRepository graphNodeRepository,IEntityEdgeRepository entityEdgeRepository)
+    public GraphServiceEav(IEntityNodeRepository entityNodeRepository, IGraphNodeRepository graphNodeRepository,
+        IEntityEdgeRepository entityEdgeRepository, IAttributeNodeRepository attributeNodeRepository)
     {
         _entityNodeRepository = entityNodeRepository;
         _graphNodeRepository = graphNodeRepository;
         _entityEdgeRepository = entityEdgeRepository;
+        _attributeNodeRepository = attributeNodeRepository;
     }
 
-    public async Task<PaginatedListDto> GetNodesPaginationAsync(int pageIndex, int pageSize)
+    public async Task<PaginatedListDto> GetNodesPaginationAsync(int pageIndex, int pageSize, string category)
     {
-        var valueNodes =  _graphNodeRepository.GetEntityNodesAsync();
+        var valueNodes = GetEntityNodesForPagination(category);
+        var typeCategory =await _attributeNodeRepository.GetTypeOfCategory();
 
 
         var groupedNodes = valueNodes.Select(g => new PaginationNodeDto
             {
                 EntityName = g.Name,
             })
-            .ToList(); 
-        
+            .ToList();
+
         var count = groupedNodes.Count;
-        var items = groupedNodes.Skip((pageIndex - 1) * pageSize)
+        var items = groupedNodes.Select(x=> x.EntityName).Skip((pageIndex) * pageSize)
             .Take(pageSize)
             .ToList();
 
-        return new PaginatedListDto(items, pageIndex, count, pageSize);
+        return new PaginatedListDto(items, pageIndex, count, typeCategory);
     }
-    
-    
-    public async Task<(IEnumerable<NodeDto> , IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(string id)
+
+    private IEnumerable<EntityNode> GetEntityNodesForPagination(string category)
     {
-        var node =await  _entityNodeRepository.GetEntityByNameAsync(id);
+        IEnumerable<EntityNode> valueNodes = new List<EntityNode>();
+        if (category == "all")
+        {
+            valueNodes = _graphNodeRepository.GetEntityNodesAsync();
+        }
+        else
+        {
+            valueNodes = _graphNodeRepository.GetEntityNodesWithCategoryAsync(category);
+        }
+
+        return valueNodes;
+    }
+
+
+    public async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(string id)
+    {
+        var node = await _entityNodeRepository.GetEntityByNameAsync(id);
         var edges = await _entityEdgeRepository.FindNodeLoopsAsync(node.Id);
-        var uniqueNodes = edges.SelectMany(x => new[] { x.EntityIDTarget , x.EntityIDSource }).Distinct().ToList();
+        var uniqueNodes = edges.SelectMany(x => new[] { x.EntityIDTarget, x.EntityIDSource }).Distinct().ToList();
         var nodes = await _entityNodeRepository.GetNodesOfEdgeList(uniqueNodes);
-        var nodeDto = nodes.Select(x => new NodeDto() {EntityID = x.Id.ToString() ,EntityName = x.Name});
+        var nodeDto = nodes.Select(x => new NodeDto() { EntityID = x.Id.ToString(), EntityName = x.Name });
         var edgeDto = edges.Select(x => new EdgeDto()
             { From = x.EntityIDSource, To = x.EntityIDTarget, EdgeId = x.Id.ToString() });
         return (nodeDto, edgeDto);

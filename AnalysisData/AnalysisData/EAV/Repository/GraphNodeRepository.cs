@@ -17,13 +17,27 @@ public class GraphNodeRepository : IGraphNodeRepository
     {
         return _context.EntityNodes;
     }
+    public IEnumerable<EntityNode> GetEntityNodesWithCategoryAsync(string category)
+    {
+        var attributeId =  _context.AttributeNodes
+            .Where(a => a.Name == "type")
+            .Select(a => a.Id)
+            .FirstOrDefault();
+
+        var result = _context.ValueNodes
+            .Include(v => v.Entity) 
+            .Where(v => v.AttributeId == attributeId && v.ValueString == category)
+            .Select(v => v.Entity)
+            .ToList();
+        return result;
+    }
 
     public IEnumerable<ValueNode> GetValueNodesAsync()
     {
         return _context.ValueNodes;
     }
 
-    public async Task<IEnumerable<dynamic>> GetAttributeValues(string headerUniqueId)
+    public async Task<IEnumerable<dynamic>> GetNodeAttributeValue(string headerUniqueId)
     {
         var result = await _context.ValueNodes
             .Include(vn => vn.Entity)    

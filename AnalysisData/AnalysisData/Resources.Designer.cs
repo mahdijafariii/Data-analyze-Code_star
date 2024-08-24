@@ -69,11 +69,29 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Category not exists in our system!.
+        /// </summary>
+        internal static string CategoryResultNotFoundException {
+            get {
+                return ResourceManager.GetString("CategoryResultNotFoundException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We have user with this information !.
         /// </summary>
         internal static string DuplicateUserException {
             get {
                 return ResourceManager.GetString("DuplicateUserException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edge not found exception !.
+        /// </summary>
+        internal static string EdgeNotFoundException {
+            get {
+                return ResourceManager.GetString("EdgeNotFoundException", resourceCulture);
             }
         }
         
@@ -119,6 +137,24 @@ namespace AnalysisData {
         internal static string InvalidPhoneNumberFormatException {
             get {
                 return ResourceManager.GetString("InvalidPhoneNumberFormatException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Node not found Exception ! .
+        /// </summary>
+        internal static string NodeNotFoundException {
+            get {
+                return ResourceManager.GetString("NodeNotFoundException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No file uploaded exception !.
+        /// </summary>
+        internal static string NoFileUploadedException {
+            get {
+                return ResourceManager.GetString("NoFileUploadedException", resourceCulture);
             }
         }
         

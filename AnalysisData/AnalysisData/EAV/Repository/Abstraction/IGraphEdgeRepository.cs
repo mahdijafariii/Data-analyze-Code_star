@@ -6,5 +6,5 @@ public interface IGraphEdgeRepository
 {
     IEnumerable<ValueEdge> GetValueEdgeAsync();
     IEnumerable<EntityEdge> GetEntityEdgeAsync();
-    Task<IEnumerable<dynamic>> GetAttributeValues(int id);
+    Task<IEnumerable<dynamic>> GetEdgeAttributeValues(int id);
 }

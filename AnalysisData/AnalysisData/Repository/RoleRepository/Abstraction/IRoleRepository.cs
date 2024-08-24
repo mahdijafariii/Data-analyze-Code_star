@@ -8,4 +8,6 @@ public interface IRoleRepository
     Task<Role> GetRoleByName(string roleName);
     Task<bool> AddRole(Role role);
     Task<bool> DeleteRole(string roleId);
+    Task<List<Role>> GetAllRolesPagination(int page, int limit);
+    Task<int> GetRolesCount();
 }

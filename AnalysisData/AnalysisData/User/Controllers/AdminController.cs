@@ -40,6 +40,7 @@ public class AdminController : ControllerBase
             thisPage = page,
         });
     }
+   
 
     [HttpDelete("DeleteUser")]
     public async Task<IActionResult> DeleteUser(Guid id)
@@ -82,6 +83,21 @@ public class AdminController : ControllerBase
     {
         await _adminService.AddRole(name, policy);
         return Ok(new { message = "Role added successfully." });
+    }
+    
+     
+    //[Authorize(Roles = "admin")]
+    [HttpGet("GetRolesPagination")]
+    public async Task<IActionResult> GetAllRoles(int page = 0, int limit = 10)
+    {
+        var rolesPagination = await _adminService.GetRolePagination(page, limit);
+        var rolesCount = await _adminService.GetRoleCount();
+        return Ok(new
+        {
+            users = rolesPagination,
+            count = rolesCount,
+            thisPage = page,
+        });
     }
     
 

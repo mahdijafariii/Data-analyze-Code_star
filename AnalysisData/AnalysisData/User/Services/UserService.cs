@@ -4,13 +4,11 @@ using System.Text;
 using AnalysisData.CookieService.abstractions;
 using AnalysisData.Exception;
 using AnalysisData.JwtService.abstractions;
-using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services.Abstraction;
 using AnalysisData.UserManage.LoginModel;
 using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.UpdateModel;
-using AnalysisData.UserManage.UserPaginationModel;
 
 namespace AnalysisData.Services;
 

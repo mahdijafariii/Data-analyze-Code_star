@@ -39,4 +39,15 @@ public class RoleRepository : IRoleRepository
         _context.SaveChanges();
         return true;
     }
+    
+    
+    public async Task<List<Role>> GetAllRolesPagination(int page, int limit)
+    {
+        return await _context.Roles.Skip((page)*limit).Take(limit).ToListAsync();
+    }
+    
+    public async Task<int> GetRolesCount()
+    {
+        return await _context.Roles.CountAsync();
+    }
 }

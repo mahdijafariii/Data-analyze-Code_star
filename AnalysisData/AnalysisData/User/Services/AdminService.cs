@@ -7,6 +7,7 @@ using AnalysisData.Services.Abstraction;
 using AnalysisData.UserManage;
 using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.RegisterModel;
+using AnalysisData.UserManage.RolePaginationModel;
 using AnalysisData.UserManage.UpdateModel;
 using AnalysisData.UserManage.UserPaginationModel;
 
@@ -123,6 +124,11 @@ public class AdminService : IAdminService
     {
         return await _userRepository.GetUsersCount();
     }
+    
+    public async Task<int> GetRoleCount()
+    {
+        return await _roleRepository.GetRolesCount();
+    }
 
 
     public async Task<List<UserPaginationModel>> GetUserPagination(int page, int limit)
@@ -135,6 +141,18 @@ public class AdminService : IAdminService
         });
         return paginationUsers.ToList();
     }
+    
+    
+    public async Task<List<RolePaginationModel>> GetRolePagination(int page, int limit)
+    {
+        var users = await _roleRepository.GetAllRolesPagination(page, limit);
+        var paginationRoles = users.Select(x => new RolePaginationModel()
+        {
+            Id = x.Id.ToString() ,Name = x.RoleName, Policy = x.RolePolicy
+        });
+        return paginationRoles.ToList();
+    }
+    
     
     public async Task DeleteRole(string roleName)
     {

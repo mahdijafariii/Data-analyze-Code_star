@@ -1,5 +1,6 @@
 ﻿using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.RegisterModel;
+using AnalysisData.UserManage.RolePaginationModel;
 using AnalysisData.UserManage.UpdateModel;
 using AnalysisData.UserManage.UserPaginationModel;
 
@@ -14,8 +15,10 @@ public interface IAdminService
     
     Task AddFirstAdmin();
     Task<int> GetUserCount();
+    Task<int> GetRoleCount();
     Task AddRole(string roleName, string rolePolicy);
     Task DeleteRole(string roleName);
+    Task<List<RolePaginationModel>> GetRolePagination(int page, int limit);
 
 
 

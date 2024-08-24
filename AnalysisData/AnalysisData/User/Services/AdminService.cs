@@ -87,8 +87,7 @@ public class AdminService : IAdminService
         var checkUsername = await _userRepository.GetUserByUsername(updateAdminModel.Username);
         var checkEmail = await _userRepository.GetUserByEmail(updateAdminModel.Email);
 
-        if ((checkUsername != null && user.Username != updateAdminModel.Username) ||
-            (checkEmail != null && user.Email != updateAdminModel.Email))
+        if ((checkUsername != null && !user.Equals(checkUsername)) || (checkEmail != null && !user.Equals(checkEmail)))
             throw new DuplicateUserException();
 
         _regexService.EmailCheck(updateAdminModel.Email);

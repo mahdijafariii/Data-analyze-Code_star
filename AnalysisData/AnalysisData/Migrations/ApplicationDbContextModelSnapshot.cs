@@ -95,6 +95,23 @@ namespace AnalysisData.Migrations
                     b.ToTable("EntityNodes");
                 });
 
+            modelBuilder.Entity("AnalysisData.EAV.Model.UploadData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UploadDatas");
+                });
+
             modelBuilder.Entity("AnalysisData.EAV.Model.ValueEdge", b =>
                 {
                     b.Property<int>("Id")

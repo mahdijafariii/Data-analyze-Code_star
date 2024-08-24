@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240824112134_InitialCreate")]
+    [Migration("20240824130953_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -96,6 +96,23 @@ namespace AnalysisData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EntityNodes");
+                });
+
+            modelBuilder.Entity("AnalysisData.EAV.Model.UploadData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UploadDatas");
                 });
 
             modelBuilder.Entity("AnalysisData.EAV.Model.ValueEdge", b =>

@@ -80,6 +80,19 @@ namespace AnalysisData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UploadDatas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UploadDatas", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ValueEdges",
                 columns: table => new
                 {
@@ -187,6 +200,9 @@ namespace AnalysisData.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "UploadDatas");
+
             migrationBuilder.DropTable(
                 name: "Users");
 

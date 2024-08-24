@@ -1,6 +1,7 @@
 using AnalysisData.EAV.Dto;
 using AnalysisData.EAV.Model;
 using AnalysisData.EAV.Repository;
+using AnalysisData.EAV.Repository.Abstraction;
 using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
 using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
 using AnalysisData.EAV.Service.Abstraction;

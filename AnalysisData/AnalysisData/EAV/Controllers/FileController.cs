@@ -12,20 +12,22 @@ public class FileController : ControllerBase
 {
     private readonly INodeToDbService _nodeToDbService;
     private readonly IEdgeToDbService _edgeToDbService;
+    private readonly IUploadFileService _uploadFileService;
 
     
-    public FileController(INodeToDbService nodeToDbService,IEdgeToDbService edgeToDbService)
+    public FileController(INodeToDbService nodeToDbService,IEdgeToDbService edgeToDbService, IUploadFileService uploadFileService)
     {
         _nodeToDbService = nodeToDbService;
         _edgeToDbService = edgeToDbService;
+        _uploadFileService = uploadFileService;
     }
 
     [HttpPost("upload-file-node")]
-    public async Task<IActionResult> UploadNodeFile([FromForm] NodeUploadDto nodeUpload , string categoryFile)
+    public async Task<IActionResult> UploadNodeFile([FromForm] NodeUploadDto nodeUpload)
     {
         var uniqueAttribute = nodeUpload.Header;
         var file = nodeUpload.File;
-
+        var categoryFile = nodeUpload.categoryFile;
         if (file == null || file.Length == 0 || uniqueAttribute == null)
         {
             throw new NoFileUploadedException();
@@ -33,6 +35,7 @@ public class FileController : ControllerBase
 
         try
         {
+            await _uploadFileService.AddFileToDb(file);
             await _nodeToDbService.ProcessCsvFileAsync(file, uniqueAttribute, categoryFile); 
             return Ok(new
             {

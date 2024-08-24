@@ -27,13 +27,13 @@ namespace AnalysisData.Repository.UserRepository
 
         public async Task<User> GetUserById(Guid id)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(x => x.Id == id);
         }
 
 
         public async Task<List<User>> GetAllUserPagination(int page, int limit)
         {
-            return await _context.Users.Skip((page)*limit).Take(limit).ToListAsync();
+            return await _context.Users.Include(u => u.Role).Skip((page)*limit).Take(limit).ToListAsync();
         }
         public async Task<int> GetUsersCount()
         {

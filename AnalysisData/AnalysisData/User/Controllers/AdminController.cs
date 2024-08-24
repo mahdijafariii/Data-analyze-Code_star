@@ -1,5 +1,4 @@
 ﻿using AnalysisData.Services.Abstraction;
-using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.RegisterModel;
 using AnalysisData.UserManage.UpdateModel;
 using Microsoft.AspNetCore.Authorization;
@@ -23,7 +22,7 @@ public class AdminController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegisterModel)
     {
-        _adminService.Register(userRegisterModel);
+        await _adminService.Register(userRegisterModel);
         return Ok(new {massage = "User added successfully"});
     }
 

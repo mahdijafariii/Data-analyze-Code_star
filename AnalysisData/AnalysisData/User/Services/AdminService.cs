@@ -29,14 +29,15 @@ public class AdminService : IAdminService
 
     public async Task Register(UserRegisterModel userRegisterModel)
     {
-        var existingRole = await _roleRepository.GetRoleByName(userRegisterModel.RoleName.ToLower());
+        var roleCheck = userRegisterModel.RoleName.ToLower();
+        var existingRole = await _roleRepository.GetRoleByName(roleCheck);
         if (existingRole == null)
         {
             throw new RoleNotFoundException();
         }
 
-        var existingUserByEmail = _userRepository.GetUserByEmail(userRegisterModel.Email);
-        var existingUserByUsername = _userRepository.GetUserByUsername(userRegisterModel.Username);
+        var existingUserByEmail = await _userRepository.GetUserByEmail(userRegisterModel.Email);
+        var existingUserByUsername = await _userRepository.GetUserByUsername(userRegisterModel.Username);
         if (existingUserByEmail != null && existingUserByUsername != null)
             throw new DuplicateUserException();
         _regexService.EmailCheck(userRegisterModel.Email);
@@ -178,17 +179,39 @@ public class AdminService : IAdminService
 
     public async Task AddFirstAdmin()
     {
-        var admin = _userRepository.GetUserByUsername("admin");
+        var admin = await _userRepository.GetUserByUsername("admin");
         if (admin != null)
         {
             throw new AdminExistenceException();
         }
+        var adminRole = new Role()
+        {
+            Id = 1,
+            RoleName = "admin".ToLower(),
+            RolePolicy = "gold",
+        };
+        var dataAnalystRole = new Role()
+        {
+            Id = 2,
+            RoleName = "DataAnalyst".ToLower(),
+            RolePolicy = "boronz",
+        };
+        var dataManager = new Role()
+        {
+            Id = 3,
+            RoleName = "DataManager".ToLower(),
+            RolePolicy = "silver",
+        };
 
         var firstAdmin = new User()
         {
             Username = "admin", Password = HashPassword("admin"), PhoneNumber = "09131111111",
-            // FirstName = "admin", LastName = "admin", Email = "admin@gmail.com", Role = null;
+            FirstName = "admin", LastName = "admin", Email = "admin@gmail.com", Role = adminRole
         };
+
+        await _roleRepository.AddRole(adminRole);
+        await _roleRepository.AddRole(dataAnalystRole);
+        await _roleRepository.AddRole(dataManager);
         await _userRepository.AddUser(firstAdmin);
     }
 }

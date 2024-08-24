@@ -14,7 +14,7 @@ public class RoleRepository : IRoleRepository
         _context = context;
     }
 
-    public async Task<Role> GetRoleByID(int roleId)
+    public async Task<Role> GetRoleById(int roleId)
     {
         return await _context.Roles.SingleOrDefaultAsync(x => x.Id == roleId);
     }
@@ -24,16 +24,16 @@ public class RoleRepository : IRoleRepository
         return await _context.Roles.SingleOrDefaultAsync(x => x.RoleName == roleName);
     }
 
-    public bool AddRole(Role role)
+    public async Task<bool> AddRole(Role role)
     {
         _context.Roles.Add(role);
         _context.SaveChanges();
         return true;
     }
 
-    public bool DeleteRole(int roleId)
+    public async Task<bool> DeleteRole(string roleName)
     {
-        var role = _context.Roles.FirstOrDefault(x => x.Id == roleId);
+        var role = await _context.Roles.FirstOrDefaultAsync(x => x.RoleName == roleName);
         if (role == null) return false;
         _context.Roles.Remove(role);
         _context.SaveChanges();

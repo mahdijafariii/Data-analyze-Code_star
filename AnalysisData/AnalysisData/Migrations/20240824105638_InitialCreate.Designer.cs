@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240824072451_InitialCreate")]
+    [Migration("20240824105638_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -154,9 +154,11 @@ namespace AnalysisData.Migrations
 
             modelBuilder.Entity("AnalysisData.UserManage.Model.Role", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("RoleName")
                         .IsRequired()
@@ -168,7 +170,7 @@ namespace AnalysisData.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role");
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("AnalysisData.UserManage.Model.User", b =>
@@ -203,16 +205,13 @@ namespace AnalysisData.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("RoleId1")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId1");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -259,7 +258,7 @@ namespace AnalysisData.Migrations
                 {
                     b.HasOne("AnalysisData.UserManage.Model.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId1")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

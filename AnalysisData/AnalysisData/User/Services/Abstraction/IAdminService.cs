@@ -14,6 +14,8 @@ public interface IAdminService
     
     Task AddFirstAdmin();
     Task<int> GetUserCount();
+    Task AddRole(string roleName, string rolePolicy);
+    Task DeleteRole(string roleName);
 
 
 

@@ -1,4 +1,5 @@
 ﻿using AnalysisData.Services.Abstraction;
+using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.RegisterModel;
 using AnalysisData.UserManage.UpdateModel;
 using Microsoft.AspNetCore.Authorization;
@@ -67,4 +68,21 @@ public class AdminController : ControllerBase
         await _adminService.AddFirstAdmin();
         return Ok(new { message = "success" });
     }
+    
+    
+    [HttpDelete("DeleteRole")]
+    public async Task<IActionResult> DeleteRole(string roleName)
+    {
+         await _adminService.DeleteRole(roleName);
+         return Ok(new { message = "Role deleted successfully." });
+    }
+
+    [HttpPost("AddRole")]
+    public async Task<IActionResult> AddRole(string name , string policy)
+    {
+        await _adminService.AddRole(name, policy);
+        return Ok(new { message = "Role added successfully." });
+    }
+    
+
 }

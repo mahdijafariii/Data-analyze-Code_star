@@ -1,4 +1,5 @@
-﻿using AnalysisData.EAV.Dto;
+﻿using System.Security.Claims;
+using AnalysisData.EAV.Dto;
 using AnalysisData.EAV.Service.Abstraction;
 using AnalysisData.Exception;
 using Microsoft.AspNetCore.Mvc;
@@ -25,9 +26,10 @@ public class FileController : ControllerBase
     [HttpPost("upload-file-node")]
     public async Task<IActionResult> UploadNodeFile([FromForm] NodeUploadDto nodeUpload)
     {
+        var user = User;
         var uniqueAttribute = nodeUpload.Header;
         var file = nodeUpload.File;
-        var categoryFile = nodeUpload.categoryFile;
+        var category = nodeUpload.Category;
         if (file == null || file.Length == 0 || uniqueAttribute == null)
         {
             throw new NoFileUploadedException();
@@ -35,8 +37,9 @@ public class FileController : ControllerBase
 
         try
         {
-            await _uploadFileService.AddFileToDb(file);
-            await _nodeToDbService.ProcessCsvFileAsync(file, uniqueAttribute, categoryFile); 
+            await _uploadFileService.AddFileToDb(category, user);
+            var id = 1;
+            await _nodeToDbService.ProcessCsvFileAsync(file, uniqueAttribute, id); 
             return Ok(new
             {
                 massage = "File uploaded successfully !"

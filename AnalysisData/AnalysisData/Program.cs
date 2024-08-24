@@ -48,8 +48,8 @@ builder.Services.AddScoped<INodeRecordProcessor, NodeRecordProcessor>();
 builder.Services.AddScoped<IFromToProcessor, FromToProcessor>();
 builder.Services.AddScoped<IGraphServiceEav, GraphServiceEav>();
 builder.Services.AddScoped<IAdminService, AdminService>();
-builder.Services.AddScoped<IUploadFileService, UploadFileService>();
-builder.Services.AddScoped<IUploadFileRepository, UploadFileRepository>();
+builder.Services.AddScoped<IUploadFileService, UploadDataService>();
+builder.Services.AddScoped<IUploadDataRepository, UploadDataRepository>();
 // builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<ApplicationDbContext>(options => 

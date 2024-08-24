@@ -1,6 +1,8 @@
-﻿namespace AnalysisData.EAV.Service.Abstraction;
+﻿using System.Security.Claims;
+
+namespace AnalysisData.EAV.Service.Abstraction;
 
 public interface IUploadFileService
 {
-    Task AddFileToDb(IFormFile file);
+    Task AddFileToDb(string category, ClaimsPrincipal claimsPrincipal);
 }

@@ -4,9 +4,9 @@ namespace AnalysisData.Repository.UserRepository.Abstraction;
 
 public interface IUserRepository
 {
-    User GetUserByUsername(string userName);
-    User GetUserByEmail(string email);
-    User GetUserById(Guid id);
+    Task<User> GetUserByUsername(string userName);
+    Task<User> GetUserByEmail(string email);
+    Task<User> GetUserById(Guid id);
     Task<List<User>> GetAllUserPagination(int page, int limit);
     Task<bool> DeleteUser(Guid id);
     Task<bool> AddUser(User user);

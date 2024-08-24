@@ -7,8 +7,8 @@ namespace AnalysisData.Services.Abstraction;
 
 public interface IAdminService
 {
-    Task<bool> Register(UserRegisterModel userRegisterModel);
-    Task<bool> UpdateUserInformationByAdmin(Guid id, UpdateAdminModel updateAdminModel);
+    Task Register(UserRegisterModel userRegisterModel);
+    Task UpdateUserInformationByAdmin(Guid id, UpdateAdminModel updateAdminModel);
     Task<bool> DeleteUser(Guid id);
     Task<List<UserPaginationModel>> GetUserPagination(int limit, int page);
     

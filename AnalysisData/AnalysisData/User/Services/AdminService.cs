@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using AnalysisData.Exception;
+using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services.Abstraction;
 using AnalysisData.UserManage.Model;
@@ -14,15 +15,23 @@ public class AdminService : IAdminService
 {
     private readonly IUserRepository _userRepository;
     private readonly IRegexService _regexService;
+    private readonly IRoleRepository _roleRepository;
 
-    public AdminService(IUserRepository userRepository, IRegexService regexService)
+
+    public AdminService(IUserRepository userRepository, IRegexService regexService ,IRoleRepository roleRepository)
     {
         _userRepository = userRepository;
         _regexService = regexService;
+        _roleRepository = roleRepository;
     }
 
-    public async Task<bool> Register(UserRegisterModel userRegisterModel)
+    public async Task Register(UserRegisterModel userRegisterModel)
     {
+        var existingRole =await _roleRepository.GetRoleByName(userRegisterModel.RoleName);
+        if (existingRole == null)
+        {
+            throw new RoleNotFoundException();
+        }
         var existingUserByEmail = _userRepository.GetUserByEmail(userRegisterModel.Email);
         var existingUserByUsername = _userRepository.GetUserByUsername(userRegisterModel.Username);
         if (existingUserByEmail != null && existingUserByUsername != null)
@@ -38,20 +47,12 @@ public class AdminService : IAdminService
         if (userRegisterModel.Password != userRegisterModel.ConfirmPassword)
             throw new PasswordMismatchException();
 
-        if (userRegisterModel.RoleName is "admin" or "dataManager" or "systemManager")
-        {
-            var user = MakeUser(userRegisterModel);
-            await _userRepository.AddUser(user);
-        }
-        else
-        {
-            throw new RoleNotFoundException();
-        }
-        
-        return true;
+
+        var user = MakeUser(userRegisterModel, existingRole);
+        await _userRepository.AddUser(user);
     }
 
-    private User MakeUser(UserRegisterModel userRegisterModel)
+    private User MakeUser(UserRegisterModel userRegisterModel, Role role)
     {
         var user = new User
         {
@@ -61,7 +62,7 @@ public class AdminService : IAdminService
             LastName = userRegisterModel.LastName,
             Email = userRegisterModel.Email,
             PhoneNumber = userRegisterModel.PhoneNumber,
-            // Role = userRegisterModel.RoleName,
+            Role = role,
             ImageURL = null
         };
         return user;
@@ -77,19 +78,23 @@ public class AdminService : IAdminService
 
 
     
-    public Task<bool> UpdateUserInformationByAdmin(Guid id, UpdateAdminModel updateAdminModel)
+    public async Task UpdateUserInformationByAdmin(Guid id, UpdateAdminModel updateAdminModel)
     {
-        var user = _userRepository.GetUserById(id);
-        var checkUsername = _userRepository.GetUserByUsername(updateAdminModel.Username);
-        var checkEmail = _userRepository.GetUserByEmail(updateAdminModel.Email);
+        var user =await _userRepository.GetUserById(id);
+        var checkUsername =await _userRepository.GetUserByUsername(updateAdminModel.Username);
+        var checkEmail =await _userRepository.GetUserByEmail(updateAdminModel.Email);
 
         if ((checkUsername != null && user.Username!=updateAdminModel.Username) || (checkEmail != null && user.Email!=updateAdminModel.Email))
             throw new DuplicateUserException();
 
         _regexService.EmailCheck(updateAdminModel.Email);
         _regexService.PhoneNumberCheck(updateAdminModel.PhoneNumber);
+        var role = await _roleRepository.GetRoleByName(updateAdminModel.RoleName);
+        if (role == null)
+        {
+            throw new RoleNotFoundException();
+        }
         SetUpdatedInformation(user, updateAdminModel);
-        return Task.FromResult(true);
     }
 
     private void SetUpdatedInformation(User user, UpdateAdminModel updateAdminModel)

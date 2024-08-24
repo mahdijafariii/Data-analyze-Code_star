@@ -14,20 +14,20 @@ namespace AnalysisData.Repository.UserRepository
             _context = context;
         }
 
-        public User GetUserByUsername(string userName)
+        public async Task<User> GetUserByUsername(string userName)
         {
-            return _context.Users.FirstOrDefault(x => x.Username == userName);
+            return await _context.Users.FirstOrDefaultAsync(x => x.Username == userName);
         }
 
-        public User GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
-            return _context.Users.FirstOrDefault(x => x.Email == email);
+            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
         }
 
 
-        public User GetUserById(Guid id)
+        public async Task<User> GetUserById(Guid id)
         {
-            return _context.Users.FirstOrDefault(x => x.Id == id);
+            return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
         }
 
 
@@ -42,7 +42,7 @@ namespace AnalysisData.Repository.UserRepository
 
         public async Task<bool> DeleteUser(Guid id)
         {
-            var user = GetUserById(id);
+            var user =await GetUserById(id);
             if (user == null) return false;
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
@@ -58,7 +58,7 @@ namespace AnalysisData.Repository.UserRepository
 
         public async Task<bool> UpdateUser(Guid id, User newUser)
         {
-            var user = GetUserById(id);
+            var user =await GetUserById(id);
             newUser.Id = user.Id;
             _context.Users.Update(newUser);
             await _context.SaveChangesAsync();

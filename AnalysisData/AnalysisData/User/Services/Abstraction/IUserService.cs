@@ -13,5 +13,4 @@ public interface IUserService
     Task<bool> UpdateUserInformationByUser(ClaimsPrincipal userClaim, UpdateUserModel updateUserModel);
     Task<bool> NewPassword(ClaimsPrincipal userClaim, string oldPassword, string password, string confirmPassword);
     Task<bool> UploadImage(ClaimsPrincipal claimsPrincipal, string imageUrl);
-    Task<UserPaginationModel> GetUserById(Guid id);
 }

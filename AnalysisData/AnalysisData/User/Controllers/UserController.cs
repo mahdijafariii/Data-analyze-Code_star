@@ -102,12 +102,6 @@ public class UserController : ControllerBase
         return BadRequest(new {massage = "not success"});
     }
     
-    [HttpGet("GetUserById")]
-    public async Task<IActionResult> GetUser(Guid id)
-    {
-        var user = await _userService.GetUserById(id);
-        return Ok(user);
-    }
 
 
     [HttpPost("logOut")]

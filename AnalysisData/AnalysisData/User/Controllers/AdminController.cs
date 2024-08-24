@@ -22,13 +22,8 @@ public class AdminController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegisterModel)
     {
-        var isRegister = await _adminService.Register(userRegisterModel);
-        if (isRegister)
-        {
-            return Ok(new {massage = "User added successfully"});
-        }
-
-        return BadRequest("not success");
+        await _adminService.Register(userRegisterModel);
+        return Ok(new {massage = "User added successfully"});
     }
 
     //[Authorize(Roles = "admin")]
@@ -44,6 +39,7 @@ public class AdminController : ControllerBase
             thisPage = page,
         });
     }
+   
 
     [HttpDelete("DeleteUser")]
     public async Task<IActionResult> DeleteUser(Guid id)
@@ -61,13 +57,8 @@ public class AdminController : ControllerBase
     [HttpPut("UpdateUser")]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateAdminModel updateAdminModel)
     {
-        var isUpdated = await _adminService.UpdateUserInformationByAdmin(id, updateAdminModel);
-        if (isUpdated)
-        {
-            return Ok(new { message = "success" });
-        }
-
-        return BadRequest(new { message ="not success"});
+      await _adminService.UpdateUserInformationByAdmin(id, updateAdminModel);
+      return Ok(new {massage = "updated successfully"});
     }
 
     [HttpGet("firstAdmin")]
@@ -77,4 +68,36 @@ public class AdminController : ControllerBase
         await _adminService.AddFirstAdmin();
         return Ok(new { message = "success" });
     }
+    
+    
+    [HttpDelete("DeleteRole")]
+    public async Task<IActionResult> DeleteRole(string roleName)
+    {
+         await _adminService.DeleteRole(roleName);
+         return Ok(new { message = "Role deleted successfully." });
+    }
+
+    [HttpPost("AddRole")]
+    public async Task<IActionResult> AddRole(string name , string policy)
+    {
+        await _adminService.AddRole(name, policy);
+        return Ok(new { message = "Role added successfully." });
+    }
+    
+     
+    //[Authorize(Roles = "admin")]
+    [HttpGet("GetRolesPagination")]
+    public async Task<IActionResult> GetAllRoles(int page = 0, int limit = 10)
+    {
+        var rolesPagination = await _adminService.GetRolePagination(page, limit);
+        var rolesCount = await _adminService.GetRoleCount();
+        return Ok(new
+        {
+            users = rolesPagination,
+            count = rolesCount,
+            thisPage = page,
+        });
+    }
+    
+
 }

@@ -78,6 +78,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We have this role in db ! .
+        /// </summary>
+        internal static string DuplicateRoleException {
+            get {
+                return ResourceManager.GetString("DuplicateRoleException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We have user with this information !.
         /// </summary>
         internal static string DuplicateUserException {

@@ -16,12 +16,12 @@ namespace AnalysisData.Repository.UserRepository
 
         public async Task<User> GetUserByUsername(string userName)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Username == userName);
+            return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(x => x.Username == userName);
         }
 
         public async Task<User> GetUserByEmail(string email)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+            return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(x => x.Email == email);
         }
 
 

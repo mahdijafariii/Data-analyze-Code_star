@@ -61,7 +61,7 @@ public class AdminService : IAdminService
             LastName = userRegisterModel.LastName,
             Email = userRegisterModel.Email,
             PhoneNumber = userRegisterModel.PhoneNumber,
-            Role = userRegisterModel.RoleName,
+            // Role = userRegisterModel.RoleName,
             ImageURL = null
         };
         return user;
@@ -99,7 +99,7 @@ public class AdminService : IAdminService
         user.Email = updateAdminModel.Email;
         user.PhoneNumber = updateAdminModel.PhoneNumber;
         user.Username = updateAdminModel.Username;
-        user.Role = updateAdminModel.RoleName;
+        user.Role.RoleName = updateAdminModel.RoleName;
         _userRepository.UpdateUser(user.Id, user);
     }
 
@@ -119,7 +119,7 @@ public class AdminService : IAdminService
     public async Task<List<UserPaginationModel>> GetUserPagination(int page , int limit)
     {
         var users = await _userRepository.GetAllUserPagination(page,limit);
-        var paginationUsers = users.Select(x => new UserPaginationModel() {Guid = x.Id.ToString(),Username = x.Username , FirstName = x.FirstName , LastName = x.LastName , Email = x.Email , PhoneNumber = x.PhoneNumber , RoleName = x.Role });
+        var paginationUsers = users.Select(x => new UserPaginationModel() {Guid = x.Id.ToString(),Username = x.Username , FirstName = x.FirstName , LastName = x.LastName , Email = x.Email , PhoneNumber = x.PhoneNumber , RoleName = x.Role.RoleName });
         return paginationUsers.ToList();
     }
 
@@ -135,7 +135,7 @@ public class AdminService : IAdminService
         var firstAdmin = new User()
         {
             Username = "admin", Password = HashPassword("admin"), PhoneNumber = "09131111111",
-            FirstName = "admin", LastName = "admin", Email = "admin@gmail.com", Role = "admin"
+            // FirstName = "admin", LastName = "admin", Email = "admin@gmail.com", Role = null;
         };
         await _userRepository.AddUser(firstAdmin);
     }

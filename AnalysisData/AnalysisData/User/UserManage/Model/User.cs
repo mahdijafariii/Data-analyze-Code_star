@@ -20,5 +20,7 @@ public class User
     public string PhoneNumber { get; set; }
 
     public string? ImageURL { get; set; }
-    public string Role { get; set; }
+    [ForeignKey("RoleId")]
+    public int RoleId { get; set; }
+    public Role Role { get; set; }
 }

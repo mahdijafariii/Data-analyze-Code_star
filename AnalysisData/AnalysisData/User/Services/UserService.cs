@@ -147,7 +147,7 @@ public class UserService : IUserService
         var paginationUser = new UserPaginationModel
         {
             Guid = user.Id.ToString(), Username = user.Username, FirstName = user.FirstName, LastName = user.LastName,
-            Email = user.Email, PhoneNumber = user.PhoneNumber, RoleName = user.Role
+            Email = user.Email, PhoneNumber = user.PhoneNumber, RoleName = user.Role.RoleName
         };
         return paginationUser;
     }

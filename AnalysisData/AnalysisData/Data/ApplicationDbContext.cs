@@ -17,4 +17,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<EntityNode> EntityNodes { get; set; }
     public DbSet<ValueEdge> ValueEdges { get; set; }
     public DbSet<ValueNode> ValueNodes { get; set; }
+    public DbSet<Role> Roles { get; set; }
+
 }

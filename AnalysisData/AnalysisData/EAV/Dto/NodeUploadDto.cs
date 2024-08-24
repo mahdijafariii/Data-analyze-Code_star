@@ -8,4 +8,6 @@ public class NodeUploadDto
     public string Header { get; set; }
     [Required]
     public IFormFile File { get; set; }
+    [Required]
+    public string categoryFile { get; set; }
 }

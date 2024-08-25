@@ -14,14 +14,16 @@ public class UploadDataService : IUploadFileService
         _uploadDataRepository = uploadDataRepository;
     }
 
-    public async Task AddFileToDb(string category, ClaimsPrincipal claimsPrincipal)
+    public async Task<int> AddFileToDb(string category, ClaimsPrincipal claimsPrincipal)
     {
         var guid = Guid.Parse(claimsPrincipal.FindFirstValue("id"));
         var uploadData = new UploadData
         {
             UserId = guid,
             Category = category,
+            UploadDate = DateTime.UtcNow
         };
         await _uploadDataRepository.AddAsync(uploadData);
+        return uploadData.Id;
     }
 }

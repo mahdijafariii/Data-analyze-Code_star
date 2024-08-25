@@ -37,13 +37,13 @@ public class FileController : ControllerBase
 
         try
         {
-            await _uploadFileService.AddFileToDb(category, user);
-            var id = 1;
-            await _nodeToDbService.ProcessCsvFileAsync(file, uniqueAttribute, id); 
+            var fileId  = await _uploadFileService.AddFileToDb(category, user);
+            await _nodeToDbService.ProcessCsvFileAsync(file, uniqueAttribute, fileId);
+            
             return Ok(new
             {
-                massage = "File uploaded successfully !"
-            }); 
+                message = "File uploaded successfully!"
+            });
         }
         catch (System.Exception e)
         {

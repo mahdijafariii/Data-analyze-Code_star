@@ -13,9 +13,9 @@ public class UploadData
 
     [ForeignKey("UserId")]
     public User User { get; set; }
-
+    [Required]
+    public DateTime UploadDate { get; set; }
     public string Category { get; set; }
-
-    // Navigation property for the one-to-many relationship with UserFile
-    public ICollection<UserFile> UserFiles { get; set; }
+    
+    public ICollection<EntityNode> EntityNodes { get; set; }
 }

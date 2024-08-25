@@ -4,5 +4,5 @@ namespace AnalysisData.EAV.Service.Abstraction;
 
 public interface IUploadFileService
 {
-    Task AddFileToDb(string category, ClaimsPrincipal claimsPrincipal);
+    Task<int> AddFileToDb(string category, ClaimsPrincipal claimsPrincipal);
 }

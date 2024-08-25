@@ -67,6 +67,13 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials());
+            
+    options.AddPolicy("AllowAngularApp",
+        corsPolicyBuilder => corsPolicyBuilder.WithOrigins("https://angular-8926f3d808-analysis-data.apps.ir-thr-ba1.arvancaas.ir")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+
 });
 
 var app = builder.Build();

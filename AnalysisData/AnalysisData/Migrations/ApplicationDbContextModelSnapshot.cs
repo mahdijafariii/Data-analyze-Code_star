@@ -90,7 +90,12 @@ namespace AnalysisData.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<int>("UploadDataId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UploadDataId");
 
                     b.ToTable("EntityNodes");
                 });
@@ -103,13 +108,48 @@ namespace AnalysisData.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("UploadDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("UploadDatas");
+                });
+
+            modelBuilder.Entity("AnalysisData.EAV.Model.UserFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("UploadDataId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UploadDataId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserFiles");
                 });
 
             modelBuilder.Entity("AnalysisData.EAV.Model.ValueEdge", b =>
@@ -230,6 +270,47 @@ namespace AnalysisData.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("AnalysisData.EAV.Model.EntityNode", b =>
+                {
+                    b.HasOne("AnalysisData.EAV.Model.UploadData", "UploadData")
+                        .WithMany("EntityNodes")
+                        .HasForeignKey("UploadDataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UploadData");
+                });
+
+            modelBuilder.Entity("AnalysisData.EAV.Model.UploadData", b =>
+                {
+                    b.HasOne("AnalysisData.UserManage.Model.User", "User")
+                        .WithMany("UploadData")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AnalysisData.EAV.Model.UserFile", b =>
+                {
+                    b.HasOne("AnalysisData.EAV.Model.UploadData", "UploadData")
+                        .WithMany()
+                        .HasForeignKey("UploadDataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AnalysisData.UserManage.Model.User", "User")
+                        .WithMany("UserFiles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UploadData");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AnalysisData.EAV.Model.ValueEdge", b =>
                 {
                     b.HasOne("AnalysisData.EAV.Model.AttributeEdge", "Attribute")
@@ -277,6 +358,18 @@ namespace AnalysisData.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("AnalysisData.EAV.Model.UploadData", b =>
+                {
+                    b.Navigation("EntityNodes");
+                });
+
+            modelBuilder.Entity("AnalysisData.UserManage.Model.User", b =>
+                {
+                    b.Navigation("UploadData");
+
+                    b.Navigation("UserFiles");
                 });
 #pragma warning restore 612, 618
         }

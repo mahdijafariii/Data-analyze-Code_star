@@ -2,12 +2,10 @@
 
 namespace AnalysisData.EAV.Repository.Abstraction;
 
-public interface IUploadFileRepository
+public interface IUploadDataRepository
 {
-    Task AddAsync(UploadData uploadData);
     Task<IEnumerable<UploadData>> GetAllAsync();
     Task<UploadData> GetByIdAsync(int id);
-    Task<UploadData> GetByNameAsync(string name);
-    Task DeleteAsync(int id);
-    
+    Task<IEnumerable<UploadData>> GetByUserIdAsync(Guid userId);
+    Task AddAsync(UploadData uploadData);
 }

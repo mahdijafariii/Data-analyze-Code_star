@@ -30,9 +30,7 @@ public class GraphServiceEav : IGraphServiceEav
 
     public async Task<PaginatedListDto> GetNodesPaginationAsync(int pageIndex, int pageSize, string category)
     {
-        var valueNodes = GetEntityNodesForPagination(category);
-        var typeCategory = await _attributeNodeRepository.GetTypeOfCategory();
-
+        var valueNodes = await GetEntityNodesForPaginationAsync(category);
 
         var groupedNodes = valueNodes.Select(g => new PaginationNodeDto
             {
@@ -45,16 +43,18 @@ public class GraphServiceEav : IGraphServiceEav
             .Take(pageSize)
             .ToList();
 
-        return new PaginatedListDto(items, pageIndex, count, typeCategory);
+        return new PaginatedListDto(items, pageIndex, count, category);
     }
 
-    private IEnumerable<EntityNode> GetEntityNodesForPagination(string category)
+    private async Task<IEnumerable<EntityNode>> GetEntityNodesForPaginationAsync(string category)
     {
-        var valueNodes = category.ToLower() == "all"
-            ? _graphNodeRepository.GetEntityNodesAsync()
-            : _graphNodeRepository.GetEntityNodesWithCategoryAsync(category.ToLower());
+        var lowerCaseCategory = category.ToLower();
 
-        if (!valueNodes.Any() && category.ToLower() != "all")
+
+        var valueNodes = lowerCaseCategory == "all"
+            ?  await _graphNodeRepository.GetEntityNodesAsync()
+            : await _graphNodeRepository.GetEntityNodesWithCategoryAsync(lowerCaseCategory);
+        if (!valueNodes.Any() && lowerCaseCategory != "all")
         {
             throw new CategoryResultNotFoundException();
         }

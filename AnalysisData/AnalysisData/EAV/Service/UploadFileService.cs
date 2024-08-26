@@ -1,31 +1,30 @@
-﻿
+﻿using System.Security.Claims;
 using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository;
 using AnalysisData.EAV.Repository.Abstraction;
 using AnalysisData.EAV.Service.Abstraction;
-using AnalysisData.Exception;
 
 namespace AnalysisData.EAV.Service;
 
 public class UploadFileService : IUploadFileService
 {
-    private readonly IUploadFileRepository _uploadFileRepository;
+    private readonly IUploadDataRepository _uploadDataRepository;
 
-    public UploadFileService(IUploadFileRepository uploadFileRepository)
+    public UploadFileService(IUploadDataRepository uploadDataRepository)
     {
-        _uploadFileRepository = uploadFileRepository;
+        _uploadDataRepository = uploadDataRepository;
     }
 
-    public async Task AddFileToDb(IFormFile file)
+    public async Task<int> AddFileToDb(string category, ClaimsPrincipal claimsPrincipal, string name)
     {
-        var name = file.Name;
-        var check = await _uploadFileRepository.GetByNameAsync(name);
-        if (check != null)
+        var guid = Guid.Parse(claimsPrincipal.FindFirstValue("id"));
+        var uploadData = new UploadData
         {
-            throw new FileExistenceException();
-        }
-
-        var newFile = new UploadData { Name = name };
-        await _uploadFileRepository.AddAsync(newFile);
+            UserId = guid,
+            Category = category,
+            Name = name,
+            UploadDate = DateTime.UtcNow
+        };
+        await _uploadDataRepository.AddAsync(uploadData);
+        return uploadData.Id;
     }
 }

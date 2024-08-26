@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using AnalysisData.EAV.Model;
 
 namespace AnalysisData.UserManage.Model;
 
@@ -20,6 +21,13 @@ public class User
     public string PhoneNumber { get; set; }
 
     public string? ImageURL { get; set; }
+    
+    // Navigation property for the one-to-many relationship with UploadData
+    public ICollection<UploadData> UploadData { get; set; }
+    
+    // Navigation property for the one-to-many relationship with UserFile
+    public ICollection<UserFile> UserFiles { get; set; }
+    
     [ForeignKey("RoleId")]
     public int RoleId { get; set; }
     public Role Role { get; set; }

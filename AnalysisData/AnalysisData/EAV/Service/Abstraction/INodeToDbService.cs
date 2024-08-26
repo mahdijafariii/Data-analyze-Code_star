@@ -2,5 +2,5 @@
 
 public interface INodeToDbService
 {
-    Task ProcessCsvFileAsync(IFormFile file, string id, string category);
+    Task ProcessCsvFileAsync(IFormFile file, string id, int fileId);
 }

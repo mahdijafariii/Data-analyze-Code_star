@@ -1,5 +1,6 @@
 using AnalysisData.EAV.Dto;
 using AnalysisData.EAV.Repository.FileUploadedRepository;
+using AnalysisData.Exception;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.UserManage.Model;
 
@@ -26,8 +27,17 @@ public class FilePermissionService : IFilePermissionService
         return paginationFiles.ToList();
     }
 
-    public async Task<List<User>> GetUserForAccessingFile(string username)
+    public async Task<List<UserAccessDto>> GetUserForAccessingFile(string username)
     {
-        return await _userRepository.GetUsersContainSearchInput(username);
+        var users =await _userRepository.GetUsersContainSearchInput(username);
+        var result = users.Select(x => new UserAccessDto()
+        {
+            Id = x.Id.ToString(), UserName = x.Username, FirstName = x.FirstName, LastName = x.LastName
+        });
+        if (!result.Any())
+        {
+            throw new UserNotFoundException();
+        }
+        return result.ToList();
     }
 }

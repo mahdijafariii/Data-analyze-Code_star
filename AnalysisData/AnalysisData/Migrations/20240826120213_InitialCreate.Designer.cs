@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240826075505_InitialCreate")]
+    [Migration("20240826120213_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -129,7 +129,7 @@ namespace AnalysisData.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UploadDatas");
+                    b.ToTable("FileUploadedDb");
                 });
 
             modelBuilder.Entity("AnalysisData.EAV.Model.UserFile", b =>

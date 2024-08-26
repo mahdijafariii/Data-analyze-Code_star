@@ -6,5 +6,5 @@ namespace AnalysisData.EAV.Service;
 public interface IFilePermissionService
 {
     Task<List<UploadDataDto>> GetFilesPagination(int page, int limit);
-    Task<List<User>> GetUserForAccessingFile(string username);
+    Task<List<UserAccessDto>> GetUserForAccessingFile(string username);
 }

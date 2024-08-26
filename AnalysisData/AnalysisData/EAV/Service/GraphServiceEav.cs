@@ -67,7 +67,7 @@ public class GraphServiceEav : IGraphServiceEav
 
     public async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(string id)
     {
-        var node = await _entityNodeRepository.GetByIdAsync(id);
+        var node = await _entityNodeRepository.GetByNameAsync(id);
         if (node is null)
         {
             throw new NodeNotFoundException();

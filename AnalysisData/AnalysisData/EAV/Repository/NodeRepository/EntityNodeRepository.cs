@@ -25,9 +25,9 @@ public class EntityNodeRepository : IEntityNodeRepository
         return await _context.EntityNodes.ToListAsync();
     }
 
-    public async Task<EntityNode> GetByIdAsync(string id)
+    public async Task<EntityNode> GetByNameAsync(string id)
     {
-        return await _context.EntityNodes.FirstOrDefaultAsync(x => x.Id.ToString() == id);
+        return await _context.EntityNodes.FirstOrDefaultAsync(x => x.Name == id);
     }
 
     public async Task<List<EntityNode>> GetNodesOfEdgeList(List<string> nodeIdes)
@@ -35,7 +35,7 @@ public class EntityNodeRepository : IEntityNodeRepository
         List<EntityNode> entityNodes = new List<EntityNode>();
         foreach (var nodeId in nodeIdes)
         {
-            var node = await GetByIdAsync(nodeId);
+            var node = await GetByNameAsync(nodeId);
             if (nodeId != null)
             {
                 entityNodes.Add(node);
@@ -43,13 +43,6 @@ public class EntityNodeRepository : IEntityNodeRepository
         }
         return entityNodes;
     }
-
-    public async Task<EntityNode> GetByNameAsync(string name)
-    {
-        return await _context.EntityNodes.FindAsync(name);
-    }
-
-
     public async Task DeleteAsync(int id)
     {
         var entity = await _context.EntityNodes.FindAsync(id);

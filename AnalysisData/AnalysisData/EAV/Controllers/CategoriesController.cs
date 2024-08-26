@@ -1,4 +1,5 @@
-﻿using AnalysisData.EAV.Model;
+﻿using AnalysisData.EAV.Dto;
+using AnalysisData.EAV.Model;
 using AnalysisData.EAV.Service;
 using AnalysisData.EAV.Service.Abstraction;
 using Microsoft.AspNetCore.Mvc;
@@ -17,22 +18,30 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetCategories(int pageNumber = 0, int pageSize = 10, string typeCategory = "Default")
+    public async Task<IActionResult> GetCategories(int pageNumber = 0, int pageSize = 10)
     {
         var paginatedCategories = await _categoryService.GetPaginatedCategoriesAsync(pageNumber, pageSize);
         return Ok(paginatedCategories);
     }
     
     [HttpPost]
-    public async Task<IActionResult> AddCategory([FromBody] Category category)
+    public async Task<IActionResult> AddCategory([FromBody] AddCategoryDto categoryDto)
     {
-        if (category == null || string.IsNullOrEmpty(category.Name))
+        if (categoryDto == null || string.IsNullOrEmpty(categoryDto.Name))
         {
             return BadRequest("Category name is required.");
         }
 
-        await _categoryService.AddCategoryAsync(category);
-        return CreatedAtAction(nameof(GetCategories), new { pageNumber = 1, pageSize = 10 }, category);
+        try
+        {
+            await _categoryService.AddCategoryAsync(categoryDto);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(ex.Message); 
+        }
+
+        return Ok("Category added!");
     }
     
     [HttpDelete("{id}")]

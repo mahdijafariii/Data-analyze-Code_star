@@ -3,6 +3,7 @@ using System;
 using AnalysisData.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240826145327_initila2")]
+    partial class initila2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -302,7 +305,7 @@ namespace AnalysisData.Migrations
             modelBuilder.Entity("AnalysisData.EAV.Model.UploadData", b =>
                 {
                     b.HasOne("AnalysisData.EAV.Model.Category", "Category")
-                        .WithMany()
+                        .WithMany("UploadData")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -384,6 +387,11 @@ namespace AnalysisData.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("AnalysisData.EAV.Model.Category", b =>
+                {
+                    b.Navigation("UploadData");
                 });
 
             modelBuilder.Entity("AnalysisData.EAV.Model.UploadData", b =>

@@ -29,7 +29,7 @@ public class FileController : ControllerBase
         var user = User;
         var uniqueAttribute = nodeUpload.Header;
         var file = nodeUpload.File;
-        var category = nodeUpload.Category;
+        var categoryID = nodeUpload.CategoryId;
         var name = nodeUpload.Name;
         if (file == null || file.Length == 0 || uniqueAttribute == null)
         {
@@ -38,7 +38,7 @@ public class FileController : ControllerBase
 
         try
         {
-            var fileId  = await _uploadFileService.AddFileToDb(category, user, name);
+            var fileId  = await _uploadFileService.AddFileToDb(categoryID, user, name);
             await _nodeToDbService.ProcessCsvFileAsync(file, uniqueAttribute, fileId);
             
             return Ok(new

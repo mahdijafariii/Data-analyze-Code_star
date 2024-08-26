@@ -6,6 +6,6 @@ public interface IGraphServiceEav
 {
     Task<Dictionary<string, string>> GetNodeInformation(string headerUniqueId);
     Task<Dictionary<string, string>> GetEdgeInformation(int edgeId);
-    Task<PaginatedListDto> GetNodesPaginationAsync(int pageIndex, int pageSize, string category);
+    Task<PaginatedListDto> GetNodesPaginationAsync(int pageIndex, int pageSize, int? categoryId = null);
     Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(string id);
 }

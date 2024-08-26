@@ -18,10 +18,10 @@ public class GraphNodeRepository : IGraphNodeRepository
     {
         return await _context.EntityNodes.ToListAsync();
     }
-    public async Task<IEnumerable<EntityNode>> GetEntityNodesWithCategoryAsync(string category)
+    public async Task<IEnumerable<EntityNode>> GetEntityNodesWithCategoryIdAsync(int categoryId)
     {
         var uploadDataIds = await _context.UploadDatas
-            .Where(uploadData => uploadData.Category == category)
+            .Where(uploadData => uploadData.CategoryId == categoryId)
             .Select(uploadData => uploadData.Id)
             .ToListAsync();
 
@@ -31,6 +31,7 @@ public class GraphNodeRepository : IGraphNodeRepository
 
         return result;
     }
+    
 
     public IEnumerable<ValueNode> GetValueNodesAsync()
     {

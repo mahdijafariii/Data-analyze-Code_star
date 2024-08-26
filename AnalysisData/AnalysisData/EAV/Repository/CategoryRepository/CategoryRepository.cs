@@ -24,6 +24,11 @@ public class CategoryRepository : ICategoryRepository
     {
         return await _context.Categories.FindAsync(id);
     }
+    
+    public async Task<Category> GetByNameAsync(string name)
+    {
+        return await _context.Categories.FirstOrDefaultAsync(c => c.Name == name);
+    }
 
     public async Task AddAsync(Category category)
     {

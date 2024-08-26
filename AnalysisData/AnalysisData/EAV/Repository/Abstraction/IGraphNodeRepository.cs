@@ -7,5 +7,5 @@ public interface IGraphNodeRepository
     Task<IEnumerable<dynamic>> GetNodeAttributeValue(string headerUniqueId);
 
     Task<IEnumerable<EntityNode>> GetEntityNodesAsync();
-    Task<IEnumerable<EntityNode>> GetEntityNodesWithCategoryAsync(string category);
+    Task<IEnumerable<EntityNode>> GetEntityNodesWithCategoryIdAsync(int categoryId);
 }

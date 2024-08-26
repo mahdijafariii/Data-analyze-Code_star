@@ -27,8 +27,19 @@ public class CategoryService : ICategoryService
         return new PaginationCategoryDto(paginatedItems, pageNumber, totalCount);
     }
 
-    public async Task AddCategoryAsync(Category category)
+    public async Task AddCategoryAsync(AddCategoryDto categoryDto)
     {
+        var existingCategory = await _categoryRepository.GetByNameAsync(categoryDto.Name);
+        if (existingCategory != null)
+        {
+            throw new InvalidOperationException($"A category with the name '{categoryDto.Name}' already exists.");
+        }
+
+        var category = new Category
+        {
+            Name = categoryDto.Name
+        };
+
         await _categoryRepository.AddAsync(category);
     }
 

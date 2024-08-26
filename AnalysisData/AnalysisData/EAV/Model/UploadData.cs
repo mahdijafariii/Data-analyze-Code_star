@@ -13,9 +13,16 @@ public class UploadData
 
     [ForeignKey("UserId")]
     public User User { get; set; }
+
     [Required]
     public DateTime UploadDate { get; set; }
-    public string Category { get; set; }
+    
+    public int CategoryId { get; set; }
+
+    [ForeignKey("CategoryId")]
+    public Category Category { get; set; }
+
     public string Name { get; set; }
+
     public ICollection<EntityNode> EntityNodes { get; set; }
 }

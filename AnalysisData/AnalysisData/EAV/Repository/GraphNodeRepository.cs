@@ -51,4 +51,32 @@ public class GraphNodeRepository : IGraphNodeRepository
         return result;
     }
     
+    public async Task<IEnumerable<EntityNode>> GetNodeContainSearchInput(string input)
+    {
+        var result = await _context.EntityNodes
+            .Where(a => a.Name.Contains(input))
+            .ToListAsync();
+
+        return result;
+    }
+    
+    public async Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInput(string input)
+    {
+        var result = await _context.EntityNodes
+            .Where(a => a.Name.StartsWith(input))
+            .ToListAsync();
+
+        return result;
+    }
+    
+    public async Task<IEnumerable<EntityNode>> GetNodeEndsWithSearchInput(string input)
+    {
+        var result = await _context.EntityNodes
+            .Where(a => a.Name.EndsWith(input))
+            .ToListAsync();
+
+        return result;
+    }
+    
+    
 }

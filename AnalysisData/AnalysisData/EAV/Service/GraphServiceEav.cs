@@ -6,6 +6,7 @@ using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
 using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
 using AnalysisData.EAV.Service.Abstraction;
 using AnalysisData.Exception;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.EAV.Service;
 
@@ -18,8 +19,9 @@ public class GraphServiceEav : IGraphServiceEav
     private readonly IAttributeNodeRepository _attributeNodeRepository;
 
 
-    
-    public GraphServiceEav(IGraphNodeRepository graphNodeRepository, IGraphEdgeRepository graphEdgeRepository, IEntityNodeRepository entityNodeRepository, IEntityEdgeRepository entityEdgeRepository,IAttributeNodeRepository attributeNodeRepository)
+    public GraphServiceEav(IGraphNodeRepository graphNodeRepository, IGraphEdgeRepository graphEdgeRepository,
+        IEntityNodeRepository entityNodeRepository, IEntityEdgeRepository entityEdgeRepository,
+        IAttributeNodeRepository attributeNodeRepository)
     {
         _graphNodeRepository = graphNodeRepository;
         _entityNodeRepository = entityNodeRepository;
@@ -52,7 +54,7 @@ public class GraphServiceEav : IGraphServiceEav
 
 
         var valueNodes = lowerCaseCategory == "all"
-            ?  await _graphNodeRepository.GetEntityNodesAsync()
+            ? await _graphNodeRepository.GetEntityNodesAsync()
             : await _graphNodeRepository.GetEntityNodesWithCategoryAsync(lowerCaseCategory);
         if (!valueNodes.Any() && lowerCaseCategory != "all")
         {
@@ -70,6 +72,7 @@ public class GraphServiceEav : IGraphServiceEav
         {
             throw new NodeNotFoundException();
         }
+
         var edges = await _entityEdgeRepository.FindNodeLoopsAsync(node.Id);
         var uniqueNodes = edges.SelectMany(x => new[] { x.EntityIDTarget, x.EntityIDSource }).Distinct().ToList();
         var nodes = await _entityNodeRepository.GetNodesOfEdgeList(uniqueNodes);
@@ -86,6 +89,7 @@ public class GraphServiceEav : IGraphServiceEav
         {
             throw new NodeNotFoundException();
         }
+
         var output = new Dictionary<string, string>();
 
         foreach (var item in result)
@@ -95,7 +99,7 @@ public class GraphServiceEav : IGraphServiceEav
 
         return output;
     }
-    
+
     public async Task<Dictionary<string, string>> GetEdgeInformation(int edgeId)
     {
         var result = await _graphEdgeRepository.GetEdgeAttributeValues(edgeId);
@@ -103,6 +107,7 @@ public class GraphServiceEav : IGraphServiceEav
         {
             throw new EdgeNotFoundException();
         }
+
         var output = new Dictionary<string, string>();
 
         foreach (var item in result)
@@ -113,4 +118,28 @@ public class GraphServiceEav : IGraphServiceEav
         return output;
     }
 
+    public async Task<IEnumerable<EntityNode>> SearchEntityNodeName(string inputSearch, string type)
+    {
+        IEnumerable<EntityNode> entityNodes;
+        var searchType = type.ToLower();
+        switch (searchType)
+        {
+            case "startswith":
+                entityNodes = await _graphNodeRepository.GetNodeStartsWithSearchInput(inputSearch);
+                break;
+            case "endswith":
+                entityNodes = await _graphNodeRepository.GetNodeEndsWithSearchInput(inputSearch);
+                break;
+            default:
+                entityNodes = await _graphNodeRepository.GetNodeContainSearchInput(inputSearch);
+                break;
+        }
+
+        if (!entityNodes.Any())
+        {
+            throw new NodeNotFoundException();
+        }
+
+        return entityNodes;
+    }
 }

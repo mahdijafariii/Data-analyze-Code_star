@@ -36,7 +36,8 @@ public class JwtService : IJwtService
             new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
             new Claim(ClaimTypes.Role, user.Role.RoleName.ToLower()),
             new Claim("policy", user.Role.RolePolicy.ToLower()),
-            new Claim("image", user.ImageURL),
+            new Claim("image", user.ImageURL ?? "default-image-url")
+            
         };
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var creeds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

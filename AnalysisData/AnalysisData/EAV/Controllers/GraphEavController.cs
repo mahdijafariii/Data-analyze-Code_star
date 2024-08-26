@@ -47,4 +47,11 @@ public class GraphEavController : ControllerBase
             edges = result.Item2
         });
     }
+    
+    [HttpGet("Search")]
+    public async Task<IActionResult> SearchEntityNode([FromQuery] string searchInput, string searchType = "contain")
+    {
+        var result = await _graphServiceEav.SearchEntityNodeName(searchInput,searchType);
+        return Ok(result);
+    }
 }

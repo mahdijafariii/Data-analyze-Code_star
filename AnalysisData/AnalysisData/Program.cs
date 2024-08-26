@@ -3,6 +3,8 @@ using AnalysisData.CookieService.abstractions;
 using AnalysisData.Data;
 using AnalysisData.EAV.Repository;
 using AnalysisData.EAV.Repository.Abstraction;
+using AnalysisData.EAV.Repository.CategoryRepository;
+using AnalysisData.EAV.Repository.CategoryRepository.asbtraction;
 using AnalysisData.EAV.Repository.EdgeRepository;
 using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
 using AnalysisData.EAV.Repository.NodeRepository;
@@ -53,6 +55,8 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUploadFileService, UploadFileService>();
 builder.Services.AddScoped<IUploadDataRepository, UploadDataRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 // builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<ApplicationDbContext>(options => 

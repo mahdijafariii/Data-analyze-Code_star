@@ -1,4 +1,5 @@
 ﻿using AnalysisData.Data;
+using AnalysisData.EAV.Dto;
 using AnalysisData.EAV.Model;
 using AnalysisData.EAV.Repository.CategoryRepository.asbtraction;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,7 @@ public class CategoryRepository : ICategoryRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Category>> GetAllAsync()
+    public async Task<List<Category>> GetAllAsync()
     {
         return await _context.Categories.ToListAsync();
     }

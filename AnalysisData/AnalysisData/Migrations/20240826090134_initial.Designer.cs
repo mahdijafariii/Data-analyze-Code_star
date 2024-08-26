@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240826070909_initial")]
+    [Migration("20240826090134_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -57,6 +57,23 @@ namespace AnalysisData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AttributeNodes");
+                });
+
+            modelBuilder.Entity("AnalysisData.EAV.Model.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("AnalysisData.EAV.Model.EntityEdge", b =>

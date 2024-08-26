@@ -1,6 +1,9 @@
-﻿namespace AnalysisData.EAV.Model;
+﻿using System.ComponentModel.DataAnnotations;
+namespace AnalysisData.EAV.Model;
 
 public class Category
 {
-    public string Name { get; set; }
+    [Key]
+    public int Id { get; set; } 
+    public string Name { get; set; } 
 }

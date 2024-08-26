@@ -48,7 +48,7 @@ public class EntityNodeRepository : IEntityNodeRepository
         return entityNodes;
     }
     public async Task DeleteAsync(int id)
-    {ل
+    {
         var entity = await _context.EntityNodes.FindAsync(id);
         if (entity != null)
         {

@@ -12,4 +12,5 @@ public interface IUserRepository
     Task<bool> AddUser(User user);
     Task<bool> UpdateUser(Guid id, User newUser);
     Task<int> GetUsersCount();
+    Task<List<User>> GetUsersContainSearchInput(string username);
 }

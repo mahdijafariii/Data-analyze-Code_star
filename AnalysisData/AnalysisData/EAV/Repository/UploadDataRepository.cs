@@ -16,12 +16,12 @@ public class UploadDataRepository : IUploadDataRepository
 
     public async Task<IEnumerable<UploadData>> GetAllAsync()
     {
-        return await _context.UploadDatas.ToListAsync();
+        return await _context.FileUploadedDb.ToListAsync();
     }
 
     public async Task<UploadData> GetByIdAsync(int id)
     {
-        return await _context.UploadDatas.FindAsync(id);
+        return await _context.FileUploadedDb.FindAsync(id);
     }
 
     public async Task<IEnumerable<UploadData>> GetByUserIdAsync(Guid userId)
@@ -33,7 +33,7 @@ public class UploadDataRepository : IUploadDataRepository
 
     public async Task AddAsync(UploadData uploadData)
     {
-        await _context.UploadDatas.AddAsync(uploadData);
+        await _context.FileUploadedDb.AddAsync(uploadData);
         await _context.SaveChangesAsync();
     }
 }

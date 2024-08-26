@@ -17,7 +17,7 @@ services:
     depends_on:
       - postgres
     environment:
-      ConnectionStrings__DefaultConnection: Host=postgres;Database=mohaymen;Username=postgres;Password=1234;
+      CONNECTION_STRING: Host=postgres;Database=mohaymen;Username=postgres;Password=1234;
   
   admin:
     image: adminer
@@ -35,7 +35,7 @@ services:
         condition: service_completed_successfully
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__DefaultConnection: Host=postgres;Database=mohaymen;Username=postgres;Password=1234;
+      CONNECTION_STRING: Host=postgres;Database=mohaymen;Username=postgres;Password=1234;
     ports:
       - "8085:80"
 

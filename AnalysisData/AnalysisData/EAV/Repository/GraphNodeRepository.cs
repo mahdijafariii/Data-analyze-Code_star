@@ -20,7 +20,7 @@ public class GraphNodeRepository : IGraphNodeRepository
     }
     public async Task<IEnumerable<EntityNode>> GetEntityNodesWithCategoryAsync(string category)
     {
-        var uploadDataIds = await _context.UploadDatas
+        var uploadDataIds = await _context.FileUploadedDb
             .Where(uploadData => uploadData.Category == category)
             .Select(uploadData => uploadData.Id)
             .ToListAsync();

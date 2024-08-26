@@ -5,6 +5,7 @@ using AnalysisData.EAV.Repository;
 using AnalysisData.EAV.Repository.Abstraction;
 using AnalysisData.EAV.Repository.EdgeRepository;
 using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
+using AnalysisData.EAV.Repository.FileUploadedRepository;
 using AnalysisData.EAV.Repository.NodeRepository;
 using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
 using AnalysisData.EAV.Service;
@@ -23,6 +24,7 @@ using AnalysisData.Services.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.json").AddEnvironmentVariables();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -51,13 +53,17 @@ builder.Services.AddScoped<IFromToProcessor, FromToProcessor>();
 builder.Services.AddScoped<IGraphServiceEav, GraphServiceEav>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-builder.Services.AddScoped<IUploadFileService, UploadFileService>();
+builder.Services.AddScoped<IUploadFileService, UploadUploadFileService>();
 builder.Services.AddScoped<IUploadDataRepository, UploadDataRepository>();
+builder.Services.AddScoped<IFilePermissionService, FilePermissionService>();
+builder.Services.AddScoped<IFileUploadedRepository, FileUploadedRepository>();
+
+
 // builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddDbContext<ApplicationDbContext>(options => 
-        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")),
-    ServiceLifetime.Scoped);
+var connectionString = builder.Configuration["CONNECTION_STRING"];
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddControllers();
 // builder.Services.AddCors(options =>

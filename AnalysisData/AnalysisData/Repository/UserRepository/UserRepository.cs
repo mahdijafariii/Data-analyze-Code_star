@@ -64,5 +64,10 @@ namespace AnalysisData.Repository.UserRepository
             await _context.SaveChangesAsync();
             return true;
         }
+        
+        public async Task<List<User>> GetUsersContainSearchInput(string username)
+        {
+            return await _context.Users.Include(u => u.Role).Where(x => x.Username.Contains(username)).Take(10).ToListAsync();
+        }
     }
 }

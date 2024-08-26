@@ -53,10 +53,11 @@ builder.Services.AddScoped<IFromToProcessor, FromToProcessor>();
 builder.Services.AddScoped<IGraphServiceEav, GraphServiceEav>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-builder.Services.AddScoped<IUploadFileService, UploadUploadFileService>();
+builder.Services.AddScoped<IUploadFileService, UploadFileService>();
 builder.Services.AddScoped<IUploadDataRepository, UploadDataRepository>();
 builder.Services.AddScoped<IFilePermissionService, FilePermissionService>();
 builder.Services.AddScoped<IFileUploadedRepository, FileUploadedRepository>();
+builder.Services.AddScoped<IUserFileRepository, UserFileRepository>();
 
 
 // builder.Services.AddDbContext<ApplicationDbContext>(options =>

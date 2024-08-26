@@ -29,13 +29,17 @@ public class EntityNodeRepository : IEntityNodeRepository
     {
         return await _context.EntityNodes.FirstOrDefaultAsync(x => x.Name == id);
     }
+    public async Task<EntityNode> GetByIdAsync(string id)
+    {
+        return await _context.EntityNodes.FirstOrDefaultAsync(x => x.Id.ToString() == id);
+    }
 
     public async Task<List<EntityNode>> GetNodesOfEdgeList(List<string> nodeIdes)
     {
         List<EntityNode> entityNodes = new List<EntityNode>();
         foreach (var nodeId in nodeIdes)
         {
-            var node = await GetByNameAsync(nodeId);
+            var node = await GetByIdAsync(nodeId);
             if (nodeId != null)
             {
                 entityNodes.Add(node);

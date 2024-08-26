@@ -32,6 +32,10 @@ public class EdgeRecordProcessor : IEdgeRecordProcessor
             if (string.IsNullOrEmpty(fromId) || string.IsNullOrEmpty(toId)) continue;
             
             var entityEdge = await CreateEntityEdgeAsync(fromId, toId);
+            if (entityEdge is null)
+            {
+                continue;
+            }
             await ProcessValuesAsync(csv, headers, from, to, entityEdge);
         }
     }
@@ -40,6 +44,10 @@ public class EdgeRecordProcessor : IEdgeRecordProcessor
     {
         var fromNode = await _entityNodeRepository.GetByNameAsync(fromId);
         var toNode = await _entityNodeRepository.GetByNameAsync(toId);
+        if (fromNode is null || toNode is null)
+        {
+            return null;
+        }
         var entityEdge = new EntityEdge { EntityIDSource = fromNode.Id.ToString(), EntityIDTarget =toNode.Id.ToString() };
         await _entityEdgeRepository.AddAsync(entityEdge);
         return entityEdge;

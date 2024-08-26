@@ -60,21 +60,21 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     ServiceLifetime.Scoped);
 
 builder.Services.AddControllers();
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAngularApp",
-        corsPolicyBuilder => corsPolicyBuilder.WithOrigins("http://localhost:4200")
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials());
-            
-    options.AddPolicy("AllowAngularApp",
-        corsPolicyBuilder => corsPolicyBuilder.WithOrigins("https://angular-8926f3d808-analysis-data.apps.ir-thr-ba1.arvancaas.ir")
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials());
-
-});
+// builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy("AllowAngularApp",
+//         corsPolicyBuilder => corsPolicyBuilder.WithOrigins("http://localhost:4200")
+//             .AllowAnyMethod()
+//             .AllowAnyHeader()
+//             .AllowCredentials());
+//             
+//     options.AddPolicy("AllowAngularApp",
+//         corsPolicyBuilder => corsPolicyBuilder.WithOrigins("https://angular-8926f3d808-analysis-data.apps.ir-thr-ba1.arvancaas.ir")
+//             .AllowAnyMethod()
+//             .AllowAnyHeader()
+//             .AllowCredentials());
+//
+// });
 
 var app = builder.Build();
 
@@ -88,9 +88,11 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseRouting();
-app.UseCors("AllowAngularApp");
+// app.UseCors("AllowAngularApp");
 app.UseMiddleware<JwtMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseCors(x => x.AllowCredentials().AllowAnyHeader().AllowAnyMethod()
+    .SetIsOriginAllowed(x => true));
 app.Run();

@@ -66,4 +66,7 @@
     <data name="EdgeNotFoundException" xml:space="preserve">
         <value>Edge not found exception !</value>
     </data>
+    <data name="DuplicateRoleException" xml:space="preserve">
+        <value>We have this role in db ! </value>
+    </data>
 </root>

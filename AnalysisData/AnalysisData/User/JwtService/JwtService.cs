@@ -25,7 +25,7 @@ public class JwtService : IJwtService
 
     public async Task<string> GenerateJwtToken(string userName)
     {
-        var user = _userRepository.GetUserByUsername(userName);
+        var user = await _userRepository.GetUserByUsername(userName);
         var claims = new List<Claim>
         {
             new Claim("id", user.Id.ToString()),
@@ -34,7 +34,9 @@ public class JwtService : IJwtService
             new Claim("lastname", user.LastName),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
-            new Claim(ClaimTypes.Role, user.Role.ToLower()),
+            new Claim(ClaimTypes.Role, user.Role.RoleName.ToLower()),
+            new Claim("policy", user.Role.RolePolicy.ToLower()),
+            new Claim("image", user.ImageURL),
         };
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var creeds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

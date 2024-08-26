@@ -9,7 +9,6 @@ using AnalysisData.Services.Abstraction;
 using AnalysisData.UserManage.LoginModel;
 using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.UpdateModel;
-using AnalysisData.UserManage.UserPaginationModel;
 
 namespace AnalysisData.Services;
 
@@ -19,6 +18,7 @@ public class UserService : IUserService
     private readonly ICookieService _cookieService;
     private readonly IJwtService _jwtService;
     private readonly IRegexService _regexService;
+
 
     public UserService(IUserRepository userRepository, ICookieService cookieService,
         IJwtService jwtService, IRegexService regexService)
@@ -32,7 +32,7 @@ public class UserService : IUserService
     public async Task<bool> ResetPassword(ClaimsPrincipal userClaim, string password, string confirmPassword)
     {
         var userName = userClaim.FindFirstValue("username");
-        var user =  _userRepository.GetUserByUsername(userName);
+        var user =await  _userRepository.GetUserByUsername(userName);
         if (user == null)
         {
             throw new UserNotFoundException();
@@ -53,7 +53,7 @@ public class UserService : IUserService
         string confirmPassword)
     {
         var userName = userClaim.FindFirstValue("username");
-        var user = _userRepository.GetUserByUsername(userName);
+        var user = await _userRepository.GetUserByUsername(userName);
         if (user == null)
         {
             throw new UserNotFoundException();
@@ -77,7 +77,7 @@ public class UserService : IUserService
 
     public async Task<User> Login(UserLoginModel userLoginModel)
     {
-        var user = _userRepository.GetUserByUsername(userLoginModel.userName);
+        var user = await _userRepository.GetUserByUsername(userLoginModel.userName);
         if (user == null)
         {
             throw new UserNotFoundException();
@@ -106,19 +106,19 @@ public class UserService : IUserService
     public async Task<bool> UpdateUserInformationByUser(ClaimsPrincipal userClaim, UpdateUserModel updateUserModel)
     {
         var userName = userClaim.FindFirstValue("username");
-        var user =  _userRepository.GetUserByUsername(userName);
-        var checkEmail =  _userRepository.GetUserByEmail(updateUserModel.Email);
+        var user =  await _userRepository.GetUserByUsername(userName);
+        var checkEmail =  await _userRepository.GetUserByEmail(updateUserModel.Email);
 
         if (checkEmail != null && user.Email != updateUserModel.Email)
             throw new DuplicateUserException();
 
         _regexService.EmailCheck(updateUserModel.Email);
         _regexService.PhoneNumberCheck(updateUserModel.PhoneNumber);
-        await SetUpdatedInformation(user, updateUserModel);
+        await ReplaceUserDetailsAsync(user, updateUserModel);
         return true;
     }
 
-    private async Task SetUpdatedInformation(User user, UpdateUserModel updateUserModel)
+    private async Task ReplaceUserDetailsAsync(User user, UpdateUserModel updateUserModel)
     {
         user.FirstName = updateUserModel.FirstName;
         user.LastName = updateUserModel.LastName;
@@ -130,7 +130,7 @@ public class UserService : IUserService
     public async Task<bool> UploadImage(ClaimsPrincipal claimsPrincipal, string imageUrl)
     {
         var userName = claimsPrincipal.FindFirstValue("username");
-        var user =  _userRepository.GetUserByUsername(userName);
+        var user =  await _userRepository.GetUserByUsername(userName);
         if (user == null)
         {
             throw new UserNotFoundException();
@@ -140,15 +140,5 @@ public class UserService : IUserService
         await _userRepository.UpdateUser(user.Id, user);
         return true;
     }
-
-    public async Task<UserPaginationModel> GetUserById(Guid id)
-    {
-        var user = _userRepository.GetUserById(id);
-        var paginationUser = new UserPaginationModel
-        {
-            Guid = user.Id.ToString(), Username = user.Username, FirstName = user.FirstName, LastName = user.LastName,
-            Email = user.Email, PhoneNumber = user.PhoneNumber, RoleName = user.Role
-        };
-        return paginationUser;
-    }
+    
 }

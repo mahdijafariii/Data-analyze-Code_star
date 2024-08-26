@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240825122553_a")]
-    partial class a
+    [Migration("20240826070909_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -209,6 +209,27 @@ namespace AnalysisData.Migrations
                     b.ToTable("ValueNodes");
                 });
 
+            modelBuilder.Entity("AnalysisData.UserManage.Model.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RolePolicy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("AnalysisData.UserManage.Model.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -238,15 +259,16 @@ namespace AnalysisData.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -328,6 +350,17 @@ namespace AnalysisData.Migrations
                     b.Navigation("Attribute");
 
                     b.Navigation("Entity");
+                });
+
+            modelBuilder.Entity("AnalysisData.UserManage.Model.User", b =>
+                {
+                    b.HasOne("AnalysisData.UserManage.Model.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("AnalysisData.EAV.Model.UploadData", b =>

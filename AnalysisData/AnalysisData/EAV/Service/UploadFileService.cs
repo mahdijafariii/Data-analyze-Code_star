@@ -5,11 +5,11 @@ using AnalysisData.EAV.Service.Abstraction;
 
 namespace AnalysisData.EAV.Service;
 
-public class UploadDataService : IUploadFileService
+public class UploadFileService : IUploadFileService
 {
     private readonly IUploadDataRepository _uploadDataRepository;
 
-    public UploadDataService(IUploadDataRepository uploadDataRepository)
+    public UploadFileService(IUploadDataRepository uploadDataRepository)
     {
         _uploadDataRepository = uploadDataRepository;
     }

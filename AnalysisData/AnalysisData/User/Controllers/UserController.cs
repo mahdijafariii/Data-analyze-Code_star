@@ -26,9 +26,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] UserLoginModel userLoginModel)
+    public async Task<IActionResult> Login([FromBody] UserLoginModel userLoginModel)
     {
-        var user = _userService.Login(userLoginModel).Result;
+        var user = await _userService.Login(userLoginModel);
         return Ok(new { user.FirstName, user.LastName, user.ImageURL });
     }
 
@@ -102,12 +102,6 @@ public class UserController : ControllerBase
         return BadRequest(new {massage = "not success"});
     }
     
-    [HttpGet("GetUserById")]
-    public async Task<IActionResult> GetUser(Guid id)
-    {
-        var user = await _userService.GetUserById(id);
-        return Ok(user);
-    }
 
 
     [HttpPost("logOut")]

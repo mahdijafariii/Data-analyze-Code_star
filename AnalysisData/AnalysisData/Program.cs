@@ -14,6 +14,8 @@ using AnalysisData.EAV.Service.Business.Abstraction;
 using AnalysisData.JwtService;
 using AnalysisData.JwtService.abstractions;
 using AnalysisData.MiddleWare;
+using AnalysisData.Repository.RoleRepository;
+using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services;
@@ -48,7 +50,8 @@ builder.Services.AddScoped<INodeRecordProcessor, NodeRecordProcessor>();
 builder.Services.AddScoped<IFromToProcessor, FromToProcessor>();
 builder.Services.AddScoped<IGraphServiceEav, GraphServiceEav>();
 builder.Services.AddScoped<IAdminService, AdminService>();
-builder.Services.AddScoped<IUploadFileService, UploadDataService>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IUploadFileService, UploadFileService>();
 builder.Services.AddScoped<IUploadDataRepository, UploadDataRepository>();
 // builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -64,6 +67,13 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials());
+            
+    options.AddPolicy("AllowAngularApp",
+        corsPolicyBuilder => corsPolicyBuilder.WithOrigins("https://angular-8926f3d808-analysis-data.apps.ir-thr-ba1.arvancaas.ir")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+
 });
 
 var app = builder.Build();

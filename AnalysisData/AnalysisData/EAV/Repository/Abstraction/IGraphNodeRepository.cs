@@ -8,4 +8,7 @@ public interface IGraphNodeRepository
 
     Task<IEnumerable<EntityNode>> GetEntityNodesAsync();
     Task<IEnumerable<EntityNode>> GetEntityNodesWithCategoryAsync(string category);
+    Task<IEnumerable<EntityNode>> GetNodeContainSearchInput(string input);
+    Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInput(string input);
+    Task<IEnumerable<EntityNode>> GetNodeEndsWithSearchInput(string input);
 }

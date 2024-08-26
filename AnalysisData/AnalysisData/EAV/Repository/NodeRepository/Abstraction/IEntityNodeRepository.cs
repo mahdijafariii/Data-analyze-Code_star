@@ -9,5 +9,6 @@ public interface IEntityNodeRepository
     Task<EntityNode> GetByNameAsync(string id);
     Task<List<EntityNode>> GetNodesOfEdgeList(List<string> nodeIdes);
     Task DeleteAsync(int id);
-    
+    Task<EntityNode> GetByIdAsync(string id);
+
 }

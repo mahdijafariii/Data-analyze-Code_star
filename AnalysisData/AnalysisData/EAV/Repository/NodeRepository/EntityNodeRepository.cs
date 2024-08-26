@@ -36,7 +36,7 @@ public class EntityNodeRepository : IEntityNodeRepository
 
     public async Task<List<EntityNode>> GetNodesOfEdgeList(List<string> nodeIdes)
     {
-        List<EntityNode> entityNodes = new List<EntityNode>();
+        var entityNodes = new List<EntityNode>();
         foreach (var nodeId in nodeIdes)
         {
             var node = await GetByIdAsync(nodeId);

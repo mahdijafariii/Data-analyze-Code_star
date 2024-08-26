@@ -7,11 +7,11 @@ using AnalysisData.EAV.Service.Abstraction;
 
 namespace AnalysisData.EAV.Service;
 
-public class UploadUploadFileService : IUploadFileService
+public class UploadFileService : IUploadFileService
 {
     private readonly IUploadDataRepository _uploadDataRepository;
 
-    public UploadUploadFileService(IUploadDataRepository uploadDataRepository)
+    public UploadFileService(IUploadDataRepository uploadDataRepository)
     {
         _uploadDataRepository = uploadDataRepository;
     }
@@ -19,11 +19,11 @@ public class UploadUploadFileService : IUploadFileService
     public async Task<int> AddFileToDb(string category, ClaimsPrincipal claimsPrincipal, string name)
     {
         var guid = Guid.Parse(claimsPrincipal.FindFirstValue("id"));
-        var uploadData = new UploadData
+        var uploadData = new UploadedFile
         {
-            UserId = guid,
+            UploaderId = guid,
             Category = category,
-            Name = name,
+            FileName = name,
             UploadDate = DateTime.UtcNow
         };
         await _uploadDataRepository.AddAsync(uploadData);

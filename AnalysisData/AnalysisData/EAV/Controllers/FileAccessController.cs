@@ -29,4 +29,21 @@ public class FileAccessController : ControllerBase
         return Ok(users);
     }
     
+    [HttpPost("AccessFileToUser")]
+    public async Task<IActionResult> AccessFileToUser([FromBody] List<string> userIds,Guid fileId)
+    {
+        await _filePermissionService.AccessFileToUser(userIds, fileId);
+        return Ok(new 
+        {
+            massage = "success"
+        });
+    }
+            
+    [HttpGet("WhoAccessToThisFile")]
+    public async Task<IActionResult> WhoAccessToThisFile([FromQuery] string fileId)
+    {
+        var result = await _filePermissionService.WhoAccessThisFile(fileId);
+        return Ok(result);
+    }
+    
 }

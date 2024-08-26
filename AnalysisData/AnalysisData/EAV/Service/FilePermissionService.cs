@@ -1,4 +1,6 @@
 using AnalysisData.EAV.Dto;
+using AnalysisData.EAV.Model;
+using AnalysisData.EAV.Repository.Abstraction;
 using AnalysisData.EAV.Repository.FileUploadedRepository;
 using AnalysisData.Exception;
 using AnalysisData.Repository.UserRepository.Abstraction;
@@ -10,10 +12,13 @@ public class FilePermissionService : IFilePermissionService
 {
     private readonly IFileUploadedRepository _fileUploadedRepository;
     private readonly IUserRepository _userRepository;
-    public FilePermissionService(IFileUploadedRepository fileUploadedRepository,IUserRepository userRepository)
+    private readonly IUserFileRepository _userFileRepository;
+
+    public FilePermissionService(IFileUploadedRepository fileUploadedRepository,IUserRepository userRepository, IUserFileRepository userFileRepository)
     {
         _fileUploadedRepository = fileUploadedRepository;
         _userRepository = userRepository;
+        _userFileRepository = userFileRepository;
     }
 
 
@@ -22,7 +27,7 @@ public class FilePermissionService : IFilePermissionService
         var files = await _fileUploadedRepository.GetFileUploadedInDb(page, limit);
         var paginationFiles = files.Select(x => new UploadDataDto()
         {
-            Id = x.Id.ToString() ,FileName = x.Name , Category = x.Category, UploadDate = x.UploadDate,
+            Id = x.Id.ToString() ,FileName = x.FileName , Category = x.Category, UploadDate = x.UploadDate,
         });
         return paginationFiles.ToList();
     }
@@ -39,5 +44,32 @@ public class FilePermissionService : IFilePermissionService
             throw new UserNotFoundException();
         }
         return result.ToList();
+    }
+    
+    public async Task<IEnumerable<UserFile>> WhoAccessThisFile(string fileId)
+    {
+        var files =await _userFileRepository.GetByFileIdAsync(fileId);
+        if (!files.Any())
+        {
+            throw new UserNotFoundException();
+        }
+        return files.ToList();
+    }
+    
+    public async Task AccessFileToUser(List<string> inputUserIds,Guid fileId)
+    {
+        foreach (var userId in inputUserIds)
+        {
+            var user = _userRepository.GetUserById(Guid.Parse(userId));
+            if (user is null)
+            {
+                throw new UserNotFoundException();
+            }
+        }
+        var currentAccessor = await _userFileRepository.GetUsersIdAccessToInputFile(fileId.ToString());
+        var newUsers = inputUserIds.Except(currentAccessor).ToList();
+        var blockAccessToFile = currentAccessor.Except(currentAccessor.Intersect(inputUserIds)).ToList();
+        await _userFileRepository.RevokeUserAccess(blockAccessToFile);
+        await _userFileRepository.GrantUserAccess(newUsers, fileId);
     }
 }

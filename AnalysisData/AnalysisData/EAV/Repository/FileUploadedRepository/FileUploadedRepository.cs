@@ -14,7 +14,7 @@ public class FileUploadedRepository : IFileUploadedRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<UploadData>> GetFileUploadedInDb(int page, int limit)
+    public async Task<IEnumerable<UploadedFile>> GetFileUploadedInDb(int page, int limit)
     {
         return await _context.FileUploadedDb.Skip((page) * limit).Take(limit).ToListAsync();
     }

@@ -15,5 +15,5 @@ public class EntityNode
     public int UploadDataId { get; set; }
     
     [ForeignKey("UploadDataId")]
-    public UploadData UploadData { get; set; }
+    public UploadedFile UploadedFile { get; set; }
 }

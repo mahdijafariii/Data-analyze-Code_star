@@ -14,22 +14,21 @@ public class GraphNodeRepository : IGraphNodeRepository
         _context = context;
     }
 
-    public IEnumerable<EntityNode> GetEntityNodesAsync()
+    public async Task<IEnumerable<EntityNode>> GetEntityNodesAsync()
     {
-        return _context.EntityNodes;
+        return await _context.EntityNodes.ToListAsync();
     }
-    public IEnumerable<EntityNode> GetEntityNodesWithCategoryAsync(string category)
+    public async Task<IEnumerable<EntityNode>> GetEntityNodesWithCategoryAsync(string category)
     {
-        var attributeId =  _context.AttributeNodes
-            .Where(a => a.Name == "type")
-            .Select(a => a.Id)
-            .FirstOrDefault();
+        var uploadDataIds = await _context.UploadDatas
+            .Where(uploadData => uploadData.Category == category)
+            .Select(uploadData => uploadData.Id)
+            .ToListAsync();
 
-        var result = _context.ValueNodes
-            .Include(v => v.Entity) 
-            .Where(v => v.AttributeId == attributeId && v.ValueString == category)
-            .Select(v => v.Entity)
-            .ToList();
+        var result = await _context.EntityNodes
+            .Where(entityNode => uploadDataIds.Contains(entityNode.UploadDataId))
+            .ToListAsync();
+
         return result;
     }
 

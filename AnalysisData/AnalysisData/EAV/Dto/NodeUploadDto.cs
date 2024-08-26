@@ -10,4 +10,5 @@ public class NodeUploadDto
     public IFormFile File { get; set; }
     [Required]
     public string Category { get; set; }
+    public string Name { get; set; }
 }

@@ -16,6 +16,6 @@ public class UploadData
     [Required]
     public DateTime UploadDate { get; set; }
     public string Category { get; set; }
-    
+    public string Name { get; set; }
     public ICollection<EntityNode> EntityNodes { get; set; }
 }

@@ -19,6 +19,7 @@ public class EdgeToDBService:IEdgeToDbService
     public async Task ProcessCsvFileAsync(IFormFile file, string from, string to)
     {
         var csv=_csvReaderService.CreateCsvReader(file);
+        Console.WriteLine("s");
         var headers = _csvReaderService.ReadHeaders(csv);
 
         await _fromToProcessor.ProcessFromToAsync(headers, from, to);

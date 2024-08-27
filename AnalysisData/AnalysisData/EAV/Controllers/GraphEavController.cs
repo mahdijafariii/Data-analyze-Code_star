@@ -55,7 +55,8 @@ public class GraphEavController : ControllerBase
     [HttpGet("Search")]
     public async Task<IActionResult> SearchEntityNode([FromQuery] string searchInput, string searchType = "contain")
     {
-        var result = await _graphServiceEav.SearchEntityNodeName(searchInput,searchType);
+        var user = User;
+        var result = await _graphServiceEav.SearchInEntityNodeName(user,searchInput,searchType);
         return Ok(result);
     }
 }

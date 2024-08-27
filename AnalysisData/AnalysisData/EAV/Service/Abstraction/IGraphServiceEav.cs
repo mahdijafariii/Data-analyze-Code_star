@@ -14,5 +14,7 @@ public interface IGraphServiceEav
 
     Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(ClaimsPrincipal claimsPrincipal,
         string id);
-    Task<IEnumerable<EntityNode>> SearchEntityNodeName(string inputSearch, string searchType);
+
+    Task<IEnumerable<EntityNode>> SearchInEntityNodeName(ClaimsPrincipal claimsPrincipal, string inputSearch,
+        string type);
 }

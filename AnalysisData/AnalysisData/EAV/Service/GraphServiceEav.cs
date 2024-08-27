@@ -191,26 +191,62 @@ public class GraphServiceEav : IGraphServiceEav
         return (nodeDto, edgeDto);
     }
 
-    public async Task<IEnumerable<EntityNode>> SearchEntityNodeName(string inputSearch, string type)
+    public async Task<IEnumerable<EntityNode>> SearchInEntityNodeName(ClaimsPrincipal claimsPrincipal,string inputSearch, string type)
+    {
+        var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
+        var username = claimsPrincipal.FindFirstValue("id");
+        IEnumerable<EntityNode> entityNodes;
+        if (role != "dataanalyst")
+        {
+            entityNodes = await SearchEntityInNodeNameAsAdmin(inputSearch, type);
+        }
+        else
+        {
+            entityNodes = await SearchEntityInNodeNameAsUser(username,inputSearch,type);
+        }
+        if (!entityNodes.Any())
+        {
+            throw new NodeNotFoundException();
+        }
+
+        return entityNodes;
+    }
+
+    private async Task<IEnumerable<EntityNode>> SearchEntityInNodeNameAsAdmin(string inputSearch, string type)
     {
         IEnumerable<EntityNode> entityNodes;
         var searchType = type.ToLower();
         switch (searchType)
         {
             case "startswith":
-                entityNodes = await _graphNodeRepository.GetNodeStartsWithSearchInput(inputSearch);
+                entityNodes = await _graphNodeRepository.GetNodeStartsWithSearchInputAsAdmin(inputSearch);
                 break;
             case "endswith":
-                entityNodes = await _graphNodeRepository.GetNodeEndsWithSearchInput(inputSearch);
+                entityNodes = await _graphNodeRepository.GetNodeEndsWithSearchInputAsAdmin(inputSearch);
                 break;
             default:
-                entityNodes = await _graphNodeRepository.GetNodeContainSearchInput(inputSearch);
+                entityNodes = await _graphNodeRepository.GetNodeContainSearchInputAsAdmin(inputSearch);
                 break;
         }
 
-        if (!entityNodes.Any())
+        return entityNodes;
+    }
+    
+    private async Task<IEnumerable<EntityNode>> SearchEntityInNodeNameAsUser(string username,string inputSearch, string type)
+    {
+        IEnumerable<EntityNode> entityNodes;
+        var searchType = type.ToLower();
+        switch (searchType)
         {
-            throw new NodeNotFoundException();
+            case "startswith":
+                entityNodes = await _graphNodeRepository.GetNodeStartsWithSearchInputAsUser(username,inputSearch);
+                break;
+            case "endswith":
+                entityNodes = await _graphNodeRepository.GetNodeEndsWithSearchInputAsUser(username,inputSearch);
+                break;
+            default:
+                entityNodes = await _graphNodeRepository.GetNodeContainSearchInputAsUser(username,inputSearch);
+                break;
         }
 
         return entityNodes;

@@ -56,11 +56,11 @@ public class FilePermissionService : IFilePermissionService
         return files.ToList();
     }
     
-    public async Task AccessFileToUser(List<string> inputUserIds,Guid fileId)
+    public async Task AccessFileToUser(List<string> inputUserIds,int fileId)
     {
         foreach (var userId in inputUserIds)
         {
-            var user = _userRepository.GetUserById(Guid.Parse(userId));
+            var user = await _userRepository.GetUserById(Guid.Parse(userId));
             if (user is null)
             {
                 throw new UserNotFoundException();

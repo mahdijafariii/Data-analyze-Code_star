@@ -55,7 +55,7 @@ public class UserFileRepository : IUserFileRepository
         }
     }
     
-    public async Task GrantUserAccess(List<string> userIds,Guid fileId)
+    public async Task GrantUserAccess(List<string> userIds,int fileId)
     {
         var file = await GetByFileIdAsync(fileId.ToString());
         if (file is null)

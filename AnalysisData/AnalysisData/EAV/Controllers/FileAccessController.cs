@@ -30,7 +30,7 @@ public class FileAccessController : ControllerBase
     }
     
     [HttpPost("AccessFileToUser")]
-    public async Task<IActionResult> AccessFileToUser([FromBody] List<string> userIds,Guid fileId)
+    public async Task<IActionResult> AccessFileToUser([FromBody] List<string> userIds,int fileId)
     {
         await _filePermissionService.AccessFileToUser(userIds, fileId);
         return Ok(new 

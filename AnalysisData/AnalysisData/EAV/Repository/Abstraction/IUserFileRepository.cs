@@ -11,6 +11,6 @@ public interface IUserFileRepository
     Task<IEnumerable<UserFile?>> GetByFileIdAsync(string fileId);
     Task DeleteByUserIdAsync(string userId);
     Task RevokeUserAccess(List<string> userIds);
-    Task GrantUserAccess(List<string> userIds, Guid fileId);
+    Task GrantUserAccess(List<string> userIds, int fileId);
 
 }

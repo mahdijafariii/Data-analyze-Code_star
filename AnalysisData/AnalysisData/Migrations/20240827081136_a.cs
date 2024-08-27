@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class a : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -138,11 +138,9 @@ namespace AnalysisData.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UploaderId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     UploadDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     FileName = table.Column<string>(type: "text", nullable: false),
-                    CategoryId = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    CategoryId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -154,8 +152,8 @@ namespace AnalysisData.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FileUploadedDb_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_FileUploadedDb_Users_UploaderId",
+                        column: x => x.UploaderId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -187,15 +185,14 @@ namespace AnalysisData.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    FileId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UploadDataId = table.Column<int>(type: "integer", nullable: false)
+                    FileId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserFiles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserFiles_FileUploadedDb_UploadDataId",
-                        column: x => x.UploadDataId,
+                        name: "FK_UserFiles_FileUploadedDb_FileId",
+                        column: x => x.FileId,
                         principalTable: "FileUploadedDb",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -245,14 +242,14 @@ namespace AnalysisData.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FileUploadedDb_UserId",
+                name: "IX_FileUploadedDb_UploaderId",
                 table: "FileUploadedDb",
-                column: "UserId");
+                column: "UploaderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserFiles_UploadDataId",
+                name: "IX_UserFiles_FileId",
                 table: "UserFiles",
-                column: "UploadDataId");
+                column: "FileId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserFiles_UserId",

@@ -56,7 +56,7 @@ public class FilePermissionService : IFilePermissionService
         return files.ToList();
     }
     
-    public async Task AccessFileToUser(List<string> inputUserIds,Guid fileId)
+    public async Task AccessFileToUser(List<string> inputUserIds,int fileId)
     {
         foreach (var userId in inputUserIds)
         {

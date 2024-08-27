@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240827070432_Initial")]
-    partial class Initial
+    [Migration("20240827081136_a")]
+    partial class a
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -135,24 +135,17 @@ namespace AnalysisData.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("UploadDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UploaderId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UploaderId");
 
                     b.ToTable("FileUploadedDb");
                 });
@@ -163,10 +156,7 @@ namespace AnalysisData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("FileId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("UploadDataId")
+                    b.Property<int>("FileId")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("UserId")
@@ -174,7 +164,7 @@ namespace AnalysisData.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UploadDataId");
+                    b.HasIndex("FileId");
 
                     b.HasIndex("UserId");
 
@@ -320,7 +310,7 @@ namespace AnalysisData.Migrations
 
                     b.HasOne("AnalysisData.UserManage.Model.User", "User")
                         .WithMany("UploadData")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UploaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -333,7 +323,7 @@ namespace AnalysisData.Migrations
                 {
                     b.HasOne("AnalysisData.EAV.Model.UploadedFile", "UploadedFile")
                         .WithMany()
-                        .HasForeignKey("UploadDataId")
+                        .HasForeignKey("FileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

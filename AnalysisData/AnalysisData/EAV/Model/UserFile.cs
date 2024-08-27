@@ -13,8 +13,8 @@ public class UserFile
     [ForeignKey("UserId")]
     public User User { get; set; }
     
-    public Guid FileId { get; set; }
+    public int FileId { get; set; }
     
-    [ForeignKey("UploadDataId")]
+    [ForeignKey("FileId")]
     public UploadedFile UploadedFile { get; set; }
 }

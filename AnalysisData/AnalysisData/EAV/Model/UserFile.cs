@@ -6,16 +6,15 @@ namespace AnalysisData.EAV.Model;
 
 public class UserFile
 {
-    [Key]
-    public int Id { get; set; }
+    [Key] public Guid Id { get; set; } = Guid.NewGuid();
     
     public Guid UserId { get; set; }
     
     [ForeignKey("UserId")]
     public User User { get; set; }
     
-    public int UploadDataId { get; set; }
+    public Guid FileId { get; set; }
     
     [ForeignKey("UploadDataId")]
-    public UploadData UploadData { get; set; }
+    public UploadedFile UploadedFile { get; set; }
 }

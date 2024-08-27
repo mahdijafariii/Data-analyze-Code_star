@@ -70,7 +70,7 @@ public class FileController : ControllerBase
             await _edgeToDbService.ProcessCsvFileAsync(file, from,to); 
             return Ok(new
             {
-                massage = "Node account saved successfully in the database."
+                massage = "Edges saved successfully in the database."
             }); 
         }
         catch (System.Exception e)

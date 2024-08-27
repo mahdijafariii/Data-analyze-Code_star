@@ -7,6 +7,7 @@ using AnalysisData.EAV.Repository.CategoryRepository;
 using AnalysisData.EAV.Repository.CategoryRepository.asbtraction;
 using AnalysisData.EAV.Repository.EdgeRepository;
 using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
+using AnalysisData.EAV.Repository.FileUploadedRepository;
 using AnalysisData.EAV.Repository.NodeRepository;
 using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
 using AnalysisData.EAV.Service;
@@ -25,6 +26,7 @@ using AnalysisData.Services.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.json").AddEnvironmentVariables();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -57,28 +59,33 @@ builder.Services.AddScoped<IUploadFileService, UploadFileService>();
 builder.Services.AddScoped<IUploadDataRepository, UploadDataRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IFilePermissionService, FilePermissionService>();
+builder.Services.AddScoped<IFileUploadedRepository, FileUploadedRepository>();
+builder.Services.AddScoped<IUserFileRepository, UserFileRepository>();
+
+
 // builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddDbContext<ApplicationDbContext>(options => 
-        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")),
-    ServiceLifetime.Scoped);
+var connectionString = builder.Configuration["CONNECTION_STRING"];
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddControllers();
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAngularApp",
-        corsPolicyBuilder => corsPolicyBuilder.WithOrigins("http://localhost:4200")
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials());
-            
-    options.AddPolicy("AllowAngularApp",
-        corsPolicyBuilder => corsPolicyBuilder.WithOrigins("https://angular-8926f3d808-analysis-data.apps.ir-thr-ba1.arvancaas.ir")
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials());
-
-});
+// builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy("AllowAngularApp",
+//         corsPolicyBuilder => corsPolicyBuilder.WithOrigins("http://localhost:4200")
+//             .AllowAnyMethod()
+//             .AllowAnyHeader()
+//             .AllowCredentials());
+//             
+//     options.AddPolicy("AllowAngularApp",
+//         corsPolicyBuilder => corsPolicyBuilder.WithOrigins("https://angular-8926f3d808-analysis-data.apps.ir-thr-ba1.arvancaas.ir")
+//             .AllowAnyMethod()
+//             .AllowAnyHeader()
+//             .AllowCredentials());
+//
+// });
 
 var app = builder.Build();
 
@@ -92,9 +99,11 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseRouting();
-app.UseCors("AllowAngularApp");
+// app.UseCors("AllowAngularApp");
 app.UseMiddleware<JwtMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseCors(x => x.AllowCredentials().AllowAnyHeader().AllowAnyMethod()
+    .SetIsOriginAllowed(x => true));
 app.Run();

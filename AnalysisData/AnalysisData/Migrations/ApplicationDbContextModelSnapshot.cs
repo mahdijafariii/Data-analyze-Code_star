@@ -144,7 +144,7 @@ namespace AnalysisData.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UploadDatas");
+                    b.ToTable("FileUploadedDb");
                 });
 
             modelBuilder.Entity("AnalysisData.EAV.Model.UserFile", b =>

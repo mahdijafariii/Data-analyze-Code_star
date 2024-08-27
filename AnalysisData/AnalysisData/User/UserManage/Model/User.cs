@@ -23,7 +23,7 @@ public class User
     public string? ImageURL { get; set; }
     
     // Navigation property for the one-to-many relationship with UploadData
-    public ICollection<UploadData> UploadData { get; set; }
+    public ICollection<UploadedFile> UploadData { get; set; }
     
     // Navigation property for the one-to-many relationship with UserFile
     public ICollection<UserFile> UserFiles { get; set; }

@@ -12,8 +12,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<<< HEAD:AnalysisData/AnalysisData/Migrations/20240826090134_initial.Designer.cs
     [Migration("20240826090134_initial")]
     partial class initial
+========
+    [Migration("20240826120213_InitialCreate")]
+    partial class InitialCreate
+>>>>>>>> d5922d4f9d6270aa72b66b0592f1140f80cf119b:AnalysisData/AnalysisData/Migrations/20240826120213_InitialCreate.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -146,7 +151,7 @@ namespace AnalysisData.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UploadDatas");
+                    b.ToTable("FileUploadedDb");
                 });
 
             modelBuilder.Entity("AnalysisData.EAV.Model.UserFile", b =>

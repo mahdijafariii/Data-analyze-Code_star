@@ -14,26 +14,26 @@ public class UploadDataRepository : IUploadDataRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<UploadData>> GetAllAsync()
+    public async Task<IEnumerable<UploadedFile>> GetAllAsync()
     {
-        return await _context.UploadDatas.ToListAsync();
+        return await _context.FileUploadedDb.ToListAsync();
     }
 
-    public async Task<UploadData> GetByIdAsync(int id)
+    public async Task<UploadedFile> GetByIdAsync(int id)
     {
-        return await _context.UploadDatas.FindAsync(id);
+        return await _context.FileUploadedDb.FindAsync(id);
     }
 
-    public async Task<IEnumerable<UploadData>> GetByUserIdAsync(Guid userId)
+    public async Task<IEnumerable<UploadedFile>> GetByUserIdAsync(Guid userId)
     {
-        return await _context.Set<UploadData>()
-            .Where(u => u.UserId == userId)
+        return await _context.Set<UploadedFile>()
+            .Where(u => u.UploaderId == userId)
             .ToListAsync();
     }
 
-    public async Task AddAsync(UploadData uploadData)
+    public async Task AddAsync(UploadedFile uploadedFile)
     {
-        await _context.UploadDatas.AddAsync(uploadData);
+        await _context.FileUploadedDb.AddAsync(uploadedFile);
         await _context.SaveChangesAsync();
     }
 }

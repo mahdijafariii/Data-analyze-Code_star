@@ -18,7 +18,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<ValueEdge> ValueEdges { get; set; }
     public DbSet<ValueNode> ValueNodes { get; set; }
     public DbSet<Role> Roles { get; set; }
-    public DbSet<UploadData> UploadDatas { get; set; }
+    public DbSet<UploadedFile> FileUploadedDb { get; set; }
     public DbSet<UserFile> UserFiles { get; set; }
     public DbSet<Category> Categories { get; set; }
 }

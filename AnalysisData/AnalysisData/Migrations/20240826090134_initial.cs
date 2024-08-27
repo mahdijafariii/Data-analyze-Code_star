@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -132,7 +132,7 @@ namespace AnalysisData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UploadDatas",
+                name: "FileUploadedDb",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -144,9 +144,9 @@ namespace AnalysisData.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UploadDatas", x => x.Id);
+                    table.PrimaryKey("PK_FileUploadedDb", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UploadDatas_Users_UserId",
+                        name: "FK_FileUploadedDb_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -166,9 +166,9 @@ namespace AnalysisData.Migrations
                 {
                     table.PrimaryKey("PK_EntityNodes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EntityNodes_UploadDatas_UploadDataId",
+                        name: "FK_EntityNodes_FileUploadedDb_UploadDataId",
                         column: x => x.UploadDataId,
-                        principalTable: "UploadDatas",
+                        principalTable: "FileUploadedDb",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -186,9 +186,9 @@ namespace AnalysisData.Migrations
                 {
                     table.PrimaryKey("PK_UserFiles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserFiles_UploadDatas_UploadDataId",
+                        name: "FK_UserFiles_FileUploadedDb_UploadDataId",
                         column: x => x.UploadDataId,
-                        principalTable: "UploadDatas",
+                        principalTable: "FileUploadedDb",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -232,8 +232,8 @@ namespace AnalysisData.Migrations
                 column: "UploadDataId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UploadDatas_UserId",
-                table: "UploadDatas",
+                name: "IX_FileUploadedDb_UserId",
+                table: "FileUploadedDb",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -300,7 +300,7 @@ namespace AnalysisData.Migrations
                 name: "EntityNodes");
 
             migrationBuilder.DropTable(
-                name: "UploadDatas");
+                name: "FileUploadedDb");
 
             migrationBuilder.DropTable(
                 name: "Users");

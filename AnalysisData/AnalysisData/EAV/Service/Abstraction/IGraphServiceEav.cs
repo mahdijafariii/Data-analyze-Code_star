@@ -6,7 +6,7 @@ namespace AnalysisData.EAV.Service.Abstraction;
 
 public interface IGraphServiceEav
 {
-    Task<Dictionary<string, string>> GetNodeInformation(string headerUniqueId);
+    Task<Dictionary<string, string>> GetNodeInformation(ClaimsPrincipal claimsPrincipal, string headerUniqueId);
     Task<Dictionary<string, string>> GetEdgeInformation(int edgeId);
 
     Task<PaginatedListDto> GetNodesPaginationAsync(ClaimsPrincipal claimsPrincipal, int pageIndex, int pageSize,

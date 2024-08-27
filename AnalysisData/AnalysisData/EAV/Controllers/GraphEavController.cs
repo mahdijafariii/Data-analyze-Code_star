@@ -27,7 +27,8 @@ public class GraphEavController : ControllerBase
     [HttpGet("GetNodeInformation")]
     public async Task<IActionResult> GetEntityNodeWithAttributes(string headerUniqueId)
     {
-        var output = await _graphServiceEav.GetNodeInformation(headerUniqueId);
+        var user = User;
+        var output = await _graphServiceEav.GetNodeInformation(user,headerUniqueId);
         return Ok(output);
     }
 

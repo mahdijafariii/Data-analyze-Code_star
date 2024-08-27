@@ -91,6 +91,32 @@ public class GraphServiceEav : IGraphServiceEav
 
         return valueNodes;
     }
+    
+    public async Task<Dictionary<string, string>> GetNodeInformation(ClaimsPrincipal claimsPrincipal,string headerUniqueId)
+    {
+        var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
+        var username = claimsPrincipal.FindFirstValue("id");
+        IEnumerable<dynamic> result = Enumerable.Empty<dynamic>();
+        if (role != "dataanalyst")
+        {
+            result = await _graphNodeRepository.GetNodeAttributeValue(headerUniqueId);
+        }
+        else if (await _graphNodeRepository.IsNodeAccessibleByUser(username, headerUniqueId))
+        {
+            result = await _graphNodeRepository.GetNodeAttributeValue(headerUniqueId);
+        }
+        if (result.Count()==0)
+        {
+            throw new NodeNotFoundException();
+        }
+        var output = new Dictionary<string, string>();
+        foreach (var item in result)
+        {
+            output[item.Attribute] = item.Value;
+        }
+        return output;
+    }
+
 
 
     public async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(string id)
@@ -110,24 +136,7 @@ public class GraphServiceEav : IGraphServiceEav
         return (nodeDto, edgeDto);
     }
 
-    public async Task<Dictionary<string, string>> GetNodeInformation(string headerUniqueId)
-    {
-        var result = await _graphNodeRepository.GetNodeAttributeValue(headerUniqueId);
-        if (result is null)
-        {
-            throw new NodeNotFoundException();
-        }
-
-        var output = new Dictionary<string, string>();
-
-        foreach (var item in result)
-        {
-            output[item.Attribute] = item.Value;
-        }
-
-        return output;
-    }
-
+    
     public async Task<Dictionary<string, string>> GetEdgeInformation(int edgeId)
     {
         var result = await _graphEdgeRepository.GetEdgeAttributeValues(edgeId);

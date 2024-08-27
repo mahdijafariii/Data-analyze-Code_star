@@ -35,7 +35,8 @@ public class GraphEavController : ControllerBase
     [HttpGet("GetEdgeInformation")]
     public async Task<IActionResult> GetEntityEdgeWithAttributes(int edgeId)
     {
-        var output = await _graphServiceEav.GetEdgeInformation(edgeId);
+        var user = User;
+        var output = await _graphServiceEav.GetEdgeInformation(user,edgeId);
         return Ok(output);
     }
 

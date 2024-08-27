@@ -82,13 +82,7 @@ public class GraphNodeRepository : IGraphNodeRepository
             return true;
         }
     }
-
-
-    public IEnumerable<ValueNode> GetValueNodesAsync()
-    {
-        return _context.ValueNodes;
-    }
-
+    
     public async Task<IEnumerable<dynamic>> GetNodeAttributeValue(string headerUniqueId)
     {
         var result = await _context.ValueNodes

@@ -37,4 +37,31 @@ public class GraphEdgeRepository: IGraphEdgeRepository
             }).ToListAsync();
         return result;
     }
+    
+    public async Task<bool> IsEdgeAccessibleByUser(string userName, int edgeName)
+    {
+        var userNameGuid = Guid.Parse(userName);
+        var entityIdSource = await _context.EntityEdges
+            .Where(ee => ee.Id == edgeName)
+            .Select(ee => ee.EntityIDSource)
+            .FirstOrDefaultAsync();
+
+        var uploadDataId = await _context.EntityNodes
+            .Where(en => en.Id.ToString() == entityIdSource)
+            .Select(en => en.UploadDataId)
+            .FirstOrDefaultAsync();
+
+        var userFiles = await _context.UserFiles
+            .Include(uf => uf.UploadedFile) 
+            .Where(uf => uf.UserId == userNameGuid && uf.UploadedFile.Id == uploadDataId)
+            .ToListAsync();
+        if (userFiles.Count == 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 }

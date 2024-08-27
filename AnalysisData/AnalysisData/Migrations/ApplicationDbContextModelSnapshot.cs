@@ -153,10 +153,7 @@ namespace AnalysisData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("FileId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("UploadDataId")
+                    b.Property<int>("FileId")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("UserId")
@@ -164,7 +161,7 @@ namespace AnalysisData.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UploadDataId");
+                    b.HasIndex("FileId");
 
                     b.HasIndex("UserId");
 
@@ -323,7 +320,7 @@ namespace AnalysisData.Migrations
                 {
                     b.HasOne("AnalysisData.EAV.Model.UploadedFile", "UploadedFile")
                         .WithMany()
-                        .HasForeignKey("UploadDataId")
+                        .HasForeignKey("FileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

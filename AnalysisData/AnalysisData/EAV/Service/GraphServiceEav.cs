@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using AnalysisData.EAV.Dto;
 using AnalysisData.EAV.Model;
 using AnalysisData.EAV.Repository;
@@ -29,9 +30,9 @@ public class GraphServiceEav : IGraphServiceEav
         _graphEdgeRepository = graphEdgeRepository;
     }
 
-    public async Task<PaginatedListDto> GetNodesPaginationAsync(int pageIndex, int pageSize, int? categoryId = null)
+    public async Task<PaginatedListDto> GetNodesPaginationAsync(ClaimsPrincipal claimsPrincipal,int pageIndex, int pageSize, int? categoryId = null)
     {
-        var valueNodes = await GetEntityNodesForPaginationAsync(categoryId);
+        var valueNodes = await GetEntityNodesForPaginationAsync(claimsPrincipal,categoryId);
 
         string categoryName = null;
         if (categoryId.HasValue)
@@ -56,15 +57,36 @@ public class GraphServiceEav : IGraphServiceEav
         return new PaginatedListDto(items, pageIndex, count, categoryName);
     }
 
-    private async Task<IEnumerable<EntityNode>> GetEntityNodesForPaginationAsync(int? category = null)
+    private async Task<IEnumerable<EntityNode>> GetEntityNodesForPaginationAsync(ClaimsPrincipal claimsPrincipal,int? category = null)
     {
-        var valueNodes = category == null
-            ? await _graphNodeRepository.GetEntityNodesAsync()
-            : await _graphNodeRepository.GetEntityNodesWithCategoryIdAsync(category.Value);
+        var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
+        var username = claimsPrincipal.FindFirstValue("id");
+        IEnumerable<EntityNode> valueNodes = new List<EntityNode>();
+        if (category == null && role != "dataanalyst")
+        {
+            valueNodes = await _graphNodeRepository.GetEntityNodesAsAdminAsync();
+        }
+        else if (role != "dataanalyst" && category != null)
+        {
+            valueNodes = await _graphNodeRepository.GetEntityAsAdminNodesWithCategoryIdAsync(category.Value);
+        }
+        else if (category != null && role == "dataanalyst")
+        {
+            valueNodes = await _graphNodeRepository.GetEntityAsUserNodesWithCategoryIdAsync(username,category.Value);
+        }
+        else if (category == null && role == "dataanalyst")
+        {
+            valueNodes = await _graphNodeRepository.GetEntityNodesAsUserAsync(username);
+        }
 
         if (!valueNodes.Any() && category != null)
         {
             throw new CategoryResultNotFoundException();
+        }
+
+        if (valueNodes is null)
+        {
+            throw new NodeNotFoundException();
         }
 
         return valueNodes;

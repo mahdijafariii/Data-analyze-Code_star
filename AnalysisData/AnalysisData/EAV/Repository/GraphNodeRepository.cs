@@ -14,11 +14,11 @@ public class GraphNodeRepository : IGraphNodeRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<EntityNode>> GetEntityNodesAsync()
+    public async Task<IEnumerable<EntityNode>> GetEntityNodesAsAdminAsync()
     {
         return await _context.EntityNodes.ToListAsync();
     }
-    public async Task<IEnumerable<EntityNode>> GetEntityNodesWithCategoryIdAsync(int categoryId)
+    public async Task<IEnumerable<EntityNode>> GetEntityAsAdminNodesWithCategoryIdAsync(int categoryId)
     {
         var uploadDataIds = await _context.FileUploadedDb
             .Where(uploadData => uploadData.CategoryId == categoryId)
@@ -29,6 +29,31 @@ public class GraphNodeRepository : IGraphNodeRepository
             .Where(entityNode => uploadDataIds.Contains(entityNode.UploadDataId))
             .ToListAsync();
 
+        return result;
+    }
+    public async Task<IEnumerable<EntityNode>> GetEntityNodesAsUserAsync(string userGuidId)
+    {
+        var guid = System.Guid.Parse(userGuidId);
+        var fileIdQuery =  await _context.UserFiles
+            .Where(uf => uf.UserId.Equals(guid))
+            .Select(uf => uf.FileId).ToListAsync();
+        var result = await _context.EntityNodes
+            .Where(en => fileIdQuery.Contains(en.UploadDataId))
+            .ToListAsync();
+        return result;
+    }
+    public async Task<IEnumerable<EntityNode>> GetEntityAsUserNodesWithCategoryIdAsync(string userGuidId , int categoryId)
+    {
+        var guid = System.Guid.Parse(userGuidId);
+        var fileIds = await _context.UserFiles
+            .Where(uf => uf.UserId == guid)
+            .Select(uf => uf.FileId)
+            .ToListAsync();
+
+        var result = await _context.EntityNodes
+            .Include(en => en.UploadedFile) 
+            .Where(en => fileIds.Contains(en.UploadDataId) && en.UploadedFile.CategoryId == categoryId)
+            .ToListAsync();
         return result;
     }
     
@@ -75,7 +100,6 @@ public class GraphNodeRepository : IGraphNodeRepository
         var result = await _context.EntityNodes
             .Where(a => a.Name.EndsWith(input))
             .ToListAsync();
-
         return result;
     }
     

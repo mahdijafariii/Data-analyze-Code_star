@@ -60,7 +60,7 @@ public class FilePermissionService : IFilePermissionService
     {
         foreach (var userId in inputUserIds)
         {
-            var user = _userRepository.GetUserById(Guid.Parse(userId));
+            var user = await _userRepository.GetUserById(Guid.Parse(userId));
             if (user is null)
             {
                 throw new UserNotFoundException();

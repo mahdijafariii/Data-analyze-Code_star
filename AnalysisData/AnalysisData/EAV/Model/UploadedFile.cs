@@ -11,7 +11,7 @@ public class UploadedFile
     
     public Guid UploaderId { get; set; }
 
-    [ForeignKey("UserId")]
+    [ForeignKey("UploaderId")]
     public User User { get; set; }
 
     [Required]
@@ -22,8 +22,6 @@ public class UploadedFile
 
     [ForeignKey("CategoryId")]
     public Category Category { get; set; }
-
-    public string Name { get; set; }
 
     public ICollection<EntityNode> EntityNodes { get; set; }
 }

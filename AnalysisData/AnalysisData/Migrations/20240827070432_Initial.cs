@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,6 +36,19 @@ namespace AnalysisData.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AttributeNodes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -124,14 +137,22 @@ namespace AnalysisData.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UploaderId = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     UploadDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Category = table.Column<string>(type: "text", nullable: false),
+                    FileName = table.Column<string>(type: "text", nullable: false),
+                    CategoryId = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FileUploadedDb", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FileUploadedDb_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FileUploadedDb_Users_UserId",
                         column: x => x.UserId,
@@ -164,9 +185,9 @@ namespace AnalysisData.Migrations
                 name: "UserFiles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    FileId = table.Column<Guid>(type: "uuid", nullable: false),
                     UploadDataId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -217,6 +238,11 @@ namespace AnalysisData.Migrations
                 name: "IX_EntityNodes_UploadDataId",
                 table: "EntityNodes",
                 column: "UploadDataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FileUploadedDb_CategoryId",
+                table: "FileUploadedDb",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FileUploadedDb_UserId",
@@ -285,6 +311,9 @@ namespace AnalysisData.Migrations
 
             migrationBuilder.DropTable(
                 name: "FileUploadedDb");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Users");

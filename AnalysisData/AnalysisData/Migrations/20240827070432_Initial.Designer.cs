@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240826120213_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240827070432_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,6 +57,23 @@ namespace AnalysisData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AttributeNodes");
+                });
+
+            modelBuilder.Entity("AnalysisData.EAV.Model.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("AnalysisData.EAV.Model.EntityEdge", b =>
@@ -103,7 +120,7 @@ namespace AnalysisData.Migrations
                     b.ToTable("EntityNodes");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.UploadData", b =>
+            modelBuilder.Entity("AnalysisData.EAV.Model.UploadedFile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -111,7 +128,10 @@ namespace AnalysisData.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Category")
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -122,10 +142,15 @@ namespace AnalysisData.Migrations
                     b.Property<DateTime>("UploadDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("UploaderId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("UserId");
 
@@ -134,11 +159,12 @@ namespace AnalysisData.Migrations
 
             modelBuilder.Entity("AnalysisData.EAV.Model.UserFile", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<Guid>("FileId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("UploadDataId")
                         .HasColumnType("integer");
@@ -275,29 +301,37 @@ namespace AnalysisData.Migrations
 
             modelBuilder.Entity("AnalysisData.EAV.Model.EntityNode", b =>
                 {
-                    b.HasOne("AnalysisData.EAV.Model.UploadData", "UploadData")
+                    b.HasOne("AnalysisData.EAV.Model.UploadedFile", "UploadedFile")
                         .WithMany("EntityNodes")
                         .HasForeignKey("UploadDataId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UploadData");
+                    b.Navigation("UploadedFile");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.UploadData", b =>
+            modelBuilder.Entity("AnalysisData.EAV.Model.UploadedFile", b =>
                 {
+                    b.HasOne("AnalysisData.EAV.Model.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AnalysisData.UserManage.Model.User", "User")
                         .WithMany("UploadData")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Category");
+
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("AnalysisData.EAV.Model.UserFile", b =>
                 {
-                    b.HasOne("AnalysisData.EAV.Model.UploadData", "UploadData")
+                    b.HasOne("AnalysisData.EAV.Model.UploadedFile", "UploadedFile")
                         .WithMany()
                         .HasForeignKey("UploadDataId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -309,7 +343,7 @@ namespace AnalysisData.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UploadData");
+                    b.Navigation("UploadedFile");
 
                     b.Navigation("User");
                 });
@@ -363,7 +397,7 @@ namespace AnalysisData.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.UploadData", b =>
+            modelBuilder.Entity("AnalysisData.EAV.Model.UploadedFile", b =>
                 {
                     b.Navigation("EntityNodes");
                 });

@@ -27,7 +27,7 @@ public class FilePermissionService : IFilePermissionService
         var files = await _fileUploadedRepository.GetFileUploadedInDb(page, limit);
         var paginationFiles = files.Select(x => new UploadDataDto()
         {
-            Id = x.Id.ToString() ,FileName = x.FileName , Category = x.Category, UploadDate = x.UploadDate,
+            Id = x.Id.ToString() ,FileName = x.FileName , Category = x.Category.Name, UploadDate = x.UploadDate,
         });
         return paginationFiles.ToList();
     }

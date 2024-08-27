@@ -20,4 +20,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<Role> Roles { get; set; }
     public DbSet<UploadedFile> FileUploadedDb { get; set; }
     public DbSet<UserFile> UserFiles { get; set; }
+    public DbSet<Category> Categories { get; set; }
 }

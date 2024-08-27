@@ -16,23 +16,29 @@ public class GraphServiceEav : IGraphServiceEav
     private readonly IGraphEdgeRepository _graphEdgeRepository;
     private readonly IEntityNodeRepository _entityNodeRepository;
     private readonly IEntityEdgeRepository _entityEdgeRepository;
-    private readonly IAttributeNodeRepository _attributeNodeRepository;
+    private readonly ICategoryService _categoryService;
+    
 
-
-    public GraphServiceEav(IGraphNodeRepository graphNodeRepository, IGraphEdgeRepository graphEdgeRepository,
-        IEntityNodeRepository entityNodeRepository, IEntityEdgeRepository entityEdgeRepository,
-        IAttributeNodeRepository attributeNodeRepository)
+    
+    public GraphServiceEav(IGraphNodeRepository graphNodeRepository, IGraphEdgeRepository graphEdgeRepository, IEntityNodeRepository entityNodeRepository, IEntityEdgeRepository entityEdgeRepository,IAttributeNodeRepository attributeNodeRepository, ICategoryService categoryService)
     {
         _graphNodeRepository = graphNodeRepository;
         _entityNodeRepository = entityNodeRepository;
         _entityEdgeRepository = entityEdgeRepository;
-        _attributeNodeRepository = attributeNodeRepository;
+        _categoryService = categoryService;
         _graphEdgeRepository = graphEdgeRepository;
     }
 
-    public async Task<PaginatedListDto> GetNodesPaginationAsync(int pageIndex, int pageSize, string category)
+    public async Task<PaginatedListDto> GetNodesPaginationAsync(int pageIndex, int pageSize, int? categoryId = null)
     {
-        var valueNodes = await GetEntityNodesForPaginationAsync(category);
+        var valueNodes = await GetEntityNodesForPaginationAsync(categoryId);
+
+        string categoryName = null;
+        if (categoryId.HasValue)
+        {
+            var category = await _categoryService.GetCategoryByIdAsync(categoryId.Value);
+            categoryName = category?.Name;
+        }
 
         var groupedNodes = valueNodes.Select(g => new PaginationNodeDto
             {
@@ -41,22 +47,22 @@ public class GraphServiceEav : IGraphServiceEav
             .ToList();
 
         var count = groupedNodes.Count;
-        var items = groupedNodes.Select(x => x.EntityName).Skip((pageIndex) * pageSize)
+        var items = groupedNodes
+            .Skip(pageIndex * pageSize)
             .Take(pageSize)
+            .Select(x => x.EntityName)  // Extract EntityName to match List<string>
             .ToList();
 
-        return new PaginatedListDto(items, pageIndex, count, category);
+        return new PaginatedListDto(items, pageIndex, count, categoryName);
     }
 
-    private async Task<IEnumerable<EntityNode>> GetEntityNodesForPaginationAsync(string category)
+    private async Task<IEnumerable<EntityNode>> GetEntityNodesForPaginationAsync(int? category = null)
     {
-        var lowerCaseCategory = category.ToLower();
-
-
-        var valueNodes = lowerCaseCategory == "all"
+        var valueNodes = category == null
             ? await _graphNodeRepository.GetEntityNodesAsync()
-            : await _graphNodeRepository.GetEntityNodesWithCategoryAsync(lowerCaseCategory);
-        if (!valueNodes.Any() && lowerCaseCategory != "all")
+            : await _graphNodeRepository.GetEntityNodesWithCategoryIdAsync(category.Value);
+
+        if (!valueNodes.Any() && category != null)
         {
             throw new CategoryResultNotFoundException();
         }

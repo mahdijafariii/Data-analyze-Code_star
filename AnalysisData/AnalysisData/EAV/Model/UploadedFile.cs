@@ -11,11 +11,17 @@ public class UploadedFile
     
     public Guid UploaderId { get; set; }
 
-    [ForeignKey("UserId")]
+    [ForeignKey("UploaderId")]
     public User User { get; set; }
+
     [Required]
     public DateTime UploadDate { get; set; }
-    public string Category { get; set; }
     public string FileName { get; set; }
+    
+    public int CategoryId { get; set; }
+
+    [ForeignKey("CategoryId")]
+    public Category Category { get; set; }
+
     public ICollection<EntityNode> EntityNodes { get; set; }
 }

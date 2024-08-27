@@ -102,8 +102,20 @@ public class UserController : ControllerBase
         return BadRequest(new {massage = "not success"});
     }
     
-
-
+    
+    [HttpGet("GetUserInformation")]
+    public async Task<IActionResult> GetUserInformation()
+    {
+        var user = User;
+        var result = await _userService.GetUser(user);
+        if (result!=null)
+        {
+            return Ok(result);
+        }
+    
+        return BadRequest(new { message = "not found!" });
+    }
+    
     [HttpPost("logOut")]
     public IActionResult Logout()
     {

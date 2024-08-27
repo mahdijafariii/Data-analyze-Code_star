@@ -27,7 +27,7 @@ public class CategoriesController : ControllerBase
     {
         if (categoryDto == null || string.IsNullOrEmpty(categoryDto.Name))
         {
-            return BadRequest("Category name is required.");
+            return BadRequest(new{message="Category name is required."});
         }
 
         try
@@ -36,10 +36,10 @@ public class CategoriesController : ControllerBase
         }
         catch (InvalidOperationException ex)
         {
-            return Conflict(ex.Message); 
+            return Conflict(new{message=ex.Message}); 
         }
 
-        return Ok("Category added!");
+        return Ok(new{message="Category added!"});
     }
     
     [HttpDelete("{id}")]
@@ -48,7 +48,7 @@ public class CategoriesController : ControllerBase
         var category = await _categoryService.GetCategoryByIdAsync(id);
         if (category == null)
         {
-            return NotFound($"Category with ID {id} not found.");
+            return NotFound(new{message=$"Category with ID {id} not found."});
         }
 
         await _categoryService.DeleteCategoryAsync(id);

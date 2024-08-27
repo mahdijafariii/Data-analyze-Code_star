@@ -32,7 +32,7 @@ public class UserService : IUserService
     public async Task<bool> ResetPassword(ClaimsPrincipal userClaim, string password, string confirmPassword)
     {
         var userName = userClaim.FindFirstValue("username");
-        var user =await  _userRepository.GetUserByUsername(userName);
+        var user = await _userRepository.GetUserByUsername(userName);
         if (user == null)
         {
             throw new UserNotFoundException();
@@ -103,11 +103,23 @@ public class UserService : IUserService
     }
 
 
+    public async Task<User> GetUser(ClaimsPrincipal userClaim)
+    {
+        var userName = userClaim.FindFirstValue("username");
+        var user = await _userRepository.GetUserByUsername(userName);
+        if (user == null)
+        {
+            throw new UserNotFoundException();
+        }
+
+        return user;
+    }
+
     public async Task<bool> UpdateUserInformationByUser(ClaimsPrincipal userClaim, UpdateUserModel updateUserModel)
     {
         var userName = userClaim.FindFirstValue("username");
-        var user =  await _userRepository.GetUserByUsername(userName);
-        var checkEmail =  await _userRepository.GetUserByEmail(updateUserModel.Email);
+        var user = await _userRepository.GetUserByUsername(userName);
+        var checkEmail = await _userRepository.GetUserByEmail(updateUserModel.Email);
 
         if (checkEmail != null && user.Email != updateUserModel.Email)
             throw new DuplicateUserException();
@@ -130,7 +142,7 @@ public class UserService : IUserService
     public async Task<bool> UploadImage(ClaimsPrincipal claimsPrincipal, string imageUrl)
     {
         var userName = claimsPrincipal.FindFirstValue("username");
-        var user =  await _userRepository.GetUserByUsername(userName);
+        var user = await _userRepository.GetUserByUsername(userName);
         if (user == null)
         {
             throw new UserNotFoundException();
@@ -140,5 +152,4 @@ public class UserService : IUserService
         await _userRepository.UpdateUser(user.Id, user);
         return true;
     }
-    
 }

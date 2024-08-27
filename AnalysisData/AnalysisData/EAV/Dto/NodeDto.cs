@@ -2,7 +2,7 @@ namespace AnalysisData.EAV.Dto;
 
 public class NodeDto
 {
-    public string ID{ get; set; }
-    public string Lable { get; set; }
+    public string Id{ get; set; }
+    public string Label { get; set; }
 
 }

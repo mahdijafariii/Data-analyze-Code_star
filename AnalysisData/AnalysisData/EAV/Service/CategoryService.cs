@@ -3,6 +3,7 @@ using AnalysisData.EAV.Model;
 using AnalysisData.EAV.Repository.Abstraction;
 using AnalysisData.EAV.Repository.CategoryRepository.asbtraction;
 using AnalysisData.EAV.Service.Abstraction;
+using CsvHelper.TypeConversion;
 
 namespace AnalysisData.EAV.Service;
 
@@ -21,10 +22,10 @@ public class CategoryService : ICategoryService
     public async Task<PaginationCategoryDto> GetPaginatedCategoriesAsync(int pageNumber, int pageSize)
     {
         var allCategories = await _categoryRepository.GetAllAsync();
-        await SetCountOfEachCategory(allCategories);
-        var totalCount = allCategories.Count;
+        var allCategoriesDto = await MakeCategoryDto(allCategories);
+        var totalCount = allCategories.Count();
 
-        var paginatedItems = allCategories
+        var paginatedItems = allCategoriesDto
             .Skip((pageNumber) * pageSize)
             .Take(pageSize)
             .ToList();
@@ -48,6 +49,20 @@ public class CategoryService : ICategoryService
         await _categoryRepository.AddAsync(category);
     }
 
+    public async Task UpdateCategoryAsync(AddCategoryDto newCategoryDto, int preCategoryId)
+    {
+        var currentCategory = await _categoryRepository.GetByIdAsync(preCategoryId);
+        var existingCategory = await _categoryRepository.GetByNameAsync(newCategoryDto.Name);
+        if (existingCategory != null && newCategoryDto.Name != currentCategory.Name)
+        {
+            throw new InvalidOperationException($"A category with the name '{newCategoryDto.Name}' already exists.");
+        }
+
+        currentCategory.Name = newCategoryDto.Name;
+        await _categoryRepository.UpdateAsync(currentCategory);
+    }
+
+
     public async Task DeleteCategoryAsync(int id)
     {
         await _categoryRepository.DeleteAsync(id);
@@ -58,11 +73,15 @@ public class CategoryService : ICategoryService
         return await _categoryRepository.GetByIdAsync(id);
     }
 
-    private async Task SetCountOfEachCategory(List<Category> categories)
+    private async Task<IEnumerable<CategoryDto>> MakeCategoryDto(IEnumerable<Category> categories)
     {
-        foreach (var category in categories)
-        { 
-            category.TotalNumber = await _uploadDataRepository.GetNumberOfFileWithCategoryIdAsync(category.Id);
-        }
+        var categoryDtoTasks = categories.Select(async category => new CategoryDto
+        {
+            Id = category.Id,
+            Name = category.Name,
+            TotalNumber = await _uploadDataRepository.GetNumberOfFileWithCategoryIdAsync(category.Id)
+        });
+
+        return await Task.WhenAll(categoryDtoTasks);
     }
 }

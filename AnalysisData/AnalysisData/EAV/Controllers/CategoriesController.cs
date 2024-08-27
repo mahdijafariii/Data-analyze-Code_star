@@ -1,6 +1,4 @@
 ﻿using AnalysisData.EAV.Dto;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Service;
 using AnalysisData.EAV.Service.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
@@ -55,5 +53,13 @@ public class CategoriesController : ControllerBase
 
         await _categoryService.DeleteCategoryAsync(id);
         return NoContent();
+    }
+    
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateCategory(int id, [FromBody] AddCategoryDto newCategory)
+    {
+        await _categoryService.UpdateCategoryAsync(newCategory, id);
+        return Ok(new {massage = "updated successfully"});
     }
 }

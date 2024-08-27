@@ -30,6 +30,11 @@ public class UploadDataRepository : IUploadDataRepository
             .Where(u => u.UploaderId == userId)
             .ToListAsync();
     }
+    
+    public async Task<int> GetNumberOfFileWithCategoryIdAsync(int categoryId)
+    {
+        return await _context.FileUploadedDb.CountAsync(x => x.CategoryId == categoryId);
+    }
 
     public async Task AddAsync(UploadedFile uploadedFile)
     {

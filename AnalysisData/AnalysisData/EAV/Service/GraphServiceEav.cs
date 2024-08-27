@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using AnalysisData.EAV.Dto;
 using AnalysisData.EAV.Model;
 using AnalysisData.EAV.Repository;
@@ -29,9 +30,9 @@ public class GraphServiceEav : IGraphServiceEav
         _graphEdgeRepository = graphEdgeRepository;
     }
 
-    public async Task<PaginatedListDto> GetNodesPaginationAsync(int pageIndex, int pageSize, int? categoryId = null)
+    public async Task<PaginatedListDto> GetNodesPaginationAsync(ClaimsPrincipal claimsPrincipal,int pageIndex, int pageSize, int? categoryId = null)
     {
-        var valueNodes = await GetEntityNodesForPaginationAsync(categoryId);
+        var valueNodes = await GetEntityNodesForPaginationAsync(claimsPrincipal,categoryId);
 
         string categoryName = null;
         if (categoryId.HasValue)
@@ -56,18 +57,91 @@ public class GraphServiceEav : IGraphServiceEav
         return new PaginatedListDto(items, pageIndex, count, categoryName);
     }
 
-    private async Task<IEnumerable<EntityNode>> GetEntityNodesForPaginationAsync(int? category = null)
+    private async Task<IEnumerable<EntityNode>> GetEntityNodesForPaginationAsync(ClaimsPrincipal claimsPrincipal,int? category = null)
     {
-        var valueNodes = category == null
-            ? await _graphNodeRepository.GetEntityNodesAsync()
-            : await _graphNodeRepository.GetEntityNodesWithCategoryIdAsync(category.Value);
+        var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
+        var username = claimsPrincipal.FindFirstValue("id");
+        IEnumerable<EntityNode> valueNodes = new List<EntityNode>();
+        if (category == null && role != "dataanalyst")
+        {
+            valueNodes = await _graphNodeRepository.GetEntityNodesAsAdminAsync();
+        }
+        else if (role != "dataanalyst" && category != null)
+        {
+            valueNodes = await _graphNodeRepository.GetEntityAsAdminNodesWithCategoryIdAsync(category.Value);
+        }
+        else if (category != null && role == "dataanalyst")
+        {
+            valueNodes = await _graphNodeRepository.GetEntityAsUserNodesWithCategoryIdAsync(username,category.Value);
+        }
+        else if (category == null && role == "dataanalyst")
+        {
+            valueNodes = await _graphNodeRepository.GetEntityNodesAsUserAsync(username);
+        }
 
         if (!valueNodes.Any() && category != null)
         {
             throw new CategoryResultNotFoundException();
         }
 
+        if (valueNodes is null)
+        {
+            throw new NodeNotFoundException();
+        }
+
         return valueNodes;
+    }
+    
+    public async Task<Dictionary<string, string>> GetNodeInformation(ClaimsPrincipal claimsPrincipal,string headerUniqueId)
+    {
+        var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
+        var username = claimsPrincipal.FindFirstValue("id");
+        IEnumerable<dynamic> result = Enumerable.Empty<dynamic>();
+        if (role != "dataanalyst")
+        {
+            result = await _graphNodeRepository.GetNodeAttributeValue(headerUniqueId);
+        }
+        else if (await _graphNodeRepository.IsNodeAccessibleByUser(username, headerUniqueId))
+        {
+            result = await _graphNodeRepository.GetNodeAttributeValue(headerUniqueId);
+        }
+        if (result.Count()==0)
+        {
+            throw new NodeNotFoundException();
+        }
+        var output = new Dictionary<string, string>();
+        foreach (var item in result)
+        {
+            output[item.Attribute] = item.Value;
+        }
+        return output;
+    }
+    public async Task<Dictionary<string, string>> GetEdgeInformation(ClaimsPrincipal claimsPrincipal,int edgeId)
+    {
+        var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
+        var username = claimsPrincipal.FindFirstValue("id");
+        IEnumerable<dynamic> result = Enumerable.Empty<dynamic>();
+        if (role != "dataanalyst")
+        {
+            result = await _graphEdgeRepository.GetEdgeAttributeValues(edgeId);
+        }
+        else if (await _graphEdgeRepository.IsEdgeAccessibleByUser(username, edgeId))
+        {
+            result = await _graphEdgeRepository.GetEdgeAttributeValues(edgeId);
+        }
+        if (result.Count() == 0)
+        {
+            throw new EdgeNotFoundException();
+        }
+
+        var output = new Dictionary<string, string>();
+
+        foreach (var item in result)
+        {
+            output[item.Attribute] = item.Value;
+        }
+
+        return output;
     }
 
 
@@ -87,43 +161,6 @@ public class GraphServiceEav : IGraphServiceEav
             { From = x.EntityIDSource, To = x.EntityIDTarget, Id = x.Id.ToString() });
         return (nodeDto, edgeDto);
     }
-
-    public async Task<Dictionary<string, string>> GetNodeInformation(string headerUniqueId)
-    {
-        var result = await _graphNodeRepository.GetNodeAttributeValue(headerUniqueId);
-        if (result is null)
-        {
-            throw new NodeNotFoundException();
-        }
-
-        var output = new Dictionary<string, string>();
-
-        foreach (var item in result)
-        {
-            output[item.Attribute] = item.Value;
-        }
-
-        return output;
-    }
-
-    public async Task<Dictionary<string, string>> GetEdgeInformation(int edgeId)
-    {
-        var result = await _graphEdgeRepository.GetEdgeAttributeValues(edgeId);
-        if (result is null)
-        {
-            throw new EdgeNotFoundException();
-        }
-
-        var output = new Dictionary<string, string>();
-
-        foreach (var item in result)
-        {
-            output[item.Attribute] = item.Value;
-        }
-
-        return output;
-    }
-
     public async Task<IEnumerable<EntityNode>> SearchEntityNodeName(string inputSearch, string type)
     {
         IEnumerable<EntityNode> entityNodes;

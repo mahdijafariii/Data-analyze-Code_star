@@ -14,11 +14,12 @@ public class GraphNodeRepository : IGraphNodeRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<EntityNode>> GetEntityNodesAsync()
+    public async Task<IEnumerable<EntityNode>> GetEntityNodesAsAdminAsync()
     {
         return await _context.EntityNodes.ToListAsync();
     }
-    public async Task<IEnumerable<EntityNode>> GetEntityNodesWithCategoryIdAsync(int categoryId)
+
+    public async Task<IEnumerable<EntityNode>> GetEntityAsAdminNodesWithCategoryIdAsync(int categoryId)
     {
         var uploadDataIds = await _context.FileUploadedDb
             .Where(uploadData => uploadData.CategoryId == categoryId)
@@ -31,19 +32,63 @@ public class GraphNodeRepository : IGraphNodeRepository
 
         return result;
     }
-    
 
-    public IEnumerable<ValueNode> GetValueNodesAsync()
+    public async Task<IEnumerable<EntityNode>> GetEntityNodesAsUserAsync(string userGuidId)
     {
-        return _context.ValueNodes;
+        var guid = System.Guid.Parse(userGuidId);
+        var fileIdQuery = await _context.UserFiles
+            .Where(uf => uf.UserId.Equals(guid))
+            .Select(uf => uf.FileId).ToListAsync();
+        var result = await _context.EntityNodes
+            .Where(en => fileIdQuery.Contains(en.UploadDataId))
+            .ToListAsync();
+        return result;
     }
 
+    public async Task<IEnumerable<EntityNode>> GetEntityAsUserNodesWithCategoryIdAsync(string userGuidId,
+        int categoryId)
+    {
+        var guid = System.Guid.Parse(userGuidId);
+        var fileIds = await _context.UserFiles
+            .Where(uf => uf.UserId == guid)
+            .Select(uf => uf.FileId)
+            .ToListAsync();
+
+        var result = await _context.EntityNodes
+            .Include(en => en.UploadedFile)
+            .Where(en => fileIds.Contains(en.UploadDataId) && en.UploadedFile.CategoryId == categoryId)
+            .ToListAsync();
+        return result;
+    }
+
+
+    public async Task<bool> IsNodeAccessibleByUser(string userName, string nodeName)
+    {
+        var guid = System.Guid.Parse(userName);
+        var result = await _context.UserFiles
+            .Include(uf => uf.UploadedFile)
+            .ThenInclude(f => f.EntityNodes)
+            .Where(uf => uf.UserId == guid)
+            .SelectMany(uf => uf.UploadedFile.EntityNodes
+                .Where(en => en.Name == nodeName)
+                .Select(en => en.Name))
+            .ToListAsync();
+        if (result is null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    
     public async Task<IEnumerable<dynamic>> GetNodeAttributeValue(string headerUniqueId)
     {
         var result = await _context.ValueNodes
-            .Include(vn => vn.Entity)    
-            .Include(vn => vn.Attribute) 
-            .Where(vn => vn.Entity.Name == headerUniqueId) 
+            .Include(vn => vn.Entity)
+            .Include(vn => vn.Attribute)
+            .Where(vn => vn.Entity.Name == headerUniqueId)
             .Select(vn => new
             {
                 Attribute = vn.Attribute.Name,
@@ -51,7 +96,8 @@ public class GraphNodeRepository : IGraphNodeRepository
             }).ToListAsync();
         return result;
     }
-    
+
+
     public async Task<IEnumerable<EntityNode>> GetNodeContainSearchInput(string input)
     {
         var result = await _context.EntityNodes
@@ -60,7 +106,7 @@ public class GraphNodeRepository : IGraphNodeRepository
 
         return result;
     }
-    
+
     public async Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInput(string input)
     {
         var result = await _context.EntityNodes
@@ -69,15 +115,12 @@ public class GraphNodeRepository : IGraphNodeRepository
 
         return result;
     }
-    
+
     public async Task<IEnumerable<EntityNode>> GetNodeEndsWithSearchInput(string input)
     {
         var result = await _context.EntityNodes
             .Where(a => a.Name.EndsWith(input))
             .ToListAsync();
-
         return result;
     }
-    
-    
 }

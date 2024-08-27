@@ -19,21 +19,24 @@ public class GraphEavController : ControllerBase
     [HttpGet("GetNodesPaginationEav")]
     public async Task<IActionResult> GetNodesAsync([FromQuery] int pageIndex = 0, [FromQuery] int pageSize = 10, [FromQuery] int? category = null)
     {
-        var paginatedNodes = await _graphServiceEav.GetNodesPaginationAsync(pageIndex, pageSize, category);
+        var user = User;
+        var paginatedNodes = await _graphServiceEav.GetNodesPaginationAsync(user,pageIndex, pageSize, category);
         return Ok(paginatedNodes);
     }
 
     [HttpGet("GetNodeInformation")]
     public async Task<IActionResult> GetEntityNodeWithAttributes(string headerUniqueId)
     {
-        var output = await _graphServiceEav.GetNodeInformation(headerUniqueId);
+        var user = User;
+        var output = await _graphServiceEav.GetNodeInformation(user,headerUniqueId);
         return Ok(output);
     }
 
     [HttpGet("GetEdgeInformation")]
     public async Task<IActionResult> GetEntityEdgeWithAttributes(int edgeId)
     {
-        var output = await _graphServiceEav.GetEdgeInformation(edgeId);
+        var user = User;
+        var output = await _graphServiceEav.GetEdgeInformation(user,edgeId);
         return Ok(output);
     }
 

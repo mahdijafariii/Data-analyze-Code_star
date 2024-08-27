@@ -11,6 +11,8 @@ public interface IGraphServiceEav
 
     Task<PaginatedListDto> GetNodesPaginationAsync(ClaimsPrincipal claimsPrincipal, int pageIndex, int pageSize,
         int? categoryId = null);
-    Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(string id);
+
+    Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(ClaimsPrincipal claimsPrincipal,
+        string id);
     Task<IEnumerable<EntityNode>> SearchEntityNodeName(string inputSearch, string searchType);
 }

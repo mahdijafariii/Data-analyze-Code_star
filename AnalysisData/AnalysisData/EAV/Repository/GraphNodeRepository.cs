@@ -73,7 +73,7 @@ public class GraphNodeRepository : IGraphNodeRepository
                 .Where(en => en.Name == nodeName)
                 .Select(en => en.Name))
             .ToListAsync();
-        if (result is null)
+        if (result.Count==0)
         {
             return false;
         }

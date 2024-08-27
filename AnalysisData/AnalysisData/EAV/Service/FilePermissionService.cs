@@ -56,9 +56,9 @@ public class FilePermissionService : IFilePermissionService
         return files.ToList();
     }
     
-    public async Task AccessFileToUser(List<string> inputUserIds,int fileId)
+    public async Task AccessFileToUser(List<string> inputUserGuidIds,int fileId)
     {
-        foreach (var userId in inputUserIds)
+        foreach (var userId in inputUserGuidIds)
         {
             var user = await _userRepository.GetUserById(Guid.Parse(userId));
             if (user is null)
@@ -67,8 +67,8 @@ public class FilePermissionService : IFilePermissionService
             }
         }
         var currentAccessor = await _userFileRepository.GetUsersIdAccessToInputFile(fileId.ToString());
-        var newUsers = inputUserIds.Except(currentAccessor).ToList();
-        var blockAccessToFile = currentAccessor.Except(currentAccessor.Intersect(inputUserIds)).ToList();
+        var newUsers = inputUserGuidIds.Except(currentAccessor).ToList();
+        var blockAccessToFile = currentAccessor.Except(currentAccessor.Intersect(inputUserGuidIds)).ToList();
         await _userFileRepository.RevokeUserAccess(blockAccessToFile);
         await _userFileRepository.GrantUserAccess(newUsers, fileId);
     }

@@ -40,10 +40,11 @@ public class GraphEavController : ControllerBase
         return Ok(output);
     }
 
-    [HttpGet("GetRelationalEdgeByNodeName")]
+    [HttpGet("GetRelationalEdgeByNodeId")]
     public async Task<IActionResult> GetRelationalEdgeByNodeName([FromQuery] string nodeId)
     {
-        var result = await _graphServiceEav.GetRelationalEdgeBaseNode(nodeId);
+        var user = User;
+        var result = await _graphServiceEav.GetRelationalEdgeBaseNode(user,nodeId);
         return Ok(new
         {
             nodes = result.Item1,

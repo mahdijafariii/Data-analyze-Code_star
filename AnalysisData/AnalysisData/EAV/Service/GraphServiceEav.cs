@@ -145,7 +145,36 @@ public class GraphServiceEav : IGraphServiceEav
     }
 
 
-    public async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(string id)
+    public async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(ClaimsPrincipal claimsPrincipal,string id)
+    {
+        var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
+        var username = claimsPrincipal.FindFirstValue("id");
+        var node = await _entityNodeRepository.GetByIdAsync(id);
+  
+        (IEnumerable<NodeDto> nodes, IEnumerable<EdgeDto> edges) result;
+
+        if (role != "dataanalyst")
+        {
+            result = await GetNodeRelations(id);
+        }
+        else if (await _graphNodeRepository.IsNodeAccessibleByUser(username, node.Name))
+        {
+            result = await GetNodeRelations(id);
+        }
+        else
+        {
+            throw new NodeNotFoundException();
+        }
+
+        if (!result.nodes.Any() && !result.edges.Any())
+        {
+            throw new NodeNotFoundException();
+        }
+
+        return result;
+    }
+
+    private async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetNodeRelations(string id)
     {
         var node = await _entityNodeRepository.GetByIdAsync(id);
         if (node is null)
@@ -161,6 +190,7 @@ public class GraphServiceEav : IGraphServiceEav
             { From = x.EntityIDSource, To = x.EntityIDTarget, Id = x.Id.ToString() });
         return (nodeDto, edgeDto);
     }
+
     public async Task<IEnumerable<EntityNode>> SearchEntityNodeName(string inputSearch, string type)
     {
         IEnumerable<EntityNode> entityNodes;

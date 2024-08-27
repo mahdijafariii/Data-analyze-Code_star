@@ -47,7 +47,7 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/dotnetdev:${{ steps.tag_version.outputs.new_tag }}
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/dotnetdev:latest .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/dotnetdev:latest
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/migrateimage:${{ steps.tag_version.outputs.new_tag }} .  
+          docker build -f=Dockerfile2 -t ${{ secrets.DOCKERHUB_USERNAME }}/migrateimage:${{ steps.tag_version.outputs.new_tag }} .  
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/migrateimage:${{ steps.tag_version.outputs.new_tag }}
           docker build -f=Dockerfile2 -t ${{ secrets.DOCKERHUB_USERNAME }}/migrateimage:latest .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/migrateimage:latest

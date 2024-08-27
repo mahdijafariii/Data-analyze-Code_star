@@ -47,6 +47,8 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/dotnetdev:${{ steps.tag_version.outputs.new_tag }}
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/dotnetdev:latest .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/dotnetdev:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/migrateimage:${{ steps.tag_version.outputs.new_tag }} .  
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/migrateimage:${{ steps.tag_version.outputs.new_tag }}
           docker build -f=Dockerfile2 -t ${{ secrets.DOCKERHUB_USERNAME }}/migrateimage:latest .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/migrateimage:latest
           
@@ -67,6 +69,7 @@ jobs:
         cd Summer1403-Project-Group03-Deployment
         cd data_analysis
         sed -i 's|repository: yaghooli/dotnetdev:.*|repository: yaghooli/dotnetdev:${{ needs.version.outputs.dotnetdev_version }}|' values.yaml
+        sed -i 's|repository: yaghooli/migrateimage:.*|repository: yaghooli/migrateimage:${{ needs.version.outputs.dotnetdev_version }}|' values.yaml
         cat values.yaml
         git config --global user.email "yaghini.a110@gmail.com"
         git config --global user.name "ali"

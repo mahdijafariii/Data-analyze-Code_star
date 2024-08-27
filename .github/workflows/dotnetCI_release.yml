@@ -52,7 +52,7 @@ jobs:
           
   update-helm:
     runs-on: ubuntu-latest
-
+    needs: [version]
     steps:
     - name: Clone Deployment Repository
       uses: GuillaumeFalourd/clone-github-repo-action@v2.3

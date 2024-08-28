@@ -17,19 +17,19 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly ICookieService _cookieService;
     private readonly IJwtService _jwtService;
-    private readonly IRegexService _regexService;
+    private readonly IValidationService _validationService;
 
 
     public UserService(IUserRepository userRepository, ICookieService cookieService,
-        IJwtService jwtService, IRegexService regexService)
+        IJwtService jwtService, IValidationService validationService)
     {
         _userRepository = userRepository;
         _cookieService = cookieService;
         _jwtService = jwtService;
-        _regexService = regexService;
+        _validationService = validationService;
     }
 
-    public async Task<bool> ResetPassword(ClaimsPrincipal userClaim, string password, string confirmPassword)
+    public async Task<bool> ResetPasswordAsync(ClaimsPrincipal userClaim, string password, string confirmPassword)
     {
         var userName = userClaim.FindFirstValue("username");
         var user = await _userRepository.GetUserByUsernameAsync(userName);
@@ -43,13 +43,13 @@ public class UserService : IUserService
             throw new PasswordMismatchException();
         }
 
-        _regexService.PasswordCheck(password);
+        _validationService.PasswordCheck(password);
         user.Password = HashPassword(password);
         await _userRepository.UpdateUserAsync(user.Id, user);
         return true;
     }
 
-    public async Task<bool> NewPassword(ClaimsPrincipal userClaim, string oldPassword, string password,
+    public async Task<bool> NewPasswordAsync(ClaimsPrincipal userClaim, string oldPassword, string password,
         string confirmPassword)
     {
         var userName = userClaim.FindFirstValue("username");
@@ -69,13 +69,13 @@ public class UserService : IUserService
             throw new PasswordMismatchException();
         }
 
-        _regexService.PasswordCheck(password);
+        _validationService.PasswordCheck(password);
         user.Password = HashPassword(password);
         await _userRepository.UpdateUserAsync(user.Id, user);
         return true;
     }
 
-    public async Task<User> Login(UserLoginModel userLoginModel)
+    public async Task<User> LoginAsync(UserLoginModel userLoginModel)
     {
         var user = await _userRepository.GetUserByUsernameAsync(userLoginModel.userName);
         if (user == null)
@@ -89,7 +89,6 @@ public class UserService : IUserService
         }
 
         var token = await _jwtService.GenerateJwtToken(userLoginModel.userName);
-
         _cookieService.SetCookie("AuthToken", token, userLoginModel.rememberMe);
         return user;
     }
@@ -103,7 +102,7 @@ public class UserService : IUserService
     }
 
 
-    public async Task<User> GetUser(ClaimsPrincipal userClaim)
+    public async Task<User> GetUserAsync(ClaimsPrincipal userClaim)
     {
         var userName = userClaim.FindFirstValue("username");
         var user = await _userRepository.GetUserByUsernameAsync(userName);
@@ -115,7 +114,7 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<bool> UpdateUserInformationByUser(ClaimsPrincipal userClaim, UpdateUserModel updateUserModel)
+    public async Task<bool> UpdateUserInformationAsync(ClaimsPrincipal userClaim, UpdateUserModel updateUserModel)
     {
         var userName = userClaim.FindFirstValue("username");
         var user = await _userRepository.GetUserByUsernameAsync(userName);
@@ -124,14 +123,14 @@ public class UserService : IUserService
         if (checkEmail != null && user.Email != updateUserModel.Email)
             throw new DuplicateUserException();
 
-        _regexService.EmailCheck(updateUserModel.Email);
-        _regexService.PhoneNumberCheck(updateUserModel.PhoneNumber);
-        await ReplaceUserDetailsAsync(user, updateUserModel);
+        _validationService.EmailCheck(updateUserModel.Email);
+        _validationService.PhoneNumberCheck(updateUserModel.PhoneNumber);
+        await ReplaceUserDetails(user, updateUserModel);
         await _jwtService.UpdateUserCookie(userName, false);
         return true;
     }
 
-    private async Task ReplaceUserDetailsAsync(User user, UpdateUserModel updateUserModel)
+    private async Task ReplaceUserDetails(User user, UpdateUserModel updateUserModel)
     {
         user.FirstName = updateUserModel.FirstName;
         user.LastName = updateUserModel.LastName;
@@ -140,7 +139,7 @@ public class UserService : IUserService
         await _userRepository.UpdateUserAsync(user.Id, user);
     }
 
-    public async Task<bool> UploadImage(ClaimsPrincipal claimsPrincipal, string imageUrl)
+    public async Task<bool> UploadImageAsync(ClaimsPrincipal claimsPrincipal, string imageUrl)
     {
         var userName = claimsPrincipal.FindFirstValue("username");
         var user = await _userRepository.GetUserByUsernameAsync(userName);

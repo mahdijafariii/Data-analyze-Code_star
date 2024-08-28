@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using System.Text;
 using AnalysisData.Exception;
 using AnalysisData.JwtService.abstractions;
@@ -7,28 +7,26 @@ using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services.Abstraction;
 using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.RegisterModel;
-using AnalysisData.UserManage.RolePaginationModel;
-using AnalysisData.UserManage.UpdateModel;
-using AnalysisData.UserManage.UserPaginationModel;
 
 namespace AnalysisData.Services;
 
-public class AdminService : IAdminService
+public class AdminRegisterService : IAdminRegisterService
 {
     private readonly IUserRepository _userRepository;
-    private readonly IRegexService _regexService;
+    private readonly IValidationService _validationService;
     private readonly IRoleRepository _roleRepository;
     private readonly IJwtService _jwtService;
-    
-    public AdminService(IUserRepository userRepository, IRegexService regexService, IRoleRepository roleRepository,IJwtService jwtService)
+
+    public AdminRegisterService(IUserRepository userRepository, IValidationService validationService,
+        IRoleRepository roleRepository, IJwtService jwtService)
     {
         _userRepository = userRepository;
-        _regexService = regexService;
+        _validationService = validationService;
         _roleRepository = roleRepository;
         _jwtService = jwtService;
     }
 
-    public async Task RegisterByAdmin(UserRegisterModel userRegisterModel)
+    public async Task RegisterByAdminAsync(UserRegisterModel userRegisterModel)
     {
         var roleCheck = userRegisterModel.RoleName.ToLower();
         var existingRole = await _roleRepository.GetRoleByNameAsync(roleCheck);
@@ -41,14 +39,14 @@ public class AdminService : IAdminService
         var existingUserByUsername = await _userRepository.GetUserByUsernameAsync(userRegisterModel.Username);
         if (existingUserByEmail != null && existingUserByUsername != null)
             throw new DuplicateUserException();
-        _regexService.EmailCheck(userRegisterModel.Email);
-        _regexService.PasswordCheck(userRegisterModel.Password);
+        _validationService.EmailCheck(userRegisterModel.Email);
+        _validationService.PasswordCheck(userRegisterModel.Password);
         if (userRegisterModel.Password != userRegisterModel.ConfirmPassword)
         {
             throw new PasswordMismatchException();
         }
 
-        _regexService.PhoneNumberCheck(userRegisterModel.PhoneNumber);
+        _validationService.PhoneNumberCheck(userRegisterModel.PhoneNumber);
         if (userRegisterModel.Password != userRegisterModel.ConfirmPassword)
             throw new PasswordMismatchException();
 
@@ -82,72 +80,14 @@ public class AdminService : IAdminService
     }
 
 
-    public async Task UpdateUserInformationByAdmin(Guid id, UpdateAdminModel updateAdminModel)
-    {
-        var user = await _userRepository.GetUserByIdAsync(id);
-        var checkUsername = await _userRepository.GetUserByUsernameAsync(updateAdminModel.Username);
-        var checkEmail = await _userRepository.GetUserByEmailAsync(updateAdminModel.Email);
-
-        if ((checkUsername != null && !user.Equals(checkUsername)) || (checkEmail != null && !user.Equals(checkEmail)))
-            throw new DuplicateUserException();
-
-        _regexService.EmailCheck(updateAdminModel.Email);
-        _regexService.PhoneNumberCheck(updateAdminModel.PhoneNumber);
-        var role = await _roleRepository.GetRoleByNameAsync(updateAdminModel.RoleName);
-        if (role == null)
-        {
-            throw new RoleNotFoundException();
-        }
-
-        SetUpdatedInformation(user, updateAdminModel);
-        _jwtService.UpdateUserCookie(user.Username, false);
-    }
-
-    private void SetUpdatedInformation(User user, UpdateAdminModel updateAdminModel)
-    {
-        user.FirstName = updateAdminModel.FirstName;
-        user.LastName = updateAdminModel.LastName;
-        user.Email = updateAdminModel.Email;
-        user.PhoneNumber = updateAdminModel.PhoneNumber;
-        user.Username = updateAdminModel.Username;
-        user.Role.RoleName = updateAdminModel.RoleName;
-        _userRepository.UpdateUserAsync(user.Id, user);
-        
-    }
-
-    public async Task<bool> DeleteUser(Guid id)
-    {
-        var isDelete = await _userRepository.DeleteUserAsync(id);
-        if (!isDelete)
-            throw new UserNotFoundException();
-        return true;
-    }
-
-    public async Task<int> GetUserCount()
-    {
-        return await _userRepository.GetUsersCountAsync();
-    }
-    
-
-
-    public async Task<List<UserPaginationModel>> GetUserPagination(int page, int limit)
-    {
-        var users = await _userRepository.GetAllUserPaginationAsync(page, limit);
-        var paginationUsers = users.Select(x => new UserPaginationModel()
-        {
-            Guid = x.Id.ToString(), Username = x.Username, FirstName = x.FirstName, LastName = x.LastName,
-            Email = x.Email, PhoneNumber = x.PhoneNumber, RoleName = x.Role.RoleName
-        });
-        return paginationUsers.ToList();
-    }
-    
-    public async Task AddFirstAdmin()
+    public async Task AddFirstAdminAsync()
     {
         var admin = await _userRepository.GetUserByUsernameAsync("admin");
         if (admin != null)
         {
             throw new AdminExistenceException();
         }
+
         var adminRole = new Role()
         {
             Id = 1,
@@ -158,7 +98,7 @@ public class AdminService : IAdminService
         {
             Id = 2,
             RoleName = "DataAnalyst".ToLower(),
-            RolePolicy = "boronz",
+            RolePolicy = "bronze",
         };
         var dataManager = new Role()
         {
@@ -178,9 +118,4 @@ public class AdminService : IAdminService
         await _roleRepository.AddRoleAsync(dataManager);
         await _userRepository.AddUserAsync(firstAdmin);
     }
-    
-        
-    
-
-
 }

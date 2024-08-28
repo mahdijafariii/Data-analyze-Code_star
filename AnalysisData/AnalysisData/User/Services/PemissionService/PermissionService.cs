@@ -49,8 +49,7 @@ public class PermissionService : IPermissionService
     {
         var role = userClaims.FindFirstValue(ClaimTypes.Role);
         var rolePermissions = GetRolePermissions(Assembly.GetExecutingAssembly(), role);
-        var permissions = rolePermissions.Values.SelectMany(x=>x);
+        var permissions = rolePermissions.Values.SelectMany(x => x);
         return permissions;
     }
-   
 }

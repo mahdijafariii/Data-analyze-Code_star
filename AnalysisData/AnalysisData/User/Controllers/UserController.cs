@@ -28,7 +28,7 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserLoginModel userLoginModel)
     {
-        var user = await _userService.Login(userLoginModel);
+        var user = await _userService.LoginAsync(userLoginModel);
         return Ok(new { user.FirstName, user.LastName, user.ImageURL });
     }
 
@@ -49,7 +49,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel resetPasswordModel)
     {
         var userClaim = User;
-        var check = await _userService.ResetPassword(userClaim, resetPasswordModel.NewPassword,
+        var check = await _userService.ResetPasswordAsync(userClaim, resetPasswordModel.NewPassword,
             resetPasswordModel.ConfirmPassword);
         if (check)
         {
@@ -69,7 +69,7 @@ public class UserController : ControllerBase
             return BadRequest(new {massage = "No file uploaded."});
         }
 
-        _userService.UploadImage(user, file.FileName);
+        _userService.UploadImageAsync(user, file.FileName);
 
         return Ok(new {massage = "Uploaded successfully."});
     }
@@ -78,7 +78,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> UpdateUser([FromBody] UpdateUserModel updateUserModel)
     {
         var user = User;
-        var updatedUser = await _userService.UpdateUserInformationByUser(user, updateUserModel);
+        var updatedUser = await _userService.UpdateUserInformationAsync(user, updateUserModel);
         if (updatedUser != null)
         {
             return Ok(new {massage = "updated successfully"});
@@ -91,7 +91,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> NewPassword([FromBody] NewPasswordModel newPasswordModel)
     {
         var userClaim = User;
-        var check = await _userService.NewPassword(userClaim, newPasswordModel.OldPassword,
+        var check = await _userService.NewPasswordAsync(userClaim, newPasswordModel.OldPassword,
             newPasswordModel.NewPassword,
             newPasswordModel.ConfirmPassword);
         if (check)
@@ -107,7 +107,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetUserInformation()
     {
         var user = User;
-        var result = await _userService.GetUser(user);
+        var result = await _userService.GetUserAsync(user);
         if (result!=null)
         {
             return Ok(result);

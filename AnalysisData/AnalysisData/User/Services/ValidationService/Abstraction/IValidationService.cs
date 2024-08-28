@@ -1,6 +1,6 @@
 namespace AnalysisData.Services.Abstraction;
 
-public interface IRegexService
+public interface IValidationService
 {
     public void EmailCheck(string email);
     public void PasswordCheck(string password);

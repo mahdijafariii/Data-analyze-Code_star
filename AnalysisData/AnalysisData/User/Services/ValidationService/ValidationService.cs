@@ -5,7 +5,7 @@ using AnalysisData.UserManage.Model;
 
 namespace AnalysisData.Services;
 
-public class RegexService : IRegexService
+public class ValidationService : IValidationService
 {
     public void EmailCheck(string email)
     {
@@ -39,6 +39,5 @@ public class RegexService : IRegexService
         {
             throw new InvalidPasswordFormatException();
         }
-
     }
 }

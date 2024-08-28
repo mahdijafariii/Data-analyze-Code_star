@@ -35,7 +35,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICookieService, CookieService>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
-builder.Services.AddScoped<IRegexService, RegexService>();
+builder.Services.AddScoped<IValidationService, ValidationService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IEdgeToDbService, EdgeToDBService>();
 builder.Services.AddScoped<INodeToDbService,NodeToDbService>();
@@ -63,6 +63,8 @@ builder.Services.AddScoped<IFilePermissionService, FilePermissionService>();
 builder.Services.AddScoped<IFileUploadedRepository, FileUploadedRepository>();
 builder.Services.AddScoped<IUserFileRepository, UserFileRepository>();
 builder.Services.AddScoped<IRoleManagementService, RoleManagementService>();
+builder.Services.AddScoped<IAdminRegisterService, AdminRegisterService>();
+
 
 
 

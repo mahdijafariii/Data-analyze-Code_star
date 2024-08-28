@@ -40,10 +40,11 @@ public class GraphEavController : ControllerBase
         return Ok(output);
     }
 
-    [HttpGet("GetRelationalEdgeByNodeName")]
+    [HttpGet("GetRelationalEdgeByNodeId")]
     public async Task<IActionResult> GetRelationalEdgeByNodeName([FromQuery] string nodeId)
     {
-        var result = await _graphServiceEav.GetRelationalEdgeBaseNode(nodeId);
+        var user = User;
+        var result = await _graphServiceEav.GetRelationalEdgeBaseNode(user,nodeId);
         return Ok(new
         {
             nodes = result.Item1,
@@ -54,7 +55,8 @@ public class GraphEavController : ControllerBase
     [HttpGet("Search")]
     public async Task<IActionResult> SearchEntityNode([FromQuery] string searchInput, string searchType = "contain")
     {
-        var result = await _graphServiceEav.SearchEntityNodeName(searchInput,searchType);
+        var user = User;
+        var result = await _graphServiceEav.SearchInEntityNodeName(user,searchInput,searchType);
         return Ok(result);
     }
 }

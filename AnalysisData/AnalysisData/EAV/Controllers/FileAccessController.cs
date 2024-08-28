@@ -30,9 +30,9 @@ public class FileAccessController : ControllerBase
     }
     
     [HttpPost("AccessFileToUser")]
-    public async Task<IActionResult> AccessFileToUser([FromBody] List<string> userIds,int fileId)
+    public async Task<IActionResult> AccessFileToUser([FromBody] List<string> userGuidIdes,int fileId)
     {
-        await _filePermissionService.AccessFileToUser(userIds, fileId);
+        await _filePermissionService.AccessFileToUser(userGuidIdes, fileId);
         return Ok(new 
         {
             massage = "success"

@@ -145,7 +145,36 @@ public class GraphServiceEav : IGraphServiceEav
     }
 
 
-    public async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(string id)
+    public async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(ClaimsPrincipal claimsPrincipal,string id)
+    {
+        var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
+        var username = claimsPrincipal.FindFirstValue("id");
+        var node = await _entityNodeRepository.GetByIdAsync(id);
+  
+        (IEnumerable<NodeDto> nodes, IEnumerable<EdgeDto> edges) result;
+
+        if (role != "dataanalyst")
+        {
+            result = await GetNodeRelations(id);
+        }
+        else if (await _graphNodeRepository.IsNodeAccessibleByUser(username, node.Name))
+        {
+            result = await GetNodeRelations(id);
+        }
+        else
+        {
+            throw new NodeNotFoundException();
+        }
+
+        if (!result.nodes.Any() && !result.edges.Any())
+        {
+            throw new NodeNotFoundException();
+        }
+
+        return result;
+    }
+
+    private async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetNodeRelations(string id)
     {
         var node = await _entityNodeRepository.GetByIdAsync(id);
         if (node is null)
@@ -161,26 +190,63 @@ public class GraphServiceEav : IGraphServiceEav
             { From = x.EntityIDSource, To = x.EntityIDTarget, Id = x.Id.ToString() });
         return (nodeDto, edgeDto);
     }
-    public async Task<IEnumerable<EntityNode>> SearchEntityNodeName(string inputSearch, string type)
+
+    public async Task<IEnumerable<EntityNode>> SearchInEntityNodeName(ClaimsPrincipal claimsPrincipal,string inputSearch, string type)
+    {
+        var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
+        var username = claimsPrincipal.FindFirstValue("id");
+        IEnumerable<EntityNode> entityNodes;
+        if (role != "dataanalyst")
+        {
+            entityNodes = await SearchEntityInNodeNameAsAdmin(inputSearch, type);
+        }
+        else
+        {
+            entityNodes = await SearchEntityInNodeNameAsUser(username,inputSearch,type);
+        }
+        if (!entityNodes.Any())
+        {
+            throw new NodeNotFoundException();
+        }
+
+        return entityNodes;
+    }
+
+    private async Task<IEnumerable<EntityNode>> SearchEntityInNodeNameAsAdmin(string inputSearch, string type)
     {
         IEnumerable<EntityNode> entityNodes;
         var searchType = type.ToLower();
         switch (searchType)
         {
             case "startswith":
-                entityNodes = await _graphNodeRepository.GetNodeStartsWithSearchInput(inputSearch);
+                entityNodes = await _graphNodeRepository.GetNodeStartsWithSearchInputAsAdmin(inputSearch);
                 break;
             case "endswith":
-                entityNodes = await _graphNodeRepository.GetNodeEndsWithSearchInput(inputSearch);
+                entityNodes = await _graphNodeRepository.GetNodeEndsWithSearchInputAsAdmin(inputSearch);
                 break;
             default:
-                entityNodes = await _graphNodeRepository.GetNodeContainSearchInput(inputSearch);
+                entityNodes = await _graphNodeRepository.GetNodeContainSearchInputAsAdmin(inputSearch);
                 break;
         }
 
-        if (!entityNodes.Any())
+        return entityNodes;
+    }
+    
+    private async Task<IEnumerable<EntityNode>> SearchEntityInNodeNameAsUser(string username,string inputSearch, string type)
+    {
+        IEnumerable<EntityNode> entityNodes;
+        var searchType = type.ToLower();
+        switch (searchType)
         {
-            throw new NodeNotFoundException();
+            case "startswith":
+                entityNodes = await _graphNodeRepository.GetNodeStartsWithSearchInputAsUser(username,inputSearch);
+                break;
+            case "endswith":
+                entityNodes = await _graphNodeRepository.GetNodeEndsWithSearchInputAsUser(username,inputSearch);
+                break;
+            default:
+                entityNodes = await _graphNodeRepository.GetNodeContainSearchInputAsUser(username,inputSearch);
+                break;
         }
 
         return entityNodes;

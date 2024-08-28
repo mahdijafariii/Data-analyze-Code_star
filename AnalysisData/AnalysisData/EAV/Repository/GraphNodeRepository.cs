@@ -1,4 +1,5 @@
-﻿using AnalysisData.Data;
+﻿using System.Security.Claims;
+using AnalysisData.Data;
 using AnalysisData.EAV.Model;
 using AnalysisData.EAV.Repository.Abstraction;
 using Microsoft.EntityFrameworkCore;
@@ -73,7 +74,7 @@ public class GraphNodeRepository : IGraphNodeRepository
                 .Where(en => en.Name == nodeName)
                 .Select(en => en.Name))
             .ToListAsync();
-        if (result is null)
+        if (result.Count==0)
         {
             return false;
         }
@@ -98,7 +99,7 @@ public class GraphNodeRepository : IGraphNodeRepository
     }
 
 
-    public async Task<IEnumerable<EntityNode>> GetNodeContainSearchInput(string input)
+    public async Task<IEnumerable<EntityNode>> GetNodeContainSearchInputAsAdmin(string input)
     {
         var result = await _context.EntityNodes
             .Where(a => a.Name.Contains(input))
@@ -107,7 +108,7 @@ public class GraphNodeRepository : IGraphNodeRepository
         return result;
     }
 
-    public async Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInput(string input)
+    public async Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInputAsAdmin(string input)
     {
         var result = await _context.EntityNodes
             .Where(a => a.Name.StartsWith(input))
@@ -116,11 +117,45 @@ public class GraphNodeRepository : IGraphNodeRepository
         return result;
     }
 
-    public async Task<IEnumerable<EntityNode>> GetNodeEndsWithSearchInput(string input)
+    public async Task<IEnumerable<EntityNode>> GetNodeEndsWithSearchInputAsAdmin(string input)
     {
         var result = await _context.EntityNodes
             .Where(a => a.Name.EndsWith(input))
             .ToListAsync();
         return result;
+    }
+    
+    
+    public async Task<IEnumerable<EntityNode>> GetNodeContainSearchInputAsUser(string username,string input)
+    {
+        var guidUserId = Guid.Parse(username);
+        return await _context.UserFiles
+            .Where(uf => uf.UserId == guidUserId)
+            .Include(uf => uf.UploadedFile)
+            .ThenInclude(uf => uf.EntityNodes)
+            .SelectMany(uf => uf.UploadedFile.EntityNodes).Where(a => a.Name.Contains(input))
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInputAsUser(string username,string input)
+    {
+        var guidUserId = Guid.Parse(username);
+        return await _context.UserFiles
+            .Where(uf => uf.UserId == guidUserId)
+            .Include(uf => uf.UploadedFile)
+            .ThenInclude(uf => uf.EntityNodes)
+            .SelectMany(uf => uf.UploadedFile.EntityNodes).Where(a => a.Name.StartsWith(input))
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<EntityNode>> GetNodeEndsWithSearchInputAsUser(string username,string input)
+    {
+        var guidUserId = Guid.Parse(username);
+        return await _context.UserFiles
+            .Where(uf => uf.UserId == guidUserId)
+            .Include(uf => uf.UploadedFile)
+            .ThenInclude(uf => uf.EntityNodes)
+            .SelectMany(uf => uf.UploadedFile.EntityNodes).Where(a => a.Name.EndsWith(input))
+            .ToListAsync();
     }
 }

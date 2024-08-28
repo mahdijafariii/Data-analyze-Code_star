@@ -34,7 +34,7 @@ public class AdminService : IAdminService
     public async Task Register(UserRegisterModel userRegisterModel)
     {
         var roleCheck = userRegisterModel.RoleName.ToLower();
-        var existingRole = await _roleRepository.GetRoleByName(roleCheck);
+        var existingRole = await _roleRepository.GetRoleByNameAsync(roleCheck);
         if (existingRole == null)
         {
             throw new RoleNotFoundException();
@@ -96,7 +96,7 @@ public class AdminService : IAdminService
 
         _regexService.EmailCheck(updateAdminModel.Email);
         _regexService.PhoneNumberCheck(updateAdminModel.PhoneNumber);
-        var role = await _roleRepository.GetRoleByName(updateAdminModel.RoleName);
+        var role = await _roleRepository.GetRoleByNameAsync(updateAdminModel.RoleName);
         if (role == null)
         {
             throw new RoleNotFoundException();
@@ -133,7 +133,7 @@ public class AdminService : IAdminService
     
     public async Task<int> GetRoleCount()
     {
-        return await _roleRepository.GetRolesCount();
+        return await _roleRepository.GetRolesCountAsync();
     }
 
 
@@ -151,7 +151,7 @@ public class AdminService : IAdminService
     
     public async Task<List<RolePaginationModel>> GetRolePagination(int page, int limit)
     {
-        var users = await _roleRepository.GetAllRolesPagination(page, limit);
+        var users = await _roleRepository.GetAllRolesPaginationAsync(page, limit);
         var paginationRoles = users.Select(x => new RolePaginationModel()
         {
             Id = x.Id.ToString() ,Name = x.RoleName, Policy = x.RolePolicy
@@ -162,23 +162,23 @@ public class AdminService : IAdminService
     
     public async Task DeleteRole(string roleName)
     {
-        var roleExist = await _roleRepository.GetRoleByName(roleName);
+        var roleExist = await _roleRepository.GetRoleByNameAsync(roleName);
         if (roleExist == null)
         {
             throw new RoleNotFoundException();
         }
-        await _roleRepository.DeleteRole(roleName);
+        await _roleRepository.DeleteRoleAsync(roleName);
     }
 
     public async Task AddRole(string roleName, string rolePolicy)
     {
-        var roleExist = await _roleRepository.GetRoleByName(roleName);
+        var roleExist = await _roleRepository.GetRoleByNameAsync(roleName);
         if (roleExist != null)
         {
             throw new DuplicateRoleExistException();
         }
         var role = new Role { RoleName = roleName, RolePolicy = rolePolicy };
-        await _roleRepository.AddRole(role);
+        await _roleRepository.AddRoleAsync(role);
     }
 
 
@@ -214,9 +214,9 @@ public class AdminService : IAdminService
             FirstName = "admin", LastName = "admin", Email = "admin@gmail.com", Role = adminRole
         };
 
-        await _roleRepository.AddRole(adminRole);
-        await _roleRepository.AddRole(dataAnalystRole);
-        await _roleRepository.AddRole(dataManager);
+        await _roleRepository.AddRoleAsync(adminRole);
+        await _roleRepository.AddRoleAsync(dataAnalystRole);
+        await _roleRepository.AddRoleAsync(dataManager);
         await _userRepository.AddUserAsync(firstAdmin);
     }
 }

@@ -14,39 +14,39 @@ public class RoleRepository : IRoleRepository
         _context = context;
     }
 
-    public async Task<Role> GetRoleById(int roleId)
+    public async Task<Role> GetRoleByIdAsync(int roleId)
     {
         return await _context.Roles.SingleOrDefaultAsync(x => x.Id == roleId);
     }
 
-    public async Task<Role> GetRoleByName(string roleName)
+    public async Task<Role> GetRoleByNameAsync(string roleName)
     {
         return await _context.Roles.SingleOrDefaultAsync(x => x.RoleName == roleName);
     }
 
-    public async Task<bool> AddRole(Role role)
+    public async Task<bool> AddRoleAsync(Role role)
     {
-        _context.Roles.Add(role);
-        _context.SaveChanges();
+        await _context.Roles.AddAsync(role);
+        await _context.SaveChangesAsync();
         return true;
     }
 
-    public async Task<bool> DeleteRole(string roleName)
+    public async Task<bool> DeleteRoleAsync(string roleName)
     {
         var role = await _context.Roles.FirstOrDefaultAsync(x => x.RoleName == roleName);
         if (role == null) return false;
         _context.Roles.Remove(role);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return true;
     }
     
     
-    public async Task<List<Role>> GetAllRolesPagination(int page, int limit)
+    public async Task<List<Role>> GetAllRolesPaginationAsync(int page, int limit)
     {
         return await _context.Roles.Skip((page)*limit).Take(limit).ToListAsync();
     }
     
-    public async Task<int> GetRolesCount()
+    public async Task<int> GetRolesCountAsync()
     {
         return await _context.Roles.CountAsync();
     }

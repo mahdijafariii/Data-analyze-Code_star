@@ -4,10 +4,10 @@ namespace AnalysisData.Repository.RoleRepository.Abstraction;
 
 public interface IRoleRepository
 {
-    Task<Role> GetRoleById(int roleId);
-    Task<Role> GetRoleByName(string roleName);
-    Task<bool> AddRole(Role role);
-    Task<bool> DeleteRole(string roleId);
-    Task<List<Role>> GetAllRolesPagination(int page, int limit);
-    Task<int> GetRolesCount();
+    Task<Role> GetRoleByIdAsync(int roleId);
+    Task<Role> GetRoleByNameAsync(string roleName);
+    Task<bool> AddRoleAsync(Role role);
+    Task<bool> DeleteRoleAsync(string roleId);
+    Task<List<Role>> GetAllRolesPaginationAsync(int page, int limit);
+    Task<int> GetRolesCountAsync();
 }

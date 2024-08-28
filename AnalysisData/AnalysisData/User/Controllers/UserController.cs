@@ -75,10 +75,10 @@ public class UserController : ControllerBase
     }
     
     [HttpPut("UpdateUser")]
-    public IActionResult UpdateUser([FromBody] UpdateUserModel updateUserModel)
+    public async Task<IActionResult> UpdateUser([FromBody] UpdateUserModel updateUserModel)
     {
         var user = User;
-        var updatedUser = _userService.UpdateUserInformationByUser(user, updateUserModel);
+        var updatedUser = await _userService.UpdateUserInformationByUser(user, updateUserModel);
         if (updatedUser != null)
         {
             return Ok(new {massage = "updated successfully"});

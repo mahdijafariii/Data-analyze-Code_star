@@ -127,6 +127,7 @@ public class UserService : IUserService
         _regexService.EmailCheck(updateUserModel.Email);
         _regexService.PhoneNumberCheck(updateUserModel.PhoneNumber);
         await ReplaceUserDetailsAsync(user, updateUserModel);
+        await _jwtService.UpdateUserCookie(userName, false);
         return true;
     }
 

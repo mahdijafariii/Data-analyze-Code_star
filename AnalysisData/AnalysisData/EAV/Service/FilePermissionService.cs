@@ -46,25 +46,26 @@ public class FilePermissionService : IFilePermissionService
     public async Task<List<UserAccessDto>> GetUserForAccessingFile(string username)
     {
         var users =await _userRepository.GetUsersContainSearchInput(username);
+        if (users.Count() == 0)
+        {
+            throw new UserNotFoundException();
+        }
         var result = users.Select(x => new UserAccessDto()
         {
             Id = x.Id.ToString(), UserName = x.Username, FirstName = x.FirstName, LastName = x.LastName
         });
-        if (!result.Any())
-        {
-            throw new UserNotFoundException();
-        }
         return result.ToList();
     }
     
-    public async Task<IEnumerable<UserFile>> WhoAccessThisFile(string fileId)
+    public async Task<IEnumerable<UserWhoAccessThisFileDto>> WhoAccessThisFile(int fileId)
     {
-        var files =await _userFileRepository.GetByFileIdAsync(fileId);
-        if (!files.Any())
+        var users =await _userFileRepository.GetByFileIdAsync(fileId);
+        var usersDtos = users.Select(user => new UserWhoAccessThisFileDto()
         {
-            throw new UserNotFoundException();
-        }
-        return files.ToList();
+            Id = user.User.Id,
+            UserName = user.User.Username
+        });
+        return usersDtos;
     }
     
     public async Task AccessFileToUser(List<string> inputUserGuidIds,int fileId)

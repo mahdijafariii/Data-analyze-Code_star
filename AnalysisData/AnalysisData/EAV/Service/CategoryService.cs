@@ -75,13 +75,22 @@ public class CategoryService : ICategoryService
 
     private async Task<IEnumerable<CategoryDto>> MakeCategoryDto(IEnumerable<Category> categories)
     {
-        var categoryDtoTasks = categories.Select(async category => new CategoryDto
-        {
-            Id = category.Id,
-            Name = category.Name,
-            TotalNumber = await _uploadDataRepository.GetNumberOfFileWithCategoryIdAsync(category.Id)
-        });
+        var categoryDtoList = new List<CategoryDto>();
 
-        return await Task.WhenAll(categoryDtoTasks);
+        foreach (var category in categories)
+        {
+            var totalNumber = await _uploadDataRepository.GetNumberOfFileWithCategoryIdAsync(category.Id);
+        
+            var categoryDto = new CategoryDto
+            {
+                Id = category.Id,
+                Name = category.Name,
+                TotalNumber = totalNumber
+            };
+
+            categoryDtoList.Add(categoryDto);
+        }
+
+        return categoryDtoList;
     }
 }

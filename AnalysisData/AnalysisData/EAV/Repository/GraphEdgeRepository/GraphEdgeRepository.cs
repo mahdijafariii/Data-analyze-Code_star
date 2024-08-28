@@ -13,17 +13,7 @@ public class GraphEdgeRepository: IGraphEdgeRepository
     {
         _context = context;
     }
-
-    public IEnumerable<ValueEdge> GetValueEdgeAsync()
-    {
-        return _context.ValueEdges;
-    }
-
-    public IEnumerable<EntityEdge> GetEntityEdgeAsync()
-    {
-        return _context.EntityEdges;
-    }
-
+    
     public async Task<IEnumerable<dynamic>> GetEdgeAttributeValues(int id)
     {
         var result = await _context.ValueEdges
@@ -55,13 +45,6 @@ public class GraphEdgeRepository: IGraphEdgeRepository
             .Include(uf => uf.FileEntity) 
             .Where(uf => uf.UserId == userNameGuid && uf.FileEntity.Id == uploadDataId)
             .ToListAsync();
-        if (userFiles.Count == 0)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return userFiles.Count != 0;
     }
 }

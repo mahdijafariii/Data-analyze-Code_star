@@ -64,19 +64,19 @@ public class GraphServiceEav : IGraphServiceEav
         IEnumerable<EntityNode> valueNodes = new List<EntityNode>();
         if (category == null && role != "dataanalyst")
         {
-            valueNodes = await _graphNodeRepository.GetEntityNodesAsAdminAsync();
+            valueNodes = await _graphNodeRepository.GetEntityNodesForAdminAsync();
         }
         else if (role != "dataanalyst" && category != null)
         {
-            valueNodes = await _graphNodeRepository.GetEntityAsAdminNodesWithCategoryIdAsync(category.Value);
+            valueNodes = await _graphNodeRepository.GetEntityNodesForAdminWithCategoryIdAsync(category.Value);
         }
         else if (category != null && role == "dataanalyst")
         {
-            valueNodes = await _graphNodeRepository.GetEntityAsUserNodesWithCategoryIdAsync(username,category.Value);
+            valueNodes = await _graphNodeRepository.GetEntityNodeForUserWithCategoryIdAsync(username,category.Value);
         }
         else if (category == null && role == "dataanalyst")
         {
-            valueNodes = await _graphNodeRepository.GetEntityNodesAsUserAsync(username);
+            valueNodes = await _graphNodeRepository.GetEntityNodesForUserAsync(username);
         }
 
         if (!valueNodes.Any() && category != null)
@@ -219,13 +219,13 @@ public class GraphServiceEav : IGraphServiceEav
         switch (searchType)
         {
             case "startswith":
-                entityNodes = await _graphNodeRepository.GetNodeStartsWithSearchInputAsAdmin(inputSearch);
+                entityNodes = await _graphNodeRepository.GetNodeStartsWithSearchInputForAdminAsync(inputSearch);
                 break;
             case "endswith":
-                entityNodes = await _graphNodeRepository.GetNodeEndsWithSearchInputAsAdmin(inputSearch);
+                entityNodes = await _graphNodeRepository.GetNodeEndsWithSearchInputForAdminAsync(inputSearch);
                 break;
             default:
-                entityNodes = await _graphNodeRepository.GetNodeContainSearchInputAsAdmin(inputSearch);
+                entityNodes = await _graphNodeRepository.GetNodeContainSearchInputForAdminAsync(inputSearch);
                 break;
         }
 
@@ -239,13 +239,13 @@ public class GraphServiceEav : IGraphServiceEav
         switch (searchType)
         {
             case "startswith":
-                entityNodes = await _graphNodeRepository.GetNodeStartsWithSearchInputAsUser(username,inputSearch);
+                entityNodes = await _graphNodeRepository.GetNodeStartsWithSearchInputForUserAsync(username,inputSearch);
                 break;
             case "endswith":
-                entityNodes = await _graphNodeRepository.GetNodeEndsWithSearchInputAsUser(username,inputSearch);
+                entityNodes = await _graphNodeRepository.GetNodeEndsWithSearchInputForUserAsync(username,inputSearch);
                 break;
             default:
-                entityNodes = await _graphNodeRepository.GetNodeContainSearchInputAsUser(username,inputSearch);
+                entityNodes = await _graphNodeRepository.GetNodeContainSearchInputForUserAsync(username,inputSearch);
                 break;
         }
 

@@ -15,12 +15,12 @@ public class GraphNodeRepository : IGraphNodeRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<EntityNode>> GetEntityNodesAsAdminAsync()
+    public async Task<IEnumerable<EntityNode>> GetEntityNodesForAdminAsync()
     {
         return await _context.EntityNodes.ToListAsync();
     }
 
-    public async Task<IEnumerable<EntityNode>> GetEntityAsAdminNodesWithCategoryIdAsync(int categoryId)
+    public async Task<IEnumerable<EntityNode>> GetEntityNodesForAdminWithCategoryIdAsync(int categoryId)
     {
         var uploadDataIds = await _context.FileUploadedDb
             .Where(uploadData => uploadData.CategoryId == categoryId)
@@ -34,7 +34,7 @@ public class GraphNodeRepository : IGraphNodeRepository
         return result;
     }
 
-    public async Task<IEnumerable<EntityNode>> GetEntityNodesAsUserAsync(string userGuidId)
+    public async Task<IEnumerable<EntityNode>> GetEntityNodesForUserAsync(string userGuidId)
     {
         var guid = System.Guid.Parse(userGuidId);
         var fileIdQuery = await _context.UserFiles
@@ -46,7 +46,7 @@ public class GraphNodeRepository : IGraphNodeRepository
         return result;
     }
 
-    public async Task<IEnumerable<EntityNode>> GetEntityAsUserNodesWithCategoryIdAsync(string userGuidId,
+    public async Task<IEnumerable<EntityNode>> GetEntityNodeForUserWithCategoryIdAsync(string userGuidId,
         int categoryId)
     {
         var guid = System.Guid.Parse(userGuidId);
@@ -74,14 +74,7 @@ public class GraphNodeRepository : IGraphNodeRepository
                 .Where(en => en.Name == nodeName)
                 .Select(en => en.Name))
             .ToListAsync();
-        if (result.Count==0)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return result.Count != 0;
     }
     
     public async Task<IEnumerable<dynamic>> GetNodeAttributeValue(string headerUniqueId)
@@ -99,7 +92,7 @@ public class GraphNodeRepository : IGraphNodeRepository
     }
 
 
-    public async Task<IEnumerable<EntityNode>> GetNodeContainSearchInputAsAdmin(string input)
+    public async Task<IEnumerable<EntityNode>> GetNodeContainSearchInputForAdminAsync(string input)
     {
         var result = await _context.EntityNodes
             .Where(a => a.Name.Contains(input))
@@ -108,7 +101,7 @@ public class GraphNodeRepository : IGraphNodeRepository
         return result;
     }
 
-    public async Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInputAsAdmin(string input)
+    public async Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInputForAdminAsync(string input)
     {
         var result = await _context.EntityNodes
             .Where(a => a.Name.StartsWith(input))
@@ -117,7 +110,7 @@ public class GraphNodeRepository : IGraphNodeRepository
         return result;
     }
 
-    public async Task<IEnumerable<EntityNode>> GetNodeEndsWithSearchInputAsAdmin(string input)
+    public async Task<IEnumerable<EntityNode>> GetNodeEndsWithSearchInputForAdminAsync(string input)
     {
         var result = await _context.EntityNodes
             .Where(a => a.Name.EndsWith(input))
@@ -126,7 +119,7 @@ public class GraphNodeRepository : IGraphNodeRepository
     }
     
     
-    public async Task<IEnumerable<EntityNode>> GetNodeContainSearchInputAsUser(string username,string input)
+    public async Task<IEnumerable<EntityNode>> GetNodeContainSearchInputForUserAsync(string username,string input)
     {
         var guidUserId = Guid.Parse(username);
         return await _context.UserFiles
@@ -137,7 +130,7 @@ public class GraphNodeRepository : IGraphNodeRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInputAsUser(string username,string input)
+    public async Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInputForUserAsync(string username,string input)
     {
         var guidUserId = Guid.Parse(username);
         return await _context.UserFiles
@@ -148,7 +141,7 @@ public class GraphNodeRepository : IGraphNodeRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<EntityNode>> GetNodeEndsWithSearchInputAsUser(string username,string input)
+    public async Task<IEnumerable<EntityNode>> GetNodeEndsWithSearchInputForUserAsync(string username,string input)
     {
         var guidUserId = Guid.Parse(username);
         return await _context.UserFiles

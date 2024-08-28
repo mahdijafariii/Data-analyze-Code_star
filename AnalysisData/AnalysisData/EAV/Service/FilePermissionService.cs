@@ -24,7 +24,7 @@ public class FilePermissionService : IFilePermissionService
 
     public async Task<List<FileEntityDto>> GetFilesPagination(int page, int limit)
     {
-        var files = await _fileUploadedRepository.GetFileUploadedInDb(page, limit);
+        var files = await _fileUploadedRepository.GetUploadedFilesAsync(page, limit);
         var paginationFiles = files.Select(x => new FileEntityDto()
         {
             Id = x.Id.ToString() ,FileName = x.FileName , Category = x.Category.Name, UploadDate = x.UploadDate,

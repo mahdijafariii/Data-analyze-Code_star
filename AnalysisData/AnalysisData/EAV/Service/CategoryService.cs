@@ -2,6 +2,7 @@
 using AnalysisData.EAV.Model;
 using AnalysisData.EAV.Repository.Abstraction;
 using AnalysisData.EAV.Repository.CategoryRepository.asbtraction;
+using AnalysisData.EAV.Repository.FileUploadedRepository;
 using AnalysisData.EAV.Service.Abstraction;
 using CsvHelper.TypeConversion;
 
@@ -10,13 +11,14 @@ namespace AnalysisData.EAV.Service;
 public class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository;
-    private readonly IUploadDataRepository _uploadDataRepository;
+    private readonly IFileUploadedRepository _fileUploadedRepository;
 
 
-    public CategoryService(ICategoryRepository categoryRepository, IUploadDataRepository uploadDataRepository)
+
+    public CategoryService(ICategoryRepository categoryRepository, IFileUploadedRepository fileUploadedRepository)
     {
         _categoryRepository = categoryRepository;
-        _uploadDataRepository = uploadDataRepository;
+        _fileUploadedRepository = fileUploadedRepository;
     }
 
     public async Task<PaginationCategoryDto> GetPaginatedCategoriesAsync(int pageNumber, int pageSize)
@@ -79,7 +81,7 @@ public class CategoryService : ICategoryService
         {
             Id = category.Id,
             Name = category.Name,
-            TotalNumber = await _uploadDataRepository.GetNumberOfFileWithCategoryIdAsync(category.Id)
+            TotalNumber = await _fileUploadedRepository.GetNumberOfFileWithCategoryIdAsync(category.Id)
         });
 
         return await Task.WhenAll(categoryDtoTasks);

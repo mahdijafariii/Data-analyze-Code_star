@@ -58,7 +58,6 @@ builder.Services.AddScoped<IGraphServiceEav, GraphServiceEav>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUploadFileService, UploadFileService>();
-builder.Services.AddScoped<IUploadDataRepository, UploadDataRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IFilePermissionService, FilePermissionService>();

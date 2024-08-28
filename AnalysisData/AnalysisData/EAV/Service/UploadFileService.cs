@@ -1,17 +1,18 @@
 ﻿using System.Security.Claims;
 using AnalysisData.EAV.Model;
 using AnalysisData.EAV.Repository.Abstraction;
+using AnalysisData.EAV.Repository.FileUploadedRepository;
 using AnalysisData.EAV.Service.Abstraction;
 
 namespace AnalysisData.EAV.Service;
 
 public class UploadFileService : IUploadFileService
 {
-    private readonly IUploadDataRepository _uploadDataRepository;
+    private readonly IFileUploadedRepository _uploadedRepository;
 
-    public UploadFileService(IUploadDataRepository uploadDataRepository)
+    public UploadFileService(IFileUploadedRepository uploadedRepository)
     {
-        _uploadDataRepository = uploadDataRepository;
+        _uploadedRepository = uploadedRepository;
     }
 
     public async Task<int> AddFileToDb(int categoryId, ClaimsPrincipal claimsPrincipal, string name)
@@ -24,7 +25,7 @@ public class UploadFileService : IUploadFileService
             FileName = name,
             UploadDate = DateTime.UtcNow
         };
-        await _uploadDataRepository.AddAsync(uploadData);
+        await _uploadedRepository.AddAsync(uploadData);
         return uploadData.Id;
     }
     

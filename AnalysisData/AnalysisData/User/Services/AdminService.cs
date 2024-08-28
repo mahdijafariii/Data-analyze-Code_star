@@ -19,9 +19,7 @@ public class AdminService : IAdminService
     private readonly IRegexService _regexService;
     private readonly IRoleRepository _roleRepository;
     private readonly IJwtService _jwtService;
-
-
-
+    
     public AdminService(IUserRepository userRepository, IRegexService regexService, IRoleRepository roleRepository,IJwtService jwtService)
     {
         _userRepository = userRepository;
@@ -30,7 +28,7 @@ public class AdminService : IAdminService
         _jwtService = jwtService;
     }
 
-    public async Task Register(UserRegisterModel userRegisterModel)
+    public async Task RegisterByAdmin(UserRegisterModel userRegisterModel)
     {
         var roleCheck = userRegisterModel.RoleName.ToLower();
         var existingRole = await _roleRepository.GetRoleByNameAsync(roleCheck);
@@ -130,10 +128,6 @@ public class AdminService : IAdminService
         return await _userRepository.GetUsersCountAsync();
     }
     
-    public async Task<int> GetRoleCount()
-    {
-        return await _roleRepository.GetRolesCountAsync();
-    }
 
 
     public async Task<List<UserPaginationModel>> GetUserPagination(int page, int limit)
@@ -147,40 +141,6 @@ public class AdminService : IAdminService
         return paginationUsers.ToList();
     }
     
-    
-    public async Task<List<RolePaginationModel>> GetRolePagination(int page, int limit)
-    {
-        var users = await _roleRepository.GetAllRolesPaginationAsync(page, limit);
-        var paginationRoles = users.Select(x => new RolePaginationModel()
-        {
-            Id = x.Id.ToString() ,Name = x.RoleName, Policy = x.RolePolicy
-        });
-        return paginationRoles.ToList();
-    }
-    
-    
-    public async Task DeleteRole(string roleName)
-    {
-        var roleExist = await _roleRepository.GetRoleByNameAsync(roleName);
-        if (roleExist == null)
-        {
-            throw new RoleNotFoundException();
-        }
-        await _roleRepository.DeleteRoleAsync(roleName);
-    }
-
-    public async Task AddRole(string roleName, string rolePolicy)
-    {
-        var roleExist = await _roleRepository.GetRoleByNameAsync(roleName);
-        if (roleExist != null)
-        {
-            throw new DuplicateRoleExistException();
-        }
-        var role = new Role { RoleName = roleName, RolePolicy = rolePolicy };
-        await _roleRepository.AddRoleAsync(role);
-    }
-
-
     public async Task AddFirstAdmin()
     {
         var admin = await _userRepository.GetUserByUsernameAsync("admin");
@@ -218,4 +178,9 @@ public class AdminService : IAdminService
         await _roleRepository.AddRoleAsync(dataManager);
         await _userRepository.AddUserAsync(firstAdmin);
     }
+    
+        
+    
+
+
 }

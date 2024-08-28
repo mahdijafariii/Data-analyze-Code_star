@@ -22,7 +22,7 @@ public class AdminController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegisterModel)
     {
-        await _adminService.Register(userRegisterModel);
+        await _adminService.RegisterByAdmin(userRegisterModel);
         return Ok(new {massage = "User added successfully"});
     }
 
@@ -68,36 +68,7 @@ public class AdminController : ControllerBase
         await _adminService.AddFirstAdmin();
         return Ok(new { message = "success" });
     }
-    
-    
-    [HttpDelete("DeleteRole")]
-    public async Task<IActionResult> DeleteRole(string roleName)
-    {
-         await _adminService.DeleteRole(roleName);
-         return Ok(new { message = "Role deleted successfully." });
-    }
 
-    [HttpPost("AddRole")]
-    public async Task<IActionResult> AddRole(string name , string policy)
-    {
-        await _adminService.AddRole(name, policy);
-        return Ok(new { message = "Role added successfully." });
-    }
-    
-     
-    //[Authorize(Roles = "admin")]
-    [HttpGet("GetRolesPagination")]
-    public async Task<IActionResult> GetAllRoles(int page = 0, int limit = 10)
-    {
-        var rolesPagination = await _adminService.GetRolePagination(page, limit);
-        var rolesCount = await _adminService.GetRoleCount();
-        return Ok(new
-        {
-            users = rolesPagination,
-            count = rolesCount,
-            thisPage = page,
-        });
-    }
     
 
 }

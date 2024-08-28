@@ -62,6 +62,8 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IFilePermissionService, FilePermissionService>();
 builder.Services.AddScoped<IFileUploadedRepository, FileUploadedRepository>();
 builder.Services.AddScoped<IUserFileRepository, UserFileRepository>();
+builder.Services.AddScoped<IRoleManagementService, RoleManagementService>();
+
 
 
 // builder.Services.AddDbContext<ApplicationDbContext>(options =>

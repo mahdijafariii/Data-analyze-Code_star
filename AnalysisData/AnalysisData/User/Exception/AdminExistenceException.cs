@@ -1,8 +1,8 @@
 ﻿namespace AnalysisData.Exception;
 
-public class AdminExistenceException:System.Exception
+public class AdminExistenceException: ServiceException
 {
-    public AdminExistenceException() : base(Resources.AdminExistenceException)
+    public AdminExistenceException() : base(Resources.AdminExistenceException,StatusCodes.Status403Forbidden)
     {
     }
 }

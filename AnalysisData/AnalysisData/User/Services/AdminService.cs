@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using AnalysisData.Exception;
+using AnalysisData.JwtService.abstractions;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services.Abstraction;
@@ -18,13 +19,16 @@ public class AdminService : IAdminService
     private readonly IUserRepository _userRepository;
     private readonly IRegexService _regexService;
     private readonly IRoleRepository _roleRepository;
+    private readonly IJwtService _jwtService;
 
 
-    public AdminService(IUserRepository userRepository, IRegexService regexService, IRoleRepository roleRepository)
+
+    public AdminService(IUserRepository userRepository, IRegexService regexService, IRoleRepository roleRepository,IJwtService jwtService)
     {
         _userRepository = userRepository;
         _regexService = regexService;
         _roleRepository = roleRepository;
+        _jwtService = jwtService;
     }
 
     public async Task Register(UserRegisterModel userRegisterModel)
@@ -99,6 +103,7 @@ public class AdminService : IAdminService
         }
 
         SetUpdatedInformation(user, updateAdminModel);
+        _jwtService.UpdateUserCookie(user.Username, false);
     }
 
     private void SetUpdatedInformation(User user, UpdateAdminModel updateAdminModel)
@@ -110,6 +115,7 @@ public class AdminService : IAdminService
         user.Username = updateAdminModel.Username;
         user.Role.RoleName = updateAdminModel.RoleName;
         _userRepository.UpdateUser(user.Id, user);
+        
     }
 
     public async Task<bool> DeleteUser(Guid id)

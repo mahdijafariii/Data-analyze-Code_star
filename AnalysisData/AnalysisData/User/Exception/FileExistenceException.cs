@@ -1,8 +1,8 @@
 ﻿namespace AnalysisData.Exception;
 
-public class FileExistenceException : System.Exception
+public class FileExistenceException : ServiceException
 {
-    public FileExistenceException() : base(Resources.FileExistenceException)
+    public FileExistenceException() : base(Resources.FileExistenceException,StatusCodes.Status404NotFound)
     {
     }
 }

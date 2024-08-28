@@ -1,8 +1,8 @@
 namespace AnalysisData.Exception;
 
-public class RoleNotFoundException : System.Exception
+public class RoleNotFoundException : ServiceException
 {
-    public RoleNotFoundException() : base(Resources.RoleNotFoundException)
+    public RoleNotFoundException() : base(Resources.RoleNotFoundException,StatusCodes.Status401Unauthorized)
     {
     }
 }

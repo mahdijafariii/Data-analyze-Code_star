@@ -48,5 +48,10 @@ public class JwtService : IJwtService
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+    public async Task UpdateUserCookie(string userName, bool rememberMe)
+    {
+        var token = await GenerateJwtToken(userName);
+        _cookieService.UpdateCookie("AuthToken", token, rememberMe);
+    }
     
 }

@@ -28,7 +28,7 @@ public class GraphNodeRepository : IGraphNodeRepository
             .ToListAsync();
 
         var result = await _context.EntityNodes
-            .Where(entityNode => uploadDataIds.Contains(entityNode.UploadDataId))
+            .Where(entityNode => uploadDataIds.Contains(entityNode.NodeFileReferenceId))
             .ToListAsync();
 
         return result;
@@ -41,7 +41,7 @@ public class GraphNodeRepository : IGraphNodeRepository
             .Where(uf => uf.UserId.Equals(guid))
             .Select(uf => uf.FileId).ToListAsync();
         var result = await _context.EntityNodes
-            .Where(en => fileIdQuery.Contains(en.UploadDataId))
+            .Where(en => fileIdQuery.Contains(en.NodeFileReferenceId))
             .ToListAsync();
         return result;
     }
@@ -56,8 +56,8 @@ public class GraphNodeRepository : IGraphNodeRepository
             .ToListAsync();
 
         var result = await _context.EntityNodes
-            .Include(en => en.UploadedFile)
-            .Where(en => fileIds.Contains(en.UploadDataId) && en.UploadedFile.CategoryId == categoryId)
+            .Include(en => en.FileEntity)
+            .Where(en => fileIds.Contains(en.NodeFileReferenceId) && en.FileEntity.CategoryId == categoryId)
             .ToListAsync();
         return result;
     }
@@ -67,10 +67,10 @@ public class GraphNodeRepository : IGraphNodeRepository
     {
         var guid = System.Guid.Parse(userName);
         var result = await _context.UserFiles
-            .Include(uf => uf.UploadedFile)
+            .Include(uf => uf.FileEntity)
             .ThenInclude(f => f.EntityNodes)
             .Where(uf => uf.UserId == guid)
-            .SelectMany(uf => uf.UploadedFile.EntityNodes
+            .SelectMany(uf => uf.FileEntity.EntityNodes
                 .Where(en => en.Name == nodeName)
                 .Select(en => en.Name))
             .ToListAsync();
@@ -93,7 +93,7 @@ public class GraphNodeRepository : IGraphNodeRepository
             .Select(vn => new
             {
                 Attribute = vn.Attribute.Name,
-                Value = vn.ValueString
+                Value = vn.Value
             }).ToListAsync();
         return result;
     }
@@ -131,9 +131,9 @@ public class GraphNodeRepository : IGraphNodeRepository
         var guidUserId = Guid.Parse(username);
         return await _context.UserFiles
             .Where(uf => uf.UserId == guidUserId)
-            .Include(uf => uf.UploadedFile)
+            .Include(uf => uf.FileEntity)
             .ThenInclude(uf => uf.EntityNodes)
-            .SelectMany(uf => uf.UploadedFile.EntityNodes).Where(a => a.Name.Contains(input))
+            .SelectMany(uf => uf.FileEntity.EntityNodes).Where(a => a.Name.Contains(input))
             .ToListAsync();
     }
 
@@ -142,9 +142,9 @@ public class GraphNodeRepository : IGraphNodeRepository
         var guidUserId = Guid.Parse(username);
         return await _context.UserFiles
             .Where(uf => uf.UserId == guidUserId)
-            .Include(uf => uf.UploadedFile)
+            .Include(uf => uf.FileEntity)
             .ThenInclude(uf => uf.EntityNodes)
-            .SelectMany(uf => uf.UploadedFile.EntityNodes).Where(a => a.Name.StartsWith(input))
+            .SelectMany(uf => uf.FileEntity.EntityNodes).Where(a => a.Name.StartsWith(input))
             .ToListAsync();
     }
 
@@ -153,9 +153,9 @@ public class GraphNodeRepository : IGraphNodeRepository
         var guidUserId = Guid.Parse(username);
         return await _context.UserFiles
             .Where(uf => uf.UserId == guidUserId)
-            .Include(uf => uf.UploadedFile)
+            .Include(uf => uf.FileEntity)
             .ThenInclude(uf => uf.EntityNodes)
-            .SelectMany(uf => uf.UploadedFile.EntityNodes).Where(a => a.Name.EndsWith(input))
+            .SelectMany(uf => uf.FileEntity.EntityNodes).Where(a => a.Name.EndsWith(input))
             .ToListAsync();
     }
 }

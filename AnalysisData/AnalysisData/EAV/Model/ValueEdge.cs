@@ -11,9 +11,8 @@ public class ValueEdge
     public int AttributeId { get; set; }
         
     [Required]
-    public string ValueString { get; set; }
+    public string Value { get; set; }
 
-    // Navigation properties
     public EntityEdge Entity { get; set; }
     public AttributeEdge Attribute { get; set; }
 }

@@ -69,7 +69,7 @@ public class EdgeRecordProcessor : IEdgeRecordProcessor
             {
                 EntityId = entityEdge.Id,
                 AttributeId = attribute.Id,
-                ValueString = valueString
+                Value = valueString
             };
 
             await _valueEdgeRepository.AddAsync(valueEdge);

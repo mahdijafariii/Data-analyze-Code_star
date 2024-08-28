@@ -7,6 +7,7 @@ public class ValueNode
 {
     [Key]
     public int Id { get; set; }
+    public string Value { get; set; }
 
     [Required]
     [ForeignKey("Entity")]
@@ -15,10 +16,6 @@ public class ValueNode
     [Required]
     [ForeignKey("Attribute")]
     public int AttributeId { get; set; }
-
-    public string ValueString { get; set; }
-
-    // Navigation properties
     public EntityNode Entity { get; set; }
     public AttributeNode Attribute { get; set; }
 }

@@ -14,7 +14,7 @@ public class FileUploadedRepository : IFileUploadedRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<UploadedFile>> GetFileUploadedInDb(int page, int limit)
+    public async Task<IEnumerable<FileEntity>> GetFileUploadedInDb(int page, int limit)
     {
         return await _context.FileUploadedDb.Include(x => x.Category).Skip((page) * limit).Take(limit).ToListAsync();
     }

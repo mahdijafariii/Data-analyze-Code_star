@@ -12,8 +12,8 @@ public class EntityNode
     [MaxLength(100)]
     public string Name { get; set; }
     
-    public int UploadDataId { get; set; }
+    public int NodeFileReferenceId { get; set; }
     
-    [ForeignKey("UploadDataId")]
-    public UploadedFile UploadedFile { get; set; }
+    [ForeignKey("NodeFileReferenceId")]
+    public FileEntity FileEntity { get; set; }
 }

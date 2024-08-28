@@ -4,9 +4,9 @@ namespace AnalysisData.EAV.Repository.Abstraction;
 
 public interface IUploadDataRepository
 {
-    Task<IEnumerable<UploadedFile>> GetAllAsync();
-    Task<UploadedFile> GetByIdAsync(int id);
-    Task<IEnumerable<UploadedFile>> GetByUserIdAsync(Guid userId);
+    Task<IEnumerable<FileEntity>> GetAllAsync();
+    Task<FileEntity> GetByIdAsync(int id);
+    Task<IEnumerable<FileEntity>> GetByUserIdAsync(Guid userId);
     Task<int> GetNumberOfFileWithCategoryIdAsync(int categoryId);
-    Task AddAsync(UploadedFile uploadedFile);
+    Task AddAsync(FileEntity fileEntity);
 }

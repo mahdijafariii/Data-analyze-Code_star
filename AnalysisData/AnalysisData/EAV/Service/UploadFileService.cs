@@ -17,7 +17,7 @@ public class UploadFileService : IUploadFileService
     public async Task<int> AddFileToDb(int categoryId, ClaimsPrincipal claimsPrincipal, string name)
     {
         var guid = Guid.Parse(claimsPrincipal.FindFirstValue("id"));
-        var uploadData = new UploadedFile
+        var uploadData = new FileEntity
         {
             UploaderId = guid,
             CategoryId = categoryId,

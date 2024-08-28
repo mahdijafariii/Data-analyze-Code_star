@@ -4,7 +4,7 @@ using AnalysisData.UserManage.Model;
 
 namespace AnalysisData.EAV.Model;
 
-public class UploadedFile
+public class FileEntity
 {
     [Key] 
     public int Id { get; set; }

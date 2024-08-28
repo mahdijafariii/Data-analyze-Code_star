@@ -33,7 +33,7 @@ public class NodeRecordProcessor : INodeRecordProcessor
     
     private async Task<EntityNode> CreateEntityNodeAsync(string entityId, int fileId)
     {
-        var entityNode = new EntityNode { Name = entityId, UploadDataId = fileId};
+        var entityNode = new EntityNode { Name = entityId, NodeFileReferenceId = fileId};
         await _entityNodeRepository.AddAsync(entityNode);
         return entityNode;
     }
@@ -53,7 +53,7 @@ public class NodeRecordProcessor : INodeRecordProcessor
             {
                 EntityId = entityNode.Id,
                 AttributeId = attribute.Id,
-                ValueString = valueString
+                Value = valueString
             };
             await _valueNodeRepository.AddAsync(valueNode);
         }

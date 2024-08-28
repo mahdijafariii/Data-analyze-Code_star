@@ -22,10 +22,8 @@ public class User
 
     public string? ImageURL { get; set; }
     
-    // Navigation property for the one-to-many relationship with UploadData
-    public ICollection<UploadedFile> UploadData { get; set; }
+    public ICollection<FileEntity> UploadData { get; set; }
     
-    // Navigation property for the one-to-many relationship with UserFile
     public ICollection<UserFile> UserFiles { get; set; }
     
     [ForeignKey("RoleId")]

@@ -33,7 +33,7 @@ public class GraphEdgeRepository: IGraphEdgeRepository
             .Select(vn => new
             {
                 Attribute = vn.Attribute.Name,
-                Value = vn.ValueString
+                Value = vn.Value
             }).ToListAsync();
         return result;
     }
@@ -48,12 +48,12 @@ public class GraphEdgeRepository: IGraphEdgeRepository
 
         var uploadDataId = await _context.EntityNodes
             .Where(en => en.Id.ToString() == entityIdSource)
-            .Select(en => en.UploadDataId)
+            .Select(en => en.NodeFileReferenceId)
             .FirstOrDefaultAsync();
 
         var userFiles = await _context.UserFiles
-            .Include(uf => uf.UploadedFile) 
-            .Where(uf => uf.UserId == userNameGuid && uf.UploadedFile.Id == uploadDataId)
+            .Include(uf => uf.FileEntity) 
+            .Where(uf => uf.UserId == userNameGuid && uf.FileEntity.Id == uploadDataId)
             .ToListAsync();
         if (userFiles.Count == 0)
         {

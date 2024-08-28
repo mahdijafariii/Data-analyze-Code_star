@@ -16,5 +16,5 @@ public class UserFile
     public int FileId { get; set; }
     
     [ForeignKey("FileId")]
-    public UploadedFile UploadedFile { get; set; }
+    public FileEntity FileEntity { get; set; }
 }

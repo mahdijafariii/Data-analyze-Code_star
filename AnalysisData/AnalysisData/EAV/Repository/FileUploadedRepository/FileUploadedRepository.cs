@@ -14,8 +14,17 @@ public class FileUploadedRepository : IFileUploadedRepository
         _context = context;
     }
 
+    public async Task<int> GetTotalFilesCountAsync()
+    {
+        return await _context.FileUploadedDb.CountAsync();
+    }
+
     public async Task<IEnumerable<UploadedFile>> GetFileUploadedInDb(int page, int limit)
     {
-        return await _context.FileUploadedDb.Include(x => x.Category).Skip((page) * limit).Take(limit).ToListAsync();
+        return await _context.FileUploadedDb
+            .Include(x => x.Category)
+            .Skip(page * limit)
+            .Take(limit)
+            .ToListAsync();
     }
 }

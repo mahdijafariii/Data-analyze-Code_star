@@ -18,6 +18,6 @@ ENV ASPNETCORE_ENVIRONMENT=Development
 ENV ASPNETCORE_URLS=http://*:80
 EXPOSE 80
 
-COPY . ./app
+#COPY . ./app
 
-ENTRYPOINT ["dotnet", "AnalysisData.dll"]
+ENTRYPOINT ["dotnet", "./out/AnalysisData.dll"]

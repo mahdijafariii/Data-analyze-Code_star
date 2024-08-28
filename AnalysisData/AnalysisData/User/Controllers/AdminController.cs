@@ -30,7 +30,7 @@ public class AdminController : ControllerBase
     }
 
     //[Authorize(Roles = "admin")]
-    [HttpGet("GetUsersPagination")]
+    [HttpGet("users")]
     public async Task<IActionResult> GetAllUsers(int page = 0, int limit = 10)
     {
         var usersPagination = await _adminService.GetAllUserAsync(page, limit);
@@ -44,7 +44,7 @@ public class AdminController : ControllerBase
     }
    
 
-    [HttpDelete("DeleteUser")]
+    [HttpDelete("users/{id}")]
     public async Task<IActionResult> DeleteUser(Guid id)
     {
         var isDeleted = await _adminService.DeleteUserAsync(id);
@@ -57,14 +57,14 @@ public class AdminController : ControllerBase
     }
     
     [Authorize(Roles = "admin")]
-    [HttpPut("UpdateUser")]
+    [HttpPut("users/{id}")]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateAdminDto updateAdminDto)
     {
       await _adminService.UpdateUserInformationByAdminAsync(id, updateAdminDto);
       return Ok(new {massage = "updated successfully"});
     }
 
-    [HttpGet("firstAdmin")]
+    [HttpPost("first-admin")]
     [AllowAnonymous]
     public async Task<IActionResult> FirstAdmin()
     {

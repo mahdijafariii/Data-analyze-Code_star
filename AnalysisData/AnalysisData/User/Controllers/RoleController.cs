@@ -14,23 +14,23 @@ public class RoleController : ControllerBase
         _roleManagementService = roleManagementService;
     }
 
-    
-    [HttpDelete("DeleteRole")]
+
+    [HttpDelete("{roleName}")]
     public async Task<IActionResult> DeleteRole(string roleName)
     {
         await _roleManagementService.DeleteRole(roleName);
         return Ok(new { message = "Role deleted successfully." });
     }
 
-    [HttpPost("AddRole")]
-    public async Task<IActionResult> AddRole(string name , string policy)
+    [HttpPost]
+    public async Task<IActionResult> AddRole(string name, string policy)
     {
         await _roleManagementService.AddRole(name, policy);
         return Ok(new { message = "Role added successfully." });
     }
-    
-     
-    [HttpGet("GetRolesPagination")]
+
+
+    [HttpGet]
     public async Task<IActionResult> GetAllRoles(int page = 0, int limit = 10)
     {
         var rolesPagination = await _roleManagementService.GetRolePagination(page, limit);

@@ -1,10 +1,10 @@
-namespace AnalysisData.UserManage.UserPaginationModel;
+﻿namespace AnalysisData.UserManage.RegisterModel;
 
-public class UserPaginationModel
+public class UserRegisterDto
 {
-    public string Guid { get; set; }
-
     public string Username { get; set; }
+    public string Password { get; set; }
+    public string ConfirmPassword { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }

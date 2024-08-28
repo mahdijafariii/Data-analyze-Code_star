@@ -23,6 +23,8 @@ using AnalysisData.Repository.UserRepository;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services;
 using AnalysisData.Services.Abstraction;
+using AnalysisData.Services.SecurityPasswordService;
+using AnalysisData.Services.SecurityPasswordService.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -64,6 +66,8 @@ builder.Services.AddScoped<IFileUploadedRepository, FileUploadedRepository>();
 builder.Services.AddScoped<IUserFileRepository, UserFileRepository>();
 builder.Services.AddScoped<IRoleManagementService, RoleManagementService>();
 builder.Services.AddScoped<IAdminRegisterService, AdminRegisterService>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+
 
 
 

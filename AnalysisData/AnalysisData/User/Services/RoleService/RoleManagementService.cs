@@ -22,10 +22,10 @@ public class RoleManagementService : IRoleManagementService
         return await _roleRepository.GetRolesCountAsync();
     }
 
-    public async Task<List<RolePaginationModel>> GetRolePagination(int page, int limit)
+    public async Task<List<RolePaginationDto>> GetRolePagination(int page, int limit)
     {
         var users = await _roleRepository.GetAllRolesPaginationAsync(page, limit);
-        var paginationRoles = users.Select(x => new RolePaginationModel()
+        var paginationRoles = users.Select(x => new RolePaginationDto()
         {
             Id = x.Id.ToString(), Name = x.RoleName, Policy = x.RolePolicy
         });

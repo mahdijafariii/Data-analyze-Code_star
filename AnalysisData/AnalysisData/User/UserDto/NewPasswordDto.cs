@@ -1,6 +1,6 @@
 namespace AnalysisData.UserManage.NewPasswordModel;
 
-public class NewPasswordModel
+public class NewPasswordDto
 {
     public string OldPassword { get; set; }
     public string NewPassword { get; set; }

@@ -1,6 +1,6 @@
 namespace AnalysisData.UserManage.LoginModel;
 
-public class UserLoginModel
+public class UserLoginDto
 {
     public string userName { get; set; }
     public string password { get; set; }

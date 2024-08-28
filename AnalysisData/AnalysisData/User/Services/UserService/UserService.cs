@@ -6,6 +6,7 @@ using AnalysisData.Exception;
 using AnalysisData.JwtService.abstractions;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services.Abstraction;
+using AnalysisData.Services.SecurityPasswordService.Abstraction;
 using AnalysisData.UserManage.LoginModel;
 using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.UpdateModel;
@@ -18,15 +19,17 @@ public class UserService : IUserService
     private readonly ICookieService _cookieService;
     private readonly IJwtService _jwtService;
     private readonly IValidationService _validationService;
+    private readonly IPasswordHasher _passwordHasher;
 
 
     public UserService(IUserRepository userRepository, ICookieService cookieService,
-        IJwtService jwtService, IValidationService validationService)
+        IJwtService jwtService, IValidationService validationService, IPasswordHasher passwordHasher)
     {
         _userRepository = userRepository;
         _cookieService = cookieService;
         _jwtService = jwtService;
         _validationService = validationService;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<bool> ResetPasswordAsync(ClaimsPrincipal userClaim, string password, string confirmPassword)
@@ -44,7 +47,7 @@ public class UserService : IUserService
         }
 
         _validationService.PasswordCheck(password);
-        user.Password = HashPassword(password);
+        user.Password = _passwordHasher.HashPassword(password);
         await _userRepository.UpdateUserAsync(user.Id, user);
         return true;
     }
@@ -59,7 +62,7 @@ public class UserService : IUserService
             throw new UserNotFoundException();
         }
 
-        if (user.Password == HashPassword(oldPassword))
+        if (user.Password == _passwordHasher.HashPassword(oldPassword))
         {
             throw new PasswordMismatchException();
         }
@@ -70,37 +73,28 @@ public class UserService : IUserService
         }
 
         _validationService.PasswordCheck(password);
-        user.Password = HashPassword(password);
+        user.Password = _passwordHasher.HashPassword(password);
         await _userRepository.UpdateUserAsync(user.Id, user);
         return true;
     }
 
-    public async Task<User> LoginAsync(UserLoginModel userLoginModel)
+    public async Task<User> LoginAsync(UserLoginDto userLoginDto)
     {
-        var user = await _userRepository.GetUserByUsernameAsync(userLoginModel.userName);
+        var user = await _userRepository.GetUserByUsernameAsync(userLoginDto.userName);
         if (user == null)
         {
             throw new UserNotFoundException();
         }
 
-        if (user.Password != HashPassword(userLoginModel.password))
+        if (user.Password != _passwordHasher.HashPassword(userLoginDto.password))
         {
             throw new PasswordMismatchException();
         }
-
-        var token = await _jwtService.GenerateJwtToken(userLoginModel.userName);
-        _cookieService.SetCookie("AuthToken", token, userLoginModel.rememberMe);
+        
+        var token = await _jwtService.GenerateJwtToken(userLoginDto.userName);
+        _cookieService.SetCookie("AuthToken", token, userLoginDto.rememberMe);
         return user;
     }
-
-    private string HashPassword(string password)
-    {
-        using var sha256 = SHA256.Create();
-        var passwordBytes = Encoding.UTF8.GetBytes(password);
-        var hashBytes = sha256.ComputeHash(passwordBytes);
-        return Convert.ToBase64String(hashBytes);
-    }
-
 
     public async Task<User> GetUserAsync(ClaimsPrincipal userClaim)
     {
@@ -114,28 +108,28 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<bool> UpdateUserInformationAsync(ClaimsPrincipal userClaim, UpdateUserModel updateUserModel)
+    public async Task<bool> UpdateUserInformationAsync(ClaimsPrincipal userClaim, UpdateUserDto updateUserDto)
     {
         var userName = userClaim.FindFirstValue("username");
         var user = await _userRepository.GetUserByUsernameAsync(userName);
-        var checkEmail = await _userRepository.GetUserByEmailAsync(updateUserModel.Email);
+        var checkEmail = await _userRepository.GetUserByEmailAsync(updateUserDto.Email);
 
-        if (checkEmail != null && user.Email != updateUserModel.Email)
+        if (checkEmail != null && user.Email != updateUserDto.Email)
             throw new DuplicateUserException();
 
-        _validationService.EmailCheck(updateUserModel.Email);
-        _validationService.PhoneNumberCheck(updateUserModel.PhoneNumber);
-        await ReplaceUserDetails(user, updateUserModel);
+        _validationService.EmailCheck(updateUserDto.Email);
+        _validationService.PhoneNumberCheck(updateUserDto.PhoneNumber);
+        await ReplaceUserDetails(user, updateUserDto);
         await _jwtService.UpdateUserCookie(userName, false);
         return true;
     }
 
-    private async Task ReplaceUserDetails(User user, UpdateUserModel updateUserModel)
+    private async Task ReplaceUserDetails(User user, UpdateUserDto updateUserDto)
     {
-        user.FirstName = updateUserModel.FirstName;
-        user.LastName = updateUserModel.LastName;
-        user.Email = updateUserModel.Email;
-        user.PhoneNumber = updateUserModel.PhoneNumber;
+        user.FirstName = updateUserDto.FirstName;
+        user.LastName = updateUserDto.LastName;
+        user.Email = updateUserDto.Email;
+        user.PhoneNumber = updateUserDto.PhoneNumber;
         await _userRepository.UpdateUserAsync(user.Id, user);
     }
 

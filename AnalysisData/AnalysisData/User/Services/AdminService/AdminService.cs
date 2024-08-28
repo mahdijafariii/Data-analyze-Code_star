@@ -29,35 +29,35 @@ public class AdminService : IAdminService
         _jwtService = jwtService;
     }
 
-    public async Task UpdateUserInformationByAdminAsync(Guid id, UpdateAdminModel updateAdminModel)
+    public async Task UpdateUserInformationByAdminAsync(Guid id, UpdateAdminDto updateAdminDto)
     {
         var user = await _userRepository.GetUserByIdAsync(id);
-        var checkUsername = await _userRepository.GetUserByUsernameAsync(updateAdminModel.Username);
-        var checkEmail = await _userRepository.GetUserByEmailAsync(updateAdminModel.Email);
+        var checkUsername = await _userRepository.GetUserByUsernameAsync(updateAdminDto.Username);
+        var checkEmail = await _userRepository.GetUserByEmailAsync(updateAdminDto.Email);
 
         if ((checkUsername != null && !user.Equals(checkUsername)) || (checkEmail != null && !user.Equals(checkEmail)))
             throw new DuplicateUserException();
 
-        _validationService.EmailCheck(updateAdminModel.Email);
-        _validationService.PhoneNumberCheck(updateAdminModel.PhoneNumber);
-        var role = await _roleRepository.GetRoleByNameAsync(updateAdminModel.RoleName);
+        _validationService.EmailCheck(updateAdminDto.Email);
+        _validationService.PhoneNumberCheck(updateAdminDto.PhoneNumber);
+        var role = await _roleRepository.GetRoleByNameAsync(updateAdminDto.RoleName);
         if (role == null)
         {
             throw new RoleNotFoundException();
         }
 
-        SetUpdatedInformation(user, updateAdminModel);
+        SetUpdatedInformation(user, updateAdminDto);
         await _jwtService.UpdateUserCookie(user.Username, false);
     }
 
-    private void SetUpdatedInformation(User user, UpdateAdminModel updateAdminModel)
+    private void SetUpdatedInformation(User user, UpdateAdminDto updateAdminDto)
     {
-        user.FirstName = updateAdminModel.FirstName;
-        user.LastName = updateAdminModel.LastName;
-        user.Email = updateAdminModel.Email;
-        user.PhoneNumber = updateAdminModel.PhoneNumber;
-        user.Username = updateAdminModel.Username;
-        user.Role.RoleName = updateAdminModel.RoleName;
+        user.FirstName = updateAdminDto.FirstName;
+        user.LastName = updateAdminDto.LastName;
+        user.Email = updateAdminDto.Email;
+        user.PhoneNumber = updateAdminDto.PhoneNumber;
+        user.Username = updateAdminDto.Username;
+        user.Role.RoleName = updateAdminDto.RoleName;
         _userRepository.UpdateUserAsync(user.Id, user);
     }
 
@@ -74,10 +74,10 @@ public class AdminService : IAdminService
         return await _userRepository.GetUsersCountAsync();
     }
 
-    public async Task<List<UserPaginationModel>> GetAllUserAsync(int page, int limit)
+    public async Task<List<UserPaginationDto>> GetAllUserAsync(int page, int limit)
     {
         var users = await _userRepository.GetAllUserPaginationAsync(page, limit);
-        var paginationUsers = users.Select(x => new UserPaginationModel()
+        var paginationUsers = users.Select(x => new UserPaginationDto()
         {
             Guid = x.Id.ToString(), Username = x.Username, FirstName = x.FirstName, LastName = x.LastName,
             Email = x.Email, PhoneNumber = x.PhoneNumber, RoleName = x.Role.RoleName

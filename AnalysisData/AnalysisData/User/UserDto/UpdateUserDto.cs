@@ -1,6 +1,6 @@
 ﻿namespace AnalysisData.UserManage.UpdateModel;
 
-public class UpdateUserModel
+public class UpdateUserDto
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }

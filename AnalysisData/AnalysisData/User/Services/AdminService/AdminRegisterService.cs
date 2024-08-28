@@ -5,6 +5,7 @@ using AnalysisData.JwtService.abstractions;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services.Abstraction;
+using AnalysisData.Services.SecurityPasswordService.Abstraction;
 using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.RegisterModel;
 
@@ -15,71 +16,62 @@ public class AdminRegisterService : IAdminRegisterService
     private readonly IUserRepository _userRepository;
     private readonly IValidationService _validationService;
     private readonly IRoleRepository _roleRepository;
-    private readonly IJwtService _jwtService;
+    private readonly IPasswordHasher _passwordHasher;
+    
 
     public AdminRegisterService(IUserRepository userRepository, IValidationService validationService,
-        IRoleRepository roleRepository, IJwtService jwtService)
+        IRoleRepository roleRepository, IPasswordHasher passwordHasher)
     {
         _userRepository = userRepository;
         _validationService = validationService;
         _roleRepository = roleRepository;
-        _jwtService = jwtService;
+        _passwordHasher = passwordHasher;
     }
 
-    public async Task RegisterByAdminAsync(UserRegisterModel userRegisterModel)
+    public async Task RegisterByAdminAsync(UserRegisterDto userRegisterDto)
     {
-        var roleCheck = userRegisterModel.RoleName.ToLower();
+        var roleCheck = userRegisterDto.RoleName.ToLower();
         var existingRole = await _roleRepository.GetRoleByNameAsync(roleCheck);
         if (existingRole == null)
         {
             throw new RoleNotFoundException();
         }
 
-        var existingUserByEmail = await _userRepository.GetUserByEmailAsync(userRegisterModel.Email);
-        var existingUserByUsername = await _userRepository.GetUserByUsernameAsync(userRegisterModel.Username);
+        var existingUserByEmail = await _userRepository.GetUserByEmailAsync(userRegisterDto.Email);
+        var existingUserByUsername = await _userRepository.GetUserByUsernameAsync(userRegisterDto.Username);
         if (existingUserByEmail != null && existingUserByUsername != null)
             throw new DuplicateUserException();
-        _validationService.EmailCheck(userRegisterModel.Email);
-        _validationService.PasswordCheck(userRegisterModel.Password);
-        if (userRegisterModel.Password != userRegisterModel.ConfirmPassword)
+        _validationService.EmailCheck(userRegisterDto.Email);
+        _validationService.PasswordCheck(userRegisterDto.Password);
+        if (userRegisterDto.Password != userRegisterDto.ConfirmPassword)
         {
             throw new PasswordMismatchException();
         }
 
-        _validationService.PhoneNumberCheck(userRegisterModel.PhoneNumber);
-        if (userRegisterModel.Password != userRegisterModel.ConfirmPassword)
+        _validationService.PhoneNumberCheck(userRegisterDto.PhoneNumber);
+        if (userRegisterDto.Password != userRegisterDto.ConfirmPassword)
             throw new PasswordMismatchException();
 
 
-        var user = MakeUser(userRegisterModel, existingRole);
+        var user = MakeUser(userRegisterDto, existingRole);
         await _userRepository.AddUserAsync(user);
     }
 
-    private User MakeUser(UserRegisterModel userRegisterModel, Role role)
+    private User MakeUser(UserRegisterDto userRegisterDto, Role role)
     {
         var user = new User
         {
-            Username = userRegisterModel.Username,
-            Password = HashPassword(userRegisterModel.Password),
-            FirstName = userRegisterModel.FirstName,
-            LastName = userRegisterModel.LastName,
-            Email = userRegisterModel.Email,
-            PhoneNumber = userRegisterModel.PhoneNumber,
+            Username = userRegisterDto.Username,
+            Password = _passwordHasher.HashPassword(userRegisterDto.Password),
+            FirstName = userRegisterDto.FirstName,
+            LastName = userRegisterDto.LastName,
+            Email = userRegisterDto.Email,
+            PhoneNumber = userRegisterDto.PhoneNumber,
             Role = role,
             ImageURL = null
         };
         return user;
     }
-
-    private string HashPassword(string password)
-    {
-        using var sha256 = SHA256.Create();
-        var passwordBytes = Encoding.UTF8.GetBytes(password);
-        var hashBytes = sha256.ComputeHash(passwordBytes);
-        return Convert.ToBase64String(hashBytes);
-    }
-
-
     public async Task AddFirstAdminAsync()
     {
         var admin = await _userRepository.GetUserByUsernameAsync("admin");
@@ -109,7 +101,7 @@ public class AdminRegisterService : IAdminRegisterService
 
         var firstAdmin = new User()
         {
-            Username = "admin", Password = HashPassword("admin"), PhoneNumber = "09131111111",
+            Username = "admin", Password = _passwordHasher.HashPassword("admin"), PhoneNumber = "09131111111",
             FirstName = "admin", LastName = "admin", Email = "admin@gmail.com", Role = adminRole
         };
 

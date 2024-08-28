@@ -23,9 +23,9 @@ public class AdminController : ControllerBase
 
     [Authorize(Roles = "admin")]
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegisterModel)
+    public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegisterDto)
     {
-        await _adminRegisterService.RegisterByAdminAsync(userRegisterModel);
+        await _adminRegisterService.RegisterByAdminAsync(userRegisterDto);
         return Ok(new {massage = "User added successfully"});
     }
 
@@ -58,9 +58,9 @@ public class AdminController : ControllerBase
     
     [Authorize(Roles = "admin")]
     [HttpPut("UpdateUser")]
-    public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateAdminModel updateAdminModel)
+    public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateAdminDto updateAdminDto)
     {
-      await _adminService.UpdateUserInformationByAdminAsync(id, updateAdminModel);
+      await _adminService.UpdateUserInformationByAdminAsync(id, updateAdminDto);
       return Ok(new {massage = "updated successfully"});
     }
 

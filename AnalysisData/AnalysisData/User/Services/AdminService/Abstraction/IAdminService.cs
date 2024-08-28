@@ -8,8 +8,8 @@ namespace AnalysisData.Services.Abstraction;
 
 public interface IAdminService
 {
-    Task UpdateUserInformationByAdminAsync(Guid id, UpdateAdminModel updateAdminModel);
+    Task UpdateUserInformationByAdminAsync(Guid id, UpdateAdminDto updateAdminDto);
     Task<bool> DeleteUserAsync(Guid id);
-    Task<List<UserPaginationModel>> GetAllUserAsync(int limit, int page);
+    Task<List<UserPaginationDto>> GetAllUserAsync(int limit, int page);
     Task<int> GetUserCountAsync();
 }

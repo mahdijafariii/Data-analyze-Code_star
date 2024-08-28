@@ -26,9 +26,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] UserLoginModel userLoginModel)
+    public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)
     {
-        var user = await _userService.LoginAsync(userLoginModel);
+        var user = await _userService.LoginAsync(userLoginDto);
         return Ok(new { user.FirstName, user.LastName, user.ImageURL });
     }
 
@@ -46,11 +46,11 @@ public class UserController : ControllerBase
 
     [Authorize(Roles = "admin")]
     [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel resetPasswordModel)
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
     {
         var userClaim = User;
-        var check = await _userService.ResetPasswordAsync(userClaim, resetPasswordModel.NewPassword,
-            resetPasswordModel.ConfirmPassword);
+        var check = await _userService.ResetPasswordAsync(userClaim, resetPasswordDto.NewPassword,
+            resetPasswordDto.ConfirmPassword);
         if (check)
         {
             return Ok(new {massage = "success"});
@@ -75,10 +75,10 @@ public class UserController : ControllerBase
     }
     
     [HttpPut("UpdateUser")]
-    public async Task<IActionResult> UpdateUser([FromBody] UpdateUserModel updateUserModel)
+    public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
     {
         var user = User;
-        var updatedUser = await _userService.UpdateUserInformationAsync(user, updateUserModel);
+        var updatedUser = await _userService.UpdateUserInformationAsync(user, updateUserDto);
         if (updatedUser != null)
         {
             return Ok(new {massage = "updated successfully"});
@@ -88,12 +88,12 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("new-password")]
-    public async Task<IActionResult> NewPassword([FromBody] NewPasswordModel newPasswordModel)
+    public async Task<IActionResult> NewPassword([FromBody] NewPasswordDto newPasswordDto)
     {
         var userClaim = User;
-        var check = await _userService.NewPasswordAsync(userClaim, newPasswordModel.OldPassword,
-            newPasswordModel.NewPassword,
-            newPasswordModel.ConfirmPassword);
+        var check = await _userService.NewPasswordAsync(userClaim, newPasswordDto.OldPassword,
+            newPasswordDto.NewPassword,
+            newPasswordDto.ConfirmPassword);
         if (check)
         {
             return Ok(new {massage = "reset successfully"});

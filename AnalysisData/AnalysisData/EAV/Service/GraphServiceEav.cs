@@ -1,13 +1,11 @@
 using System.Security.Claims;
 using AnalysisData.EAV.Dto;
 using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository;
 using AnalysisData.EAV.Repository.Abstraction;
 using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
 using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
 using AnalysisData.EAV.Service.Abstraction;
 using AnalysisData.Exception;
-using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.EAV.Service;
 
@@ -18,10 +16,11 @@ public class GraphServiceEav : IGraphServiceEav
     private readonly IEntityNodeRepository _entityNodeRepository;
     private readonly IEntityEdgeRepository _entityEdgeRepository;
     private readonly ICategoryService _categoryService;
-    
 
-    
-    public GraphServiceEav(IGraphNodeRepository graphNodeRepository, IGraphEdgeRepository graphEdgeRepository, IEntityNodeRepository entityNodeRepository, IEntityEdgeRepository entityEdgeRepository,IAttributeNodeRepository attributeNodeRepository, ICategoryService categoryService)
+
+    public GraphServiceEav(IGraphNodeRepository graphNodeRepository, IGraphEdgeRepository graphEdgeRepository,
+        IEntityNodeRepository entityNodeRepository, IEntityEdgeRepository entityEdgeRepository,
+        ICategoryService categoryService)
     {
         _graphNodeRepository = graphNodeRepository;
         _entityNodeRepository = entityNodeRepository;
@@ -30,14 +29,15 @@ public class GraphServiceEav : IGraphServiceEav
         _graphEdgeRepository = graphEdgeRepository;
     }
 
-    public async Task<PaginatedNodeListDto> GetNodesPaginationAsync(ClaimsPrincipal claimsPrincipal,int pageIndex, int pageSize, int? categoryId = null)
+    public async Task<PaginatedNodeListDto> GetAllNodesAsync(ClaimsPrincipal claimsPrincipal, int pageIndex,
+        int pageSize, int? categoryId = null)
     {
-        var valueNodes = await GetEntityNodesForPaginationAsync(claimsPrincipal,categoryId);
+        var valueNodes = await GetEntityNodesForPaginationAsync(claimsPrincipal, categoryId);
 
         string categoryName = null;
         if (categoryId.HasValue)
         {
-            var category = await _categoryService.GetCategoryByIdAsync(categoryId.Value);
+            var category = await _categoryService.GetByIdAsync(categoryId.Value);
             categoryName = category?.Name;
         }
 
@@ -51,13 +51,14 @@ public class GraphServiceEav : IGraphServiceEav
         var items = groupedNodes
             .Skip(pageIndex * pageSize)
             .Take(pageSize)
-            .Select(x => x.EntityName)  // Extract EntityName to match List<string>
+            .Select(x => x.EntityName) 
             .ToList();
 
         return new PaginatedNodeListDto(items, pageIndex, count, categoryName);
     }
 
-    private async Task<IEnumerable<EntityNode>> GetEntityNodesForPaginationAsync(ClaimsPrincipal claimsPrincipal,int? category = null)
+    private async Task<IEnumerable<EntityNode>> GetEntityNodesForPaginationAsync(ClaimsPrincipal claimsPrincipal,
+        int? category = null)
     {
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
@@ -72,7 +73,7 @@ public class GraphServiceEav : IGraphServiceEav
         }
         else if (category != null && role == "dataanalyst")
         {
-            valueNodes = await _graphNodeRepository.GetEntityNodeForUserWithCategoryIdAsync(username,category.Value);
+            valueNodes = await _graphNodeRepository.GetEntityNodeForUserWithCategoryIdAsync(username, category.Value);
         }
         else if (category == null && role == "dataanalyst")
         {
@@ -91,8 +92,9 @@ public class GraphServiceEav : IGraphServiceEav
 
         return valueNodes;
     }
-    
-    public async Task<Dictionary<string, string>> GetNodeInformation(ClaimsPrincipal claimsPrincipal,string headerUniqueId)
+
+    public async Task<Dictionary<string, string>> GetNodeInformation(ClaimsPrincipal claimsPrincipal,
+        string headerUniqueId)
     {
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
@@ -105,22 +107,26 @@ public class GraphServiceEav : IGraphServiceEav
         {
             result = await _graphNodeRepository.GetNodeAttributeValue(headerUniqueId);
         }
-        if (result.Count()==0)
+
+        if (!result.Any())
         {
             throw new NodeNotFoundException();
         }
+
         var output = new Dictionary<string, string>();
         foreach (var item in result)
         {
             output[item.Attribute] = item.Value;
         }
+
         return output;
     }
-    public async Task<Dictionary<string, string>> GetEdgeInformation(ClaimsPrincipal claimsPrincipal,int edgeId)
+
+    public async Task<Dictionary<string, string>> GetEdgeInformation(ClaimsPrincipal claimsPrincipal, int edgeId)
     {
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
-        IEnumerable<dynamic> result = Enumerable.Empty<dynamic>();
+        var result = Enumerable.Empty<dynamic>();
         if (role != "dataanalyst")
         {
             result = await _graphEdgeRepository.GetEdgeAttributeValues(edgeId);
@@ -129,6 +135,7 @@ public class GraphServiceEav : IGraphServiceEav
         {
             result = await _graphEdgeRepository.GetEdgeAttributeValues(edgeId);
         }
+
         if (result.Count() == 0)
         {
             throw new EdgeNotFoundException();
@@ -145,12 +152,13 @@ public class GraphServiceEav : IGraphServiceEav
     }
 
 
-    public async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(ClaimsPrincipal claimsPrincipal,string id)
+    public async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(
+        ClaimsPrincipal claimsPrincipal, string id)
     {
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
         var node = await _entityNodeRepository.GetByIdAsync(id);
-  
+
         (IEnumerable<NodeDto> nodes, IEnumerable<EdgeDto> edges) result;
 
         if (role != "dataanalyst")
@@ -191,7 +199,8 @@ public class GraphServiceEav : IGraphServiceEav
         return (nodeDto, edgeDto);
     }
 
-    public async Task<IEnumerable<EntityNode>> SearchInEntityNodeName(ClaimsPrincipal claimsPrincipal,string inputSearch, string type)
+    public async Task<IEnumerable<EntityNode>> SearchInEntityNodeName(ClaimsPrincipal claimsPrincipal,
+        string inputSearch, string type)
     {
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
@@ -202,8 +211,9 @@ public class GraphServiceEav : IGraphServiceEav
         }
         else
         {
-            entityNodes = await SearchEntityInNodeNameAsUser(username,inputSearch,type);
+            entityNodes = await SearchEntityInNodeNameAsUser(username, inputSearch, type);
         }
+
         if (!entityNodes.Any())
         {
             throw new NodeNotFoundException();
@@ -231,21 +241,23 @@ public class GraphServiceEav : IGraphServiceEav
 
         return entityNodes;
     }
-    
-    private async Task<IEnumerable<EntityNode>> SearchEntityInNodeNameAsUser(string username,string inputSearch, string type)
+
+    private async Task<IEnumerable<EntityNode>> SearchEntityInNodeNameAsUser(string username, string inputSearch,
+        string type)
     {
         IEnumerable<EntityNode> entityNodes;
         var searchType = type.ToLower();
         switch (searchType)
         {
             case "startswith":
-                entityNodes = await _graphNodeRepository.GetNodeStartsWithSearchInputForUserAsync(username,inputSearch);
+                entityNodes =
+                    await _graphNodeRepository.GetNodeStartsWithSearchInputForUserAsync(username, inputSearch);
                 break;
             case "endswith":
-                entityNodes = await _graphNodeRepository.GetNodeEndsWithSearchInputForUserAsync(username,inputSearch);
+                entityNodes = await _graphNodeRepository.GetNodeEndsWithSearchInputForUserAsync(username, inputSearch);
                 break;
             default:
-                entityNodes = await _graphNodeRepository.GetNodeContainSearchInputForUserAsync(username,inputSearch);
+                entityNodes = await _graphNodeRepository.GetNodeContainSearchInputForUserAsync(username, inputSearch);
                 break;
         }
 

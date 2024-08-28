@@ -39,7 +39,7 @@ builder.Services.AddScoped<ICookieService, CookieService>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<IValidationService, ValidationService>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<IEdgeToDbService, EdgeToDBService>();
+builder.Services.AddScoped<IEdgeToDbService, EdgeToDbService>();
 builder.Services.AddScoped<INodeToDbService,NodeToDbService>();
 builder.Services.AddScoped<ICsvReaderService, CsvReaderService>();
 builder.Services.AddScoped<IGraphNodeRepository, GraphNodeRepository>();

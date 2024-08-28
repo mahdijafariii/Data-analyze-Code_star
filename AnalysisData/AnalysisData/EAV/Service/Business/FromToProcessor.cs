@@ -21,11 +21,9 @@ public class FromToProcessor : IFromToProcessor
                 header.Equals(to, StringComparison.OrdinalIgnoreCase)) continue;
 
             var existingAttribute = await _attributeEdgeRepository.GetByNameAsync(header);
-            if (existingAttribute == null)
-            {
-                var attributeEdge = new AttributeEdge { Name = header };
-                await _attributeEdgeRepository.AddAsync(attributeEdge);
-            }
+            if (existingAttribute != null) continue;
+            var attributeEdge = new AttributeEdge { Name = header };
+            await _attributeEdgeRepository.AddAsync(attributeEdge);
         }
     }
 }

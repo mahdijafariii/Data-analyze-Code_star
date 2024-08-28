@@ -18,21 +18,21 @@ public class FileAccessController : ControllerBase
     [HttpGet("GetFileForAccessingFile")]
     public async Task<IActionResult> GetFilesAsync([FromQuery] int page = 0, [FromQuery] int limit = 10)
     {
-        var paginatedFiles = await _filePermissionService.GetFilesPagination(page, limit);
+        var paginatedFiles = await _filePermissionService.GetFilesAsync(page, limit);
         return Ok(paginatedFiles);
     }
         
     [HttpGet("GetUsersForAccessingFile")]
     public async Task<IActionResult> GetUsersAsync([FromQuery] string username)
     {
-        var users = await _filePermissionService.GetUserForAccessingFile(username);
+        var users = await _filePermissionService.GetUserForAccessingFileAsync(username);
         return Ok(users);
     }
     
     [HttpPost("AccessFileToUser")]
     public async Task<IActionResult> AccessFileToUser([FromBody] List<string> userGuidIdes,int fileId)
     {
-        await _filePermissionService.AccessFileToUser(userGuidIdes, fileId);
+        await _filePermissionService.AccessFileToUserAsync(userGuidIdes, fileId);
         return Ok(new 
         {
             massage = "success"
@@ -42,7 +42,7 @@ public class FileAccessController : ControllerBase
     [HttpGet("WhoAccessToThisFile")]
     public async Task<IActionResult> WhoAccessToThisFile([FromQuery] string fileId)
     {
-        var result = await _filePermissionService.WhoAccessThisFile(fileId);
+        var result = await _filePermissionService.WhoAccessThisFileAsync(fileId);
         return Ok(result);
     }
     

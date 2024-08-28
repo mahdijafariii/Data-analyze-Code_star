@@ -38,7 +38,7 @@ public class UserFileRepository : IUserFileRepository
             .ToListAsync();
     }
     
-    public async Task<IEnumerable<string>> GetUsersIdAccessToInputFile(string fileId)
+    public async Task<IEnumerable<string>> GetUserIdsWithAccessToFileAsync(string fileId)
     {
         return await _context.Set<UserFile>()
             .Where(u => u.FileId.ToString() == fileId).Select(x =>x.UserId.ToString())
@@ -55,7 +55,7 @@ public class UserFileRepository : IUserFileRepository
         }
     }
     
-    public async Task GrantUserAccess(List<string> userIds,int fileId)
+    public async Task GrantUserAccessAsync(List<string> userIds,int fileId)
     {
         var file = await GetByFileIdAsync(fileId.ToString());
         if (file is null)
@@ -68,7 +68,7 @@ public class UserFileRepository : IUserFileRepository
             await AddAsync(userFile);
         }
     }
-    public async Task RevokeUserAccess(List<string> userIds)
+    public async Task RevokeUserAccessAsync(List<string> userIds)
     {
         foreach (var userId in userIds)
         {

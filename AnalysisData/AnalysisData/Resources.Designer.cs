@@ -69,6 +69,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This category already exist!.
+        /// </summary>
+        internal static string CategoryAlreadyExist {
+            get {
+                return ResourceManager.GetString("CategoryAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Category not exists in our system!.
         /// </summary>
         internal static string CategoryResultNotFoundException {

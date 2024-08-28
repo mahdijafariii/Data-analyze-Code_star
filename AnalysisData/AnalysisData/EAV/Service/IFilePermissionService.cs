@@ -6,8 +6,8 @@ namespace AnalysisData.EAV.Service;
 
 public interface IFilePermissionService
 {
-    Task<List<FileEntityDto>> GetFilesPagination(int page, int limit);
-    Task<List<UserAccessDto>> GetUserForAccessingFile(string username);
-    Task<IEnumerable<UserFile>> WhoAccessThisFile(string fileId);
-    Task AccessFileToUser(List<string> inputUserIds, int fileId);
+    Task<List<FileEntityDto>> GetFilesAsync(int page, int limit);
+    Task<List<UserAccessDto>> GetUserForAccessingFileAsync(string username);
+    Task<IEnumerable<UserFile>> WhoAccessThisFileAsync(string fileId);
+    Task AccessFileToUserAsync(List<string> inputUserIds, int fileId);
 }

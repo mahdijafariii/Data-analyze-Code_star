@@ -4,6 +4,7 @@ using AnalysisData.EAV.Repository.Abstraction;
 using AnalysisData.EAV.Repository.CategoryRepository.asbtraction;
 using AnalysisData.EAV.Repository.FileUploadedRepository;
 using AnalysisData.EAV.Service.Abstraction;
+using AnalysisData.Exception;
 using CsvHelper.TypeConversion;
 
 namespace AnalysisData.EAV.Service;
@@ -21,7 +22,7 @@ public class CategoryService : ICategoryService
         _fileUploadedRepository = fileUploadedRepository;
     }
 
-    public async Task<PaginationCategoryDto> GetPaginatedCategoriesAsync(int pageNumber, int pageSize)
+    public async Task<PaginationCategoryDto> GetAllCategoriesAsync(int pageNumber, int pageSize)
     {
         var allCategories = await _categoryRepository.GetAllAsync();
         var allCategoriesDto = await MakeCategoryDto(allCategories);
@@ -35,12 +36,12 @@ public class CategoryService : ICategoryService
         return new PaginationCategoryDto(paginatedItems, pageNumber, totalCount);
     }
 
-    public async Task AddCategoryAsync(NewCategoryDto categoryDto)
+    public async Task AddAsync(NewCategoryDto categoryDto)
     {
         var existingCategory = await _categoryRepository.GetByNameAsync(categoryDto.Name);
         if (existingCategory != null)
         {
-            throw new InvalidOperationException($"A category with the name '{categoryDto.Name}' already exists.");
+            throw new CategoryAlreadyExist();
         }
 
         var category = new Category
@@ -51,13 +52,13 @@ public class CategoryService : ICategoryService
         await _categoryRepository.AddAsync(category);
     }
 
-    public async Task UpdateCategoryAsync(NewCategoryDto newCategoryDto, int preCategoryId)
+    public async Task UpdateAsync(NewCategoryDto newCategoryDto, int preCategoryId)
     {
         var currentCategory = await _categoryRepository.GetByIdAsync(preCategoryId);
         var existingCategory = await _categoryRepository.GetByNameAsync(newCategoryDto.Name);
         if (existingCategory != null && newCategoryDto.Name != currentCategory.Name)
         {
-            throw new InvalidOperationException($"A category with the name '{newCategoryDto.Name}' already exists.");
+            throw new CategoryAlreadyExist();
         }
 
         currentCategory.Name = newCategoryDto.Name;
@@ -65,12 +66,12 @@ public class CategoryService : ICategoryService
     }
 
 
-    public async Task DeleteCategoryAsync(int id)
+    public async Task DeleteAsync(int id)
     {
         await _categoryRepository.DeleteAsync(id);
     }
 
-    public async Task<Category> GetCategoryByIdAsync(int id)
+    public async Task<Category> GetByIdAsync(int id)
     {
         return await _categoryRepository.GetByIdAsync(id);
     }

@@ -69,4 +69,7 @@
     <data name="DuplicateRoleException" xml:space="preserve">
         <value>We have this role in db ! </value>
     </data>
+    <data name="CategoryAlreadyExist" xml:space="preserve">
+        <value>This category already exist!</value>
+    </data>
 </root>

@@ -22,7 +22,7 @@ public class FilePermissionService : IFilePermissionService
     }
 
 
-    public async Task<List<FileEntityDto>> GetFilesPagination(int page, int limit)
+    public async Task<List<FileEntityDto>> GetFilesAsync(int page, int limit)
     {
         var files = await _fileUploadedRepository.GetUploadedFilesAsync(page, limit);
         var paginationFiles = files.Select(x => new FileEntityDto()
@@ -32,7 +32,7 @@ public class FilePermissionService : IFilePermissionService
         return paginationFiles.ToList();
     }
 
-    public async Task<List<UserAccessDto>> GetUserForAccessingFile(string username)
+    public async Task<List<UserAccessDto>> GetUserForAccessingFileAsync(string username)
     {
         var users =await _userRepository.GetTopUsersByUsernameSearchAsync(username);
         var result = users.Select(x => new UserAccessDto()
@@ -46,7 +46,7 @@ public class FilePermissionService : IFilePermissionService
         return result.ToList();
     }
     
-    public async Task<IEnumerable<UserFile>> WhoAccessThisFile(string fileId)
+    public async Task<IEnumerable<UserFile>> WhoAccessThisFileAsync(string fileId)
     {
         var files =await _userFileRepository.GetByFileIdAsync(fileId);
         if (!files.Any())
@@ -56,9 +56,9 @@ public class FilePermissionService : IFilePermissionService
         return files.ToList();
     }
     
-    public async Task AccessFileToUser(List<string> inputUserGuidIds,int fileId)
+    public async Task AccessFileToUserAsync(List<string> inputUserIds,int fileId)
     {
-        foreach (var userId in inputUserGuidIds)
+        foreach (var userId in inputUserIds)
         {
             var user = await _userRepository.GetUserByIdAsync(Guid.Parse(userId));
             if (user is null)
@@ -66,10 +66,10 @@ public class FilePermissionService : IFilePermissionService
                 throw new UserNotFoundException();
             }
         }
-        var currentAccessor = await _userFileRepository.GetUsersIdAccessToInputFile(fileId.ToString());
-        var newUsers = inputUserGuidIds.Except(currentAccessor).ToList();
-        var blockAccessToFile = currentAccessor.Except(currentAccessor.Intersect(inputUserGuidIds)).ToList();
-        await _userFileRepository.RevokeUserAccess(blockAccessToFile);
-        await _userFileRepository.GrantUserAccess(newUsers, fileId);
+        var currentAccessor = await _userFileRepository.GetUserIdsWithAccessToFileAsync(fileId.ToString());
+        var newUsers = inputUserIds.Except(currentAccessor).ToList();
+        var blockAccessToFile = currentAccessor.Except(currentAccessor.Intersect(inputUserIds)).ToList();
+        await _userFileRepository.RevokeUserAccessAsync(blockAccessToFile);
+        await _userFileRepository.GrantUserAccessAsync(newUsers, fileId);
     }
 }

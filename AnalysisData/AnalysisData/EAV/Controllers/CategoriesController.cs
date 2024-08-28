@@ -18,7 +18,7 @@ public class CategoriesController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetCategories(int pageNumber = 0, int pageSize = 10)
     {
-        var paginatedCategories = await _categoryService.GetPaginatedCategoriesAsync(pageNumber, pageSize);
+        var paginatedCategories = await _categoryService.GetAllCategoriesAsync(pageNumber, pageSize);
         return Ok(paginatedCategories);
     }
     
@@ -32,7 +32,7 @@ public class CategoriesController : ControllerBase
 
         try
         {
-            await _categoryService.AddCategoryAsync(categoryDto);
+            await _categoryService.AddAsync(categoryDto);
         }
         catch (InvalidOperationException ex)
         {
@@ -45,13 +45,13 @@ public class CategoriesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCategory(int id)
     {
-        var category = await _categoryService.GetCategoryByIdAsync(id);
+        var category = await _categoryService.GetByIdAsync(id);
         if (category == null)
         {
             return NotFound(new{message=$"Category with ID {id} not found."});
         }
 
-        await _categoryService.DeleteCategoryAsync(id);
+        await _categoryService.DeleteAsync(id);
         return NoContent();
     }
     
@@ -59,7 +59,7 @@ public class CategoriesController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> UpdateCategory(int id, [FromBody] NewCategoryDto newCategory)
     {
-        await _categoryService.UpdateCategoryAsync(newCategory, id);
+        await _categoryService.UpdateAsync(newCategory, id);
         return Ok(new {massage = "updated successfully"});
     }
 }

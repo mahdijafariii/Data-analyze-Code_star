@@ -13,7 +13,8 @@ services:
 
   migrate:
     #image: migrateimage
-    image: yaghooli/migrateimage:latest
+    image: yaghooli/dotnetdev:latest
+    command: ["./migrateout"]  
     depends_on:
       - postgres
     environment:

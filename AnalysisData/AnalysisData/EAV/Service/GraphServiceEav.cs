@@ -30,7 +30,7 @@ public class GraphServiceEav : IGraphServiceEav
         _graphEdgeRepository = graphEdgeRepository;
     }
 
-    public async Task<PaginatedListDto> GetNodesPaginationAsync(ClaimsPrincipal claimsPrincipal,int pageIndex, int pageSize, int? categoryId = null)
+    public async Task<PaginatedNodeListDto> GetNodesPaginationAsync(ClaimsPrincipal claimsPrincipal,int pageIndex, int pageSize, int? categoryId = null)
     {
         var valueNodes = await GetEntityNodesForPaginationAsync(claimsPrincipal,categoryId);
 
@@ -54,7 +54,7 @@ public class GraphServiceEav : IGraphServiceEav
             .Select(x => x.EntityName)  // Extract EntityName to match List<string>
             .ToList();
 
-        return new PaginatedListDto(items, pageIndex, count, categoryName);
+        return new PaginatedNodeListDto(items, pageIndex, count, categoryName);
     }
 
     private async Task<IEnumerable<EntityNode>> GetEntityNodesForPaginationAsync(ClaimsPrincipal claimsPrincipal,int? category = null)
@@ -184,7 +184,7 @@ public class GraphServiceEav : IGraphServiceEav
 
         var edges = await _entityEdgeRepository.FindNodeLoopsAsync(node.Id);
         var uniqueNodes = edges.SelectMany(x => new[] { x.EntityIDTarget, x.EntityIDSource }).Distinct().ToList();
-        var nodes = await _entityNodeRepository.GetNodesOfEdgeList(uniqueNodes);
+        var nodes = await _entityNodeRepository.GetEntityNodesByIdsAsync(uniqueNodes);
         var nodeDto = nodes.Select(x => new NodeDto() { Id = x.Id.ToString(), Label = x.Name });
         var edgeDto = edges.Select(x => new EdgeDto()
             { From = x.EntityIDSource, To = x.EntityIDTarget, Id = x.Id.ToString() });

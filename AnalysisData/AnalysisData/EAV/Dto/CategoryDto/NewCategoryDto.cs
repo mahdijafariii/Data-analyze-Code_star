@@ -2,7 +2,7 @@
 
 namespace AnalysisData.EAV.Dto;
 
-public class AddCategoryDto
+public class NewCategoryDto
 {
     [Required]
     public string Name { get; set; }

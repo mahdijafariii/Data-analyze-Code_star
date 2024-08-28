@@ -7,6 +7,6 @@ public interface IAttributeNodeRepository
     Task AddAsync(AttributeNode entity);
     Task<IEnumerable<AttributeNode>> GetAllAsync();
     Task<AttributeNode> GetByIdAsync(int id);
-    Task<AttributeNode> GetByNameAttributeAsync(string name);
+    Task<AttributeNode> GetByNameAsync(string name);
     Task DeleteAsync(int id);
 }

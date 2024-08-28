@@ -23,7 +23,7 @@ public class CategoriesController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> AddCategory([FromBody] AddCategoryDto categoryDto)
+    public async Task<IActionResult> AddCategory([FromBody] NewCategoryDto categoryDto)
     {
         if (categoryDto == null || string.IsNullOrEmpty(categoryDto.Name))
         {
@@ -57,7 +57,7 @@ public class CategoriesController : ControllerBase
     
 
     [HttpPut]
-    public async Task<IActionResult> UpdateCategory(int id, [FromBody] AddCategoryDto newCategory)
+    public async Task<IActionResult> UpdateCategory(int id, [FromBody] NewCategoryDto newCategory)
     {
         await _categoryService.UpdateCategoryAsync(newCategory, id);
         return Ok(new {massage = "updated successfully"});

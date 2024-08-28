@@ -19,7 +19,7 @@ public class HeaderProcessor : IHeaderProcessor
         {
             if (header == uniqueAttribute) continue;
 
-            var existingAttribute = await _attributeNodeRepository.GetByNameAttributeAsync(header);
+            var existingAttribute = await _attributeNodeRepository.GetByNameAsync(header);
             if (existingAttribute == null)
             {
                 var attributeNode = new AttributeNode { Name = header };

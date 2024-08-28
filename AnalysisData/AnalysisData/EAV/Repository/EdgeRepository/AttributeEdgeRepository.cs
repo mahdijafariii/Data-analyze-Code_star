@@ -30,7 +30,7 @@ public class AttributeEdgeRepository : IAttributeEdgeRepository
         return await _context.AttributeEdges.FindAsync(id);
     }
 
-    public async Task<AttributeEdge> GetByNameAttributeAsync(string name)
+    public async Task<AttributeEdge> GetByNameAsync(string name)
     {
         return await _context.AttributeEdges.FirstOrDefaultAsync(x => x.Name == name);
 

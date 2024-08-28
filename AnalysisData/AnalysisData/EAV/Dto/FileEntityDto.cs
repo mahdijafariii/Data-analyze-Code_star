@@ -1,6 +1,6 @@
 namespace AnalysisData.EAV.Dto;
 
-public class UploadDataDto
+public class FileEntityDto
 {
     public string Id { get; set; }
     public string Category { get; set; }

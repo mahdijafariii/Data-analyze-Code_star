@@ -34,7 +34,7 @@ public class EntityNodeRepository : IEntityNodeRepository
         return await _context.EntityNodes.FirstOrDefaultAsync(x => x.Id.ToString() == id);
     }
 
-    public async Task<List<EntityNode>> GetNodesOfEdgeList(List<string> nodeIdes)
+    public async Task<List<EntityNode>> GetEntityNodesByIdsAsync(List<string> nodeIdes)
     {
         var entityNodes = new List<EntityNode>();
         foreach (var nodeId in nodeIdes)

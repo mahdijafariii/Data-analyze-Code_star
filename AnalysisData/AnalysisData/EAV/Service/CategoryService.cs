@@ -33,7 +33,7 @@ public class CategoryService : ICategoryService
         return new PaginationCategoryDto(paginatedItems, pageNumber, totalCount);
     }
 
-    public async Task AddCategoryAsync(AddCategoryDto categoryDto)
+    public async Task AddCategoryAsync(NewCategoryDto categoryDto)
     {
         var existingCategory = await _categoryRepository.GetByNameAsync(categoryDto.Name);
         if (existingCategory != null)
@@ -49,7 +49,7 @@ public class CategoryService : ICategoryService
         await _categoryRepository.AddAsync(category);
     }
 
-    public async Task UpdateCategoryAsync(AddCategoryDto newCategoryDto, int preCategoryId)
+    public async Task UpdateCategoryAsync(NewCategoryDto newCategoryDto, int preCategoryId)
     {
         var currentCategory = await _categoryRepository.GetByIdAsync(preCategoryId);
         var existingCategory = await _categoryRepository.GetByNameAsync(newCategoryDto.Name);

@@ -30,7 +30,7 @@ public class AttributeNodeRepository : IAttributeNodeRepository
         return await _context.AttributeNodes.FindAsync(id);
     }
 
-    public async Task<AttributeNode> GetByNameAttributeAsync(string name)
+    public async Task<AttributeNode> GetByNameAsync(string name)
     {
         return await _context.AttributeNodes.FirstOrDefaultAsync(x => x.Name == name);
     }

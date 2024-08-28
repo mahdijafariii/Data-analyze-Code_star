@@ -61,7 +61,7 @@ public class EdgeRecordProcessor : IEdgeRecordProcessor
             if (header.Equals(from, StringComparison.OrdinalIgnoreCase) ||
                 header.Equals(to, StringComparison.OrdinalIgnoreCase)) continue;
 
-            var attribute = await _attributeEdgeRepository.GetByNameAttributeAsync(header);
+            var attribute = await _attributeEdgeRepository.GetByNameAsync(header);
             if (attribute == null) continue;
 
             var valueString = csv.GetField(header);

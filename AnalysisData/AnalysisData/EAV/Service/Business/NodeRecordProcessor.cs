@@ -44,7 +44,7 @@ public class NodeRecordProcessor : INodeRecordProcessor
         {
             if (header == id) continue;
 
-            var attribute = await _attributeNodeRepository.GetByNameAttributeAsync(header);
+            var attribute = await _attributeNodeRepository.GetByNameAsync(header);
             if (attribute == null) continue;
 
             var valueString = csv.GetField(header);

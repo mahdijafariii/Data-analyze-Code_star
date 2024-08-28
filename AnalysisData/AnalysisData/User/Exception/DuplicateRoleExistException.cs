@@ -1,8 +1,8 @@
 namespace AnalysisData.Exception;
 
-public class DuplicateRoleExistException : System.Exception
+public class DuplicateRoleExistException : ServiceException
 {
-    public DuplicateRoleExistException() : base(Resources.DuplicateRoleException)
+    public DuplicateRoleExistException() : base(Resources.DuplicateRoleException,StatusCodes.Status403Forbidden)
     {
     }
 }

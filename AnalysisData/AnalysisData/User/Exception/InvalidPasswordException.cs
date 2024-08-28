@@ -2,9 +2,9 @@ namespace AnalysisData.Exception;
 using System;
 
 
-public class InvalidPasswordException : Exception
+public class InvalidPasswordException : ServiceException
 {
-    public InvalidPasswordException() : base(Resources.InvalidPasswordException)
+    public InvalidPasswordException() : base(Resources.InvalidPasswordException,StatusCodes.Status401Unauthorized)
     {
     }
 }

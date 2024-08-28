@@ -1,8 +1,8 @@
 namespace AnalysisData.Exception;
 
-public class InvalidEmailFormatException : System.Exception
+public class InvalidEmailFormatException : ServiceException
 {
-    public InvalidEmailFormatException() : base(Resources.InvalidEmailFormatException)
+    public InvalidEmailFormatException() : base(Resources.InvalidEmailFormatException,StatusCodes.Status401Unauthorized)
     {
     }
 }

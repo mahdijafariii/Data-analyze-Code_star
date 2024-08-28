@@ -1,8 +1,8 @@
 namespace AnalysisData.Exception;
 
-public class InvalidPasswordFormatException : System.Exception
+public class InvalidPasswordFormatException : ServiceException
 {
-    public InvalidPasswordFormatException() : base(Resources.InvalidPasswordFormatException)
+    public InvalidPasswordFormatException() : base(Resources.InvalidPasswordFormatException, StatusCodes.Status401Unauthorized)
     {
     }
 }

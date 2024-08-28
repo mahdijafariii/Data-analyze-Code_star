@@ -1,9 +1,9 @@
 namespace AnalysisData.Exception;
 using System;
 
-public class UserNotFoundException : Exception
+public class UserNotFoundException : ServiceException
 {
-    public UserNotFoundException() : base(Resources.UserNotFoundException)
+    public UserNotFoundException() : base(Resources.UserNotFoundException, StatusCodes.Status404NotFound)
     {
     }
     

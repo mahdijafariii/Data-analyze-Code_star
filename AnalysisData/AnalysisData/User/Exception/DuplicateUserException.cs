@@ -1,8 +1,8 @@
 namespace AnalysisData.Exception;
 
-public class DuplicateUserException : System.Exception
+public class DuplicateUserException : ServiceException
 {
-    public DuplicateUserException() : base(Resources.DuplicateUserException)
+    public DuplicateUserException() : base(Resources.DuplicateUserException,StatusCodes.Status401Unauthorized)
     {
     }
 }

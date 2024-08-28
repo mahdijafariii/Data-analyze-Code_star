@@ -4,13 +4,13 @@ namespace AnalysisData.Repository.UserRepository.Abstraction;
 
 public interface IUserRepository
 {
-    Task<User> GetUserByUsername(string userName);
-    Task<User> GetUserByEmail(string email);
-    Task<User> GetUserById(Guid id);
-    Task<List<User>> GetAllUserPagination(int page, int limit);
-    Task<bool> DeleteUser(Guid id);
-    Task<bool> AddUser(User user);
-    Task<bool> UpdateUser(Guid id, User newUser);
-    Task<int> GetUsersCount();
-    Task<List<User>> GetUsersContainSearchInput(string username);
+    Task<User> GetUserByUsernameAsync(string userName);
+    Task<User> GetUserByEmailAsync(string email);
+    Task<User> GetUserByIdAsync(Guid id);
+    Task<List<User>> GetAllUserPaginationAsync(int page, int limit);
+    Task<bool> DeleteUserAsync(Guid id);
+    Task<bool> AddUserAsync(User user);
+    Task<bool> UpdateUserAsync(Guid id, User newUser);
+    Task<int> GetUsersCountAsync();
+    Task<List<User>> GetTopUsersByUsernameSearchAsync(string username);
 }

@@ -40,8 +40,8 @@ public class AdminService : IAdminService
             throw new RoleNotFoundException();
         }
 
-        var existingUserByEmail = await _userRepository.GetUserByEmail(userRegisterModel.Email);
-        var existingUserByUsername = await _userRepository.GetUserByUsername(userRegisterModel.Username);
+        var existingUserByEmail = await _userRepository.GetUserByEmailAsync(userRegisterModel.Email);
+        var existingUserByUsername = await _userRepository.GetUserByUsernameAsync(userRegisterModel.Username);
         if (existingUserByEmail != null && existingUserByUsername != null)
             throw new DuplicateUserException();
         _regexService.EmailCheck(userRegisterModel.Email);
@@ -57,7 +57,7 @@ public class AdminService : IAdminService
 
 
         var user = MakeUser(userRegisterModel, existingRole);
-        await _userRepository.AddUser(user);
+        await _userRepository.AddUserAsync(user);
     }
 
     private User MakeUser(UserRegisterModel userRegisterModel, Role role)
@@ -87,9 +87,9 @@ public class AdminService : IAdminService
 
     public async Task UpdateUserInformationByAdmin(Guid id, UpdateAdminModel updateAdminModel)
     {
-        var user = await _userRepository.GetUserById(id);
-        var checkUsername = await _userRepository.GetUserByUsername(updateAdminModel.Username);
-        var checkEmail = await _userRepository.GetUserByEmail(updateAdminModel.Email);
+        var user = await _userRepository.GetUserByIdAsync(id);
+        var checkUsername = await _userRepository.GetUserByUsernameAsync(updateAdminModel.Username);
+        var checkEmail = await _userRepository.GetUserByEmailAsync(updateAdminModel.Email);
 
         if ((checkUsername != null && !user.Equals(checkUsername)) || (checkEmail != null && !user.Equals(checkEmail)))
             throw new DuplicateUserException();
@@ -114,13 +114,13 @@ public class AdminService : IAdminService
         user.PhoneNumber = updateAdminModel.PhoneNumber;
         user.Username = updateAdminModel.Username;
         user.Role.RoleName = updateAdminModel.RoleName;
-        _userRepository.UpdateUser(user.Id, user);
+        _userRepository.UpdateUserAsync(user.Id, user);
         
     }
 
     public async Task<bool> DeleteUser(Guid id)
     {
-        var isDelete = await _userRepository.DeleteUser(id);
+        var isDelete = await _userRepository.DeleteUserAsync(id);
         if (!isDelete)
             throw new UserNotFoundException();
         return true;
@@ -128,7 +128,7 @@ public class AdminService : IAdminService
 
     public async Task<int> GetUserCount()
     {
-        return await _userRepository.GetUsersCount();
+        return await _userRepository.GetUsersCountAsync();
     }
     
     public async Task<int> GetRoleCount()
@@ -139,7 +139,7 @@ public class AdminService : IAdminService
 
     public async Task<List<UserPaginationModel>> GetUserPagination(int page, int limit)
     {
-        var users = await _userRepository.GetAllUserPagination(page, limit);
+        var users = await _userRepository.GetAllUserPaginationAsync(page, limit);
         var paginationUsers = users.Select(x => new UserPaginationModel()
         {
             Guid = x.Id.ToString(), Username = x.Username, FirstName = x.FirstName, LastName = x.LastName,
@@ -184,7 +184,7 @@ public class AdminService : IAdminService
 
     public async Task AddFirstAdmin()
     {
-        var admin = await _userRepository.GetUserByUsername("admin");
+        var admin = await _userRepository.GetUserByUsernameAsync("admin");
         if (admin != null)
         {
             throw new AdminExistenceException();
@@ -217,6 +217,6 @@ public class AdminService : IAdminService
         await _roleRepository.AddRole(adminRole);
         await _roleRepository.AddRole(dataAnalystRole);
         await _roleRepository.AddRole(dataManager);
-        await _userRepository.AddUser(firstAdmin);
+        await _userRepository.AddUserAsync(firstAdmin);
     }
 }

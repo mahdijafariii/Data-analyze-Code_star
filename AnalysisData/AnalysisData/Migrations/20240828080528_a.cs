@@ -87,7 +87,7 @@ namespace AnalysisData.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     EntityId = table.Column<int>(type: "integer", nullable: false),
                     AttributeId = table.Column<int>(type: "integer", nullable: false),
-                    ValueString = table.Column<string>(type: "text", nullable: false)
+                    Value = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -166,14 +166,14 @@ namespace AnalysisData.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    UploadDataId = table.Column<int>(type: "integer", nullable: false)
+                    NodeFileReferenceId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EntityNodes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EntityNodes_FileUploadedDb_UploadDataId",
-                        column: x => x.UploadDataId,
+                        name: "FK_EntityNodes_FileUploadedDb_NodeFileReferenceId",
+                        column: x => x.NodeFileReferenceId,
                         principalTable: "FileUploadedDb",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -210,9 +210,9 @@ namespace AnalysisData.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Value = table.Column<string>(type: "text", nullable: false),
                     EntityId = table.Column<int>(type: "integer", nullable: false),
-                    AttributeId = table.Column<int>(type: "integer", nullable: false),
-                    ValueString = table.Column<string>(type: "text", nullable: false)
+                    AttributeId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -232,9 +232,9 @@ namespace AnalysisData.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EntityNodes_UploadDataId",
+                name: "IX_EntityNodes_NodeFileReferenceId",
                 table: "EntityNodes",
-                column: "UploadDataId");
+                column: "NodeFileReferenceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FileUploadedDb_CategoryId",

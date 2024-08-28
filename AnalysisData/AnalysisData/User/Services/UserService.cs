@@ -32,7 +32,7 @@ public class UserService : IUserService
     public async Task<bool> ResetPassword(ClaimsPrincipal userClaim, string password, string confirmPassword)
     {
         var userName = userClaim.FindFirstValue("username");
-        var user = await _userRepository.GetUserByUsername(userName);
+        var user = await _userRepository.GetUserByUsernameAsync(userName);
         if (user == null)
         {
             throw new UserNotFoundException();
@@ -45,7 +45,7 @@ public class UserService : IUserService
 
         _regexService.PasswordCheck(password);
         user.Password = HashPassword(password);
-        await _userRepository.UpdateUser(user.Id, user);
+        await _userRepository.UpdateUserAsync(user.Id, user);
         return true;
     }
 
@@ -53,7 +53,7 @@ public class UserService : IUserService
         string confirmPassword)
     {
         var userName = userClaim.FindFirstValue("username");
-        var user = await _userRepository.GetUserByUsername(userName);
+        var user = await _userRepository.GetUserByUsernameAsync(userName);
         if (user == null)
         {
             throw new UserNotFoundException();
@@ -71,13 +71,13 @@ public class UserService : IUserService
 
         _regexService.PasswordCheck(password);
         user.Password = HashPassword(password);
-        await _userRepository.UpdateUser(user.Id, user);
+        await _userRepository.UpdateUserAsync(user.Id, user);
         return true;
     }
 
     public async Task<User> Login(UserLoginModel userLoginModel)
     {
-        var user = await _userRepository.GetUserByUsername(userLoginModel.userName);
+        var user = await _userRepository.GetUserByUsernameAsync(userLoginModel.userName);
         if (user == null)
         {
             throw new UserNotFoundException();
@@ -106,7 +106,7 @@ public class UserService : IUserService
     public async Task<User> GetUser(ClaimsPrincipal userClaim)
     {
         var userName = userClaim.FindFirstValue("username");
-        var user = await _userRepository.GetUserByUsername(userName);
+        var user = await _userRepository.GetUserByUsernameAsync(userName);
         if (user == null)
         {
             throw new UserNotFoundException();
@@ -118,8 +118,8 @@ public class UserService : IUserService
     public async Task<bool> UpdateUserInformationByUser(ClaimsPrincipal userClaim, UpdateUserModel updateUserModel)
     {
         var userName = userClaim.FindFirstValue("username");
-        var user = await _userRepository.GetUserByUsername(userName);
-        var checkEmail = await _userRepository.GetUserByEmail(updateUserModel.Email);
+        var user = await _userRepository.GetUserByUsernameAsync(userName);
+        var checkEmail = await _userRepository.GetUserByEmailAsync(updateUserModel.Email);
 
         if (checkEmail != null && user.Email != updateUserModel.Email)
             throw new DuplicateUserException();
@@ -137,20 +137,20 @@ public class UserService : IUserService
         user.LastName = updateUserModel.LastName;
         user.Email = updateUserModel.Email;
         user.PhoneNumber = updateUserModel.PhoneNumber;
-        await _userRepository.UpdateUser(user.Id, user);
+        await _userRepository.UpdateUserAsync(user.Id, user);
     }
 
     public async Task<bool> UploadImage(ClaimsPrincipal claimsPrincipal, string imageUrl)
     {
         var userName = claimsPrincipal.FindFirstValue("username");
-        var user = await _userRepository.GetUserByUsername(userName);
+        var user = await _userRepository.GetUserByUsernameAsync(userName);
         if (user == null)
         {
             throw new UserNotFoundException();
         }
 
         user.ImageURL = imageUrl;
-        await _userRepository.UpdateUser(user.Id, user);
+        await _userRepository.UpdateUserAsync(user.Id, user);
         return true;
     }
 }

@@ -25,7 +25,7 @@ public class JwtService : IJwtService
 
     public async Task<string> GenerateJwtToken(string userName)
     {
-        var user = await _userRepository.GetUserByUsername(userName);
+        var user = await _userRepository.GetUserByUsernameAsync(userName);
         var claims = new List<Claim>
         {
             new Claim("id", user.Id.ToString()),

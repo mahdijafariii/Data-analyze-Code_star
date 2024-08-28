@@ -34,7 +34,7 @@ public class FilePermissionService : IFilePermissionService
 
     public async Task<List<UserAccessDto>> GetUserForAccessingFile(string username)
     {
-        var users =await _userRepository.GetUsersContainSearchInput(username);
+        var users =await _userRepository.GetTopUsersByUsernameSearchAsync(username);
         var result = users.Select(x => new UserAccessDto()
         {
             Id = x.Id.ToString(), UserName = x.Username, FirstName = x.FirstName, LastName = x.LastName
@@ -60,7 +60,7 @@ public class FilePermissionService : IFilePermissionService
     {
         foreach (var userId in inputUserGuidIds)
         {
-            var user = await _userRepository.GetUserById(Guid.Parse(userId));
+            var user = await _userRepository.GetUserByIdAsync(Guid.Parse(userId));
             if (user is null)
             {
                 throw new UserNotFoundException();

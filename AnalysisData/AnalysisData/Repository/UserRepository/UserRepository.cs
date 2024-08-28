@@ -14,58 +14,58 @@ namespace AnalysisData.Repository.UserRepository
             _context = context;
         }
 
-        public async Task<User> GetUserByUsername(string userName)
+        public async Task<User> GetUserByUsernameAsync(string userName)
         {
             return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(x => x.Username == userName);
         }
 
-        public async Task<User> GetUserByEmail(string email)
+        public async Task<User> GetUserByEmailAsync(string email)
         {
             return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(x => x.Email == email);
         }
 
 
-        public async Task<User> GetUserById(Guid id)
+        public async Task<User> GetUserByIdAsync(Guid id)
         {
             return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(x => x.Id == id);
         }
 
 
-        public async Task<List<User>> GetAllUserPagination(int page, int limit)
+        public async Task<List<User>> GetAllUserPaginationAsync(int page, int limit)
         {
             return await _context.Users.Include(u => u.Role).Skip((page)*limit).Take(limit).ToListAsync();
         }
-        public async Task<int> GetUsersCount()
+        public async Task<int> GetUsersCountAsync()
         {
             return await _context.Users.CountAsync();
         }
 
-        public async Task<bool> DeleteUser(Guid id)
+        public async Task<bool> DeleteUserAsync(Guid id)
         {
-            var user =await GetUserById(id);
+            var user =await GetUserByIdAsync(id);
             if (user == null) return false;
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> AddUser(User user)
+        public async Task<bool> AddUserAsync(User user)
         {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> UpdateUser(Guid id, User newUser)
+        public async Task<bool> UpdateUserAsync(Guid id, User newUser)
         {
-            var user =await GetUserById(id);
+            var user =await GetUserByIdAsync(id);
             newUser.Id = user.Id;
             _context.Users.Update(newUser);
             await _context.SaveChangesAsync();
             return true;
         }
         
-        public async Task<List<User>> GetUsersContainSearchInput(string username)
+        public async Task<List<User>> GetTopUsersByUsernameSearchAsync(string username)
         {
             return await _context.Users.Include(u => u.Role).Where(x => x.Username.Contains(username) && x.Role.RoleName == "dataanalyst").Take(10).ToListAsync();
         }

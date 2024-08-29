@@ -31,10 +31,11 @@ public class UserFileRepository : IUserFileRepository
         return await _context.UserFiles.FirstOrDefaultAsync(x => x.UserId.ToString() == userId);
     }
 
-    public async Task<IEnumerable<UserFile?>> GetByFileIdAsync(string fileId)
+    public async Task<IEnumerable<UserFile>> GetByFileIdAsync(int fileId)
     {
-        return await _context.Set<UserFile>()
-            .Where(u => u.FileId.ToString() == fileId)
+        return await _context.UserFiles
+            .Include(x =>x.User)
+            .Where(u => u.FileId == fileId)
             .ToListAsync();
     }
     
@@ -57,7 +58,7 @@ public class UserFileRepository : IUserFileRepository
     
     public async Task GrantUserAccess(List<string> userIds,int fileId)
     {
-        var file = await GetByFileIdAsync(fileId.ToString());
+        var file = await GetByFileIdAsync(fileId);
         if (file is null)
         {
             throw new FileNotFoundException();

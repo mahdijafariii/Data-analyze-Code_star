@@ -9,7 +9,8 @@ public class NodeToDbService : INodeToDbService
     private readonly IHeaderProcessor _headerProcessor;
     private readonly INodeRecordProcessor _nodeRecordProcessor;
 
-    public NodeToDbService(ICsvReaderService csvReaderService, IHeaderProcessor headerProcessor, INodeRecordProcessor nodeRecordProcessor)
+    public NodeToDbService(ICsvReaderService csvReaderService, IHeaderProcessor headerProcessor,
+        INodeRecordProcessor nodeRecordProcessor)
     {
         _csvReaderService = csvReaderService;
         _headerProcessor = headerProcessor;
@@ -21,9 +22,8 @@ public class NodeToDbService : INodeToDbService
     {
         var csv = _csvReaderService.CreateCsvReader(file);
         var headers = _csvReaderService.ReadHeaders(csv);
-        
+
         await _headerProcessor.ProcessHeadersAsync(headers, id);
-        await _nodeRecordProcessor.ProcessRecordsAsync(csv, headers,id, fileId);
+        await _nodeRecordProcessor.ProcessRecordsAsync(csv, headers, id, fileId);
     }
-    
 }

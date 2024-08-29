@@ -8,5 +8,4 @@ public interface INodePaginationService
 {
     Task<PaginatedNodeListDto> GetAllNodesAsync(ClaimsPrincipal claimsPrincipal, int pageIndex, int pageSize,
         int? categoryId = null);
-    
 }

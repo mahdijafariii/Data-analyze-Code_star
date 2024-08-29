@@ -32,7 +32,7 @@ builder.Configuration.AddJsonFile("appsettings.json").AddEnvironmentVariables();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IJwtService,JwtService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICookieService, CookieService>();
@@ -40,7 +40,7 @@ builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<IValidationService, ValidationService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IEdgeToDbService, EdgeToDbService>();
-builder.Services.AddScoped<INodeToDbService,NodeToDbService>();
+builder.Services.AddScoped<INodeToDbService, NodeToDbService>();
 builder.Services.AddScoped<ICsvReaderService, CsvReaderService>();
 builder.Services.AddScoped<IGraphNodeRepository, GraphNodeRepository>();
 builder.Services.AddScoped<IGraphEdgeRepository, GraphEdgeRepository>();
@@ -66,9 +66,6 @@ builder.Services.AddScoped<IUserFileRepository, UserFileRepository>();
 builder.Services.AddScoped<IRoleManagementService, RoleManagementService>();
 builder.Services.AddScoped<IAdminRegisterService, AdminRegisterService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
-
-
-
 
 
 // builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -103,6 +100,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"));
 }
+
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseRouting();

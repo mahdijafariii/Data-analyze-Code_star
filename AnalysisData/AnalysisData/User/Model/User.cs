@@ -21,12 +21,11 @@ public class User
     public string PhoneNumber { get; set; }
 
     public string? ImageURL { get; set; }
-    
+
     public ICollection<FileEntity> UploadData { get; set; }
-    
+
     public ICollection<UserFile> UserFiles { get; set; }
-    
-    [ForeignKey("RoleId")]
-    public int RoleId { get; set; }
+
+    [ForeignKey("RoleId")] public int RoleId { get; set; }
     public Role Role { get; set; }
 }

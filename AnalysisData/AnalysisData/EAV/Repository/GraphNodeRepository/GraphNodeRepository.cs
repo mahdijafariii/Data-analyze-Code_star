@@ -76,7 +76,7 @@ public class GraphNodeRepository : IGraphNodeRepository
             .ToListAsync();
         return result.Count != 0;
     }
-    
+
     public async Task<IEnumerable<dynamic>> GetNodeAttributeValueAsync(string headerUniqueId)
     {
         var result = await _context.ValueNodes
@@ -117,9 +117,9 @@ public class GraphNodeRepository : IGraphNodeRepository
             .ToListAsync();
         return result;
     }
-    
-    
-    public async Task<IEnumerable<EntityNode>> GetNodeContainSearchInputForUserAsync(string username,string input)
+
+
+    public async Task<IEnumerable<EntityNode>> GetNodeContainSearchInputForUserAsync(string username, string input)
     {
         var guidUserId = Guid.Parse(username);
         return await _context.UserFiles
@@ -130,7 +130,7 @@ public class GraphNodeRepository : IGraphNodeRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInputForUserAsync(string username,string input)
+    public async Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInputForUserAsync(string username, string input)
     {
         var guidUserId = Guid.Parse(username);
         return await _context.UserFiles
@@ -141,7 +141,7 @@ public class GraphNodeRepository : IGraphNodeRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<EntityNode>> GetNodeEndsWithSearchInputForUserAsync(string username,string input)
+    public async Task<IEnumerable<EntityNode>> GetNodeEndsWithSearchInputForUserAsync(string username, string input)
     {
         var guidUserId = Guid.Parse(username);
         return await _context.UserFiles

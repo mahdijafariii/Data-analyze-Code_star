@@ -2,6 +2,5 @@
 
 public interface IEdgeToDbService
 {
-    Task ProcessCsvFileAsync(IFormFile file, string from,string to);
-
+    Task ProcessCsvFileAsync(IFormFile file, string from, string to);
 }

@@ -37,11 +37,11 @@ public class UserFileRepository : IUserFileRepository
             .Where(u => u.FileId.ToString() == fileId)
             .ToListAsync();
     }
-    
+
     public async Task<IEnumerable<string>> GetUserIdsWithAccessToFileAsync(string fileId)
     {
         return await _context.Set<UserFile>()
-            .Where(u => u.FileId.ToString() == fileId).Select(x =>x.UserId.ToString())
+            .Where(u => u.FileId.ToString() == fileId).Select(x => x.UserId.ToString())
             .ToListAsync();
     }
 
@@ -54,20 +54,22 @@ public class UserFileRepository : IUserFileRepository
             await _context.SaveChangesAsync();
         }
     }
-    
-    public async Task GrantUserAccessAsync(List<string> userIds,int fileId)
+
+    public async Task GrantUserAccessAsync(List<string> userIds, int fileId)
     {
         var file = await GetByFileIdAsync(fileId.ToString());
         if (file is null)
         {
             throw new FileNotFoundException();
         }
+
         foreach (var userId in userIds)
         {
             var userFile = new UserFile() { UserId = Guid.Parse(userId), FileId = fileId };
             await AddAsync(userFile);
         }
     }
+
     public async Task RevokeUserAccessAsync(List<string> userIds)
     {
         foreach (var userId in userIds)
@@ -75,6 +77,4 @@ public class UserFileRepository : IUserFileRepository
             await DeleteByUserIdAsync(userId);
         }
     }
-
-    
 }

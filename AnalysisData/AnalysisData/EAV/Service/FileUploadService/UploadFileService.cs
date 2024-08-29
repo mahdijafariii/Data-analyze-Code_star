@@ -28,6 +28,4 @@ public class UploadFileService : IUploadFileService
         await _uploadedRepository.AddAsync(uploadData);
         return uploadData.Id;
     }
-    
-
 }

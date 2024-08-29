@@ -30,12 +30,13 @@ public class EdgeRecordProcessor : IEdgeRecordProcessor
             var fromId = csv.GetField(from);
             var toId = csv.GetField(to);
             if (string.IsNullOrEmpty(fromId) || string.IsNullOrEmpty(toId)) continue;
-            
+
             var entityEdge = await CreateEntityEdgeAsync(fromId, toId);
             if (entityEdge is null)
             {
                 continue;
             }
+
             await ProcessValuesAsync(csv, headers, from, to, entityEdge);
         }
     }
@@ -48,7 +49,9 @@ public class EdgeRecordProcessor : IEdgeRecordProcessor
         {
             return null;
         }
-        var entityEdge = new EntityEdge { EntityIDSource = fromNode.Id.ToString(), EntityIDTarget =toNode.Id.ToString() };
+
+        var entityEdge = new EntityEdge
+            { EntityIDSource = fromNode.Id.ToString(), EntityIDTarget = toNode.Id.ToString() };
         await _entityEdgeRepository.AddAsync(entityEdge);
         return entityEdge;
     }
@@ -75,5 +78,4 @@ public class EdgeRecordProcessor : IEdgeRecordProcessor
             await _valueEdgeRepository.AddAsync(valueEdge);
         }
     }
-    
 }

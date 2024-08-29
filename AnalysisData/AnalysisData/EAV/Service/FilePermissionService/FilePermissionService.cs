@@ -14,7 +14,8 @@ public class FilePermissionService : IFilePermissionService
     private readonly IUserRepository _userRepository;
     private readonly IUserFileRepository _userFileRepository;
 
-    public FilePermissionService(IFileUploadedRepository fileUploadedRepository,IUserRepository userRepository, IUserFileRepository userFileRepository)
+    public FilePermissionService(IFileUploadedRepository fileUploadedRepository, IUserRepository userRepository,
+        IUserFileRepository userFileRepository)
     {
         _fileUploadedRepository = fileUploadedRepository;
         _userRepository = userRepository;
@@ -27,14 +28,14 @@ public class FilePermissionService : IFilePermissionService
         var files = await _fileUploadedRepository.GetUploadedFilesAsync(page, limit);
         var paginationFiles = files.Select(x => new FileEntityDto()
         {
-            Id = x.Id.ToString() ,FileName = x.FileName , Category = x.Category.Name, UploadDate = x.UploadDate,
+            Id = x.Id.ToString(), FileName = x.FileName, Category = x.Category.Name, UploadDate = x.UploadDate,
         });
         return paginationFiles.ToList();
     }
 
     public async Task<List<UserAccessDto>> GetUserForAccessingFileAsync(string username)
     {
-        var users =await _userRepository.GetTopUsersByUsernameSearchAsync(username);
+        var users = await _userRepository.GetTopUsersByUsernameSearchAsync(username);
         var result = users.Select(x => new UserAccessDto()
         {
             Id = x.Id.ToString(), UserName = x.Username, FirstName = x.FirstName, LastName = x.LastName
@@ -43,20 +44,22 @@ public class FilePermissionService : IFilePermissionService
         {
             throw new UserNotFoundException();
         }
+
         return result.ToList();
     }
-    
+
     public async Task<IEnumerable<UserFile>> WhoAccessThisFileAsync(string fileId)
     {
-        var files =await _userFileRepository.GetByFileIdAsync(fileId);
+        var files = await _userFileRepository.GetByFileIdAsync(fileId);
         if (!files.Any())
         {
             throw new UserNotFoundException();
         }
+
         return files.ToList();
     }
-    
-    public async Task AccessFileToUserAsync(List<string> inputUserIds,int fileId)
+
+    public async Task AccessFileToUserAsync(List<string> inputUserIds, int fileId)
     {
         foreach (var userId in inputUserIds)
         {
@@ -66,6 +69,7 @@ public class FilePermissionService : IFilePermissionService
                 throw new UserNotFoundException();
             }
         }
+
         var currentAccessor = await _userFileRepository.GetUserIdsWithAccessToFileAsync(fileId.ToString());
         var newUsers = inputUserIds.Except(currentAccessor).ToList();
         var blockAccessToFile = currentAccessor.Except(currentAccessor.Intersect(inputUserIds)).ToList();

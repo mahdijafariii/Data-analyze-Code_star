@@ -16,5 +16,4 @@ public interface IGraphNodeRepository
     Task<IEnumerable<EntityNode>> GetNodeContainSearchInputForUserAsync(string username, string input);
     Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInputForUserAsync(string username, string input);
     Task<IEnumerable<EntityNode>> GetNodeEndsWithSearchInputForUserAsync(string username, string input);
-
 }

@@ -1,10 +1,10 @@
 namespace AnalysisData.Exception;
-using System;
 
+using System;
 
 public class InvalidPasswordException : ServiceException
 {
-    public InvalidPasswordException() : base(Resources.InvalidPasswordException,StatusCodes.Status400BadRequest)
+    public InvalidPasswordException() : base(Resources.InvalidPasswordException, StatusCodes.Status400BadRequest)
     {
     }
 }

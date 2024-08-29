@@ -33,9 +33,8 @@ public class AttributeEdgeRepository : IAttributeEdgeRepository
     public async Task<AttributeEdge> GetByNameAsync(string name)
     {
         return await _context.AttributeEdges.FirstOrDefaultAsync(x => x.Name == name);
-
     }
-    
+
     public async Task DeleteAsync(int id)
     {
         var entity = await _context.AttributeEdges.FindAsync(id);

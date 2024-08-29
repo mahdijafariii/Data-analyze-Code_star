@@ -14,7 +14,8 @@ public class GraphRelationService : IGraphRelationService
     private readonly IGraphNodeRepository _graphNodeRepository;
 
 
-    public GraphRelationService(IEntityNodeRepository entityNodeRepository, IEntityEdgeRepository entityEdgeRepository,IGraphNodeRepository graphNodeRepository)
+    public GraphRelationService(IEntityNodeRepository entityNodeRepository, IEntityEdgeRepository entityEdgeRepository,
+        IGraphNodeRepository graphNodeRepository)
     {
         _entityNodeRepository = entityNodeRepository;
         _entityEdgeRepository = entityEdgeRepository;

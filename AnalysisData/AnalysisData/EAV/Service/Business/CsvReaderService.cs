@@ -17,7 +17,7 @@ public class CsvReaderService : ICsvReaderService
             HasHeaderRecord = true
         });
     }
-    
+
     public IEnumerable<string> ReadHeaders(CsvReader csv)
     {
         csv.Read();

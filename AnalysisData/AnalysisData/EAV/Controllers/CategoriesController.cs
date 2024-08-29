@@ -21,13 +21,13 @@ public class CategoriesController : ControllerBase
         var paginatedCategories = await _categoryService.GetAllCategoriesAsync(pageNumber, pageSize);
         return Ok(paginatedCategories);
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> AddCategory([FromBody] NewCategoryDto categoryDto)
     {
         if (categoryDto == null || string.IsNullOrEmpty(categoryDto.Name))
         {
-            return BadRequest(new{message="Category name is required."});
+            return BadRequest(new { message = "Category name is required." });
         }
 
         try
@@ -36,30 +36,30 @@ public class CategoriesController : ControllerBase
         }
         catch (InvalidOperationException ex)
         {
-            return Conflict(new{message=ex.Message}); 
+            return Conflict(new { message = ex.Message });
         }
 
-        return Ok(new{message="Category added!"});
+        return Ok(new { message = "Category added!" });
     }
-    
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCategory(int id)
     {
         var category = await _categoryService.GetByIdAsync(id);
         if (category == null)
         {
-            return NotFound(new{message=$"Category with ID {id} not found."});
+            return NotFound(new { message = $"Category with ID {id} not found." });
         }
 
         await _categoryService.DeleteAsync(id);
         return NoContent();
     }
-    
+
 
     [HttpPut]
     public async Task<IActionResult> UpdateCategory(int id, [FromBody] NewCategoryDto newCategory)
     {
         await _categoryService.UpdateAsync(newCategory, id);
-        return Ok(new {massage = "updated successfully"});
+        return Ok(new { massage = "updated successfully" });
     }
 }

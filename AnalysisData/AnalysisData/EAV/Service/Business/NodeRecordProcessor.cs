@@ -11,7 +11,8 @@ public class NodeRecordProcessor : INodeRecordProcessor
     private readonly IAttributeNodeRepository _attributeNodeRepository;
     private readonly IValueNodeRepository _valueNodeRepository;
 
-    public NodeRecordProcessor(IEntityNodeRepository entityNodeRepository, IAttributeNodeRepository attributeNodeRepository, IValueNodeRepository valueNodeRepository)
+    public NodeRecordProcessor(IEntityNodeRepository entityNodeRepository,
+        IAttributeNodeRepository attributeNodeRepository, IValueNodeRepository valueNodeRepository)
     {
         _entityNodeRepository = entityNodeRepository;
         _attributeNodeRepository = attributeNodeRepository;
@@ -20,7 +21,6 @@ public class NodeRecordProcessor : INodeRecordProcessor
 
     public async Task ProcessRecordsAsync(CsvReader csv, IEnumerable<string> headers, string id, int fileId)
     {
-
         while (csv.Read())
         {
             var entityId = csv.GetField(id);
@@ -30,10 +30,10 @@ public class NodeRecordProcessor : INodeRecordProcessor
             await ProcessValuesAsync(csv, headers, id, entityNode);
         }
     }
-    
+
     private async Task<EntityNode> CreateEntityNodeAsync(string entityId, int fileId)
     {
-        var entityNode = new EntityNode { Name = entityId, NodeFileReferenceId = fileId};
+        var entityNode = new EntityNode { Name = entityId, NodeFileReferenceId = fileId };
         await _entityNodeRepository.AddAsync(entityNode);
         return entityNode;
     }
@@ -58,5 +58,4 @@ public class NodeRecordProcessor : INodeRecordProcessor
             await _valueNodeRepository.AddAsync(valueNode);
         }
     }
-    
 }

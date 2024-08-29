@@ -8,7 +8,7 @@ namespace AnalysisData.EAV.Repository.NodeRepository;
 public class EntityNodeRepository : IEntityNodeRepository
 {
     private readonly ApplicationDbContext _context;
-    
+
     public EntityNodeRepository(ApplicationDbContext context)
     {
         _context = context;
@@ -29,6 +29,7 @@ public class EntityNodeRepository : IEntityNodeRepository
     {
         return await _context.EntityNodes.FirstOrDefaultAsync(x => x.Name == id);
     }
+
     public async Task<EntityNode> GetByIdAsync(string id)
     {
         return await _context.EntityNodes.FirstOrDefaultAsync(x => x.Id.ToString() == id);
@@ -45,8 +46,10 @@ public class EntityNodeRepository : IEntityNodeRepository
                 entityNodes.Add(node);
             }
         }
+
         return entityNodes;
     }
+
     public async Task DeleteAsync(int id)
     {
         var entity = await _context.EntityNodes.FindAsync(id);
@@ -56,5 +59,4 @@ public class EntityNodeRepository : IEntityNodeRepository
             await _context.SaveChangesAsync();
         }
     }
-    
 }

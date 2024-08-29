@@ -17,7 +17,7 @@ public class AdminRegisterService : IAdminRegisterService
     private readonly IValidationService _validationService;
     private readonly IRoleRepository _roleRepository;
     private readonly IPasswordHasher _passwordHasher;
-    
+
 
     public AdminRegisterService(IUserRepository userRepository, IValidationService validationService,
         IRoleRepository roleRepository, IPasswordHasher passwordHasher)
@@ -72,6 +72,7 @@ public class AdminRegisterService : IAdminRegisterService
         };
         return user;
     }
+
     public async Task AddFirstAdminAsync()
     {
         var admin = await _userRepository.GetUserByUsernameAsync("admin");

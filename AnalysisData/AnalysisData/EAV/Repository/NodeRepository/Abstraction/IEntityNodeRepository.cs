@@ -10,5 +10,4 @@ public interface IEntityNodeRepository
     Task<List<EntityNode>> GetEntityNodesByIdsAsync(List<string> nodeIdes);
     Task DeleteAsync(int id);
     Task<EntityNode> GetByIdAsync(string id);
-
 }

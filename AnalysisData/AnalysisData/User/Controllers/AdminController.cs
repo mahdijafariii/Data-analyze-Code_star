@@ -15,7 +15,7 @@ public class AdminController : ControllerBase
     private readonly IAdminService _adminService;
     private readonly IAdminRegisterService _adminRegisterService;
 
-    public AdminController(IAdminService adminService,IAdminRegisterService adminRegisterService)
+    public AdminController(IAdminService adminService, IAdminRegisterService adminRegisterService)
     {
         _adminService = adminService;
         _adminRegisterService = adminRegisterService;
@@ -26,7 +26,7 @@ public class AdminController : ControllerBase
     public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegisterDto)
     {
         await _adminRegisterService.RegisterByAdminAsync(userRegisterDto);
-        return Ok(new {massage = "User added successfully"});
+        return Ok(new { massage = "User added successfully" });
     }
 
     //[Authorize(Roles = "admin")]
@@ -42,7 +42,7 @@ public class AdminController : ControllerBase
             thisPage = page,
         });
     }
-   
+
 
     [HttpDelete("users/{id}")]
     public async Task<IActionResult> DeleteUser(Guid id)
@@ -55,13 +55,13 @@ public class AdminController : ControllerBase
 
         return NotFound(new { message = "User not found." });
     }
-    
+
     [Authorize(Roles = "admin")]
     [HttpPut("users/{id}")]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateAdminDto updateAdminDto)
     {
-      await _adminService.UpdateUserInformationByAdminAsync(id, updateAdminDto);
-      return Ok(new {massage = "updated successfully"});
+        await _adminService.UpdateUserInformationByAdminAsync(id, updateAdminDto);
+        return Ok(new { massage = "updated successfully" });
     }
 
     [HttpPost("first-admin")]

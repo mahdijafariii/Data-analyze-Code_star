@@ -90,7 +90,7 @@ public class UserService : IUserService
         {
             throw new PasswordMismatchException();
         }
-        
+
         var token = await _jwtService.GenerateJwtToken(userLoginDto.userName);
         _cookieService.SetCookie("AuthToken", token, userLoginDto.rememberMe);
         return user;

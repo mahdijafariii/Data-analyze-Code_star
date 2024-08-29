@@ -33,8 +33,9 @@ namespace AnalysisData.Repository.UserRepository
 
         public async Task<List<User>> GetAllUserPaginationAsync(int page, int limit)
         {
-            return await _context.Users.Include(u => u.Role).Skip((page)*limit).Take(limit).ToListAsync();
+            return await _context.Users.Include(u => u.Role).Skip((page) * limit).Take(limit).ToListAsync();
         }
+
         public async Task<int> GetUsersCountAsync()
         {
             return await _context.Users.CountAsync();
@@ -42,7 +43,7 @@ namespace AnalysisData.Repository.UserRepository
 
         public async Task<bool> DeleteUserAsync(Guid id)
         {
-            var user =await GetUserByIdAsync(id);
+            var user = await GetUserByIdAsync(id);
             if (user == null) return false;
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
@@ -58,16 +59,17 @@ namespace AnalysisData.Repository.UserRepository
 
         public async Task<bool> UpdateUserAsync(Guid id, User newUser)
         {
-            var user =await GetUserByIdAsync(id);
+            var user = await GetUserByIdAsync(id);
             newUser.Id = user.Id;
             _context.Users.Update(newUser);
             await _context.SaveChangesAsync();
             return true;
         }
-        
+
         public async Task<List<User>> GetTopUsersByUsernameSearchAsync(string username)
         {
-            return await _context.Users.Include(u => u.Role).Where(x => x.Username.Contains(username) && x.Role.RoleName == "dataanalyst").Take(10).ToListAsync();
+            return await _context.Users.Include(u => u.Role)
+                .Where(x => x.Username.Contains(username) && x.Role.RoleName == "dataanalyst").Take(10).ToListAsync();
         }
     }
 }

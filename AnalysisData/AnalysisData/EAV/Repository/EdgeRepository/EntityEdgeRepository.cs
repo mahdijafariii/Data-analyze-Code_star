@@ -29,7 +29,7 @@ public class EntityEdgeRepository : IEntityEdgeRepository
     {
         return await _context.EntityEdges.FindAsync(id);
     }
-    
+
     public async Task<List<EntityEdge>> FindNodeLoopsAsync(int id)
     {
         return await _context.EntityEdges

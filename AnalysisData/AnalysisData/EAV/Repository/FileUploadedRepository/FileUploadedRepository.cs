@@ -18,6 +18,7 @@ public class FileUploadedRepository : IFileUploadedRepository
     {
         return await _context.FileUploadedDb.Include(x => x.Category).Skip((page) * limit).Take(limit).ToListAsync();
     }
+
     public async Task<IEnumerable<FileEntity>> GetAllAsync()
     {
         return await _context.FileUploadedDb.ToListAsync();
@@ -34,7 +35,7 @@ public class FileUploadedRepository : IFileUploadedRepository
             .Where(u => u.UploaderId == userId)
             .ToListAsync();
     }
-    
+
     public async Task<int> GetNumberOfFileWithCategoryIdAsync(int categoryId)
     {
         return await _context.FileUploadedDb.CountAsync(x => x.CategoryId == categoryId);

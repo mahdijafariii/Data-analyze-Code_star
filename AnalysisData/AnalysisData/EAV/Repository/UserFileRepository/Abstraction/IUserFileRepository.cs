@@ -12,5 +12,4 @@ public interface IUserFileRepository
     Task DeleteByUserIdAsync(string userId);
     Task RevokeUserAccessAsync(List<string> userIds);
     Task GrantUserAccessAsync(List<string> userIds, int fileId);
-
 }

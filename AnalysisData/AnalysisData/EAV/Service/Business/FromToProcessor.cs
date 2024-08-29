@@ -13,7 +13,7 @@ public class FromToProcessor : IFromToProcessor
         _attributeEdgeRepository = attributeEdgeRepository;
     }
 
-    public async Task ProcessFromToAsync(IEnumerable<string> headers, string from,string to)
+    public async Task ProcessFromToAsync(IEnumerable<string> headers, string from, string to)
     {
         foreach (var header in headers)
         {

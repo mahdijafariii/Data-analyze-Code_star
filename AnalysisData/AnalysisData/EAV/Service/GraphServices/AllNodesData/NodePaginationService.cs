@@ -45,7 +45,7 @@ public class NodePaginationService : INodePaginationService
         var items = groupedNodes
             .Skip(pageIndex * pageSize)
             .Take(pageSize)
-            .Select(x => x.EntityName) 
+            .Select(x => x.EntityName)
             .ToList();
 
         return new PaginatedNodeListDto(items, pageIndex, count, categoryName);

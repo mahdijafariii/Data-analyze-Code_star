@@ -4,7 +4,7 @@ using AnalysisData.Services.SecurityPasswordService.Abstraction;
 
 namespace AnalysisData.Services.SecurityPasswordService;
 
-public class PasswordHasher:IPasswordHasher
+public class PasswordHasher : IPasswordHasher
 {
     public string HashPassword(string password)
     {
@@ -13,5 +13,4 @@ public class PasswordHasher:IPasswordHasher
         var hashBytes = sha256.ComputeHash(passwordBytes);
         return Convert.ToBase64String(hashBytes);
     }
-
 }

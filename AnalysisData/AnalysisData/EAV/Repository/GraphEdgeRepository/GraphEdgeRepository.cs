@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AnalysisData.EAV.Repository;
 
-public class GraphEdgeRepository: IGraphEdgeRepository
+public class GraphEdgeRepository : IGraphEdgeRepository
 {
     private readonly ApplicationDbContext _context;
 
@@ -13,13 +13,13 @@ public class GraphEdgeRepository: IGraphEdgeRepository
     {
         _context = context;
     }
-    
+
     public async Task<IEnumerable<dynamic>> GetEdgeAttributeValues(int id)
     {
         var result = await _context.ValueEdges
-            .Include(vn => vn.Entity)    
-            .Include(vn => vn.Attribute) 
-            .Where(vn => vn.Entity.Id == id) 
+            .Include(vn => vn.Entity)
+            .Include(vn => vn.Attribute)
+            .Where(vn => vn.Entity.Id == id)
             .Select(vn => new
             {
                 Attribute = vn.Attribute.Name,
@@ -27,7 +27,7 @@ public class GraphEdgeRepository: IGraphEdgeRepository
             }).ToListAsync();
         return result;
     }
-    
+
     public async Task<bool> IsEdgeAccessibleByUser(string userName, int edgeName)
     {
         var userNameGuid = Guid.Parse(userName);
@@ -42,7 +42,7 @@ public class GraphEdgeRepository: IGraphEdgeRepository
             .FirstOrDefaultAsync();
 
         var userFiles = await _context.UserFiles
-            .Include(uf => uf.FileEntity) 
+            .Include(uf => uf.FileEntity)
             .Where(uf => uf.UserId == userNameGuid && uf.FileEntity.Id == uploadDataId)
             .ToListAsync();
         return userFiles.Count != 0;

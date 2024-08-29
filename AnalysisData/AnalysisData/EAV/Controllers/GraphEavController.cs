@@ -25,7 +25,7 @@ public class GraphEavController : ControllerBase
         _nodeAndEdgeInfo = nodeAndEdgeInfo;
     }
 
-    [HttpGet("GetNodesPaginationEav")]
+    [HttpGet("nodes")]
     public async Task<IActionResult> GetNodesAsync([FromQuery] int pageIndex = 0, [FromQuery] int pageSize = 10, [FromQuery] int? category = null)
     {
         var user = User;
@@ -33,24 +33,24 @@ public class GraphEavController : ControllerBase
         return Ok(paginatedNodes);
     }
 
-    [HttpGet("GetNodeInformation")]
-    public async Task<IActionResult> GetEntityNodeWithAttributes(string headerUniqueId)
+    [HttpGet("nodes/{headerUniqueId}/attributes")]
+    public async Task<IActionResult> GetNodeAttributes(string headerUniqueId)
     {
         var user = User;
         var output = await _nodeAndEdgeInfo.GetNodeInformationAsync(user,headerUniqueId);
         return Ok(output);
     }
 
-    [HttpGet("GetEdgeInformation")]
-    public async Task<IActionResult> GetEntityEdgeWithAttributes(int edgeId)
+    [HttpGet("edges/{edgeId}/attributes")]
+    public async Task<IActionResult> GetEdgeAttribute(int edgeId)
     {
         var user = User;
         var output = await _nodeAndEdgeInfo.GetEdgeInformationAsync(user,edgeId);
         return Ok(output);
     }
 
-    [HttpGet("GetRelationalEdgeByNodeId")]
-    public async Task<IActionResult> GetRelationalEdgeByNodeName([FromQuery] string nodeId)
+    [HttpGet("nodes-relation")]
+    public async Task<IActionResult> GetRelationalEdgeByNodeId([FromQuery] string nodeId)
     {
         var user = User;
         var result = await _graphRelationService.GetRelationalEdgeBaseNodeAsync(user,nodeId);

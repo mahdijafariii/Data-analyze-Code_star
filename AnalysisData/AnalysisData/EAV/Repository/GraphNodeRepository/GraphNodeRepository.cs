@@ -77,7 +77,7 @@ public class GraphNodeRepository : IGraphNodeRepository
         return result.Count != 0;
     }
     
-    public async Task<IEnumerable<dynamic>> GetNodeAttributeValue(string headerUniqueId)
+    public async Task<IEnumerable<dynamic>> GetNodeAttributeValueAsync(string headerUniqueId)
     {
         var result = await _context.ValueNodes
             .Include(vn => vn.Entity)

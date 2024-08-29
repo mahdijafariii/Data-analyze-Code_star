@@ -54,7 +54,7 @@ builder.Services.AddScoped<IEdgeRecordProcessor, EdgeRecordProcessor>();
 builder.Services.AddScoped<IHeaderProcessor, HeaderProcessor>();
 builder.Services.AddScoped<INodeRecordProcessor, NodeRecordProcessor>();
 builder.Services.AddScoped<IFromToProcessor, FromToProcessor>();
-builder.Services.AddScoped<IGraphServiceEav, GraphServiceEav>();
+builder.Services.AddScoped<INodePaginationService, NodePaginationService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUploadFileService, UploadFileService>();

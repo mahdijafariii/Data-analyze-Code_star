@@ -96,7 +96,7 @@ public class FilePermissionService : IFilePermissionService
         }
         if (await _uploadDataRepository.GetByIdAsync(fileId) is null)
         {
-            throw new FileNotFoundException();
+            throw new NoFileUploadedException();
         }
         var currentAccessor = await _userFileRepository.GetUsersIdAccessToInputFile(fileId.ToString());
         var newUsers = validUserGuids.Select(g => g.ToString()).Except(currentAccessor).ToList();

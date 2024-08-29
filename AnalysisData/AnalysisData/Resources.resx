@@ -61,7 +61,7 @@
         <value>Node not found Exception ! </value>
     </data>
     <data name="NoFileUploadedException" xml:space="preserve">
-        <value>No file uploaded exception !</value>
+        <value>No file uploaded !</value>
     </data>
     <data name="EdgeNotFoundException" xml:space="preserve">
         <value>Edge not found exception !</value>

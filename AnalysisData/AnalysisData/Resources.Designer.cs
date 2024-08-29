@@ -168,7 +168,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No file uploaded exception !.
+        ///   Looks up a localized string similar to No file uploaded !.
         /// </summary>
         internal static string NoFileUploadedException {
             get {

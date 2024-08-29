@@ -37,35 +37,11 @@ public class FileAccessController : ControllerBase
     [HttpPost("AccessFileToUser")]
     public async Task<IActionResult> AccessFileToUser([FromBody] AccessFileToUserDto request)
     {
-        try
+        await _filePermissionService.AccessFileToUser(request.UserGuidIds.ToList(), request.FileId);
+        return Ok(new  
         {
-            await _filePermissionService.AccessFileToUser(request.UserGuidIds.ToList(), request.FileId);
-            return Ok(new  
-            {
-                message = "success"
-            });
-        }
-        catch (GuidNotCorrectFormat ex)
-        {
-            return BadRequest(new  
-            {
-                message = ex.Message
-            });
-        }
-        catch (UserNotFoundException ex)
-        {
-            return NotFound(new  
-            {
-                message = ex.Message
-            });
-        }
-        catch (FileNotFoundException ex)
-        {
-            return NotFound(new  
-            {
-                message = ex.Message
-            });
-        }
+            message = "success"
+        });
     }
             
     [HttpGet("WhoAccessToThisFile")]

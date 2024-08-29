@@ -1,17 +1,17 @@
 namespace AnalysisData.EAV.Dto;
 
-public class PaginatedListDto 
+public class PaginatedListDto
 {
-    public List<string> PaginateList { get; }
-    public int PageIndex { get; }
-    public int TotalCount { get; }
-    public string TypeCategory { get; }
-
-    public PaginatedListDto(List<string> items, int pageIndex, int totalCount, string typeCategory)
+    public PaginatedListDto(List<PaginationNodeDto> items, int pageIndex, int totalItems, string categoryName)
     {
-        PaginateList = items;
+        Items = items;
         PageIndex = pageIndex;
-        TotalCount = totalCount;
-        TypeCategory = typeCategory;
-    }    
+        TotalItems = totalItems;
+        CategoryName = categoryName;
+    }
+
+    public List<PaginationNodeDto> Items { get; set; }
+    public int PageIndex { get; set; }
+    public int TotalItems { get; set; }
+    public string CategoryName { get; set; }
 }

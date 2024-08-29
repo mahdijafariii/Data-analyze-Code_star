@@ -114,6 +114,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to id not in correct format!.
+        /// </summary>
+        internal static string GuidNotCorrectFormat {
+            get {
+                return ResourceManager.GetString("GuidNotCorrectFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Email format !.
         /// </summary>
         internal static string InvalidEmailFormatException {
@@ -159,7 +168,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No file uploaded exception !.
+        ///   Looks up a localized string similar to No file uploaded !.
         /// </summary>
         internal static string NoFileUploadedException {
             get {

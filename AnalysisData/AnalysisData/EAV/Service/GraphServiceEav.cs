@@ -30,9 +30,9 @@ public class GraphServiceEav : IGraphServiceEav
         _graphEdgeRepository = graphEdgeRepository;
     }
 
-    public async Task<PaginatedListDto> GetNodesPaginationAsync(ClaimsPrincipal claimsPrincipal,int pageIndex, int pageSize, int? categoryId = null)
+    public async Task<PaginatedListDto> GetNodesPaginationAsync(ClaimsPrincipal claimsPrincipal, int pageIndex, int pageSize, int? categoryId = null)
     {
-        var valueNodes = await GetEntityNodesForPaginationAsync(claimsPrincipal,categoryId);
+        var valueNodes = await GetEntityNodesForPaginationAsync(claimsPrincipal, categoryId);
 
         string categoryName = null;
         if (categoryId.HasValue)
@@ -43,6 +43,7 @@ public class GraphServiceEav : IGraphServiceEav
 
         var groupedNodes = valueNodes.Select(g => new PaginationNodeDto
             {
+                Id = g.Id,
                 EntityName = g.Name,
             })
             .ToList();
@@ -51,7 +52,6 @@ public class GraphServiceEav : IGraphServiceEav
         var items = groupedNodes
             .Skip(pageIndex * pageSize)
             .Take(pageSize)
-            .Select(x => x.EntityName)  // Extract EntityName to match List<string>
             .ToList();
 
         return new PaginatedListDto(items, pageIndex, count, categoryName);

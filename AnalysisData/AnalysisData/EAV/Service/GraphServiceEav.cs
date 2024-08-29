@@ -56,6 +56,7 @@ public class GraphServiceEav : IGraphServiceEav
 
         return new PaginatedListDto(items, pageIndex, count, categoryName);
     }
+    
 
     private async Task<IEnumerable<EntityNode>> GetEntityNodesForPaginationAsync(ClaimsPrincipal claimsPrincipal,int? category = null)
     {
@@ -92,18 +93,18 @@ public class GraphServiceEav : IGraphServiceEav
         return valueNodes;
     }
     
-    public async Task<Dictionary<string, string>> GetNodeInformation(ClaimsPrincipal claimsPrincipal,string headerUniqueId)
+    public async Task<Dictionary<string, string>> GetNodeInformation(ClaimsPrincipal claimsPrincipal, int id)
     {
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
         IEnumerable<dynamic> result = Enumerable.Empty<dynamic>();
         if (role != "dataanalyst")
         {
-            result = await _graphNodeRepository.GetNodeAttributeValue(headerUniqueId);
+            result = await _graphNodeRepository.GetNodeAttributeValue(id);
         }
-        else if (await _graphNodeRepository.IsNodeAccessibleByUser(username, headerUniqueId))
+        else if (await _graphNodeRepository.IsNodeAccessibleByUser(username, id))
         {
-            result = await _graphNodeRepository.GetNodeAttributeValue(headerUniqueId);
+            result = await _graphNodeRepository.GetNodeAttributeValue(id);
         }
         if (result.Count()==0)
         {
@@ -145,11 +146,10 @@ public class GraphServiceEav : IGraphServiceEav
     }
 
 
-    public async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(ClaimsPrincipal claimsPrincipal,string id)
+    public async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNode(ClaimsPrincipal claimsPrincipal,int id)
     {
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
-        var node = await _entityNodeRepository.GetByIdAsync(id);
   
         (IEnumerable<NodeDto> nodes, IEnumerable<EdgeDto> edges) result;
 
@@ -157,7 +157,7 @@ public class GraphServiceEav : IGraphServiceEav
         {
             result = await GetNodeRelations(id);
         }
-        else if (await _graphNodeRepository.IsNodeAccessibleByUser(username, node.Name))
+        else if (await _graphNodeRepository.IsNodeAccessibleByUser(username, id))
         {
             result = await GetNodeRelations(id);
         }
@@ -174,7 +174,7 @@ public class GraphServiceEav : IGraphServiceEav
         return result;
     }
 
-    private async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetNodeRelations(string id)
+    private async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetNodeRelations(int id)
     {
         var node = await _entityNodeRepository.GetByIdAsync(id);
         if (node is null)
@@ -182,7 +182,7 @@ public class GraphServiceEav : IGraphServiceEav
             throw new NodeNotFoundException();
         }
 
-        var edges = await _entityEdgeRepository.FindNodeLoopsAsync(node.Id);
+        var edges = await _entityEdgeRepository.FindNodeLoopsAsync(id);
         var uniqueNodes = edges.SelectMany(x => new[] { x.EntityIDTarget, x.EntityIDSource }).Distinct().ToList();
         var nodes = await _entityNodeRepository.GetNodesOfEdgeList(uniqueNodes);
         var nodeDto = nodes.Select(x => new NodeDto() { Id = x.Id.ToString(), Label = x.Name });

@@ -69,4 +69,7 @@
     <data name="DuplicateRoleException" xml:space="preserve">
         <value>We have this role in db ! </value>
     </data>
+    <data name="GuidNotCorrectFormat" xml:space="preserve">
+        <value>id not in correct format!</value>
+    </data>
 </root>

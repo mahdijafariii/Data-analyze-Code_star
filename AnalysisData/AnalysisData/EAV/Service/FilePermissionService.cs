@@ -13,12 +13,14 @@ public class FilePermissionService : IFilePermissionService
     private readonly IFileUploadedRepository _fileUploadedRepository;
     private readonly IUserRepository _userRepository;
     private readonly IUserFileRepository _userFileRepository;
+    private readonly IUploadDataRepository _uploadDataRepository;
 
-    public FilePermissionService(IFileUploadedRepository fileUploadedRepository,IUserRepository userRepository, IUserFileRepository userFileRepository)
+    public FilePermissionService(IFileUploadedRepository fileUploadedRepository,IUserRepository userRepository, IUserFileRepository userFileRepository, IUploadDataRepository uploadDataRepository)
     {
         _fileUploadedRepository = fileUploadedRepository;
         _userRepository = userRepository;
         _userFileRepository = userFileRepository;
+        _uploadDataRepository = uploadDataRepository;
     }
 
 
@@ -29,7 +31,7 @@ public class FilePermissionService : IFilePermissionService
 
         var paginatedFiles = files.Select(x => new UploadDataDto()
         {
-            Id = x.Id.ToString(),
+            Id = x.Id,
             FileName = x.FileName,
             Category = x.Category.Name,
             UploadDate = x.UploadDate,
@@ -68,19 +70,38 @@ public class FilePermissionService : IFilePermissionService
         return usersDtos;
     }
     
-    public async Task AccessFileToUser(List<string> inputUserGuidIds,int fileId)
+    public async Task AccessFileToUser(List<string> inputUserGuidIds, int fileId)
     {
+        var validUserGuids = new List<Guid>();
+
         foreach (var userId in inputUserGuidIds)
         {
-            var user = await _userRepository.GetUserById(Guid.Parse(userId));
+            if (Guid.TryParse(userId, out Guid parsedGuid))
+            {
+                validUserGuids.Add(parsedGuid);
+            }
+            else
+            {
+                throw new GuidNotCorrectFormat();
+            }
+        }
+
+        foreach (var userGuid in validUserGuids)
+        {
+            var user = await _userRepository.GetUserById(userGuid);
             if (user is null)
             {
                 throw new UserNotFoundException();
             }
         }
+        if (await _uploadDataRepository.GetByIdAsync(fileId) is null)
+        {
+            throw new FileNotFoundException();
+        }
         var currentAccessor = await _userFileRepository.GetUsersIdAccessToInputFile(fileId.ToString());
-        var newUsers = inputUserGuidIds.Except(currentAccessor).ToList();
-        var blockAccessToFile = currentAccessor.Except(currentAccessor.Intersect(inputUserGuidIds)).ToList();
+        var newUsers = validUserGuids.Select(g => g.ToString()).Except(currentAccessor).ToList();
+        var blockAccessToFile = currentAccessor.Except(currentAccessor.Intersect(validUserGuids.Select(g => g.ToString()))).ToList();
+
         await _userFileRepository.RevokeUserAccess(blockAccessToFile);
         await _userFileRepository.GrantUserAccess(newUsers, fileId);
     }

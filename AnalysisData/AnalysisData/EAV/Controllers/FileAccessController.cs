@@ -1,5 +1,7 @@
+using AnalysisData.EAV.Dto;
 using AnalysisData.EAV.Repository.Abstraction;
 using AnalysisData.EAV.Service;
+using AnalysisData.Exception;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.EAV.Controllers;
@@ -33,13 +35,37 @@ public class FileAccessController : ControllerBase
     }
     
     [HttpPost("AccessFileToUser")]
-    public async Task<IActionResult> AccessFileToUser([FromBody] List<string> userGuidIdes,[FromQuery] int fileId)
+    public async Task<IActionResult> AccessFileToUser([FromBody] AccessFileToUserDto request)
     {
-        await _filePermissionService.AccessFileToUser(userGuidIdes, fileId);
-        return Ok(new 
+        try
         {
-            massage = "success"
-        });
+            await _filePermissionService.AccessFileToUser(request.UserGuidIds.ToList(), request.FileId);
+            return Ok(new  
+            {
+                message = "success"
+            });
+        }
+        catch (GuidNotCorrectFormat ex)
+        {
+            return BadRequest(new  
+            {
+                message = ex.Message
+            });
+        }
+        catch (UserNotFoundException ex)
+        {
+            return NotFound(new  
+            {
+                message = ex.Message
+            });
+        }
+        catch (FileNotFoundException ex)
+        {
+            return NotFound(new  
+            {
+                message = ex.Message
+            });
+        }
     }
             
     [HttpGet("WhoAccessToThisFile")]

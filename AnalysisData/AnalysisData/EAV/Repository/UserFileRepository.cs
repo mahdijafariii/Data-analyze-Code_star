@@ -58,11 +58,6 @@ public class UserFileRepository : IUserFileRepository
     
     public async Task GrantUserAccess(List<string> userIds,int fileId)
     {
-        var file = await GetByFileIdAsync(fileId);
-        if (file is null)
-        {
-            throw new FileNotFoundException();
-        }
         foreach (var userId in userIds)
         {
             var userFile = new UserFile() { UserId = Guid.Parse(userId), FileId = fileId };
@@ -76,6 +71,4 @@ public class UserFileRepository : IUserFileRepository
             await DeleteByUserIdAsync(userId);
         }
     }
-
-    
 }

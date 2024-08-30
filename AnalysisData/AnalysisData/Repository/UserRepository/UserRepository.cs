@@ -66,10 +66,10 @@ namespace AnalysisData.Repository.UserRepository
             return true;
         }
 
-        public async Task<List<User>> GetTopUsersByUsernameSearchAsync(string username)
+        public async Task<IEnumerable<User>> GetTopUsersByUsernameSearchAsync(string username)
         {
             return await _context.Users.Include(u => u.Role)
-                .Where(x => x.Username.Contains(username) && x.Role.RoleName == "dataanalyst").Take(10).ToListAsync();
+                .Where(x => x.Username.Contains(username) && x.Role.RoleName != "dataanalyst").Take(10).ToListAsync();
         }
     }
 }

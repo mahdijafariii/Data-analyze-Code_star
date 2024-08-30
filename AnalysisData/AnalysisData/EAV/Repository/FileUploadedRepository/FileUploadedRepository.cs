@@ -46,4 +46,10 @@ public class FileUploadedRepository : IFileUploadedRepository
         await _context.FileUploadedDb.AddAsync(fileEntity);
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<int> GetTotalFilesCountAsync()
+    {
+        return await _context.FileUploadedDb.CountAsync();
+    }
+
 }

@@ -10,4 +10,5 @@ public interface IFileUploadedRepository
     Task<IEnumerable<FileEntity>> GetByUserIdAsync(Guid userId);
     Task<int> GetNumberOfFileWithCategoryIdAsync(int categoryId);
     Task AddAsync(FileEntity fileEntity);
+    Task<int> GetTotalFilesCountAsync();
 }

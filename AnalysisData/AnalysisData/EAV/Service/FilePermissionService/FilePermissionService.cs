@@ -23,14 +23,20 @@ public class FilePermissionService : IFilePermissionService
     }
 
 
-    public async Task<List<FileEntityDto>> GetFilesAsync(int page, int limit)
+    public async Task<PaginatedFileDto> GetFilesAsync(int page, int limit)
     {
         var files = await _fileUploadedRepository.GetUploadedFilesAsync(page, limit);
+        var totalFilesCount = await _fileUploadedRepository.GetTotalFilesCountAsync();
         var paginationFiles = files.Select(x => new FileEntityDto()
         {
             Id = x.Id.ToString(), FileName = x.FileName, Category = x.Category.Name, UploadDate = x.UploadDate,
-        });
-        return paginationFiles.ToList();
+        }).ToList();
+        return new PaginatedFileDto()
+        {
+            Items = paginationFiles,
+            TotalCount = totalFilesCount,
+            PageIndex = page
+        };
     }
 
     public async Task<List<UserAccessDto>> GetUserForAccessingFileAsync(string username)

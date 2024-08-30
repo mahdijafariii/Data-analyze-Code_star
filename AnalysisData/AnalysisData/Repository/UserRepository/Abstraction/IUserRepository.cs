@@ -12,5 +12,5 @@ public interface IUserRepository
     Task<bool> AddUserAsync(User user);
     Task<bool> UpdateUserAsync(Guid id, User newUser);
     Task<int> GetUsersCountAsync();
-    Task<List<User>> GetTopUsersByUsernameSearchAsync(string username);
+    Task<IEnumerable<User>> GetTopUsersByUsernameSearchAsync(string username);
 }

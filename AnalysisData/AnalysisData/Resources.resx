@@ -72,4 +72,7 @@
     <data name="CategoryAlreadyExist" xml:space="preserve">
         <value>This category already exist!</value>
     </data>
+    <data name="GuidNotCorrectFormatException" xml:space="preserve">
+        <value>Guid format is invalid !</value>
+    </data>
 </root>

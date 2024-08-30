@@ -123,6 +123,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Guid format is invalid !.
+        /// </summary>
+        internal static string GuidNotCorrectFormatException {
+            get {
+                return ResourceManager.GetString("GuidNotCorrectFormatException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Email format !.
         /// </summary>
         internal static string InvalidEmailFormatException {

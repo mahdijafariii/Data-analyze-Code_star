@@ -26,15 +26,15 @@ public class UserFileRepository : IUserFileRepository
         return await _context.UserFiles.ToListAsync();
     }
 
-    public async Task<UserFile?> GetByUserIdAsync(string userId)
+    public async Task<UserFile> GetByUserIdAsync(string userId)
     {
         return await _context.UserFiles.FirstOrDefaultAsync(x => x.UserId.ToString() == userId);
     }
 
-    public async Task<IEnumerable<UserFile?>> GetByFileIdAsync(string fileId)
+    public async Task<IEnumerable<UserFile>> GetByFileIdAsync(int fileId)
     {
-        return await _context.Set<UserFile>()
-            .Where(u => u.FileId.ToString() == fileId)
+        return await _context.Set<UserFile>().Include(x => x.User)
+            .Where(u => u.FileId == fileId)
             .ToListAsync();
     }
 
@@ -54,27 +54,5 @@ public class UserFileRepository : IUserFileRepository
             await _context.SaveChangesAsync();
         }
     }
-
-    public async Task GrantUserAccessAsync(List<string> userIds, int fileId)
-    {
-        var file = await GetByFileIdAsync(fileId.ToString());
-        if (file is null)
-        {
-            throw new FileNotFoundException();
-        }
-
-        foreach (var userId in userIds)
-        {
-            var userFile = new UserFile() { UserId = Guid.Parse(userId), FileId = fileId };
-            await AddAsync(userFile);
-        }
-    }
-
-    public async Task RevokeUserAccessAsync(List<string> userIds)
-    {
-        foreach (var userId in userIds)
-        {
-            await DeleteByUserIdAsync(userId);
-        }
-    }
+    
 }

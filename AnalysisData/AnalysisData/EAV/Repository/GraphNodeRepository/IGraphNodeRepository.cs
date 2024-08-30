@@ -4,8 +4,8 @@ namespace AnalysisData.EAV.Repository.Abstraction;
 
 public interface IGraphNodeRepository
 {
-    Task<IEnumerable<dynamic>> GetNodeAttributeValueAsync(string headerUniqueId);
-    Task<bool> IsNodeAccessibleByUser(string userName, string nodeName);
+    Task<IEnumerable<dynamic>> GetNodeAttributeValueAsync(int id);
+    Task<bool> IsNodeAccessibleByUser(string userName, int nodeId);
     Task<IEnumerable<EntityNode>> GetEntityNodesForAdminAsync();
     Task<IEnumerable<EntityNode>> GetNodeContainSearchInputForAdminAsync(string input);
     Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInputForAdminAsync(string input);

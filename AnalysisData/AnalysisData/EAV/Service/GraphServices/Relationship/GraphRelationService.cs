@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using AnalysisData.EAV.Dto;
+using AnalysisData.EAV.Model;
 using AnalysisData.EAV.Repository.Abstraction;
 using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
 using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
@@ -23,7 +24,7 @@ public class GraphRelationService : IGraphRelationService
     }
 
     public async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNodeAsync(
-        ClaimsPrincipal claimsPrincipal, string id)
+        ClaimsPrincipal claimsPrincipal, int id)
     {
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
@@ -35,7 +36,7 @@ public class GraphRelationService : IGraphRelationService
         {
             result = await GetNodeRelationsAsync(id);
         }
-        else if (await _graphNodeRepository.IsNodeAccessibleByUser(username, node.Name))
+        else if (await _graphNodeRepository.IsNodeAccessibleByUser(username, node.Id))
         {
             result = await GetNodeRelationsAsync(id);
         }
@@ -52,7 +53,7 @@ public class GraphRelationService : IGraphRelationService
         return result;
     }
 
-    private async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetNodeRelationsAsync(string id)
+    private async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetNodeRelationsAsync(int id)
     {
         var node = await _entityNodeRepository.GetByIdAsync(id);
         if (node is null)
@@ -62,10 +63,24 @@ public class GraphRelationService : IGraphRelationService
 
         var edges = await _entityEdgeRepository.FindNodeLoopsAsync(node.Id);
         var uniqueNodes = edges.SelectMany(x => new[] { x.EntityIDTarget, x.EntityIDSource }).Distinct().ToList();
-        var nodes = await _entityNodeRepository.GetEntityNodesByIdsAsync(uniqueNodes);
+        var nodes = await GetEntityNodesByIdsAsync(uniqueNodes);
         var nodeDto = nodes.Select(x => new NodeDto() { Id = x.Id.ToString(), Label = x.Name });
         var edgeDto = edges.Select(x => new EdgeDto()
-            { From = x.EntityIDSource, To = x.EntityIDTarget, Id = x.Id.ToString() });
+            { From = x.EntityIDSource, To = x.EntityIDTarget, Id = x.Id });
         return (nodeDto, edgeDto);
+    }
+    
+    private async Task<List<EntityNode>> GetEntityNodesByIdsAsync(IEnumerable<int> nodeIdes)
+    {
+        var entityNodes = new List<EntityNode>();
+        foreach (var nodeId in nodeIdes)
+        {
+            var node = await _entityNodeRepository.GetByIdAsync(nodeId);
+            if (nodeId != null)
+            {
+                entityNodes.Add(node);
+            }
+        }
+        return entityNodes;
     }
 }

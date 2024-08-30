@@ -16,7 +16,7 @@ public class FilePermissionService : IFilePermissionService
     private readonly IAccessManagementService _accessManagementService;
 
     public FilePermissionService(IFileUploadedRepository fileUploadedRepository, IUserRepository userRepository,
-        IUserFileRepository userFileRepository,IAccessManagementService accessManagementService)
+        IUserFileRepository userFileRepository, IAccessManagementService accessManagementService)
     {
         _fileUploadedRepository = fileUploadedRepository;
         _userRepository = userRepository;
@@ -48,6 +48,7 @@ public class FilePermissionService : IFilePermissionService
         {
             throw new UserNotFoundException();
         }
+
         var result = users.Select(x => new UserAccessDto()
         {
             Id = x.Id.ToString(), UserName = x.Username, FirstName = x.FirstName, LastName = x.LastName
@@ -57,7 +58,7 @@ public class FilePermissionService : IFilePermissionService
 
     public async Task<IEnumerable<WhoAccessThisFileDto>> WhoAccessThisFileAsync(int fileId)
     {
-        var userFiles =await _userFileRepository.GetByFileIdAsync(fileId);
+        var userFiles = await _userFileRepository.GetByFileIdAsync(fileId);
         var usersDto = userFiles.Select(user => new WhoAccessThisFileDto()
         {
             Id = user.User.Id,
@@ -71,7 +72,7 @@ public class FilePermissionService : IFilePermissionService
         var validUserGuids = new List<Guid>();
 
         await CheckGuidOfUsersAsync(inputUserIdes, validUserGuids);
-        
+
         foreach (var userId in validUserGuids)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
@@ -80,6 +81,7 @@ public class FilePermissionService : IFilePermissionService
                 throw new UserNotFoundException();
             }
         }
+
         if (await _fileUploadedRepository.GetByIdAsync(fileId) is null)
         {
             throw new NoFileUploadedException();
@@ -87,7 +89,8 @@ public class FilePermissionService : IFilePermissionService
 
         var currentAccessor = await _userFileRepository.GetUserIdsWithAccessToFileAsync(fileId.ToString());
         var newUsers = validUserGuids.Select(g => g.ToString()).Except(currentAccessor).ToList();
-        var blockAccessToFile = currentAccessor.Except(currentAccessor.Intersect(validUserGuids.Select(g => g.ToString()))).ToList();
+        var blockAccessToFile = currentAccessor
+            .Except(currentAccessor.Intersect(validUserGuids.Select(g => g.ToString()))).ToList();
         await _accessManagementService.RevokeUserAccessAsync(blockAccessToFile);
         await _accessManagementService.GrantUserAccessAsync(newUsers, fileId);
     }

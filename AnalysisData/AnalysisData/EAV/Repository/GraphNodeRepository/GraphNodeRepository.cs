@@ -63,7 +63,7 @@ public class GraphNodeRepository : IGraphNodeRepository
     }
 
 
-    public async Task<bool> IsNodeAccessibleByUser(string userName, string nodeName)
+    public async Task<bool> IsNodeAccessibleByUser(string userName, int nodeId)
     {
         var guid = System.Guid.Parse(userName);
         var result = await _context.UserFiles
@@ -71,18 +71,18 @@ public class GraphNodeRepository : IGraphNodeRepository
             .ThenInclude(f => f.EntityNodes)
             .Where(uf => uf.UserId == guid)
             .SelectMany(uf => uf.FileEntity.EntityNodes
-                .Where(en => en.Name == nodeName)
+                .Where(en => en.Id == nodeId)
                 .Select(en => en.Name))
             .ToListAsync();
         return result.Count != 0;
     }
 
-    public async Task<IEnumerable<dynamic>> GetNodeAttributeValueAsync(string headerUniqueId)
+    public async Task<IEnumerable<dynamic>> GetNodeAttributeValueAsync(int id)
     {
         var result = await _context.ValueNodes
             .Include(vn => vn.Entity)
             .Include(vn => vn.Attribute)
-            .Where(vn => vn.Entity.Name == headerUniqueId)
+            .Where(vn => vn.Entity.Id == id)
             .Select(vn => new
             {
                 Attribute = vn.Attribute.Name,

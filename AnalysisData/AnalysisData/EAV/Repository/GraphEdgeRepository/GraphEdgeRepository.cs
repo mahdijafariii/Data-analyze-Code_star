@@ -37,7 +37,7 @@ public class GraphEdgeRepository : IGraphEdgeRepository
             .FirstOrDefaultAsync();
 
         var uploadDataId = await _context.EntityNodes
-            .Where(en => en.Id.ToString() == entityIdSource)
+            .Where(en => en.Id == entityIdSource)
             .Select(en => en.NodeFileReferenceId)
             .FirstOrDefaultAsync();
 

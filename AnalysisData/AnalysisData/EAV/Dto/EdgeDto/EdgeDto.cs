@@ -2,7 +2,7 @@ namespace AnalysisData.EAV.Dto;
 
 public class EdgeDto
 {
-    public string From { get; set; }
-    public string To { get; set; }
-    public string Id { get; set; }
+    public int From { get; set; }
+    public int To { get; set; }
+    public int Id { get; set; }
 }

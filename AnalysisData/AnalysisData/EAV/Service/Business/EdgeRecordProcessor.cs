@@ -51,7 +51,7 @@ public class EdgeRecordProcessor : IEdgeRecordProcessor
         }
 
         var entityEdge = new EntityEdge
-            { EntityIDSource = fromNode.Id.ToString(), EntityIDTarget = toNode.Id.ToString() };
+            { EntityIDSource = fromNode.Id, EntityIDTarget = toNode.Id };
         await _entityEdgeRepository.AddAsync(entityEdge);
         return entityEdge;
     }

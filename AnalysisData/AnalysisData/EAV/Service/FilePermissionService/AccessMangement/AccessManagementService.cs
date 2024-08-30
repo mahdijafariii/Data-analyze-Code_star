@@ -4,7 +4,7 @@ using AnalysisData.Repository.UserRepository.Abstraction;
 
 namespace AnalysisData.EAV.Service;
 
-public class AccessManagementService
+public class AccessManagementService : IAccessManagementService
 {
     private readonly IUserFileRepository _userFileRepository;
 

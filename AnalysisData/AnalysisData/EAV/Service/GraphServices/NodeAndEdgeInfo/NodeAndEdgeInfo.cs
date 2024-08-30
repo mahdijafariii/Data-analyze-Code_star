@@ -16,18 +16,18 @@ public class NodeAndEdgeInfo : INodeAndEdgeInfo
     }
 
     public async Task<Dictionary<string, string>> GetNodeInformationAsync(ClaimsPrincipal claimsPrincipal,
-        string headerUniqueId)
+        int nodeId)
     {
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
         IEnumerable<dynamic> result = Enumerable.Empty<dynamic>();
         if (role != "dataanalyst")
         {
-            result = await _graphNodeRepository.GetNodeAttributeValueAsync(headerUniqueId);
+            result = await _graphNodeRepository.GetNodeAttributeValueAsync(nodeId);
         }
-        else if (await _graphNodeRepository.IsNodeAccessibleByUser(username, headerUniqueId))
+        else if (await _graphNodeRepository.IsNodeAccessibleByUser(username, nodeId))
         {
-            result = await _graphNodeRepository.GetNodeAttributeValueAsync(headerUniqueId);
+            result = await _graphNodeRepository.GetNodeAttributeValueAsync(nodeId);
         }
 
         if (!result.Any())

@@ -35,10 +35,10 @@ public class GraphEavController : ControllerBase
     }
 
     [HttpGet("nodes/{headerUniqueId}/attributes")]
-    public async Task<IActionResult> GetNodeAttributes(string headerUniqueId)
+    public async Task<IActionResult> GetNodeAttributes(int id)
     {
         var user = User;
-        var output = await _nodeAndEdgeInfo.GetNodeInformationAsync(user, headerUniqueId);
+        var output = await _nodeAndEdgeInfo.GetNodeInformationAsync(user, id);
         return Ok(output);
     }
 
@@ -51,7 +51,7 @@ public class GraphEavController : ControllerBase
     }
 
     [HttpGet("nodes-relation")]
-    public async Task<IActionResult> GetRelationalEdgeByNodeId([FromQuery] string nodeId)
+    public async Task<IActionResult> GetRelationalEdgeByNodeId([FromQuery] int nodeId)
     {
         var user = User;
         var result = await _graphRelationService.GetRelationalEdgeBaseNodeAsync(user, nodeId);

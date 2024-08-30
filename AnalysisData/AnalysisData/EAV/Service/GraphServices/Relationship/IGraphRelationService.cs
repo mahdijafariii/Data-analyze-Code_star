@@ -6,5 +6,5 @@ namespace AnalysisData.EAV.Service.GraphServices.Relationship;
 public interface IGraphRelationService
 {
     Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNodeAsync(ClaimsPrincipal claimsPrincipal,
-        string id);
+        int id);
 }

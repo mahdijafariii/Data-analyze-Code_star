@@ -25,9 +25,9 @@ public class EntityNodeRepository : IEntityNodeRepository
         return await _context.EntityNodes.ToListAsync();
     }
 
-    public async Task<EntityNode> GetByNameAsync(string id)
+    public async Task<EntityNode> GetByNameAsync(string name)
     {
-        return await _context.EntityNodes.FirstOrDefaultAsync(x => x.Name == id);
+        return await _context.EntityNodes.FirstOrDefaultAsync(x => x.Name == name);
     }
 
     public async Task<EntityNode> GetByIdAsync(int id)

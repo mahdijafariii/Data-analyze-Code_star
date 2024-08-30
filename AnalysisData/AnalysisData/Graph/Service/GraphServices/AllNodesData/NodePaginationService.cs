@@ -56,6 +56,7 @@ public class NodePaginationService : INodePaginationService
     {
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
+        var usernameGuid = Guid.Parse(username);
         IEnumerable<EntityNode> valueNodes = new List<EntityNode>();
         if (category == null && role != "dataanalyst")
         {
@@ -67,11 +68,11 @@ public class NodePaginationService : INodePaginationService
         }
         else if (category != null && role == "dataanalyst")
         {
-            valueNodes = await _graphNodeRepository.GetEntityNodeForUserWithCategoryIdAsync(username, category.Value);
+            valueNodes = await _graphNodeRepository.GetEntityNodeForUserWithCategoryIdAsync(usernameGuid, category.Value);
         }
         else if (category == null && role == "dataanalyst")
         {
-            valueNodes = await _graphNodeRepository.GetEntityNodesForUserAsync(username);
+            valueNodes = await _graphNodeRepository.GetEntityNodesForUserAsync(usernameGuid);
         }
 
         if (!valueNodes.Any() && category != null)

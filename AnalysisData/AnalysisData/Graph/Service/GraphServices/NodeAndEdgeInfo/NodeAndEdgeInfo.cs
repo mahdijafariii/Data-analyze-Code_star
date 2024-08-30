@@ -21,11 +21,12 @@ public class NodeAndEdgeInfo : INodeAndEdgeInfo
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
         IEnumerable<dynamic> result = Enumerable.Empty<dynamic>();
+        var usernameGuid = Guid.Parse(username);
         if (role != "dataanalyst")
         {
             result = await _graphNodeRepository.GetNodeAttributeValueAsync(nodeId);
         }
-        else if (await _graphNodeRepository.IsNodeAccessibleByUser(username, nodeId))
+        else if (await _graphNodeRepository.IsNodeAccessibleByUser(usernameGuid, nodeId))
         {
             result = await _graphNodeRepository.GetNodeAttributeValueAsync(nodeId);
         }

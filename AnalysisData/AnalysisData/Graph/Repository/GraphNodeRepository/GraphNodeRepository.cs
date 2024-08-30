@@ -34,11 +34,10 @@ public class GraphNodeRepository : IGraphNodeRepository
         return result;
     }
 
-    public async Task<IEnumerable<EntityNode>> GetEntityNodesForUserAsync(string userGuidId)
+    public async Task<IEnumerable<EntityNode>> GetEntityNodesForUserAsync(Guid userGuidId)
     {
-        var guid = System.Guid.Parse(userGuidId);
         var fileIdQuery = await _context.UserFiles
-            .Where(uf => uf.UserId.Equals(guid))
+            .Where(uf => uf.UserId.Equals(userGuidId))
             .Select(uf => uf.FileId).ToListAsync();
         var result = await _context.EntityNodes
             .Where(en => fileIdQuery.Contains(en.NodeFileReferenceId))
@@ -46,12 +45,11 @@ public class GraphNodeRepository : IGraphNodeRepository
         return result;
     }
 
-    public async Task<IEnumerable<EntityNode>> GetEntityNodeForUserWithCategoryIdAsync(string userGuidId,
+    public async Task<IEnumerable<EntityNode>> GetEntityNodeForUserWithCategoryIdAsync(Guid userGuidId,
         int categoryId)
     {
-        var guid = System.Guid.Parse(userGuidId);
         var fileIds = await _context.UserFiles
-            .Where(uf => uf.UserId == guid)
+            .Where(uf => uf.UserId == userGuidId)
             .Select(uf => uf.FileId)
             .ToListAsync();
 
@@ -63,13 +61,12 @@ public class GraphNodeRepository : IGraphNodeRepository
     }
 
 
-    public async Task<bool> IsNodeAccessibleByUser(string userName, int nodeId)
+    public async Task<bool> IsNodeAccessibleByUser(Guid userName, int nodeId)
     {
-        var guid = System.Guid.Parse(userName);
         var result = await _context.UserFiles
             .Include(uf => uf.FileEntity)
             .ThenInclude(f => f.EntityNodes)
-            .Where(uf => uf.UserId == guid)
+            .Where(uf => uf.UserId == userName)
             .SelectMany(uf => uf.FileEntity.EntityNodes
                 .Where(en => en.Id == nodeId)
                 .Select(en => en.Name))
@@ -119,33 +116,30 @@ public class GraphNodeRepository : IGraphNodeRepository
     }
 
 
-    public async Task<IEnumerable<EntityNode>> GetNodeContainSearchInputForUserAsync(string username, string input)
+    public async Task<IEnumerable<EntityNode>> GetNodeContainSearchInputForUserAsync(Guid username, string input)
     {
-        var guidUserId = Guid.Parse(username);
         return await _context.UserFiles
-            .Where(uf => uf.UserId == guidUserId)
+            .Where(uf => uf.UserId == username)
             .Include(uf => uf.FileEntity)
             .ThenInclude(uf => uf.EntityNodes)
             .SelectMany(uf => uf.FileEntity.EntityNodes).Where(a => a.Name.Contains(input))
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInputForUserAsync(string username, string input)
+    public async Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInputForUserAsync(Guid username, string input)
     {
-        var guidUserId = Guid.Parse(username);
         return await _context.UserFiles
-            .Where(uf => uf.UserId == guidUserId)
+            .Where(uf => uf.UserId == username)
             .Include(uf => uf.FileEntity)
             .ThenInclude(uf => uf.EntityNodes)
             .SelectMany(uf => uf.FileEntity.EntityNodes).Where(a => a.Name.StartsWith(input))
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<EntityNode>> GetNodeEndsWithSearchInputForUserAsync(string username, string input)
+    public async Task<IEnumerable<EntityNode>> GetNodeEndsWithSearchInputForUserAsync(Guid username, string input)
     {
-        var guidUserId = Guid.Parse(username);
         return await _context.UserFiles
-            .Where(uf => uf.UserId == guidUserId)
+            .Where(uf => uf.UserId == username)
             .Include(uf => uf.FileEntity)
             .ThenInclude(uf => uf.EntityNodes)
             .SelectMany(uf => uf.FileEntity.EntityNodes).Where(a => a.Name.EndsWith(input))

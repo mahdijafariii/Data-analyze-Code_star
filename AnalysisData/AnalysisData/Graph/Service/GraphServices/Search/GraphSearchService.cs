@@ -62,17 +62,18 @@ public class GraphSearchService : IGraphSearchService
     {
         IEnumerable<EntityNode> entityNodes;
         var searchType = type.ToLower();
+        var usernameGuid = Guid.Parse(username);
         switch (searchType)
         {
             case "startswith":
                 entityNodes =
-                    await _graphNodeRepository.GetNodeStartsWithSearchInputForUserAsync(username, inputSearch);
+                    await _graphNodeRepository.GetNodeStartsWithSearchInputForUserAsync(usernameGuid, inputSearch);
                 break;
             case "endswith":
-                entityNodes = await _graphNodeRepository.GetNodeEndsWithSearchInputForUserAsync(username, inputSearch);
+                entityNodes = await _graphNodeRepository.GetNodeEndsWithSearchInputForUserAsync(usernameGuid, inputSearch);
                 break;
             default:
-                entityNodes = await _graphNodeRepository.GetNodeContainSearchInputForUserAsync(username, inputSearch);
+                entityNodes = await _graphNodeRepository.GetNodeContainSearchInputForUserAsync(usernameGuid, inputSearch);
                 break;
         }
 

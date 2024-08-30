@@ -31,12 +31,13 @@ public class GraphRelationService : IGraphRelationService
         var node = await _entityNodeRepository.GetByIdAsync(id);
 
         (IEnumerable<NodeDto> nodes, IEnumerable<EdgeDto> edges) result;
+        var usernameGuid = Guid.Parse(username);
 
         if (role != "dataanalyst")
         {
             result = await GetNodeRelationsAsync(id);
         }
-        else if (await _graphNodeRepository.IsNodeAccessibleByUser(username, node.Id))
+        else if (await _graphNodeRepository.IsNodeAccessibleByUser(usernameGuid, node.Id))
         {
             result = await GetNodeRelationsAsync(id);
         }

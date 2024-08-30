@@ -26,28 +26,28 @@ public class UserFileRepository : IUserFileRepository
         return await _context.UserFiles.ToListAsync();
     }
 
-    public async Task<UserFile> GetByUserIdAsync(string userId)
+    public async Task<UserFile> GetByUserIdAsync(Guid userId)
     {
-        return await _context.UserFiles.FirstOrDefaultAsync(x => x.UserId.ToString() == userId);
+        return await _context.UserFiles.FirstOrDefaultAsync(x => x.UserId == userId);
     }
 
     public async Task<IEnumerable<UserFile>> GetByFileIdAsync(int fileId)
     {
-        return await _context.Set<UserFile>().Include(x => x.User)
+        return await _context.UserFiles.Include(x => x.User)
             .Where(u => u.FileId == fileId)
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<string>> GetUserIdsWithAccessToFileAsync(string fileId)
+    public async Task<IEnumerable<string>> GetUserIdsWithAccessToFileAsync(int fileId)
     {
-        return await _context.Set<UserFile>()
-            .Where(u => u.FileId.ToString() == fileId).Select(x => x.UserId.ToString())
+        return await _context.UserFiles
+            .Where(u => u.FileId == fileId).Select(x => x.UserId.ToString())
             .ToListAsync();
     }
 
-    public async Task DeleteByUserIdAsync(string userId)
+    public async Task DeleteByUserIdAsync(Guid userId)
     {
-        var userFile = await _context.UserFiles.FirstOrDefaultAsync(x => x.UserId.ToString() == userId);
+        var userFile = await _context.UserFiles.FirstOrDefaultAsync(x => x.UserId == userId);
         if (userFile != null)
         {
             _context.UserFiles.Remove(userFile);

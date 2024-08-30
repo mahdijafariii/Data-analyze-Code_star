@@ -6,8 +6,8 @@ public interface IUserFileRepository
 {
     Task AddAsync(UserFile userFile);
     Task<IEnumerable<UserFile>> GetAllAsync();
-    Task<UserFile> GetByUserIdAsync(string userId);
-    Task<IEnumerable<string>> GetUserIdsWithAccessToFileAsync(string fileId);
+    Task<UserFile> GetByUserIdAsync(Guid userId);
+    Task<IEnumerable<string>> GetUserIdsWithAccessToFileAsync(int fileId);
     Task<IEnumerable<UserFile>> GetByFileIdAsync(int fileId);
-    Task DeleteByUserIdAsync(string userId);
+    Task DeleteByUserIdAsync(Guid userId);
 }

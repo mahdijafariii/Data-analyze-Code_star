@@ -27,7 +27,7 @@ public class AccessManagementService : IAccessManagementService
     {
         foreach (var userId in userIds)
         {
-            await _userFileRepository.DeleteByUserIdAsync(userId);
+            await _userFileRepository.DeleteByUserIdAsync(Guid.Parse(userId));
         }
     }
 }

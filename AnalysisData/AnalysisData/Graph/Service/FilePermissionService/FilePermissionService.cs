@@ -87,7 +87,7 @@ public class FilePermissionService : IFilePermissionService
             throw new NoFileUploadedException();
         }
 
-        var currentAccessor = await _userFileRepository.GetUserIdsWithAccessToFileAsync(fileId.ToString());
+        var currentAccessor = await _userFileRepository.GetUserIdsWithAccessToFileAsync(fileId);
         var newUsers = validUserGuids.Select(g => g.ToString()).Except(currentAccessor).ToList();
         var blockAccessToFile = currentAccessor
             .Except(currentAccessor.Intersect(validUserGuids.Select(g => g.ToString()))).ToList();

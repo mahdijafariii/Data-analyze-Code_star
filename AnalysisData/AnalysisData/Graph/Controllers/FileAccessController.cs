@@ -19,21 +19,21 @@ public class FileAccessController : ControllerBase
         _userFileRepository = userFileRepository;
     }
 
-    [HttpGet("GetFileForAccessingFile")]
+    [HttpGet("files")]
     public async Task<IActionResult> GetFilesAsync([FromQuery] int page = 0, [FromQuery] int limit = 10)
     {
         var paginatedFiles = await _filePermissionService.GetFilesAsync(page, limit);
         return Ok(paginatedFiles);
     }
 
-    [HttpGet("GetUsersForAccessingFile")]
+    [HttpGet("users")]
     public async Task<IActionResult> GetUsersAsync([FromQuery] string username)
     {
         var users = await _filePermissionService.GetUserForAccessingFileAsync(username);
         return Ok(users);
     }
 
-    [HttpPost("AccessFileToUser")]
+    [HttpPost("files/{fileId}/access")]
     public async Task<IActionResult> AccessFileToUser([FromBody] AccessFileToUserDto request)
     {
         await _filePermissionService.AccessFileToUserAsync(request.UserGuidIds.ToList(), request.FileId);
@@ -43,7 +43,7 @@ public class FileAccessController : ControllerBase
         });
     }
 
-    [HttpGet("WhoAccessToThisFile")]
+    [HttpGet("files/{fileId}/users")]
     public async Task<IActionResult> WhoAccessToThisFile([FromQuery] int fileId)
     {
         var file = await _userFileRepository.GetByFileIdAsync(fileId);

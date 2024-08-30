@@ -47,5 +47,5 @@ EXPOSE 80
 
 #COPY . ./app
 
-ENTRYPOINT ["dotnet", "AnalysisData.dll"]
+CMD ["dotnet", "AnalysisData.dll"]
 

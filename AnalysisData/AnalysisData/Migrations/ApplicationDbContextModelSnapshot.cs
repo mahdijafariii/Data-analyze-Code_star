@@ -81,13 +81,11 @@ namespace AnalysisData.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("EntityIDSource")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("EntityIDSource")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("EntityIDTarget")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("EntityIDTarget")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240828080528_a")]
-    partial class a
+    [Migration("20240830133324_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,13 +84,11 @@ namespace AnalysisData.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("EntityIDSource")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("EntityIDSource")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("EntityIDTarget")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("EntityIDTarget")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

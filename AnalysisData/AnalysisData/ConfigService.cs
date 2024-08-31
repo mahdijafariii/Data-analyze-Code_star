@@ -22,6 +22,7 @@ using AnalysisData.Repository.UserRepository;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services;
 using AnalysisData.Services.Abstraction;
+using AnalysisData.Services.S3FileStorageService;
 using AnalysisData.Services.SecurityPasswordService;
 using AnalysisData.Services.SecurityPasswordService.Abstraction;
 using Microsoft.AspNetCore.Identity;
@@ -74,6 +75,8 @@ public static class ConfigService
         services.AddScoped<IAccessManagementService, AccessManagementService>();
         services.AddScoped<IAdminRegisterService, AdminRegisterService>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<IS3FileStorageService, S3FileStorageService>();
+
         return services;
     }
 }

@@ -5,6 +5,7 @@ using AnalysisData.JwtService.abstractions;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services.Abstraction;
+using AnalysisData.Services.S3FileStorageService;
 using AnalysisData.Services.SecurityPasswordService.Abstraction;
 using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.RegisterModel;
@@ -53,11 +54,11 @@ public class AdminRegisterService : IAdminRegisterService
             throw new PasswordMismatchException();
 
 
-        var user = MakeUser(userRegisterDto, existingRole);
+        var user = await MakeUser(userRegisterDto, existingRole);
         await _userRepository.AddUserAsync(user);
     }
 
-    private User MakeUser(UserRegisterDto userRegisterDto, Role role)
+    private async Task<User> MakeUser(UserRegisterDto userRegisterDto, Role role)
     {
         var user = new User
         {

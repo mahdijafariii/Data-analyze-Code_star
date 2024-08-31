@@ -83,19 +83,16 @@ public class AdminRegisterService : IAdminRegisterService
 
         var adminRole = new Role()
         {
-            Id = 1,
             RoleName = "admin".ToLower(),
             RolePolicy = "gold",
         };
         var dataAnalystRole = new Role()
         {
-            Id = 2,
             RoleName = "DataAnalyst".ToLower(),
             RolePolicy = "bronze",
         };
         var dataManager = new Role()
         {
-            Id = 3,
             RoleName = "DataManager".ToLower(),
             RolePolicy = "silver",
         };

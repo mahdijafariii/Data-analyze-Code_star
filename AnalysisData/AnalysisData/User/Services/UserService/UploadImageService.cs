@@ -1,11 +1,12 @@
 using System.Security.Claims;
 using AnalysisData.Exception;
 using AnalysisData.Repository.UserRepository.Abstraction;
+using AnalysisData.Services.Abstraction;
 using AnalysisData.Services.S3FileStorageService;
 
 namespace AnalysisData.Services;
 
-public class UploadImageService
+public class UploadImageService : IUploadImageService
 {
     private readonly IUserRepository _userRepository;
     private readonly IS3FileStorageService _s3FileStorageService;

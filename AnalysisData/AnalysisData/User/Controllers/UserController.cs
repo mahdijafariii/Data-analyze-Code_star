@@ -19,11 +19,13 @@ public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IPermissionService _permissionService;
+    private readonly IUploadImageService _uploadImageService;
 
-    public UserController(IUserService userService, IPermissionService permissionService)
+    public UserController(IUserService userService, IPermissionService permissionService,IUploadImageService uploadImageService)
     {
         _userService = userService;
         _permissionService = permissionService;
+        _uploadImageService = uploadImageService;
     }
 
     [HttpPost("login")]
@@ -69,7 +71,7 @@ public class UserController : ControllerBase
             return BadRequest(new { massage = "No file uploaded." });
         }
 
-        await _userService.UploadImageAsync(user, file);
+        await _uploadImageService.UploadImageAsync(user, file);
 
         return Ok(new { massage = "Uploaded successfully." });
     }

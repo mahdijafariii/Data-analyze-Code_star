@@ -76,6 +76,8 @@ public static class ConfigService
         services.AddScoped<IAdminRegisterService, AdminRegisterService>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IS3FileStorageService, S3FileStorageService>();
+        services.AddScoped<IUploadImageService, UploadImageService>();
+
 
         return services;
     }

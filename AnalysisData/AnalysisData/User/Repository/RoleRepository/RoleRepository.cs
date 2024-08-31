@@ -24,11 +24,10 @@ public class RoleRepository : IRoleRepository
         return await _context.Roles.SingleOrDefaultAsync(x => x.RoleName == roleName);
     }
 
-    public async Task<bool> AddRoleAsync(Role role)
+    public async Task AddRoleAsync(Role role)
     {
         await _context.Roles.AddAsync(role);
         await _context.SaveChangesAsync();
-        return true;
     }
 
     public async Task<bool> DeleteRoleAsync(string roleName)

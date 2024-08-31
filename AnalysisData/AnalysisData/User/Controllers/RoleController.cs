@@ -1,4 +1,6 @@
 using AnalysisData.Services;
+using AnalysisData.UserManage.Model;
+using AnalysisData.UserManage.RolePaginationModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.Controllers;
@@ -23,9 +25,9 @@ public class RoleController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddRole(string name, string policy)
+    public async Task<IActionResult> AddRole([FromBody] AddRoleDto role)
     {
-        await _roleManagementService.AddRole(name, policy);
+        await _roleManagementService.AddRole(role.Name, role.Policy);
         return Ok(new { message = "Role added successfully." });
     }
 

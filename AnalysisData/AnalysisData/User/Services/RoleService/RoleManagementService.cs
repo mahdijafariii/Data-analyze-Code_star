@@ -46,13 +46,12 @@ public class RoleManagementService : IRoleManagementService
 
     public async Task AddRole(string roleName, string rolePolicy)
     {
-        var roleExist = await _roleRepository.GetRoleByNameAsync(roleName);
+        var roleExist = await _roleRepository.GetRoleByNameAsync(roleName.ToLower());
         if (roleExist != null)
         {
             throw new DuplicateRoleExistException();
         }
-
-        var role = new Role { RoleName = roleName, RolePolicy = rolePolicy };
+        var role = new Role { RoleName = roleName.ToLower(), RolePolicy = rolePolicy.ToLower() };
         await _roleRepository.AddRoleAsync(role);
     }
 }

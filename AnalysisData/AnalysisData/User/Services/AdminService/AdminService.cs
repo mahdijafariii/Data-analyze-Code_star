@@ -50,7 +50,7 @@ public class AdminService : IAdminService
         await _jwtService.UpdateUserCookie(user.Username, false);
     }
 
-    private void SetUpdatedInformation(User user, UpdateAdminDto updateAdminDto)
+    private async Task SetUpdatedInformation(User user, UpdateAdminDto updateAdminDto)
     {
         user.FirstName = updateAdminDto.FirstName;
         user.LastName = updateAdminDto.LastName;
@@ -58,7 +58,7 @@ public class AdminService : IAdminService
         user.PhoneNumber = updateAdminDto.PhoneNumber;
         user.Username = updateAdminDto.Username;
         user.Role.RoleName = updateAdminDto.RoleName;
-        _userRepository.UpdateUserAsync(user.Id, user);
+        await _userRepository.UpdateUserAsync(user.Id, user);
     }
 
     public async Task<bool> DeleteUserAsync(Guid id)

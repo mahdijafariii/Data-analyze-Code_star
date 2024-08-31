@@ -2,6 +2,7 @@ using System.Security.Claims;
 using AnalysisData.Exception;
 using AnalysisData.Services;
 using AnalysisData.Services.Abstraction;
+using AnalysisData.UserDto.UserDto;
 using AnalysisData.UserManage.LoginModel;
 using AnalysisData.UserManage.NewPasswordModel;
 using AnalysisData.UserManage.RegisterModel;
@@ -110,7 +111,13 @@ public class UserController : ControllerBase
         var result = await _userService.GetUserAsync(user);
         if (result != null)
         {
-            return Ok(result);
+            return Ok(new GetUserInformationDto()
+            {
+                FirstName = result.FirstName,
+                LastName = result.LastName,
+                PhoneNumber = result.PhoneNumber,
+                Email = result.Email
+            });
         }
 
         return BadRequest(new { message = "not found!" });

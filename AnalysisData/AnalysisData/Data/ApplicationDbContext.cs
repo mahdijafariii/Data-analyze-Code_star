@@ -10,6 +10,7 @@ public class ApplicationDbContext : DbContext
         : base(options)
     {
     }
+
     public DbSet<User> Users { get; set; }
     public DbSet<AttributeEdge> AttributeEdges { get; set; }
     public DbSet<AttributeNode> AttributeNodes { get; set; }
@@ -18,7 +19,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<ValueEdge> ValueEdges { get; set; }
     public DbSet<ValueNode> ValueNodes { get; set; }
     public DbSet<Role> Roles { get; set; }
-    public DbSet<UploadedFile> FileUploadedDb { get; set; }
+    public DbSet<FileEntity> FileUploadedDb { get; set; }
     public DbSet<UserFile> UserFiles { get; set; }
     public DbSet<Category> Categories { get; set; }
 }

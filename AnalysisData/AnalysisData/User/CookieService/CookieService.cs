@@ -11,7 +11,7 @@ public class CookieService : ICookieService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public void SetCookie(string name, string token,bool rememberMe)
+    public void SetCookie(string name, string token, bool rememberMe)
     {
         var options = new CookieOptions
         {
@@ -26,7 +26,7 @@ public class CookieService : ICookieService
         }
         else
         {
-            options.IsEssential = true; 
+            options.IsEssential = true;
         }
 
         _httpContextAccessor.HttpContext.Response.Cookies.Append(name, token, options);
@@ -42,10 +42,10 @@ public class CookieService : ICookieService
     {
         _httpContextAccessor.HttpContext.Response.Cookies.Delete(name);
     }
-    
+
     public void UpdateCookie(string name, string newToken, bool rememberMe)
     {
-        RemoveCookie(name); 
-        SetCookie(name, newToken, rememberMe); 
+        RemoveCookie(name);
+        SetCookie(name, newToken, rememberMe);
     }
 }

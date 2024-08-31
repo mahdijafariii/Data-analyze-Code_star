@@ -9,20 +9,22 @@ public class JwtMiddleware
     private readonly RequestDelegate _next;
     private readonly string? _jwtSecret;
 
-    public JwtMiddleware(RequestDelegate next,IConfiguration configuration)
+    public JwtMiddleware(RequestDelegate next, IConfiguration configuration)
     {
         _next = next;
         _jwtSecret = configuration["Jwt:Key"];
     }
-    
+
 
     public async Task InvokeAsync(HttpContext context)
     {
-        if (context.Request.Path.StartsWithSegments("/api/User/login") || context.Request.Path.StartsWithSegments("/api/Admin/firstAdmin") )
+        if (context.Request.Path.StartsWithSegments("/api/User/login") ||
+            context.Request.Path.StartsWithSegments("/api/Admin/firstAdmin"))
         {
             await _next(context);
             return;
         }
+
         var token = context.Request.Cookies["AuthToken"];
         if (token != null)
         {

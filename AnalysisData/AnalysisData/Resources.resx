@@ -61,7 +61,7 @@
         <value>Node not found Exception ! </value>
     </data>
     <data name="NoFileUploadedException" xml:space="preserve">
-        <value>No file uploaded !</value>
+        <value>No file uploaded exception !</value>
     </data>
     <data name="EdgeNotFoundException" xml:space="preserve">
         <value>Edge not found exception !</value>
@@ -69,7 +69,10 @@
     <data name="DuplicateRoleException" xml:space="preserve">
         <value>We have this role in db ! </value>
     </data>
-    <data name="GuidNotCorrectFormat" xml:space="preserve">
-        <value>id not in correct format!</value>
+    <data name="CategoryAlreadyExist" xml:space="preserve">
+        <value>This category already exist!</value>
+    </data>
+    <data name="GuidNotCorrectFormatException" xml:space="preserve">
+        <value>Guid format is invalid !</value>
     </data>
 </root>

@@ -69,6 +69,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This category already exist!.
+        /// </summary>
+        internal static string CategoryAlreadyExist {
+            get {
+                return ResourceManager.GetString("CategoryAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Category not exists in our system!.
         /// </summary>
         internal static string CategoryResultNotFoundException {
@@ -114,11 +123,11 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to id not in correct format!.
+        ///   Looks up a localized string similar to Guid format is invalid !.
         /// </summary>
-        internal static string GuidNotCorrectFormat {
+        internal static string GuidNotCorrectFormatException {
             get {
-                return ResourceManager.GetString("GuidNotCorrectFormat", resourceCulture);
+                return ResourceManager.GetString("GuidNotCorrectFormatException", resourceCulture);
             }
         }
         
@@ -168,7 +177,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No file uploaded !.
+        ///   Looks up a localized string similar to No file uploaded exception !.
         /// </summary>
         internal static string NoFileUploadedException {
             get {

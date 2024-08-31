@@ -26,9 +26,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] UserLoginModel userLoginModel)
+    public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)
     {
-        var user = await _userService.Login(userLoginModel);
+        var user = await _userService.LoginAsync(userLoginDto);
         return Ok(new { user.FirstName, user.LastName, user.ImageURL });
     }
 
@@ -45,77 +45,77 @@ public class UserController : ControllerBase
     }
 
     [Authorize(Roles = "admin")]
-    [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel resetPasswordModel)
+    [HttpPost("reset-passadword")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
     {
         var userClaim = User;
-        var check = await _userService.ResetPassword(userClaim, resetPasswordModel.NewPassword,
-            resetPasswordModel.ConfirmPassword);
+        var check = await _userService.ResetPasswordAsync(userClaim, resetPasswordDto.NewPassword,
+            resetPasswordDto.ConfirmPassword);
         if (check)
         {
-            return Ok(new {massage = "success"});
+            return Ok(new { massage = "success" });
         }
 
-        return BadRequest(new {massage = "not success"});
+        return BadRequest(new { massage = "not success" });
     }
 
     [Authorize(Roles = "admin")]
-    [HttpPost("UploadImage")]
+    [HttpPost("upload-image")]
     public IActionResult UploadImage(IFormFile file)
     {
         var user = User;
         if (file == null || file.Length == 0)
         {
-            return BadRequest(new {massage = "No file uploaded."});
+            return BadRequest(new { massage = "No file uploaded." });
         }
 
-        _userService.UploadImage(user, file.FileName);
+        _userService.UploadImageAsync(user, file.FileName);
 
-        return Ok(new {massage = "Uploaded successfully."});
+        return Ok(new { massage = "Uploaded successfully." });
     }
-    
-    [HttpPut("UpdateUser")]
-    public async Task<IActionResult> UpdateUser([FromBody] UpdateUserModel updateUserModel)
+
+    [HttpPut("update-user")]
+    public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
     {
         var user = User;
-        var updatedUser = await _userService.UpdateUserInformationByUser(user, updateUserModel);
+        var updatedUser = await _userService.UpdateUserInformationAsync(user, updateUserDto);
         if (updatedUser != null)
         {
-            return Ok(new {massage = "updated successfully"});
+            return Ok(new { massage = "updated successfully" });
         }
 
-        return BadRequest(new {massage = "not success"});
+        return BadRequest(new { massage = "not success" });
     }
 
     [HttpPost("new-password")]
-    public async Task<IActionResult> NewPassword([FromBody] NewPasswordModel newPasswordModel)
+    public async Task<IActionResult> NewPassword([FromBody] NewPasswordDto newPasswordDto)
     {
         var userClaim = User;
-        var check = await _userService.NewPassword(userClaim, newPasswordModel.OldPassword,
-            newPasswordModel.NewPassword,
-            newPasswordModel.ConfirmPassword);
+        var check = await _userService.NewPasswordAsync(userClaim, newPasswordDto.OldPassword,
+            newPasswordDto.NewPassword,
+            newPasswordDto.ConfirmPassword);
         if (check)
         {
-            return Ok(new {massage = "reset successfully"});
+            return Ok(new { massage = "reset successfully" });
         }
 
-        return BadRequest(new {massage = "not success"});
+        return BadRequest(new { massage = "not success" });
     }
-    
-    
-    [HttpGet("GetUserInformation")]
+
+
+    [HttpGet("get-user-information")]
     public async Task<IActionResult> GetUserInformation()
     {
         var user = User;
-        var result = await _userService.GetUser(user);
-        if (result!=null)
+        var result = await _userService.GetUserAsync(user);
+        if (result != null)
         {
             return Ok(result);
         }
-    
+
         return BadRequest(new { message = "not found!" });
     }
-    
+
     [HttpPost("logOut")]
     public IActionResult Logout()
     {

@@ -25,7 +25,7 @@ public class JwtService : IJwtService
 
     public async Task<string> GenerateJwtToken(string userName)
     {
-        var user = await _userRepository.GetUserByUsername(userName);
+        var user = await _userRepository.GetUserByUsernameAsync(userName);
         var claims = new List<Claim>
         {
             new Claim("id", user.Id.ToString()),
@@ -48,10 +48,10 @@ public class JwtService : IJwtService
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
     public async Task UpdateUserCookie(string userName, bool rememberMe)
     {
         var token = await GenerateJwtToken(userName);
         _cookieService.UpdateCookie("AuthToken", token, rememberMe);
     }
-    
 }

@@ -81,13 +81,11 @@ namespace AnalysisData.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("EntityIDSource")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("EntityIDSource")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("EntityIDTarget")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("EntityIDTarget")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -107,17 +105,17 @@ namespace AnalysisData.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int>("UploadDataId")
+                    b.Property<int>("NodeFileReferenceId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UploadDataId");
+                    b.HasIndex("NodeFileReferenceId");
 
                     b.ToTable("EntityNodes");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.UploadedFile", b =>
+            modelBuilder.Entity("AnalysisData.EAV.Model.FileEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -182,7 +180,7 @@ namespace AnalysisData.Migrations
                     b.Property<int>("EntityId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("ValueString")
+                    b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -209,7 +207,7 @@ namespace AnalysisData.Migrations
                     b.Property<int>("EntityId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("ValueString")
+                    b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -288,16 +286,16 @@ namespace AnalysisData.Migrations
 
             modelBuilder.Entity("AnalysisData.EAV.Model.EntityNode", b =>
                 {
-                    b.HasOne("AnalysisData.EAV.Model.UploadedFile", "UploadedFile")
+                    b.HasOne("AnalysisData.EAV.Model.FileEntity", "FileEntity")
                         .WithMany("EntityNodes")
-                        .HasForeignKey("UploadDataId")
+                        .HasForeignKey("NodeFileReferenceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UploadedFile");
+                    b.Navigation("FileEntity");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.UploadedFile", b =>
+            modelBuilder.Entity("AnalysisData.EAV.Model.FileEntity", b =>
                 {
                     b.HasOne("AnalysisData.EAV.Model.Category", "Category")
                         .WithMany()
@@ -318,7 +316,7 @@ namespace AnalysisData.Migrations
 
             modelBuilder.Entity("AnalysisData.EAV.Model.UserFile", b =>
                 {
-                    b.HasOne("AnalysisData.EAV.Model.UploadedFile", "UploadedFile")
+                    b.HasOne("AnalysisData.EAV.Model.FileEntity", "FileEntity")
                         .WithMany()
                         .HasForeignKey("FileId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -330,7 +328,7 @@ namespace AnalysisData.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UploadedFile");
+                    b.Navigation("FileEntity");
 
                     b.Navigation("User");
                 });
@@ -384,7 +382,7 @@ namespace AnalysisData.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.UploadedFile", b =>
+            modelBuilder.Entity("AnalysisData.EAV.Model.FileEntity", b =>
                 {
                     b.Navigation("EntityNodes");
                 });

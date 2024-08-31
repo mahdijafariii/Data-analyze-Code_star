@@ -70,7 +70,7 @@ public class ExceptionHandlingMiddleware
             await HandleExceptionAsync(httpContext, ex, StatusCodes.Status401Unauthorized);
         }
     }
-    
+
     private Task HandleExceptionAsync(HttpContext context, System.Exception exception, int _statusCode)
     {
         context.Response.ContentType = "application/json";

@@ -22,6 +22,8 @@ using AnalysisData.Repository.UserRepository;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services;
 using AnalysisData.Services.Abstraction;
+using AnalysisData.Services.Business;
+using AnalysisData.Services.Business.Abstraction;
 using AnalysisData.Services.SecurityPasswordService;
 using AnalysisData.Services.SecurityPasswordService.Abstraction;
 using Microsoft.AspNetCore.Identity;
@@ -51,10 +53,15 @@ public static class ConfigService
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserManager, UserManager>();
+        services.AddScoped<IPasswordManager, PasswordManager>();
+        services.AddScoped<IPasswordService, PasswordService>();  
         services.AddScoped<IJwtService, JwtService.JwtService>();
         services.AddScoped<ICookieService, CookieService.CookieService>();
+        services.AddScoped<IUserService, UserService>();
         services.AddScoped<IPermissionService, PermissionService>();
         services.AddScoped<IValidationService, ValidationService>();
+        services.AddScoped<ILoginManager, LoginManager>();
         services.AddScoped<IEdgeToDbService, EdgeToDbService>();
         services.AddScoped<INodeToDbService, NodeToDbService>();
         services.AddScoped<ICsvReaderService, CsvReaderService>();

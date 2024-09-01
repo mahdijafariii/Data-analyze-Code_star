@@ -3,51 +3,23 @@
 	
 
 	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=02d9fd71_002D0a38_002D43c7_002Da834_002Dc2e3e53d102a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="RoleRepositoryTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1e8f93b2_002D4572_002D4c58_002Db711_002Dacb713304847/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetRole_ShouldReturnsRole_WhenRoleExists #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Users\Mahdi\Desktop\New folder (2)\Summer1403-Project-Group03-Backend\AnalysisData\TestProject" Presentation="&amp;lt;TestProject&amp;gt;" /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=282f0196_002Dd9ab_002D4d1c_002Db9ba_002D372bc37ea58a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddRole_ShouldAddsRoleToDatabase_Whenever #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.AddRole_ShouldAddsRoleToDatabase_Whenever&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2c41609a_002D70c7_002D48cb_002D9eed_002D07fa2ea2f4f4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetRole_ShouldReturnsRole_WhenRoleExists" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.GetRole_ShouldReturnsRole_WhenRoleExists&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.AddRole_ShouldAddsRoleToDatabase_Whenever&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.DeleteRole_ShouldRemovesRole_WhenRoleExists&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.DeleteRole_ShouldReturnsFalse_WhenRoleDoesNotExist&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests.AddUser_ShouldAddsUserToDatabase_Whenever&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests.GetUser_ShouldReturnsNull_WhenUserDoesNotExist&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests.GetUser_ShouldReturnsUser_WhenUserExists&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests.GetAllUser_ShouldReturnsAllUsers_Whenever&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=648b354f_002D77fb_002D41ba_002D80a0_002D6eeb12c1c94d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetRole_ShouldReturnsRole_WhenRoleExists #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.GetRole_ShouldReturnsRole_WhenRoleExists&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.AddRole_ShouldAddsRoleToDatabase_Whenever&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.DeleteRole_ShouldRemovesRole_WhenRoleExists&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests.GetUser_ShouldReturnsUser_WhenUserExists&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.DeleteRole_ShouldReturnsFalse_WhenRoleDoesNotExist&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8ae15fa0_002Dd719_002D4ce1_002D847c_002De586feccc67f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddRole_ShouldAddsRoleToDatabase_Whenever" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.AddRole_ShouldAddsRoleToDatabase_Whenever&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c8b452a4_002D3e52_002D45a2_002D959c_002Dbbbf101ed826/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;TestProject&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Users\Mahdi\Desktop\New folder (2)\Summer1403-Project-Group03-Backend\AnalysisData\TestProject" Presentation="&amp;lt;TestProject&amp;gt;" /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
+	
+	
+	
+	
+	
+	
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ff0aa496_002Df562_002D44d7_002Db40c_002D780e81cc354b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;TestProject&amp;gt; #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Users\Mahdi\Desktop\New folder (2)\Summer1403-Project-Group03-Backend\AnalysisData\TestProject" Presentation="&amp;lt;TestProject&amp;gt;" /&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.UserService.UserServiceTests.ResetPasswordAsync_ShouldReturnTrue_WhenPasswordResetSucceeds&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.UserService.UserServiceTests.NewPasswordAsync_ShouldReturnTrue_WhenPasswordChangeSucceeds&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.UserService.UserServiceTests.LoginAsync_ShouldReturnUser_WhenLoginSucceeds&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.UserService.UserServiceTests.GetUserAsync_ShouldReturnUser_WhenUserIsFound&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.UserService.UserServiceTests.UpdateUserInformationAsync_ShouldReturnTrue_WhenUpdateSucceeds&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.UserManagerTest.GetUserAsync_UserExists_ReturnsUser&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.UserManagerTest.GetUserAsync_UserDoesNotExist_ThrowsUserNotFoundException&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AnalysisData_002FResources/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean></wpf:ResourceDictionary>

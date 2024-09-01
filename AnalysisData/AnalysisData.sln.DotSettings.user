@@ -1,4 +1,5 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\amir\AppData\Local\JetBrains\Rider2024.1\resharper-host\temp\Rider\vAny\CoverageData\_AnalysisData.-1369652140\Snapshot\snapshot.utdcvr</s:String>
 	
 	
 
@@ -11,23 +12,7 @@
 	
 	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ff0aa496_002Df562_002D44d7_002Db40c_002D780e81cc354b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;TestProject&amp;gt; #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.UserService.UserServiceTests.ResetPasswordAsync_ShouldReturnTrue_WhenPasswordResetSucceeds&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.UserService.UserServiceTests.NewPasswordAsync_ShouldReturnTrue_WhenPasswordChangeSucceeds&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.UserService.UserServiceTests.LoginAsync_ShouldReturnUser_WhenLoginSucceeds&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.UserService.UserServiceTests.GetUserAsync_ShouldReturnUser_WhenUserIsFound&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.UserService.UserServiceTests.UpdateUserInformationAsync_ShouldReturnTrue_WhenUpdateSucceeds&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.UserManagerTest.GetUserAsync_UserExists_ReturnsUser&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.UserManagerTest.GetUserAsync_UserDoesNotExist_ThrowsUserNotFoundException&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.UserManagerTest.UpdateUserInformationAsync_ValidData_ReturnsTrue&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.UserManagerTest.UpdateUserInformationAsync_EmailAlreadyExists_ThrowsDuplicateUserException&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.PasswordServiceTest.ValidatePassword_ValidPassword_DoesNotThrowException&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.PasswordServiceTest.ValidatePassword_InvalidPassword_ThrowsPasswordMismatchException&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.PasswordServiceTest.ValidatePasswordAndConfirmation_MatchingPasswords_DoesNotThrowException&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.PasswordServiceTest.ValidatePasswordAndConfirmation_NonMatchingPasswords_ThrowsPasswordMismatchException&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.PasswordServiceTest.HashPassword_ValidPassword_ReturnsHashedPassword&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.PasswordServiceTest.HashPassword_InvalidPassword_ThrowsInvalidPasswordFormatException&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+  &lt;Project Location="C:\Users\amir\Desktop\New folder (4)\Summer1403-Project-Group03-Backend\AnalysisData\TestProject" Presentation="&amp;lt;TestProject&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AnalysisData_002FResources/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean></wpf:ResourceDictionary>

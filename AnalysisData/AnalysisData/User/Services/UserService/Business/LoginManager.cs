@@ -26,14 +26,14 @@ public class LoginManager : ILoginManager
 
     public async Task<User> LoginAsync(UserLoginDto userLoginDto)
     {
-        var user = await _userRepository.GetUserByUsernameAsync(userLoginDto.userName);
+        var user = await _userRepository.GetUserByUsernameAsync(userLoginDto.UserName);
         if (user == null)
         {
             throw new UserNotFoundException();
         }
-        _passwordService.ValidatePassword(user, userLoginDto.password);
-        var token = await _jwtService.GenerateJwtToken(userLoginDto.userName);
-        _cookieService.SetCookie("AuthToken", token, userLoginDto.rememberMe);
+        _passwordService.ValidatePassword(user, userLoginDto.Password);
+        var token = await _jwtService.GenerateJwtToken(userLoginDto.UserName);
+        _cookieService.SetCookie("AuthToken", token, userLoginDto.RememberMe);
         return user;
     }
 }

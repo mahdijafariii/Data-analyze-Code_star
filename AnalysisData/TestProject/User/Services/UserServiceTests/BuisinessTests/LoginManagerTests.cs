@@ -34,9 +34,9 @@ public class LoginManagerTests
         var token = "generatedJwtToken";
         var userLoginDto = new UserLoginDto
         {
-            userName = "testUser",
-            password = "ValidPassword123!",
-            rememberMe = true
+            UserName = "testUser",
+            Password = "ValidPassword123!",
+            RememberMe = true
         };
         var user = new AnalysisData.UserManage.Model.User
         {
@@ -44,16 +44,16 @@ public class LoginManagerTests
             Password = "ValidPassword123",
         };
 
-        _userRepository.GetUserByUsernameAsync(userLoginDto.userName).Returns(user);
-        _passwordService.ValidatePassword(user, userLoginDto.password);
-        _jwtService.GenerateJwtToken(userLoginDto.userName).Returns(token);
+        _userRepository.GetUserByUsernameAsync(userLoginDto.UserName).Returns(user);
+        _passwordService.ValidatePassword(user, userLoginDto.Password);
+        _jwtService.GenerateJwtToken(userLoginDto.UserName).Returns(token);
         
 
         // Act
         var result = await _sut.LoginAsync(userLoginDto);
         
         Assert.Equal(user, result);
-        _cookieService.Received(1).SetCookie("AuthToken", token, userLoginDto.rememberMe);
+        _cookieService.Received(1).SetCookie("AuthToken", token, userLoginDto.RememberMe);
     }
     
     [Fact]
@@ -62,12 +62,12 @@ public class LoginManagerTests
         // Arrange
         var userLoginDto = new UserLoginDto
         {
-            userName = "invalidUser",
-            password = "SomePassword123!",
-            rememberMe = false
+            UserName = "invalidUser",
+            Password = "SomePassword123!",
+            RememberMe = false
         };
 
-        _userRepository.GetUserByUsernameAsync(userLoginDto.userName).Returns(Task.FromResult<AnalysisData.UserManage.Model.User>(null));
+        _userRepository.GetUserByUsernameAsync(userLoginDto.UserName).Returns(Task.FromResult<AnalysisData.UserManage.Model.User>(null));
 
         // Act & Assert
         await Assert.ThrowsAsync<UserNotFoundException>(() => _sut.LoginAsync(userLoginDto));
@@ -79,14 +79,14 @@ public class LoginManagerTests
         // Arrange
         var userLoginDto = new UserLoginDto
         {
-            userName = "testUser",
-            password = "InvalidPassword123!",
-            rememberMe = false
+            UserName = "testUser",
+            Password = "InvalidPassword123!",
+            RememberMe = false
         };
         var user = new AnalysisData.UserManage.Model.User { Username = "testUser", Password = "HashedPassword" };
 
-        _userRepository.GetUserByUsernameAsync(userLoginDto.userName).Returns(Task.FromResult(user));
-        _passwordService.When(x => x.ValidatePassword(user, userLoginDto.password))
+        _userRepository.GetUserByUsernameAsync(userLoginDto.UserName).Returns(Task.FromResult(user));
+        _passwordService.When(x => x.ValidatePassword(user, userLoginDto.Password))
             .Do(x => throw new PasswordMismatchException());
 
         // Act & Assert

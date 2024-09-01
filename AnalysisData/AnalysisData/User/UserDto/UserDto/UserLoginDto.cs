@@ -2,7 +2,7 @@ namespace AnalysisData.UserManage.LoginModel;
 
 public class UserLoginDto
 {
-    public string userName { get; set; }
-    public string password { get; set; }
-    public bool rememberMe { get; set; }
+    public string UserName { get; set; }
+    public string Password { get; set; }
+    public bool RememberMe { get; set; }
 }

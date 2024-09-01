@@ -63,7 +63,7 @@ public class UserServiceTests
     public async Task LoginAsync_ShouldReturnUser_WhenLoginSucceeds()
     {
         // Arrange
-        var userLoginDto = new UserLoginDto { userName = "test", password = "password" };
+        var userLoginDto = new UserLoginDto { UserName = "test", Password = "password" };
         var user = new AnalysisData.UserManage.Model.User();
         _loginManager.LoginAsync(userLoginDto).Returns(Task.FromResult(user));
 

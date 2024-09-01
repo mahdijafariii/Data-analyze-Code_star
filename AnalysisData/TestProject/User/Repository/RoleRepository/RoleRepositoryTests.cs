@@ -27,7 +27,7 @@ public class RoleRepositoryTests
     }
 
     [Fact]
-    public async Task GetRoleByIdAsync_ShouldReturnsRole_WhenRoleExists()
+    public async Task GetRoleByIdAsync_ShouldReturnsRoleWithInputId_WhenRoleExists()
     {
         //Arrange
         await InitializeAsync();
@@ -63,7 +63,7 @@ public class RoleRepositoryTests
 
 
     [Fact]
-    public async Task GetRoleByNameAsync_ShouldReturnsRole_WhenRoleExists()
+    public async Task GetRoleByNameAsync_ShouldReturnsRoleWithInputRoleName_WhenRoleExists()
     {
         //Arrange
         await InitializeAsync();
@@ -114,7 +114,7 @@ public class RoleRepositoryTests
     }
 
     [Fact]
-    public async Task DeleteRole_ShouldRemovesRoleAndReturnsTrue_WhenRoleExists()
+    public async Task DeleteRole_ShouldRemovesRoleWithInputRoleNameAndReturnsTrue_WhenRoleExists()
     {
         // Arrange
         await InitializeAsync();

@@ -64,11 +64,4 @@ public class AdminController : ControllerBase
         return Ok(new { massage = "updated successfully" });
     }
 
-    [HttpPost("first-admin")]
-    [AllowAnonymous]
-    public async Task<IActionResult> FirstAdmin()
-    {
-        await _adminRegisterService.AddFirstAdminAsync();
-        return Ok(new { message = "success" });
-    }
 }

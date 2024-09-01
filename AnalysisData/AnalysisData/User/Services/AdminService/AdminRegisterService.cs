@@ -74,39 +74,4 @@ public class AdminRegisterService : IAdminRegisterService
         return user;
     }
 
-    public async Task AddFirstAdminAsync()
-    {
-        var admin = await _userRepository.GetUserByUsernameAsync("admin");
-        if (admin != null)
-        {
-            throw new AdminExistenceException();
-        }
-
-        var adminRole = new Role()
-        {
-            RoleName = "admin".ToLower(),
-            RolePolicy = "gold",
-        };
-        var dataAnalystRole = new Role()
-        {
-            RoleName = "DataAnalyst".ToLower(),
-            RolePolicy = "bronze",
-        };
-        var dataManager = new Role()
-        {
-            RoleName = "DataManager".ToLower(),
-            RolePolicy = "silver",
-        };
-
-        var firstAdmin = new User()
-        {
-            Username = "admin", Password = _passwordHasher.HashPassword("admin"), PhoneNumber = "09131111111",
-            FirstName = "admin", LastName = "admin", Email = "admin@gmail.com", Role = adminRole
-        };
-
-        await _roleRepository.AddRoleAsync(adminRole);
-        await _roleRepository.AddRoleAsync(dataAnalystRole);
-        await _roleRepository.AddRoleAsync(dataManager);
-        await _userRepository.AddUserAsync(firstAdmin);
-    }
 }

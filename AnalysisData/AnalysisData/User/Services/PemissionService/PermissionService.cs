@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Security.Claims;
+using AnalysisData.Exception;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Services.Abstraction;
 using Microsoft.AspNetCore.Authorization;
@@ -56,7 +57,15 @@ public class PermissionService : IPermissionService
     public async Task<IEnumerable<string>> GetPermission(ClaimsPrincipal userClaims)
     {
         var roleName = userClaims.FindFirstValue(ClaimTypes.Role);
+        if (roleName is null)
+        {
+            throw new UserNotFoundException();
+        }
         var existRole = await _roleRepository.GetRoleByNameAsync(roleName);
+        if (existRole is null)
+        {
+            throw new RoleNotFoundException();
+        }
         var rolePermissions = GetRolePermissions(Assembly.GetExecutingAssembly(), existRole.RolePolicy);
         var permissions = rolePermissions.Values.SelectMany(x => x);
         return permissions;

@@ -14,7 +14,23 @@ builder.Services.AddHttpContextAccessor();
 var connectionString = builder.Configuration["CONNECTION_STRING"];
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
+
+
+
+builder.Services.AddTransient<Authorization>();
+var services = builder.Services.BuildServiceProvider();
+var authorization = services.GetRequiredService<Authorization>();
+await authorization.ConfigureServices(builder.Services);
+
+
+
 var app = builder.Build();
+
+
+
+
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();

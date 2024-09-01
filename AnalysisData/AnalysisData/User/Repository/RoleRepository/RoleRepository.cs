@@ -49,4 +49,14 @@ public class RoleRepository : IRoleRepository
     {
         return await _context.Roles.CountAsync();
     }
+    
+    
+    
+    public async Task<IEnumerable<string>> GetRolesByPolicyAsync(string policy)
+    {
+        return await _context.Roles
+            .Where(r => r.RolePolicy.ToLower() == policy.ToLower())
+            .Select(r => r.RoleName.ToLower())
+            .ToListAsync();
+    }
 }

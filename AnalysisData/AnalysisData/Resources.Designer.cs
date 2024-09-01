@@ -186,6 +186,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password is null!.
+        /// </summary>
+        internal static string PasswordHasherInputNull {
+            get {
+                return ResourceManager.GetString("PasswordHasherInputNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password is not match ! .
         /// </summary>
         internal static string PasswordMismatchException {

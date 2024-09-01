@@ -7,14 +7,14 @@ using NSubstitute;
 
 namespace TestProject.User.Services.Buisiness;
 
-public class PasswordManagerTest
+public class PasswordManagerTests
 {
     private readonly IPasswordHasher _passwordHasher;
     private readonly IPasswordService _passwordService;
     private readonly IValidationService _validationService;
     private readonly PasswordManager _sut;
 
-    public PasswordManagerTest()
+    public PasswordManagerTests()
     {
         _passwordHasher = Substitute.For<IPasswordHasher>();
         _passwordService = Substitute.For<IPasswordService>();

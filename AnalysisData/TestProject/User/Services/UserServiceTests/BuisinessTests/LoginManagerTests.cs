@@ -10,7 +10,7 @@ using NSubstitute;
 
 namespace TestProject.User.Services.Buisiness;
 
-public class LoginManagerTest
+public class LoginManagerTests
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordService _passwordService;
@@ -18,7 +18,7 @@ public class LoginManagerTest
     private readonly ICookieService _cookieService;
     private readonly LoginManager _sut;
 
-    public LoginManagerTest()
+    public LoginManagerTests()
     {
         _userRepository = Substitute.For<IUserRepository>();
         _passwordService = Substitute.For<IPasswordService>();

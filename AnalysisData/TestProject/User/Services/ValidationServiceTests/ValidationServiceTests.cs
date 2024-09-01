@@ -2,11 +2,11 @@
 
 namespace TestProject.User.Services.ValidationService;
 
-public class ValidationServiceTest
+public class ValidationServiceTests
 {
     private readonly AnalysisData.Services.ValidationService _validationService;
 
-    public ValidationServiceTest()
+    public ValidationServiceTests()
     {
         _validationService = new AnalysisData.Services.ValidationService();    
     }

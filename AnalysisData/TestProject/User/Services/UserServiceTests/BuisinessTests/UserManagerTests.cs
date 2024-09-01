@@ -9,13 +9,13 @@ using NSubstitute;
 
 namespace TestProject.User.Services.Buisiness;
 
-public class UserManagerTest
+public class UserManagerTests
 {
     private readonly IUserRepository _userRepository;
     private readonly IValidationService _validationService;
     private readonly UserManager _sut;
 
-    public UserManagerTest()
+    public UserManagerTests()
     {
         _userRepository = Substitute.For<IUserRepository>();
         _validationService = Substitute.For<IValidationService>();

@@ -13,5 +13,4 @@ public interface IUserService
     Task<bool> ResetPasswordAsync(ClaimsPrincipal userClaim, string password, string confirmPassword);
     Task<bool> UpdateUserInformationAsync(ClaimsPrincipal userClaim, UpdateUserDto updateUserDto);
     Task<bool> NewPasswordAsync(ClaimsPrincipal userClaim, string oldPassword, string password, string confirmPassword);
-    Task<bool> UploadImageAsync(ClaimsPrincipal claimsPrincipal, string imageUrl);
 }

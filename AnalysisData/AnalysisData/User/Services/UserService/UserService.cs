@@ -6,6 +6,7 @@ using AnalysisData.Exception;
 using AnalysisData.JwtService.abstractions;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services.Abstraction;
+using AnalysisData.Services.S3FileStorageService;
 using AnalysisData.Services.SecurityPasswordService.Abstraction;
 using AnalysisData.UserManage.LoginModel;
 using AnalysisData.UserManage.Model;
@@ -132,18 +133,5 @@ public class UserService : IUserService
         user.PhoneNumber = updateUserDto.PhoneNumber;
         await _userRepository.UpdateUserAsync(user.Id, user);
     }
-
-    public async Task<bool> UploadImageAsync(ClaimsPrincipal claimsPrincipal, string imageUrl)
-    {
-        var userName = claimsPrincipal.FindFirstValue("username");
-        var user = await _userRepository.GetUserByUsernameAsync(userName);
-        if (user == null)
-        {
-            throw new UserNotFoundException();
-        }
-
-        user.ImageURL = imageUrl;
-        await _userRepository.UpdateUserAsync(user.Id, user);
-        return true;
-    }
+    
 }

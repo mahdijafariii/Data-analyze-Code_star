@@ -19,11 +19,13 @@ public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IPermissionService _permissionService;
+    private readonly IUploadImageService _uploadImageService;
 
-    public UserController(IUserService userService, IPermissionService permissionService)
+    public UserController(IUserService userService, IPermissionService permissionService,IUploadImageService uploadImageService)
     {
         _userService = userService;
         _permissionService = permissionService;
+        _uploadImageService = uploadImageService;
     }
 
     [HttpPost("login")]
@@ -60,9 +62,8 @@ public class UserController : ControllerBase
         return BadRequest(new { massage = "not success" });
     }
 
-    [Authorize(Roles = "admin")]
     [HttpPost("upload-image")]
-    public IActionResult UploadImage(IFormFile file)
+    public async Task<IActionResult> UploadImage(IFormFile file)
     {
         var user = User;
         if (file == null || file.Length == 0)
@@ -70,7 +71,7 @@ public class UserController : ControllerBase
             return BadRequest(new { massage = "No file uploaded." });
         }
 
-        _userService.UploadImageAsync(user, file.FileName);
+        await _uploadImageService.UploadImageAsync(user, file);
 
         return Ok(new { massage = "Uploaded successfully." });
     }

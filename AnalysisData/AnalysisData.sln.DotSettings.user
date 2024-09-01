@@ -19,6 +19,14 @@
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.UserService.UserServiceTests.UpdateUserInformationAsync_ShouldReturnTrue_WhenUpdateSucceeds&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.UserManagerTest.GetUserAsync_UserExists_ReturnsUser&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.UserManagerTest.GetUserAsync_UserDoesNotExist_ThrowsUserNotFoundException&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.UserManagerTest.UpdateUserInformationAsync_ValidData_ReturnsTrue&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.UserManagerTest.UpdateUserInformationAsync_EmailAlreadyExists_ThrowsDuplicateUserException&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.PasswordServiceTest.ValidatePassword_ValidPassword_DoesNotThrowException&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.PasswordServiceTest.ValidatePassword_InvalidPassword_ThrowsPasswordMismatchException&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.PasswordServiceTest.ValidatePasswordAndConfirmation_MatchingPasswords_DoesNotThrowException&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.PasswordServiceTest.ValidatePasswordAndConfirmation_NonMatchingPasswords_ThrowsPasswordMismatchException&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.PasswordServiceTest.HashPassword_ValidPassword_ReturnsHashedPassword&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.Buisiness.PasswordServiceTest.HashPassword_InvalidPassword_ThrowsInvalidPasswordFormatException&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AnalysisData_002FResources/@EntryIndexedValue">True</s:Boolean>

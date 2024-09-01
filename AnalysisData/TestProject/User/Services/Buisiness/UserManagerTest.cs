@@ -67,16 +67,16 @@ public class UserManagerTest
     public async Task UpdateUserInformationAsync_ValidData_ReturnsTrue()
     {
         // Arrange
-        var user = new AnalysisData.UserManage.Model.User { Id = Guid.NewGuid(), Email = "oldEmail@example.com" };
+        var user = new AnalysisData.UserManage.Model.User { Id = Guid.NewGuid(), Email = "info@example.com", FirstName = "sdas", LastName = "asdsdqss"};
         var updateUserDto = new UpdateUserDto
         {
             FirstName = "NewFirstName",
             LastName = "NewLastName",
-            Email = "newEmail@example.com",
-            PhoneNumber = "1234567890"
+            Email = "info2@example.com",
+            PhoneNumber = "09130000000"
         };
 
-        _userRepository.GetUserByEmailAsync("newEmail@example.com").Returns((AnalysisData.UserManage.Model.User)null);
+        _userRepository.GetUserByEmailAsync("info2@example.com").Returns((AnalysisData.UserManage.Model.User)null);
 
         // Act
         var result = await _sut.UpdateUserInformationAsync(user, updateUserDto);
@@ -87,5 +87,28 @@ public class UserManagerTest
         _validationService.Received(1).EmailCheck(updateUserDto.Email);
         _validationService.Received(1).PhoneNumberCheck(updateUserDto.PhoneNumber);
     }
+    
+    [Fact]
+    public async Task UpdateUserInformationAsync_EmailAlreadyExists_ThrowsDuplicateUserException()
+    {
+        // Arrange
+        var user = new AnalysisData.UserManage.Model.User { Id = Guid.NewGuid(), Email = "info@gmail.com" };
+        var updateUserDto = new UpdateUserDto
+        {
+            FirstName = "NewFirstName",
+            LastName = "NewLastName",
+            Email = "info2@gmail.com",
+            PhoneNumber = "1234567890"
+        };
+
+        var existingUser = new AnalysisData.UserManage.Model.User { Id = Guid.NewGuid(), Email = "info2@gmail.com" };
+
+        _userRepository.GetUserByEmailAsync("info2@gmail.com").Returns(existingUser);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<DuplicateUserException>(() => _sut.UpdateUserInformationAsync(user, updateUserDto));
+    }
+
+
 
 }

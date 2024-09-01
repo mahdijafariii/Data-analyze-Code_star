@@ -4,5 +4,6 @@ namespace AnalysisData.Services.Abstraction;
 
 public interface IPermissionService
 {
-    IEnumerable<string> GetPermission(ClaimsPrincipal userClaims);
+    Task<IEnumerable<string>> GetPermission(ClaimsPrincipal userClaims);
+
 }

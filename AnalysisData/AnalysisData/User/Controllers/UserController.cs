@@ -36,17 +36,17 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("permissions")]
-    public IActionResult GetPermissions()
+    public async Task<IActionResult> GetPermissions()
     {
         var userClaims = User;
-        var permission = _permissionService.GetPermission(userClaims);
+        var permission = await _permissionService.GetPermission(userClaims);
         var firstName = userClaims.FindFirstValue("firstname");
         var lastName = userClaims.FindFirstValue("lastname");
         var image = userClaims.FindFirstValue("image");
 
         return Ok(new { image, firstName, lastName, permission });
     }
-
+    [Authorize(Policy = "gold")]
     [Authorize(Roles = "admin")]
     [HttpPost("reset-passadword")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
@@ -76,6 +76,7 @@ public class UserController : ControllerBase
         return Ok(new { massage = "Uploaded successfully." });
     }
 
+    [Authorize(Policy = "gold")]
     [HttpPut("update-user")]
     public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
     {

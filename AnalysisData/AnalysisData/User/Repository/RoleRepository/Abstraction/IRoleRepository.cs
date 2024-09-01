@@ -10,4 +10,5 @@ public interface IRoleRepository
     Task<bool> DeleteRoleAsync(string roleId);
     Task<List<Role>> GetAllRolesPaginationAsync(int page, int limit);
     Task<int> GetRolesCountAsync();
+    Task<IEnumerable<string>> GetRolesByPolicyAsync(string policy);
 }

@@ -46,7 +46,7 @@ public class AdminService : IAdminService
             throw new RoleNotFoundException();
         }
 
-        SetUpdatedInformation(user, updateAdminDto);
+        await SetUpdatedInformation(user, updateAdminDto);
         await _jwtService.UpdateUserCookie(user.Username, false);
     }
 

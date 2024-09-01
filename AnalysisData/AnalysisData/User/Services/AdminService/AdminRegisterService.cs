@@ -1,11 +1,7 @@
-using System.Security.Cryptography;
-using System.Text;
 using AnalysisData.Exception;
-using AnalysisData.JwtService.abstractions;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services.Abstraction;
-using AnalysisData.Services.S3FileStorageService;
 using AnalysisData.Services.SecurityPasswordService.Abstraction;
 using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.RegisterModel;
@@ -32,30 +28,36 @@ public class AdminRegisterService : IAdminRegisterService
     public async Task RegisterByAdminAsync(UserRegisterDto userRegisterDto)
     {
         var roleCheck = userRegisterDto.RoleName.ToLower();
+        var existingRole = await CheckExistenceRole(roleCheck);
+
+        await ValidateUserInformation(userRegisterDto);
+        _validationService.EmailCheck(userRegisterDto.Email);
+        _validationService.PasswordCheck(userRegisterDto.Password);
+        if (userRegisterDto.Password != userRegisterDto.ConfirmPassword)
+            throw new PasswordMismatchException();
+        _validationService.PhoneNumberCheck(userRegisterDto.PhoneNumber);
+
+        var user = await MakeUser(userRegisterDto, existingRole);
+        await _userRepository.AddUserAsync(user);
+    }
+
+    private async Task<Role> CheckExistenceRole(string roleCheck)
+    {
         var existingRole = await _roleRepository.GetRoleByNameAsync(roleCheck);
         if (existingRole == null)
         {
             throw new RoleNotFoundException();
         }
 
+        return existingRole;
+    }
+
+    private async Task ValidateUserInformation(UserRegisterDto userRegisterDto)
+    {
         var existingUserByEmail = await _userRepository.GetUserByEmailAsync(userRegisterDto.Email);
         var existingUserByUsername = await _userRepository.GetUserByUsernameAsync(userRegisterDto.Username);
         if (existingUserByEmail != null && existingUserByUsername != null)
             throw new DuplicateUserException();
-        _validationService.EmailCheck(userRegisterDto.Email);
-        _validationService.PasswordCheck(userRegisterDto.Password);
-        if (userRegisterDto.Password != userRegisterDto.ConfirmPassword)
-        {
-            throw new PasswordMismatchException();
-        }
-
-        _validationService.PhoneNumberCheck(userRegisterDto.PhoneNumber);
-        if (userRegisterDto.Password != userRegisterDto.ConfirmPassword)
-            throw new PasswordMismatchException();
-
-
-        var user = await MakeUser(userRegisterDto, existingRole);
-        await _userRepository.AddUserAsync(user);
     }
 
     private async Task<User> MakeUser(UserRegisterDto userRegisterDto, Role role)

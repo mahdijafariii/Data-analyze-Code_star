@@ -32,22 +32,32 @@ public class AdminService : IAdminService
     public async Task UpdateUserInformationByAdminAsync(Guid id, UpdateAdminDto updateAdminDto)
     {
         var user = await _userRepository.GetUserByIdAsync(id);
+        
+        await ValidateUserInformation(user, updateAdminDto);
+        _validationService.EmailCheck(updateAdminDto.Email);
+        _validationService.PhoneNumberCheck(updateAdminDto.PhoneNumber);
+        await CheckExistenceOfRole(updateAdminDto);
+        
+        await SetUpdatedInformation(user, updateAdminDto);
+        await _jwtService.UpdateUserCookie(user.Username, false);
+    }
+
+    private async Task ValidateUserInformation(User user,UpdateAdminDto updateAdminDto)
+    {
         var checkUsername = await _userRepository.GetUserByUsernameAsync(updateAdminDto.Username);
         var checkEmail = await _userRepository.GetUserByEmailAsync(updateAdminDto.Email);
 
         if ((checkUsername != null && !user.Equals(checkUsername)) || (checkEmail != null && !user.Equals(checkEmail)))
             throw new DuplicateUserException();
+    }
 
-        _validationService.EmailCheck(updateAdminDto.Email);
-        _validationService.PhoneNumberCheck(updateAdminDto.PhoneNumber);
+    private async Task CheckExistenceOfRole(UpdateAdminDto updateAdminDto)
+    {
         var role = await _roleRepository.GetRoleByNameAsync(updateAdminDto.RoleName);
         if (role == null)
         {
             throw new RoleNotFoundException();
         }
-
-        await SetUpdatedInformation(user, updateAdminDto);
-        await _jwtService.UpdateUserCookie(user.Username, false);
     }
 
     private async Task SetUpdatedInformation(User user, UpdateAdminDto updateAdminDto)
@@ -60,6 +70,7 @@ public class AdminService : IAdminService
         user.Role.RoleName = updateAdminDto.RoleName;
         await _userRepository.UpdateUserAsync(user.Id, user);
     }
+    
 
     public async Task<bool> DeleteUserAsync(Guid id)
     {

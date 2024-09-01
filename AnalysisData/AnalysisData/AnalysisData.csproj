@@ -22,6 +22,7 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.7" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.7" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+        <PackageReference Include="NSubstitute" Version="5.1.0" />
         <PackageReference Include="QuickGraph" Version="3.6.61119.7" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.0" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.1" />

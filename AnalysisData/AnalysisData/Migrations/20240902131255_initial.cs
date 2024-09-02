@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     /// <inheritdoc />
-    public partial class initials : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -246,7 +246,7 @@ namespace AnalysisData.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "FirstName", "ImageURL", "LastName", "Password", "PhoneNumber", "RoleId", "Username" },
-                values: new object[] { new Guid("85906ba5-c7bb-4708-83db-46734d4adf09"), "admin@gmail.com", "admin", null, "admin", "admin", "09131111111", 1, "admin" });
+                values: new object[] { new Guid("585bc7f6-895d-4698-af86-bea702f770c2"), "admin@gmail.com", "admin", null, "admin", "admin", "09131111111", 1, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_EntityNodes_NodeFileReferenceId",

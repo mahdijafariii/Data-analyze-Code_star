@@ -15,6 +15,8 @@ using AnalysisData.EAV.Service.Business.Abstraction;
 using AnalysisData.EAV.Service.GraphServices.NodeAndEdgeServices;
 using AnalysisData.EAV.Service.GraphServices.Relationship;
 using AnalysisData.EAV.Service.GraphSevices;
+using AnalysisData.Graph.Service.ServiceBusiness;
+using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 using AnalysisData.JwtService.abstractions;
 using AnalysisData.Repository.RoleRepository;
 using AnalysisData.Repository.RoleRepository.Abstraction;
@@ -77,7 +79,7 @@ public static class ConfigService
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IS3FileStorageService, S3FileStorageService>();
         services.AddScoped<IUploadImageService, UploadImageService>();
-
+        services.AddScoped<IValueNodeProcessor, ValueNodeProcessor>();
 
         return services;
     }

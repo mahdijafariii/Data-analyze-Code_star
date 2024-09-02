@@ -2,60 +2,53 @@
 using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
 using AnalysisData.EAV.Service.Business.Abstraction;
 using CsvHelper;
+using Microsoft.Extensions.Azure;
 
 namespace AnalysisData.EAV.Service.Business;
 
 public class NodeRecordProcessor : INodeRecordProcessor
 {
     private readonly IEntityNodeRepository _entityNodeRepository;
-    private readonly IAttributeNodeRepository _attributeNodeRepository;
-    private readonly IValueNodeRepository _valueNodeRepository;
+    private readonly int _batchSize;
 
-    public NodeRecordProcessor(IEntityNodeRepository entityNodeRepository,
-        IAttributeNodeRepository attributeNodeRepository, IValueNodeRepository valueNodeRepository)
+    public NodeRecordProcessor(IEntityNodeRepository entityNodeRepository, int batchSize = 1000)
     {
         _entityNodeRepository = entityNodeRepository;
-        _attributeNodeRepository = attributeNodeRepository;
-        _valueNodeRepository = valueNodeRepository;
+        _batchSize = batchSize;
     }
 
-    public async Task ProcessRecordsAsync(CsvReader csv, IEnumerable<string> headers, string id, int fileId)
+    public async Task<IEnumerable<EntityNode>> ProcessEntityNodesAsync(CsvReader csv, IEnumerable<string> headers, string id, int fileId)
     {
+        var entityNodes = new List<EntityNode>();
+        var batch = new List<EntityNode>();
+
         while (csv.Read())
         {
             var entityId = csv.GetField(id);
             if (string.IsNullOrEmpty(entityId)) continue;
 
-            var entityNode = await CreateEntityNodeAsync(entityId, fileId);
-            await ProcessValuesAsync(csv, headers, id, entityNode);
-        }
-    }
+            var entityNode = new EntityNode { Name = entityId, NodeFileReferenceId = fileId };
+            entityNodes.Add(entityNode);
+            batch.Add(entityNode);
 
-    private async Task<EntityNode> CreateEntityNodeAsync(string entityId, int fileId)
-    {
-        var entityNode = new EntityNode { Name = entityId, NodeFileReferenceId = fileId };
-        await _entityNodeRepository.AddAsync(entityNode);
-        return entityNode;
-    }
-
-    private async Task ProcessValuesAsync(CsvReader csv, IEnumerable<string> headers, string id, EntityNode entityNode)
-    {
-        foreach (var header in headers)
-        {
-            if (header == id) continue;
-
-            var attribute = await _attributeNodeRepository.GetByNameAsync(header);
-            if (attribute == null) continue;
-
-            var valueString = csv.GetField(header);
-
-            var valueNode = new ValueNode
+            if (batch.Count >= _batchSize)
             {
-                EntityId = entityNode.Id,
-                AttributeId = attribute.Id,
-                Value = valueString
-            };
-            await _valueNodeRepository.AddAsync(valueNode);
+                await InsertBatchAsync(batch);
+                batch.Clear();
+            }
         }
+
+        if (batch.Any())
+        {
+            await InsertBatchAsync(batch);
+        }
+
+        return entityNodes;
     }
+
+    private async Task InsertBatchAsync(IEnumerable<EntityNode> batch)
+    {
+        await _entityNodeRepository.AddRangeAsync(batch);
+    }
+    
 }

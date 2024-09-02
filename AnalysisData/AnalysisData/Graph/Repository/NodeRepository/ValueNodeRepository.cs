@@ -20,6 +20,11 @@ public class ValueNodeRepository : IValueNodeRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task AddRangeAsync(IEnumerable<ValueNode> valueNodes)
+    {
+        await _context.ValueNodes.AddRangeAsync(valueNodes);
+        await _context.SaveChangesAsync();
+    }
     public async Task<IEnumerable<ValueNode>> GetAllAsync()
     {
         return await _context.ValueNodes.ToListAsync();

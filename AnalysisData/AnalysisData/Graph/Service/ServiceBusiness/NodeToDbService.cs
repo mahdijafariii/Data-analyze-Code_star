@@ -32,6 +32,6 @@ public class NodeToDbService : INodeToDbService
         
         using var csvReaderForValueNodes = _csvReaderService.CreateCsvReader(file);
         var headers2 = _csvReaderService.ReadHeaders(csvReaderForValueNodes);
-        await _valueNodeProcessor.ProcessValuesAsync(csvReaderForValueNodes, entityNodes, headers2, id);
+        await _valueNodeProcessor.ProcessValueNodesAsync(csvReaderForValueNodes, entityNodes, headers2, id);
     }
 }

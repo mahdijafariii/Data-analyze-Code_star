@@ -20,7 +20,7 @@ public class ValueNodeProcessor : IValueNodeProcessor
         _batchSize = batchSize;
     }
 
-    public async Task ProcessValuesAsync(CsvReader csv, IEnumerable<EntityNode> entityNodes, IEnumerable<string> headers, string id)
+    public async Task ProcessValueNodesAsync(CsvReader csv, IEnumerable<EntityNode> entityNodes, IEnumerable<string> headers, string id)
     {
         var attributeCache = new Dictionary<string, int>();
         var batch = new List<ValueNode>();

@@ -1,11 +1,9 @@
-﻿using System.Data;
-using AnalysisData.Exception.UserException;
+﻿using AnalysisData.Exception.UserException;
 using AnalysisData.Model;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services.AdminService;
 using AnalysisData.Services.SecurityPasswordService.Abstraction;
-using AnalysisData.Services.ValidationService;
 using AnalysisData.Services.ValidationService.Abstraction;
 using AnalysisData.UserDto.UserDto;
 using NSubstitute;

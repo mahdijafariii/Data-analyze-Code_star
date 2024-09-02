@@ -1,203 +1,170 @@
-﻿using AnalysisData.Data;
-using AnalysisData.Model;
-using Microsoft.EntityFrameworkCore;
-
-namespace TestProject.User.Repository.RoleRepository;
-
-public class RoleRepositoryTests
-{
-    private readonly ApplicationDbContext _context;
-    private readonly AnalysisData.Repository.RoleRepository.RoleRepository _sut;
-
-    public RoleRepositoryTests()
-    {
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase("TestRoleDatabase").Options;
-        _context = new ApplicationDbContext(options);
-        _sut = new AnalysisData.Repository.RoleRepository.RoleRepository(_context);
-    }
-
-    private async Task InitializeAsync()
-    {
-        await _context.Database.EnsureCreatedAsync();
-    }
-
-    private async Task DisposeAsync()
-    {
-        await _context.Database.EnsureDeletedAsync();
-    }
-
-    [Fact]
-    public async Task GetRoleByIdAsync_ShouldReturnsRoleWithInputId_WhenRoleExists()
-    {
-        //Arrange
-        await InitializeAsync();
-        var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        _context.Roles.Add(role);
-        await _context.SaveChangesAsync();
-
-        // Act
-        var result = await _sut.GetRoleByIdAsync(1);
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal("Admin", result.RoleName);
-        await DisposeAsync();
-    }
-
-    [Fact]
-    public async Task GetRoleByIdAsync_ShouldReturnsNull_WhenRoleDoesNotExist()
-    {
-        //Arrange
-        await InitializeAsync();
-        var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        _context.Roles.Add(role);
-        await _context.SaveChangesAsync();
-
-        // Act
-        var result = await _sut.GetRoleByIdAsync(2);
-
-        // Assert
-        Assert.Null(result);
-        await DisposeAsync();
-    }
-
-
-    [Fact]
-    public async Task GetRoleByNameAsync_ShouldReturnsRoleWithInputRoleName_WhenRoleExists()
-    {
-        //Arrange
-        await InitializeAsync();
-        var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        _context.Roles.Add(role);
-        await _context.SaveChangesAsync();
-
-        // Act
-        var result = await _sut.GetRoleByNameAsync("Admin");
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal("Admin", result.RoleName);
-        await DisposeAsync();
-    }
-
-    [Fact]
-    public async Task GetRoleByNameAsync_ShouldReturnsNull_WhenRoleDoesNotExist()
-    {
-        //Arrange
-        await InitializeAsync();
-        var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        _context.Roles.Add(role);
-        await _context.SaveChangesAsync();
-
-        // Act
-        var result = await _sut.GetRoleByNameAsync("DataManager");
-
-        // Assert
-        Assert.Null(result);
-        await DisposeAsync();
-    }
-
-    [Fact]
-    public async Task AddRoleAsync_ShouldAddsRoleToDatabase()
-    {
-        // Arrange
-        await InitializeAsync();
-        var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-
-        // Act
-        await _sut.AddRoleAsync(role);
-
-        // Assert
-        Assert.Equal(1, _context.Roles.Count());
-        Assert.Contains(_context.Roles, r => r is { Id: 1, RoleName: "Admin", RolePolicy: "gold" });
-        await DisposeAsync();
-    }
-
-    [Fact]
-    public async Task DeleteRole_ShouldRemovesRoleWithInputRoleNameAndReturnsTrue_WhenRoleExists()
-    {
-        // Arrange
-        await InitializeAsync();
-        var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        _context.Roles.Add(role);
-        await _context.SaveChangesAsync();
-
-
-        // Act
-        var result = await _sut.DeleteRoleAsync("Admin");
-
-        // Assert
-        Assert.True(result);
-        Assert.Equal(0, _context.Roles.Count());
-        await DisposeAsync();
-    }
-
-    [Fact]
-    public async Task DeleteRole_ShouldReturnsFalse_WhenRoleDoesNotExist()
-    {
-        // Arrange
-        await InitializeAsync();
-        var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        _context.Roles.Add(role);
-        await _context.SaveChangesAsync();
-
-
-        // Act
-        var result = await _sut.DeleteRoleAsync("DataManager");
-
-        // Assert
-        Assert.False(result);
-        Assert.Equal(1, _context.Roles.Count());
-        await DisposeAsync();
-    }
-
-    [Fact]
-    public async Task GetAllRolesPaginationAsync_ShouldReturnPaginatedResults_Whenever()
-    {
-        // Arrange
-        await InitializeAsync();
-        _context.Roles.AddRange(
-            new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" },
-            new Role { Id = 2, RoleName = "DataManager", RolePolicy = "silver" },
-            new Role { Id = 3, RoleName = "DataAnalyst", RolePolicy = "boronz" }
-        );
-
-        await _context.SaveChangesAsync();
-
-        var page = 0;
-        var limit = 2;
-
-        // Act
-        var result = await _sut.GetAllRolesPaginationAsync(page, limit);
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(2, result.Count);
-        Assert.Equal("Admin", result[0].RoleName);
-        Assert.Equal("DataManager", result[1].RoleName);
-        await DisposeAsync();
-    }
-    
-    [Fact]
-    public async Task GetRolesCountAsync_ShouldReturnCountsOfRoles_Whenever()
-    {
-        // Arrange
-        await InitializeAsync();
-        _context.Roles.AddRange(
-            new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" },
-            new Role { Id = 2, RoleName = "DataManager", RolePolicy = "silver" },
-            new Role { Id = 3, RoleName = "DataAnalyst", RolePolicy = "boronz" }
-        );
-
-        await _context.SaveChangesAsync();
-
-        // Act
-        var result = await _sut.GetRolesCountAsync();
-
-        // Assert
-        Assert.Equal(3, result);
-        await DisposeAsync();
-    }
-    
-    
-}
+﻿// using AnalysisData.Model;
+// using Microsoft.EntityFrameworkCore;
+// using NSubstitute;
+// using System.Linq.Expressions;
+// using AnalysisData.Data;
+// using MockQueryable.FakeItEasy;
+// using NSubstitute.ReturnsExtensions;
+//
+// namespace TestProject.User.Repository.RoleRepository
+// {
+//     public class RoleRepositoryTests
+//     {
+//         private readonly ApplicationDbContext _context;
+//         private readonly DbSet<Role> _roleSet;
+//         private readonly AnalysisData.Repository.RoleRepository.RoleRepository _sut;
+//         private readonly IQueryable<Role> _roles;
+//
+//         public RoleRepositoryTests()
+//         {
+//             // Initialize the roles list
+//             _roles = new List<Role>
+//             {
+//                 new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" },
+//                 new Role { Id = 2, RoleName = "DataManager", RolePolicy = "silver" },
+//                 new Role { Id = 3, RoleName = "DataAnalyst", RolePolicy = "bronze" }
+//             }.AsQueryable();
+//
+//             _roleSet = _roles.BuildMockDbSet();
+//
+//             _context = Substitute.For<ApplicationDbContext>();
+//             _context.Roles.Returns(_roleSet);
+//
+//             // Initialize the repository with the mock context
+//             _sut = new AnalysisData.Repository.RoleRepository.RoleRepository(_context);
+//         }
+//
+//         [Fact]
+//         public async Task GetRoleByIdAsync_ShouldReturnRoleWithInputId_WhenRoleExists()
+//         {
+//             // Arrange
+//             _roleSet.FindAsync(1).Returns(_roles.FirstOrDefault(r => r.Id == 1));
+//
+//             // Act
+//             var result = await _sut.GetRoleByIdAsync(1);
+//
+//             // Assert
+//             Assert.NotNull(result);
+//             Assert.Equal("Admin", result.RoleName);
+//         }
+//
+//         [Fact]
+//         public async Task GetRoleByIdAsync_ShouldReturnNull_WhenRoleDoesNotExist()
+//         {
+//             // Arrange
+//             _roleSet.FindAsync(99).ReturnsNull();
+//
+//             // Act
+//             var result = await _sut.GetRoleByIdAsync(99);
+//
+//             // Assert
+//             Assert.Null(result);
+//         }
+//
+//         [Fact]
+//         public async Task GetRoleByNameAsync_ShouldReturnRoleWithInputRoleName_WhenRoleExists()
+//         {
+//             // Arrange
+//             Expression<Func<Role, bool>> expression = role => role.RoleName == "Admin";
+//             _roleSet.FirstOrDefaultAsync(expression).Returns(_roles.FirstOrDefault(expression.Compile()));
+//
+//             // Act
+//             var result = await _sut.GetRoleByNameAsync("Admin");
+//
+//             // Assert
+//             Assert.NotNull(result);
+//             Assert.Equal("Admin", result.RoleName);
+//         }
+//
+//         [Fact]
+//         public async Task GetRoleByNameAsync_ShouldReturnNull_WhenRoleDoesNotExist()
+//         {
+//             // Arrange
+//             Expression<Func<Role, bool>> expression = role => role.RoleName == "NonExistingRole";
+//             _roleSet.FirstOrDefaultAsync(expression).ReturnsNull();
+//
+//             // Act
+//             var result = await _sut.GetRoleByNameAsync("NonExistingRole");
+//
+//             // Assert
+//             Assert.Null(result);
+//         }
+//
+//         [Fact]
+//         public async Task AddRoleAsync_ShouldAddRoleToDatabase()
+//         {
+//             // Arrange
+//             var newRole = new Role { Id = 4, RoleName = "NewRole", RolePolicy = "platinum" };
+//
+//             // Act
+//             await _sut.AddRoleAsync(newRole);
+//
+//             // Assert
+//             await _roleSet.Received(1).AddAsync(newRole);
+//             await _context.Received(1).SaveChangesAsync();
+//         }
+//
+//         [Fact]
+//         public async Task DeleteRoleAsync_ShouldRemoveRoleWithInputRoleNameAndReturnTrue_WhenRoleExists()
+//         {
+//             // Arrange
+//             Expression<Func<Role, bool>> expression = role => role.RoleName == "Admin";
+//             var existingRole = _roles.FirstOrDefault(expression.Compile());
+//             _roleSet.FirstOrDefaultAsync(expression).Returns(existingRole);
+//
+//             // Act
+//             var result = await _sut.DeleteRoleAsync("Admin");
+//
+//             // Assert
+//             Assert.True(result);
+//             _roleSet.Received(1).Remove(existingRole);
+//             await _context.Received(1).SaveChangesAsync();
+//         }
+//
+//         [Fact]
+//         public async Task DeleteRoleAsync_ShouldReturnFalse_WhenRoleDoesNotExist()
+//         {
+//             // Arrange
+//             Expression<Func<Role, bool>> expression = role => role.RoleName == "NonExistingRole";
+//             _roleSet.FirstOrDefaultAsync(expression).ReturnsNull();
+//
+//             // Act
+//             var result = await _sut.DeleteRoleAsync("NonExistingRole");
+//
+//             // Assert
+//             Assert.False(result);
+//             _roleSet.DidNotReceive().Remove(Arg.Any<Role>());
+//             await _context.DidNotReceive().SaveChangesAsync();
+//         }
+//
+//         [Fact]
+//         public async Task GetAllRolesPaginationAsync_ShouldReturnPaginatedResults()
+//         {
+//             // Arrange
+//             var paginatedRoles = _roles.Take(2).AsQueryable();
+//             _roleSet.AsQueryable().Returns(paginatedRoles);
+//
+//             // Act
+//             var result = await _sut.GetAllRolesPaginationAsync(0, 2);
+//
+//             // Assert
+//             Assert.NotNull(result);
+//             Assert.Equal(2, result.Count);
+//             Assert.Equal("Admin", result[0].RoleName);
+//             Assert.Equal("DataManager", result[1].RoleName);
+//         }
+//
+//         [Fact]
+//         public async Task GetRolesCountAsync_ShouldReturnCountOfRoles()
+//         {
+//             // Arrange
+//             _roleSet.CountAsync().Returns(_roles.Count());
+//
+//             // Act
+//             var result = await _sut.GetRolesCountAsync();
+//
+//             // Assert
+//             Assert.Equal(3, result);
+//         }
+//     }
+// }

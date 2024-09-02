@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240901184817_SeedData")]
-    partial class SeedData
+    [Migration("20240902082451_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -309,7 +309,7 @@ namespace AnalysisData.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0cbdbc08-e5c5-4faf-a8bc-f6c2bda55308"),
+                            Id = new Guid("88d6055e-bb66-4577-9584-63617a465e05"),
                             Email = "admin@gmail.com",
                             FirstName = "admin",
                             LastName = "admin",

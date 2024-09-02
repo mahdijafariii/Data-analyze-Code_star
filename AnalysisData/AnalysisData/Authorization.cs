@@ -1,6 +1,7 @@
 using System.Text;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AnalysisData;
@@ -14,7 +15,7 @@ public class Authorization
         _roleRepository = roleRepository;
     }
 
-    public async Task ConfigureServices(IServiceCollection services)
+    public void ConfigureServices(IServiceCollection services)
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
@@ -25,24 +26,25 @@ public class Authorization
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "yourIssuer",
-                    ValidAudience = "yourAudience",
+                    ValidIssuer = "",
+                    ValidAudience = "",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("yourSecretKey"))
                 };
             });
 
+        services.AddAuthorization(); 
+    }
+
+    public async Task InitializeRolesAsync(IServiceProvider serviceProvider)
+    {
         var goldRoles = await _roleRepository.GetRolesByPolicyAsync("Gold");
         var silverRoles = await _roleRepository.GetRolesByPolicyAsync("Silver");
         var bronzeRoles = await _roleRepository.GetRolesByPolicyAsync("Bronze");
-        services.AddAuthorization(options =>
-        {
-            options.AddPolicy("gold", policy =>
-                policy.RequireRole(goldRoles.ToArray()));
-            options.AddPolicy("silver", policy =>
-                policy.RequireRole(silverRoles.ToArray()));
 
-            options.AddPolicy("bronze", policy =>
-                policy.RequireRole(bronzeRoles.ToArray()));
-        });
+        var authorizationOptions = serviceProvider.GetRequiredService<AuthorizationOptions>();
+
+        authorizationOptions.AddPolicy("gold", policy => policy.RequireRole(goldRoles.ToArray()));
+        authorizationOptions.AddPolicy("silver", policy => policy.RequireRole(silverRoles.ToArray()));
+        authorizationOptions.AddPolicy("bronze", policy => policy.RequireRole(bronzeRoles.ToArray()));
     }
 }

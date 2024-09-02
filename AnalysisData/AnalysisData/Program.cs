@@ -16,13 +16,12 @@ builder.Services.AddHttpContextAccessor();
 var connectionString = builder.Configuration["CONNECTION_STRING"];
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
-var services = builder.Services.BuildServiceProvider();
-var authorization = services.GetRequiredService<Authorization>();
-await authorization.ConfigureServices(builder.Services);
 
+var services = builder.Services.BuildServiceProvider();
 
 var app = builder.Build();
-
+var authorization = app.Services.GetRequiredService<Authorization>();
+await authorization.InitializeRolesAsync(app.Services);
 
 
 if (app.Environment.IsDevelopment())

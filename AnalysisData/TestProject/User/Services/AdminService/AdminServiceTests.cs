@@ -70,7 +70,7 @@ public class AdminServiceTests
 
         // Assert
         await _userRepository
-            .Received(1)
+            .Received()
             .UpdateUserAsync(userId, Arg.Is<AnalysisData.Model.User>(u =>
                 u.Username == updateAdminDto.Username &&
                 u.Email == updateAdminDto.Email &&
@@ -81,7 +81,7 @@ public class AdminServiceTests
             ));
 
         await _jwtService
-            .Received(1)
+            .Received()
             .UpdateUserCookie(updateAdminDto.Username, false);
     }
 

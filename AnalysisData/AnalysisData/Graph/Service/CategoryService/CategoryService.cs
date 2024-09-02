@@ -1,11 +1,9 @@
 ﻿using AnalysisData.EAV.Dto;
 using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
 using AnalysisData.EAV.Repository.CategoryRepository.asbtraction;
 using AnalysisData.EAV.Repository.FileUploadedRepository;
 using AnalysisData.EAV.Service.Abstraction;
 using AnalysisData.Exception;
-using CsvHelper.TypeConversion;
 
 namespace AnalysisData.EAV.Service;
 

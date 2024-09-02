@@ -1,18 +1,15 @@
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 using AnalysisData.CookieService.abstractions;
-using AnalysisData.Exception;
+using AnalysisData.Exception.UserException;
 using AnalysisData.JwtService.abstractions;
+using AnalysisData.Model;
 using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Services.Abstraction;
-using AnalysisData.Services.S3FileStorageService;
 using AnalysisData.Services.SecurityPasswordService.Abstraction;
-using AnalysisData.UserManage.LoginModel;
-using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.UpdateModel;
+using AnalysisData.Services.UserService.Abstraction;
+using AnalysisData.Services.ValidationService.Abstraction;
+using AnalysisData.UserDto.UserDto;
 
-namespace AnalysisData.Services;
+namespace AnalysisData.Services.UserService;
 
 public class UserService : IUserService
 {

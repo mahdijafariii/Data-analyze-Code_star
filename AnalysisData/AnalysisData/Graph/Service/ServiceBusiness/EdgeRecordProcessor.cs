@@ -1,10 +1,10 @@
-﻿using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
-using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
-using AnalysisData.EAV.Service.Business.Abstraction;
+﻿using AnalysisData.Graph.Model.Edge;
+using AnalysisData.Graph.Repository.EdgeRepository.Abstraction;
+using AnalysisData.Graph.Repository.NodeRepository.Abstraction;
+using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 using CsvHelper;
 
-namespace AnalysisData.EAV.Service.Business;
+namespace AnalysisData.Graph.Service.ServiceBusiness;
 
 public class EdgeRecordProcessor : IEdgeRecordProcessor
 {

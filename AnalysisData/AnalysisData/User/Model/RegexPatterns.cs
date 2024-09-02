@@ -1,4 +1,4 @@
-namespace AnalysisData.UserManage.Model;
+namespace AnalysisData.Model;
 
 public static class RegexPatterns
 {

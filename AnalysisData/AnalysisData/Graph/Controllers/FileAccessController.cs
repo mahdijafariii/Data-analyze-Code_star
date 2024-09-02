@@ -1,10 +1,9 @@
-using AnalysisData.EAV.Dto;
-using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.EAV.Service;
-using AnalysisData.Repository.UserRepository.Abstraction;
+using AnalysisData.Graph.Dto;
+using AnalysisData.Graph.Repository.UserFileRepository.Abstraction;
+using AnalysisData.Graph.Service.FilePermissionService;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnalysisData.EAV.Controllers;
+namespace AnalysisData.Graph.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

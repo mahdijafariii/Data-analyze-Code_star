@@ -1,5 +1,5 @@
 ﻿using AnalysisData.Data;
-using AnalysisData.UserManage.Model;
+using AnalysisData.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace TestProject.User.Repository.RoleRepository;
@@ -11,7 +11,7 @@ public class RoleRepositoryTests
 
     public RoleRepositoryTests()
     {
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase("TestDatabase").Options;
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase("TestRoleDatabase").Options;
         _context = new ApplicationDbContext(options);
         _sut = new AnalysisData.Repository.RoleRepository.RoleRepository(_context);
     }

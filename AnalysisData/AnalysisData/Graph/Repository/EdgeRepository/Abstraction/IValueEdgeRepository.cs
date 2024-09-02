@@ -1,6 +1,6 @@
-﻿using AnalysisData.EAV.Model;
+﻿using AnalysisData.Graph.Model.Edge;
 
-namespace AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
+namespace AnalysisData.Graph.Repository.EdgeRepository.Abstraction;
 
 public interface IValueEdgeRepository
 {

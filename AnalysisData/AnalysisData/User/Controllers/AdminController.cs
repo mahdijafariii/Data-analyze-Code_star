@@ -1,7 +1,5 @@
-﻿using AnalysisData.Services;
-using AnalysisData.Services.Abstraction;
-using AnalysisData.UserManage.RegisterModel;
-using AnalysisData.UserManage.UpdateModel;
+﻿using AnalysisData.Services.AdminService.Abstraction;
+using AnalysisData.UserDto.UserDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -55,20 +53,5 @@ public class AdminController : ControllerBase
 
         return NotFound(new { message = "User not found." });
     }
-
-    [Authorize(Roles = "admin")]
-    [HttpPut("users/{id}")]
-    public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateAdminDto updateAdminDto)
-    {
-        await _adminService.UpdateUserInformationByAdminAsync(id, updateAdminDto);
-        return Ok(new { massage = "updated successfully" });
-    }
-
-    [HttpPost("first-admin")]
-    [AllowAnonymous]
-    public async Task<IActionResult> FirstAdmin()
-    {
-        await _adminRegisterService.AddFirstAdminAsync();
-        return Ok(new { message = "success" });
-    }
+    
 }

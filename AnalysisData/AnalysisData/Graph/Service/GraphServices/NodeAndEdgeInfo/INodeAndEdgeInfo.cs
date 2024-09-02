@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace AnalysisData.EAV.Service.GraphServices.NodeAndEdgeServices;
+namespace AnalysisData.Graph.Service.GraphServices.NodeAndEdgeInfo;
 
 public interface INodeAndEdgeInfo
 {

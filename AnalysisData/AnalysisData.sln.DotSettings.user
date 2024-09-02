@@ -9,7 +9,7 @@
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1463d704_002D5ef5_002D4eb3_002Da61f_002D385581241cf9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="GetUserByUsernameAsync_ShouldReturnsUserWithInputUsername_WhenUserExists" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1463d704_002D5ef5_002D4eb3_002Da61f_002D385581241cf9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetUserByUsernameAsync_ShouldReturnsUserWithInputUsername_WhenUserExists" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Repository.UserRepository.UserRepositoryTests.GetUserByEmailAsync_ShouldReturnsNull_WhenUserWithInputEmailDoesNotExist&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Repository.UserRepository.UserRepositoryTests.GetUserByIdAsync_ShouldReturnsUserWithInputId_WhenUserWithInputIdExists&lt;/TestId&gt;&#xD;
@@ -29,6 +29,8 @@
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.AdminService.AdminServiceTests.DeleteUserAsync_ShouldReturnTrue_WhenUserExists&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::AdminServiceTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.AdminService.AdminRegisterServiceTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Repository.UserRepository.UserRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.AdminService.AdminServiceTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1e8f93b2_002D4572_002D4c58_002Db711_002Dacb713304847/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetRole_ShouldReturnsRole_WhenRoleExists #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
@@ -59,6 +61,15 @@
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests.GetUser_ShouldReturnsUser_WhenUserExists&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.DeleteRole_ShouldReturnsFalse_WhenRoleDoesNotExist&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7daf18b0_002D56cf_002D4c0c_002Da004_002D0da528af25ea/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="CheckExistenceOfRole_ShouldNotThrowException_WhenRoleExists" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.AdminService.AdminServiceTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.AdminService.AdminRegisterServiceTests.RegisterByAdminAsync_ShouldThrowDuplicateUserException_WhenUserAlreadyExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.AdminService.AdminRegisterServiceTests.CheckExistenceRole_ShouldThrowRoleNotFoundException_WhenRoleDoesNotExist&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.AdminService.AdminRegisterServiceTests.ValidateUserInformation_ShouldThrowDuplicateUserException_WhenUserAlreadyExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.AdminService.AdminRegisterServiceTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8ae15fa0_002Dd719_002D4ce1_002D847c_002De586feccc67f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddRole_ShouldAddsRoleToDatabase_Whenever" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;

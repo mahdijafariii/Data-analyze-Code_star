@@ -1,6 +1,6 @@
 ﻿using AnalysisData.Data;
+using AnalysisData.Model;
 using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.UserManage.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace AnalysisData.Repository.UserRepository

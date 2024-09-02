@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using AnalysisData.UserManage.Model;
+using AnalysisData.Model;
 
-namespace AnalysisData.EAV.Model;
+namespace AnalysisData.Graph.Model.File;
 
 public class UserFile
 {

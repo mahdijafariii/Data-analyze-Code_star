@@ -1,6 +1,7 @@
 using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
+using AnalysisData.Services.S3FileStorageService.Abstraction;
 
 namespace AnalysisData.Services.S3FileStorageService;
 

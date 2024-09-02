@@ -1,4 +1,4 @@
-namespace AnalysisData.UserManage.RolePaginationModel;
+namespace AnalysisData.UserDto.RoleDto;
 
 public class RolePaginationDto
 {

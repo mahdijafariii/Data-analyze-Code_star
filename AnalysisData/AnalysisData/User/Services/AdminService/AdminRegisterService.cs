@@ -1,12 +1,13 @@
-using AnalysisData.Exception;
+using AnalysisData.Exception.UserException;
+using AnalysisData.Model;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Services.Abstraction;
+using AnalysisData.Services.AdminService.Abstraction;
 using AnalysisData.Services.SecurityPasswordService.Abstraction;
-using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.RegisterModel;
+using AnalysisData.Services.ValidationService.Abstraction;
+using AnalysisData.UserDto.UserDto;
 
-namespace AnalysisData.Services;
+namespace AnalysisData.Services.AdminService;
 
 public class AdminRegisterService : IAdminRegisterService
 {
@@ -28,20 +29,28 @@ public class AdminRegisterService : IAdminRegisterService
     public async Task RegisterByAdminAsync(UserRegisterDto userRegisterDto)
     {
         var roleCheck = userRegisterDto.RoleName.ToLower();
-        var existingRole = await CheckExistenceRole(roleCheck);
-
-        await ValidateUserInformation(userRegisterDto);
-        _validationService.EmailCheck(userRegisterDto.Email);
-        _validationService.PasswordCheck(userRegisterDto.Password);
-        if (userRegisterDto.Password != userRegisterDto.ConfirmPassword)
-            throw new PasswordMismatchException();
-        _validationService.PhoneNumberCheck(userRegisterDto.PhoneNumber);
-
+        var existingRole = await CheckExistenceRoleAsync(roleCheck);
+        await ValidateUserRegistrationDataAsync(userRegisterDto);
         var user = await MakeUser(userRegisterDto, existingRole);
         await _userRepository.AddUserAsync(user);
     }
 
-    private async Task<Role> CheckExistenceRole(string roleCheck)
+    private async Task ValidateUserRegistrationDataAsync(UserRegisterDto userRegisterDto)
+    {
+        await CheckForDuplicateUserAsync(userRegisterDto);
+        ValidateInputFormat(userRegisterDto);
+        if (userRegisterDto.Password != userRegisterDto.ConfirmPassword)
+            throw new PasswordMismatchException();
+    }
+
+    private void ValidateInputFormat(UserRegisterDto userRegisterDto)
+    {
+        _validationService.EmailCheck(userRegisterDto.Email);
+        _validationService.PasswordCheck(userRegisterDto.Password);
+        _validationService.PhoneNumberCheck(userRegisterDto.PhoneNumber);
+    }
+
+    private async Task<Role> CheckExistenceRoleAsync(string roleCheck)
     {
         var existingRole = await _roleRepository.GetRoleByNameAsync(roleCheck);
         if (existingRole == null)
@@ -52,11 +61,11 @@ public class AdminRegisterService : IAdminRegisterService
         return existingRole;
     }
 
-    private async Task ValidateUserInformation(UserRegisterDto userRegisterDto)
+    private async Task CheckForDuplicateUserAsync(UserRegisterDto userRegisterDto)
     {
         var existingUserByEmail = await _userRepository.GetUserByEmailAsync(userRegisterDto.Email);
         var existingUserByUsername = await _userRepository.GetUserByUsernameAsync(userRegisterDto.Username);
-        if (existingUserByEmail != null && existingUserByUsername != null)
+        if (existingUserByEmail != null || existingUserByUsername != null)
             throw new DuplicateUserException();
     }
 
@@ -76,39 +85,4 @@ public class AdminRegisterService : IAdminRegisterService
         return user;
     }
 
-    public async Task AddFirstAdminAsync()
-    {
-        var admin = await _userRepository.GetUserByUsernameAsync("admin");
-        if (admin != null)
-        {
-            throw new AdminExistenceException();
-        }
-
-        var adminRole = new Role()
-        {
-            RoleName = "admin".ToLower(),
-            RolePolicy = "gold",
-        };
-        var dataAnalystRole = new Role()
-        {
-            RoleName = "DataAnalyst".ToLower(),
-            RolePolicy = "bronze",
-        };
-        var dataManager = new Role()
-        {
-            RoleName = "DataManager".ToLower(),
-            RolePolicy = "silver",
-        };
-
-        var firstAdmin = new User()
-        {
-            Username = "admin", Password = _passwordHasher.HashPassword("admin"), PhoneNumber = "09131111111",
-            FirstName = "admin", LastName = "admin", Email = "admin@gmail.com", Role = adminRole
-        };
-
-        await _roleRepository.AddRoleAsync(adminRole);
-        await _roleRepository.AddRoleAsync(dataAnalystRole);
-        await _roleRepository.AddRoleAsync(dataManager);
-        await _userRepository.AddUserAsync(firstAdmin);
-    }
 }

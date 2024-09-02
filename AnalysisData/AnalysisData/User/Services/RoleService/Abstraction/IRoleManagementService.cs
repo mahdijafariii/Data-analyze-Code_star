@@ -1,6 +1,6 @@
-using AnalysisData.UserManage.RolePaginationModel;
+using AnalysisData.UserDto.RoleDto;
 
-namespace AnalysisData.Services;
+namespace AnalysisData.Services.RoleService.Abstraction;
 
 public interface IRoleManagementService
 {

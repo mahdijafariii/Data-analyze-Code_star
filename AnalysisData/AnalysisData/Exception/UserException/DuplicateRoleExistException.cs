@@ -1,4 +1,4 @@
-namespace AnalysisData.Exception;
+namespace AnalysisData.Exception.UserException;
 
 public class DuplicateRoleExistException : ServiceException
 {

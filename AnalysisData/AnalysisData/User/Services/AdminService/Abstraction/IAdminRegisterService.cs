@@ -1,9 +1,8 @@
-using AnalysisData.UserManage.RegisterModel;
+using AnalysisData.UserDto.UserDto;
 
-namespace AnalysisData.Services;
+namespace AnalysisData.Services.AdminService.Abstraction;
 
 public interface IAdminRegisterService
 {
     Task RegisterByAdminAsync(UserRegisterDto userRegisterDto);
-    Task AddFirstAdminAsync();
 }

@@ -1,8 +1,7 @@
 using System.Security.Claims;
-using AnalysisData.EAV.Dto;
-using AnalysisData.EAV.Model;
+using AnalysisData.Graph.Dto.NodeDto;
 
-namespace AnalysisData.EAV.Service.Abstraction;
+namespace AnalysisData.Graph.Service.GraphServices.AllNodesData;
 
 public interface INodePaginationService
 {

@@ -1,12 +1,13 @@
-﻿using AnalysisData.Exception;
+﻿using AnalysisData.Exception.UserException;
 using AnalysisData.JwtService.abstractions;
+using AnalysisData.Model;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Services;
-using AnalysisData.Services.Abstraction;
-using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.UpdateModel;
+using AnalysisData.Services.ValidationService.Abstraction;
+using AnalysisData.UserDto.UserDto;
 using NSubstitute;
+
+namespace TestProject.User.Services.AdminService;
 
 public class AdminServiceTests
 {
@@ -14,7 +15,7 @@ public class AdminServiceTests
     private readonly IValidationService _validationService;
     private readonly IRoleRepository _roleRepository;
     private readonly IJwtService _jwtService;
-    private readonly AdminService _sut;
+    private readonly AnalysisData.Services.AdminService.AdminService _sut;
 
     public AdminServiceTests()
     {
@@ -23,7 +24,7 @@ public class AdminServiceTests
         _roleRepository = Substitute.For<IRoleRepository>();
         _jwtService = Substitute.For<IJwtService>();
 
-        _sut = new AdminService(
+        _sut = new AnalysisData.Services.AdminService.AdminService(
             _userRepository,
             _validationService,
             _roleRepository,
@@ -35,8 +36,8 @@ public class AdminServiceTests
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
-        var user = new User
+        var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
+        var user = new AnalysisData.Model.User
         {
             Id = userId,
             Username = "Username",
@@ -47,7 +48,7 @@ public class AdminServiceTests
             Email = "Email@gmail.com",
             Role = role
         };
-        
+
         var updateAdminDto = new UpdateAdminDto
         {
             Username = "newUsername",
@@ -59,9 +60,10 @@ public class AdminServiceTests
         };
 
         _userRepository.GetUserByIdAsync(userId).Returns(user);
-        _userRepository.GetUserByUsernameAsync(updateAdminDto.Username).Returns((User)null);
-        _userRepository.GetUserByEmailAsync(updateAdminDto.Email).Returns((User)null);
+        _userRepository.GetUserByUsernameAsync(updateAdminDto.Username).Returns((AnalysisData.Model.User)null);
+        _userRepository.GetUserByEmailAsync(updateAdminDto.Email).Returns((AnalysisData.Model.User)null);
         _roleRepository.GetRoleByNameAsync(updateAdminDto.RoleName).Returns(role);
+
 
         // Act
         await _sut.UpdateUserInformationByAdminAsync(userId, updateAdminDto);
@@ -69,7 +71,7 @@ public class AdminServiceTests
         // Assert
         await _userRepository
             .Received(1)
-            .UpdateUserAsync(userId, Arg.Is<User>(u =>
+            .UpdateUserAsync(userId, Arg.Is<AnalysisData.Model.User>(u =>
                 u.Username == updateAdminDto.Username &&
                 u.Email == updateAdminDto.Email &&
                 u.FirstName == updateAdminDto.FirstName &&
@@ -83,6 +85,71 @@ public class AdminServiceTests
             .UpdateUserCookie(updateAdminDto.Username, false);
     }
 
+    [Fact]
+    public async Task ValidateUserInformation_ShouldThrowDuplicateUserException_WhenUsernameOrEmailExists()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
+        var user = new AnalysisData.Model.User
+        {
+            Username = "test", Password = "@Test1234",
+            Email = "test@gmail.com",
+            FirstName = "test", LastName = "test",
+            PhoneNumber = "09111111111", ImageURL = null, Role = role
+        };
+
+        var updateAdminDto = new UpdateAdminDto
+        {
+            Username = "existingUsername",
+            Email = "existingEmail@test.com"
+        };
+
+        var existingUserWithUsername = new AnalysisData.Model.User
+            { Id = Guid.NewGuid(), Username = "existingUsername", Email = "anotherEmail@gmail.com" };
+        var existingUserWithEmail = new AnalysisData.Model.User
+            { Id = Guid.NewGuid(), Username = "anotherUsername", Email = "existingEmail@gmail.com" };
+
+        _userRepository.GetUserByIdAsync(userId).Returns(user);
+        _userRepository.GetUserByUsernameAsync(updateAdminDto.Username).Returns(existingUserWithUsername);
+        _userRepository.GetUserByEmailAsync(updateAdminDto.Email).Returns(existingUserWithEmail);
+
+        // Act
+        var action = () => _sut.UpdateUserInformationByAdminAsync(userId, updateAdminDto);
+
+        // Assert
+        await Assert.ThrowsAsync<DuplicateUserException>(action);
+    }
+
+    [Fact]
+    public async Task CheckExistenceOfRole_ShouldThrowRoleNotFoundException_WhenRoleDoesNotExist()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
+        var user = new AnalysisData.Model.User
+        {
+            Username = "test", Password = "@Test1234",
+            Email = "test@gmail.com",
+            FirstName = "test", LastName = "test",
+            PhoneNumber = "09111111111", ImageURL = null, Role = role
+        };
+
+        var updateAdminDto = new UpdateAdminDto
+        {
+            RoleName = "NonExistentRole"
+        };
+
+        _userRepository.GetUserByIdAsync(userId).Returns(user);
+        _roleRepository.GetRoleByNameAsync(updateAdminDto.RoleName).Returns((Role)null);
+
+        // Act
+        var action = () => _sut.UpdateUserInformationByAdminAsync(userId, updateAdminDto);
+
+        // Assert
+        await Assert.ThrowsAsync<RoleNotFoundException>(action);
+    }
+    
     [Fact]
     public async Task DeleteUserAsync_ShouldReturnTrue_WhenUserExists()
     {
@@ -106,7 +173,7 @@ public class AdminServiceTests
 
         // Act
         var action = () => _sut.DeleteUserAsync(userId);
-        
+
         // Assert
         await Assert.ThrowsAsync<UserNotFoundException>(action);
     }
@@ -129,10 +196,18 @@ public class AdminServiceTests
     public async Task GetAllUserAsync_ShouldReturnPaginatedUsers_WhenUsersExist()
     {
         // Arrange
-        var users = new List<User>
+        var users = new List<AnalysisData.Model.User>
         {
-            new() { Id = Guid.NewGuid(), Username = "user1", FirstName = "First1", LastName = "Last1", Email = "email1@gmail.com", PhoneNumber = "09111111111", Role = new Role { RoleName = "Admin" }},
-            new() { Id = Guid.NewGuid(), Username = "user2", FirstName = "First2", LastName = "Last2", Email = "email2@gmail.com", PhoneNumber = "09222222222", Role = new Role { RoleName = "DataManager" }},
+            new()
+            {
+                Id = Guid.NewGuid(), Username = "user1", FirstName = "First1", LastName = "Last1",
+                Email = "email1@gmail.com", PhoneNumber = "09111111111", Role = new Role { RoleName = "Admin" }
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Username = "user2", FirstName = "First2", LastName = "Last2",
+                Email = "email2@gmail.com", PhoneNumber = "09222222222", Role = new Role { RoleName = "DataManager" }
+            },
         };
 
         _userRepository.GetAllUserPaginationAsync(0, 2).Returns(users);

@@ -1,4 +1,4 @@
-namespace AnalysisData.UserManage.LoginModel;
+namespace AnalysisData.UserDto.UserDto;
 
 public class UserLoginDto
 {

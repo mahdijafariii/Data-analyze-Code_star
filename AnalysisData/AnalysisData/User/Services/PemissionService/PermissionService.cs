@@ -1,10 +1,10 @@
 using System.Reflection;
 using System.Security.Claims;
-using AnalysisData.Services.Abstraction;
+using AnalysisData.Services.PemissionService.Abstraction;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnalysisData.Services;
+namespace AnalysisData.Services.PemissionService;
 
 public class PermissionService : IPermissionService
 {

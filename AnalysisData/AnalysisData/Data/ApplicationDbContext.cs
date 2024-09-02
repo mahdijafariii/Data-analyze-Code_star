@@ -1,5 +1,8 @@
-using AnalysisData.EAV.Model;
-using AnalysisData.UserManage.Model;
+using AnalysisData.Graph.Model.Category;
+using AnalysisData.Graph.Model.Edge;
+using AnalysisData.Graph.Model.File;
+using AnalysisData.Graph.Model.Node;
+using AnalysisData.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace AnalysisData.Data;

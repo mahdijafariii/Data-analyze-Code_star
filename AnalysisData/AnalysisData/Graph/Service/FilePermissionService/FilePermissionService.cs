@@ -1,12 +1,12 @@
-using AnalysisData.EAV.Dto;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.EAV.Repository.FileUploadedRepository;
-using AnalysisData.Exception;
+using AnalysisData.Exception.GraphException;
+using AnalysisData.Exception.UserException;
+using AnalysisData.Graph.Dto;
+using AnalysisData.Graph.Repository.FileUploadedRepository.Abstraction;
+using AnalysisData.Graph.Repository.UserFileRepository.Abstraction;
+using AnalysisData.Graph.Service.FilePermissionService.AccessMangement;
 using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.UserManage.Model;
 
-namespace AnalysisData.EAV.Service;
+namespace AnalysisData.Graph.Service.FilePermissionService;
 
 public class FilePermissionService : IFilePermissionService
 {

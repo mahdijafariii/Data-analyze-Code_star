@@ -1,13 +1,10 @@
 using System.Security.Claims;
 using AnalysisData.Exception;
 using AnalysisData.Services;
-using AnalysisData.Services.Abstraction;
+using AnalysisData.Services.PemissionService.Abstraction;
+using AnalysisData.Services.UserService.Abstraction;
+using AnalysisData.UserDto.PasswordDto;
 using AnalysisData.UserDto.UserDto;
-using AnalysisData.UserManage.LoginModel;
-using AnalysisData.UserManage.NewPasswordModel;
-using AnalysisData.UserManage.RegisterModel;
-using AnalysisData.UserManage.ResetPasswordModel;
-using AnalysisData.UserManage.UpdateModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

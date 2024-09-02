@@ -1,17 +1,13 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using AnalysisData.Exception;
+﻿using AnalysisData.Exception.UserException;
 using AnalysisData.JwtService.abstractions;
+using AnalysisData.Model;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Services.Abstraction;
-using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.RegisterModel;
-using AnalysisData.UserManage.RolePaginationModel;
-using AnalysisData.UserManage.UpdateModel;
-using AnalysisData.UserManage.UserPaginationModel;
+using AnalysisData.Services.AdminService.Abstraction;
+using AnalysisData.Services.ValidationService.Abstraction;
+using AnalysisData.UserDto.UserDto;
 
-namespace AnalysisData.Services;
+namespace AnalysisData.Services.AdminService;
 
 public class AdminService : IAdminService
 {

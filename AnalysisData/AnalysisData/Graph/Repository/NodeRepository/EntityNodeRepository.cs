@@ -1,9 +1,9 @@
 ﻿using AnalysisData.Data;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
+using AnalysisData.Graph.Model.Node;
+using AnalysisData.Graph.Repository.NodeRepository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
-namespace AnalysisData.EAV.Repository.NodeRepository;
+namespace AnalysisData.Graph.Repository.NodeRepository;
 
 public class EntityNodeRepository : IEntityNodeRepository
 {

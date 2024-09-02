@@ -1,9 +1,9 @@
 using System.Security.Claims;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.Exception;
+using AnalysisData.Exception.GraphException;
+using AnalysisData.Graph.Model.Node;
+using AnalysisData.Graph.Repository.GraphNodeRepository;
 
-namespace AnalysisData.EAV.Service.GraphSevices;
+namespace AnalysisData.Graph.Service.GraphServices.Search;
 
 public class GraphSearchService : IGraphSearchService
 {

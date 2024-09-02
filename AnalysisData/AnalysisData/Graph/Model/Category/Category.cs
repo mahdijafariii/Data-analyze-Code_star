@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AnalysisData.EAV.Model;
+namespace AnalysisData.Graph.Model.Category;
 
 public class Category
 {

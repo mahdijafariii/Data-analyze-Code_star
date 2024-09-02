@@ -1,9 +1,7 @@
 ﻿using AnalysisData.Data;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
-namespace AnalysisData.EAV.Repository;
+namespace AnalysisData.Graph.Repository.GraphEdgeRepository;
 
 public class GraphEdgeRepository : IGraphEdgeRepository
 {

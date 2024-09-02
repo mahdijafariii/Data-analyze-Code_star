@@ -1,6 +1,6 @@
 using AnalysisData.Services;
-using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.RolePaginationModel;
+using AnalysisData.Services.RoleService.Abstraction;
+using AnalysisData.UserDto.RoleDto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.Controllers;

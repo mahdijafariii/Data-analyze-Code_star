@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using AnalysisData.UserManage.Model;
+using AnalysisData.Graph.Model.Node;
+using AnalysisData.Model;
 
-namespace AnalysisData.EAV.Model;
+namespace AnalysisData.Graph.Model.File;
 
 public class FileEntity
 {
@@ -17,7 +18,7 @@ public class FileEntity
 
     public int CategoryId { get; set; }
 
-    [ForeignKey("CategoryId")] public Category Category { get; set; }
+    [ForeignKey("CategoryId")] public Category.Category Category { get; set; }
 
     public ICollection<EntityNode> EntityNodes { get; set; }
 }

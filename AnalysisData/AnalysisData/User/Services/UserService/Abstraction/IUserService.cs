@@ -1,10 +1,8 @@
 using System.Security.Claims;
-using AnalysisData.UserManage.LoginModel;
-using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.UpdateModel;
-using AnalysisData.UserManage.UserPaginationModel;
+using AnalysisData.Model;
+using AnalysisData.UserDto.UserDto;
 
-namespace AnalysisData.Services.Abstraction;
+namespace AnalysisData.Services.UserService.Abstraction;
 
 public interface IUserService
 {

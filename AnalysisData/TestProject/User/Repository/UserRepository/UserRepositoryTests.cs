@@ -1,5 +1,5 @@
 ﻿using AnalysisData.Data;
-using AnalysisData.UserManage.Model;
+using AnalysisData.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace TestProject.User.Repository.UserRepository;
@@ -11,7 +11,7 @@ public class UserRepositoryTests
 
     public UserRepositoryTests()
     {
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase("TestDatabase").Options;
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase("TestUserDatabase").Options;
         _context = new ApplicationDbContext(options);
         _sut = new AnalysisData.Repository.UserRepository.UserRepository(_context);
     }
@@ -32,7 +32,7 @@ public class UserRepositoryTests
         //Arrange
         await InitializeAsync();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        var user = new AnalysisData.UserManage.Model.User
+        var user = new AnalysisData.Model.User
         {
             Username = "test", Password = "@Test1234",
             Email = "test@gmail.com",
@@ -57,7 +57,7 @@ public class UserRepositoryTests
         //Arrange
         await InitializeAsync();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        var user = new AnalysisData.UserManage.Model.User
+        var user = new AnalysisData.Model.User
         {
             Username = "test", Password = "@Test1234",
             Email = "test@gmail.com",
@@ -81,7 +81,7 @@ public class UserRepositoryTests
         //Arrange
         await InitializeAsync();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        var user = new AnalysisData.UserManage.Model.User
+        var user = new AnalysisData.Model.User
         {
             Username = "test", Password = "@Test1234",
             Email = "test@gmail.com",
@@ -106,7 +106,7 @@ public class UserRepositoryTests
         //Arrange
         await InitializeAsync();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        var user = new AnalysisData.UserManage.Model.User
+        var user = new AnalysisData.Model.User
         {
             Username = "test", Password = "@Test1234",
             Email = "test@gmail.com",
@@ -131,7 +131,7 @@ public class UserRepositoryTests
         await InitializeAsync();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
         var userId = Guid.NewGuid();
-        var user = new AnalysisData.UserManage.Model.User
+        var user = new AnalysisData.Model.User
         {
             Id = userId, Username = "test", Password = "@Test1234",
             Email = "test@gmail.com", FirstName = "test", LastName = "test",
@@ -156,7 +156,7 @@ public class UserRepositoryTests
         await InitializeAsync();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
         var userId = Guid.NewGuid();
-        var user = new AnalysisData.UserManage.Model.User
+        var user = new AnalysisData.Model.User
         {
             Id = userId, Username = "test", Password = "@Test1234",
             Email = "test@gmail.com", FirstName = "test", LastName = "test",
@@ -179,7 +179,7 @@ public class UserRepositoryTests
         // Arrange
         await InitializeAsync();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        var users = new List<AnalysisData.UserManage.Model.User>
+        var users = new List<AnalysisData.Model.User>
         {
             new()
             {
@@ -232,7 +232,7 @@ public class UserRepositoryTests
         // Arrange
         await InitializeAsync();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        var users = new List<AnalysisData.UserManage.Model.User>
+        var users = new List<AnalysisData.Model.User>
         {
             new()
             {
@@ -282,7 +282,7 @@ public class UserRepositoryTests
         // Arrange
         await InitializeAsync();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        var users = new List<AnalysisData.UserManage.Model.User>
+        var users = new List<AnalysisData.Model.User>
         {
             new()
             {
@@ -331,7 +331,7 @@ public class UserRepositoryTests
         // Arrange
         await InitializeAsync();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        var users = new List<AnalysisData.UserManage.Model.User>
+        var users = new List<AnalysisData.Model.User>
         {
             new()
             {
@@ -379,7 +379,7 @@ public class UserRepositoryTests
         await InitializeAsync();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
         var userId = Guid.NewGuid();
-        var user = new AnalysisData.UserManage.Model.User
+        var user = new AnalysisData.Model.User
         {
             Id = userId, Username = "user1", Password = "@Test11234",
             Email = "user1@gmail.com", FirstName = "user1", LastName = "user1",
@@ -407,7 +407,7 @@ public class UserRepositoryTests
         await InitializeAsync();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
         var userId = Guid.NewGuid();
-        var user = new AnalysisData.UserManage.Model.User
+        var user = new AnalysisData.Model.User
         {
             Id = userId, Username = "user1", Password = "@Test11234",
             Email = "user1@gmail.com", FirstName = "user1", LastName = "user1",
@@ -434,7 +434,7 @@ public class UserRepositoryTests
         await InitializeAsync();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
         var userId = Guid.NewGuid();
-        var user = new AnalysisData.UserManage.Model.User
+        var user = new AnalysisData.Model.User
         {
             Id = userId, Username = "user1", Password = "@Test11234",
             Email = "user1@gmail.com", FirstName = "user1", LastName = "user1",
@@ -459,7 +459,7 @@ public class UserRepositoryTests
         await InitializeAsync();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
         var userId = Guid.NewGuid();
-        var user = new AnalysisData.UserManage.Model.User
+        var user = new AnalysisData.Model.User
         {
             Id = userId, Username = "user1", Password = "@Test11234",
             Email = "user1@gmail.com", FirstName = "user1", LastName = "user1",
@@ -492,7 +492,7 @@ public class UserRepositoryTests
         var roleManager = new Role { Id = 2, RoleName = "Manager", RolePolicy = "silver" };
         var roleAnalyst = new Role { Id = 3, RoleName = "dataanalyst", RolePolicy = "bronze" };
 
-        var users = new List<AnalysisData.UserManage.Model.User>
+        var users = new List<AnalysisData.Model.User>
         {
             new()
             {
@@ -538,7 +538,7 @@ public class UserRepositoryTests
         var roleManager = new Role { Id = 2, RoleName = "Manager", RolePolicy = "silver" };
         var roleAnalyst = new Role { Id = 3, RoleName = "dataanalyst", RolePolicy = "bronze" };
 
-        var users = new List<AnalysisData.UserManage.Model.User>
+        var users = new List<AnalysisData.Model.User>
         {
             new()
             {

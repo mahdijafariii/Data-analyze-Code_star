@@ -1,11 +1,13 @@
-﻿using AnalysisData.Exception;
+﻿using System.Data;
+using AnalysisData.Exception.UserException;
+using AnalysisData.Model;
 using AnalysisData.Repository.RoleRepository.Abstraction;
 using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Services;
-using AnalysisData.Services.Abstraction;
+using AnalysisData.Services.AdminService;
 using AnalysisData.Services.SecurityPasswordService.Abstraction;
-using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.RegisterModel;
+using AnalysisData.Services.ValidationService;
+using AnalysisData.Services.ValidationService.Abstraction;
+using AnalysisData.UserDto.UserDto;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 
@@ -52,8 +54,8 @@ public class AdminRegisterServiceTests
         var existingRole = new Role { RoleName = "Admin" };
         _roleRepository.GetRoleByNameAsync(Arg.Is("admin")).Returns(existingRole);
 
-        _userRepository.GetUserByEmailAsync(userRegisterDto.Email).Returns((AnalysisData.UserManage.Model.User)null);
-        _userRepository.GetUserByUsernameAsync(userRegisterDto.Username).Returns((AnalysisData.UserManage.Model.User)null);
+        _userRepository.GetUserByEmailAsync(userRegisterDto.Email).Returns((AnalysisData.Model.User)null);
+        _userRepository.GetUserByUsernameAsync(userRegisterDto.Username).Returns((AnalysisData.Model.User)null);
 
         _passwordHasher.HashPassword(userRegisterDto.Password).Returns("hashedPassword");
 
@@ -61,7 +63,7 @@ public class AdminRegisterServiceTests
         await _sut.RegisterByAdminAsync(userRegisterDto);
 
         // Assert
-        await _userRepository.Received(1).AddUserAsync(Arg.Is<AnalysisData.UserManage.Model.User>(u =>
+        await _userRepository.Received(1).AddUserAsync(Arg.Is<AnalysisData.Model.User>(u =>
             u.Username == userRegisterDto.Username &&
             u.Email == userRegisterDto.Email &&
             u.FirstName == userRegisterDto.FirstName &&
@@ -75,8 +77,9 @@ public class AdminRegisterServiceTests
         _validationService.Received(1).PasswordCheck(userRegisterDto.Password);
         _validationService.Received(1).PhoneNumberCheck(userRegisterDto.PhoneNumber);
     }
+
     [Fact]
-    public async Task RegisterByAdminAsync_ShouldThrowPasswordMismatchException_WhenPasswordsDoNotMatch()
+    public async Task ValidateUserRegistrationDataAsync_ShouldThrowPasswordMismatchException_WhenPasswordsDoNotMatch()
     {
         // Arrange
         var userRegisterDto = new UserRegisterDto
@@ -90,9 +93,8 @@ public class AdminRegisterServiceTests
             PhoneNumber = "1234567890",
             RoleName = "admin"
         };
-        var role = new Role { RoleName = "admin" };
         _roleRepository.GetRoleByNameAsync(userRegisterDto.RoleName).ThrowsAsync(new PasswordMismatchException());
-        
+
         // Act
         var action = () => _sut.RegisterByAdminAsync(userRegisterDto);
 
@@ -101,45 +103,48 @@ public class AdminRegisterServiceTests
     }
 
     [Fact]
-    public async Task RegisterByAdminAsync_ShouldThrowDuplicateUserException_WhenUserAlreadyExists()
+    public async Task ValidateUserInformation_ShouldThrowDuplicateUserException_WhenUserAlreadyExists()
     {
         // Arrange
         var userRegisterDto = new UserRegisterDto
         {
-            Username = "existingUser",
-            Email = "existingUser@example.com",
+            Username = "existingUsername",
+            Email = "existingEmail@gmail.com",
             Password = "SecurePassword123",
             ConfirmPassword = "SecurePassword123",
             FirstName = "First",
             LastName = "Last",
-            PhoneNumber = "1234567890",
+            PhoneNumber = "09123456789",
             RoleName = "admin"
         };
-        var role = new Role { RoleName = "admin" };
-        _roleRepository.GetRoleByNameAsync(userRegisterDto.RoleName).Returns(Task.FromResult(role));
-        
-        _userRepository.GetUserByEmailAsync(userRegisterDto.Email).ThrowsAsync(new DuplicateUserException());
-        _userRepository.GetUserByUsernameAsync(userRegisterDto.Username).ThrowsAsync(new DuplicateUserException());
+        var role = new Role { RoleName = "admin", RolePolicy = "gold" };
+        _roleRepository.GetRoleByNameAsync(userRegisterDto.RoleName.ToLower()).Returns(role);
+        var existingUserWithUsername = new AnalysisData.Model.User
+            { Id = Guid.NewGuid(), Username = "existingUsername", Email = "anotherEmail@gmail.com" };
+        var existingUserWithEmail = new AnalysisData.Model.User
+            { Id = Guid.NewGuid(), Username = "anotherUsername", Email = "existingEmail@gmail.com" };
 
+        _userRepository.GetUserByUsernameAsync(userRegisterDto.Username).Returns(existingUserWithUsername);
+        _userRepository.GetUserByEmailAsync(userRegisterDto.Email).Returns(existingUserWithEmail);
         // Act
         var action = () => _sut.RegisterByAdminAsync(userRegisterDto);
         // Assert
         await Assert.ThrowsAsync<DuplicateUserException>(action);
     }
-
+    
     [Fact]
-    public async Task RegisterByAdminAsync_ShouldThrowRoleNotFoundException_WhenRoleDoesNotExist()
+    public async Task CheckExistenceRole_ShouldThrowRoleNotFoundException_WhenRoleDoesNotExist()
     {
         // Arrange
         var userRegisterDto = new UserRegisterDto
         {
             Username = "newUser",
-            Email = "newUser@example.com",
+            Email = "newUser@gmail.com",
             Password = "SecurePassword123",
             ConfirmPassword = "SecurePassword123",
             FirstName = "First",
             LastName = "Last",
-            PhoneNumber = "1234567890",
+            PhoneNumber = "09123456789",
             RoleName = "nonExistentRole"
         };
 
@@ -150,43 +155,5 @@ public class AdminRegisterServiceTests
 
         //  Assert
         await Assert.ThrowsAsync<RoleNotFoundException>(action);
-    }
-    
-    [Fact]
-    public async Task AddFirstAdminAsync_ShouldCreateAdminRoleAndUser_WhenAdminDoesNotExist()
-    {
-            // Arrange
-            _userRepository.GetUserByUsernameAsync("admin").Returns((AnalysisData.UserManage.Model.User)null);
-
-            // Act
-            await _sut.AddFirstAdminAsync();
-
-            // Assert
-            await _roleRepository.Received(1).AddRoleAsync(Arg.Is<Role>(r =>
-                r.RoleName == "admin" &&
-                r.RolePolicy == "gold"
-            ));
-
-            await _userRepository.AddUserAsync(Arg.Is<AnalysisData.UserManage.Model.User>(u =>
-                u.Username == "admin" &&
-                u.Email == "admin@gmail.com" &&
-                u.Password == "hashedPassword" &&
-                u.Role.RoleName == "admin"
-            ));
-
-            _passwordHasher.Received(1).HashPassword("admin");
-    }
-
-    [Fact]
-    public async Task AddFirstAdminAsync_ShouldThrowAdminExistenceException_WhenAdminAlreadyExists()
-    {
-        // Arrange
-        _userRepository.GetUserByUsernameAsync("admin").ThrowsAsync(new AdminExistenceException());
-
-        // Act
-        var action = () => _sut.AddFirstAdminAsync();
-
-        // Assert
-        await Assert.ThrowsAsync<AdminExistenceException>(action);
     }
 }

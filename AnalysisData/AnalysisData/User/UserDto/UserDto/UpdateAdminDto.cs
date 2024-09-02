@@ -1,4 +1,4 @@
-﻿namespace AnalysisData.UserManage.UpdateModel;
+﻿namespace AnalysisData.UserDto.UserDto;
 
 public class UpdateAdminDto
 {

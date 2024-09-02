@@ -1,10 +1,8 @@
-﻿using System.Security.Claims;
-using AnalysisData.Data;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
+﻿using AnalysisData.Data;
+using AnalysisData.Graph.Model.Node;
 using Microsoft.EntityFrameworkCore;
 
-namespace AnalysisData.EAV.Repository;
+namespace AnalysisData.Graph.Repository.GraphNodeRepository;
 
 public class GraphNodeRepository : IGraphNodeRepository
 {

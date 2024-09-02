@@ -1,4 +1,4 @@
-namespace AnalysisData.UserManage.NewPasswordModel;
+namespace AnalysisData.UserDto.PasswordDto;
 
 public class NewPasswordDto
 {

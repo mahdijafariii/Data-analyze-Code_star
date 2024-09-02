@@ -6,12 +6,12 @@ using Microsoft.Extensions.Azure;
 
 namespace AnalysisData.EAV.Service.Business;
 
-public class NodeRecordProcessor : INodeRecordProcessor
+public class EntityNodeRecordProcessor : INodeRecordProcessor
 {
     private readonly IEntityNodeRepository _entityNodeRepository;
     private readonly int _batchSize;
 
-    public NodeRecordProcessor(IEntityNodeRepository entityNodeRepository, int batchSize = 1000)
+    public EntityNodeRecordProcessor(IEntityNodeRepository entityNodeRepository, int batchSize = 1000)
     {
         _entityNodeRepository = entityNodeRepository;
         _batchSize = batchSize;

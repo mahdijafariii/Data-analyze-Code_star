@@ -15,6 +15,7 @@ public class FromToProcessor : IFromToProcessor
 
     public async Task ProcessFromToAsync(IEnumerable<string> headers, string from, string to)
     {
+        var attributeEdges = new List<AttributeEdge>();
         foreach (var header in headers)
         {
             if (header.Equals(from, StringComparison.OrdinalIgnoreCase) ||
@@ -23,7 +24,8 @@ public class FromToProcessor : IFromToProcessor
             var existingAttribute = await _attributeEdgeRepository.GetByNameAsync(header);
             if (existingAttribute != null) continue;
             var attributeEdge = new AttributeEdge { Name = header };
-            await _attributeEdgeRepository.AddAsync(attributeEdge);
+            attributeEdges.Add(attributeEdge);
         }
+        await _attributeEdgeRepository.AddRangeAsync(attributeEdges);
     }
 }

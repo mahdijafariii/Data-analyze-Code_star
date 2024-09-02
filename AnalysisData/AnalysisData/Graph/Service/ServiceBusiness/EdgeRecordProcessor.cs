@@ -56,8 +56,7 @@ public class EdgeRecordProcessor : IEdgeRecordProcessor
         return entityEdge;
     }
 
-    private async Task ProcessValuesAsync(CsvReader csv, IEnumerable<string> headers, string from, string to,
-        EntityEdge entityEdge)
+    private async Task ProcessValuesAsync(CsvReader csv, IEnumerable<string> headers, string from, string to, EntityEdge entityEdge)
     {
         foreach (var header in headers)
         {

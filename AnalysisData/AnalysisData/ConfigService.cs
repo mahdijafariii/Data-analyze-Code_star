@@ -63,7 +63,7 @@ public static class ConfigService
         services.AddScoped<ICsvReaderService, CsvReaderService>();
         services.AddScoped<IEdgeRecordProcessor, EdgeRecordProcessor>();
         services.AddScoped<IHeaderProcessor, HeaderProcessor>();
-        services.AddScoped<INodeRecordProcessor, NodeRecordProcessor>();
+        services.AddScoped<INodeRecordProcessor, EntityNodeRecordProcessor>();
         services.AddScoped<IFromToProcessor, FromToProcessor>();
         services.AddScoped<INodePaginationService, NodePaginationService>();
         services.AddScoped<IAdminService, AdminService>();
@@ -80,7 +80,7 @@ public static class ConfigService
         services.AddScoped<IS3FileStorageService, S3FileStorageService>();
         services.AddScoped<IUploadImageService, UploadImageService>();
         services.AddScoped<IValueNodeProcessor, ValueNodeProcessor>();
-
+        services.AddScoped<IEntityEdgeRecordProcessor, EntityEdgeRecordProcessor>();
         return services;
     }
 }

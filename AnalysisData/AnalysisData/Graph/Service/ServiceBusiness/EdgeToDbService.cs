@@ -1,20 +1,23 @@
 ﻿using AnalysisData.EAV.Service.Abstraction;
 using AnalysisData.EAV.Service.Business.Abstraction;
+using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 
 namespace AnalysisData.EAV.Service;
 
 public class EdgeToDbService : IEdgeToDbService
 {
     private readonly IEdgeRecordProcessor _edgeRecordProcessor;
+    private readonly IEntityEdgeRecordProcessor _entityEdgeRecordProcessor;
     private readonly IFromToProcessor _fromToProcessor;
     private readonly ICsvReaderService _csvReaderService;
 
     public EdgeToDbService(IEdgeRecordProcessor edgeRecordProcessor, IFromToProcessor fromToProcessor,
-        ICsvReaderService csvReaderService)
+        ICsvReaderService csvReaderService, IEntityEdgeRecordProcessor entityEdgeRecordProcessor)
     {
         _edgeRecordProcessor = edgeRecordProcessor;
         _fromToProcessor = fromToProcessor;
         _csvReaderService = csvReaderService;
+        _entityEdgeRecordProcessor = entityEdgeRecordProcessor;
     }
 
     public async Task ProcessCsvFileAsync(IFormFile file, string from, string to)
@@ -22,6 +25,7 @@ public class EdgeToDbService : IEdgeToDbService
         var csv = _csvReaderService.CreateCsvReader(file);
         var headers = _csvReaderService.ReadHeaders(csv);
         await _fromToProcessor.ProcessFromToAsync(headers, from, to);
-        await _edgeRecordProcessor.ProcessRecordsAsync(csv, headers, from, to);
+        var entityEdges = await _entityEdgeRecordProcessor.ProcessEntityEdgesAsync(csv, from, to);
+        
     }
 }

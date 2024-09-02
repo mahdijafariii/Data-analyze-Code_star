@@ -246,7 +246,7 @@ namespace AnalysisData.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "FirstName", "ImageURL", "LastName", "Password", "PhoneNumber", "RoleId", "Username" },
-                values: new object[] { new Guid("32cb375b-83a4-48a3-bd42-da9f34a64b90"), "admin@gmail.com", "admin", null, "admin", "admin", "09131111111", 1, "admin" });
+                values: new object[] { new Guid("85906ba5-c7bb-4708-83db-46734d4adf09"), "admin@gmail.com", "admin", null, "admin", "admin", "09131111111", 1, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_EntityNodes_NodeFileReferenceId",

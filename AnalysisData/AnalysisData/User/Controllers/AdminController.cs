@@ -53,5 +53,14 @@ public class AdminController : ControllerBase
 
         return NotFound(new { message = "User not found." });
     }
+
+    [Authorize(Roles = "admin")]
+    [HttpPut("users/{id}")]
+    public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateAdminDto updateAdminDto)
+    {
+        await _adminService.UpdateUserInformationByAdminAsync(id, updateAdminDto);
+        return Ok(new { massage = "updated successfully" });
+    }
+
     
 }

@@ -39,7 +39,7 @@ public class RoleController : ControllerBase
         var rolesCount = await _roleManagementService.GetRoleCount();
         return Ok(new
         {
-            users = rolesPagination,
+            roles = rolesPagination,
             count = rolesCount,
             thisPage = page,
         });

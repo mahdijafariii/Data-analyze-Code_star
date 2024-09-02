@@ -25,4 +25,30 @@ public class ApplicationDbContext : DbContext
     public DbSet<FileEntity> FileUploadedDb { get; set; }
     public DbSet<UserFile> UserFiles { get; set; }
     public DbSet<Category> Categories { get; set; }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+    
+        modelBuilder.Entity<Role>().HasData(
+            new Role { Id = 1, RoleName = "admin", RolePolicy = "gold" },
+            new Role { Id = 2, RoleName = "Data-Analyst", RolePolicy = "bronze" },
+            new Role { Id = 3, RoleName = "Data-Manager", RolePolicy = "silver" }
+        );
+    
+        modelBuilder.Entity<User>().HasData(
+            new User
+            {
+                Id = Guid.NewGuid(),
+                Username = "admin",
+                Password = ("admin"), 
+                PhoneNumber = "09131111111",
+                FirstName = "admin",
+                LastName = "admin",
+                Email = "admin@gmail.com",
+                RoleId = 1
+            }
+        );
+    }
+
 }

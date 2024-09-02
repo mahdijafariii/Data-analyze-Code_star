@@ -33,11 +33,11 @@ public class GraphEavController : ControllerBase
         return Ok(paginatedNodes);
     }
 
-    [HttpGet("nodes/{headerUniqueId}/attributes")]
-    public async Task<IActionResult> GetNodeAttributes(int id)
+    [HttpGet("nodes/{nodeId}/attributes")]
+    public async Task<IActionResult> GetNodeAttributes(int nodeId)
     {
         var user = User;
-        var output = await _nodeAndEdgeInfo.GetNodeInformationAsync(user, id);
+        var output = await _nodeAndEdgeInfo.GetNodeInformationAsync(user, nodeId);
         return Ok(output);
     }
 

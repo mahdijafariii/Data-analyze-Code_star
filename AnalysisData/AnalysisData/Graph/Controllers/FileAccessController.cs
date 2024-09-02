@@ -32,7 +32,7 @@ public class FileAccessController : ControllerBase
         return Ok(users);
     }
 
-    [HttpPost("files/{fileId}/access")]
+    [HttpPost("files/access")]
     public async Task<IActionResult> AccessFileToUser([FromBody] AccessFileToUserDto request)
     {
         await _filePermissionService.AccessFileToUserAsync(request.UserGuidIds.ToList(), request.FileId);
@@ -42,7 +42,7 @@ public class FileAccessController : ControllerBase
         });
     }
 
-    [HttpGet("files/{fileId}/users")]
+    [HttpGet("files/users")]
     public async Task<IActionResult> WhoAccessToThisFile([FromQuery] int fileId)
     {
         var file = await _userFileRepository.GetByFileIdAsync(fileId);

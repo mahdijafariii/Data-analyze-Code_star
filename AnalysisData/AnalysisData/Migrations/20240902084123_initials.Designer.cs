@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240830211432_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240902084123_initials")]
+    partial class initials
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -242,6 +242,26 @@ namespace AnalysisData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            RoleName = "admin",
+                            RolePolicy = "gold"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            RoleName = "Data-Analyst",
+                            RolePolicy = "bronze"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            RoleName = "Data-Manager",
+                            RolePolicy = "silver"
+                        });
                 });
 
             modelBuilder.Entity("AnalysisData.UserManage.Model.User", b =>
@@ -285,6 +305,19 @@ namespace AnalysisData.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("85906ba5-c7bb-4708-83db-46734d4adf09"),
+                            Email = "admin@gmail.com",
+                            FirstName = "admin",
+                            LastName = "admin",
+                            Password = "admin",
+                            PhoneNumber = "09131111111",
+                            RoleId = 1,
+                            Username = "admin"
+                        });
                 });
 
             modelBuilder.Entity("AnalysisData.EAV.Model.EntityNode", b =>

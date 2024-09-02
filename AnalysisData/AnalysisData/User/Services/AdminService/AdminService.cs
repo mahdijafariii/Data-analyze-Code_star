@@ -32,7 +32,7 @@ public class AdminService : IAdminService
         await ValidateUserInformation(user, updateAdminDto);
         _validationService.EmailCheck(updateAdminDto.Email);
         _validationService.PhoneNumberCheck(updateAdminDto.PhoneNumber);
-        await CheckExistenceOfRole(updateAdminDto);
+        await CheckExistenceOfRole(user,updateAdminDto);
         
         await SetUpdatedInformation(user, updateAdminDto);
         await _jwtService.UpdateUserCookie(user.Username, false);
@@ -47,13 +47,16 @@ public class AdminService : IAdminService
             throw new DuplicateUserException();
     }
 
-    private async Task CheckExistenceOfRole(UpdateAdminDto updateAdminDto)
+    private async Task CheckExistenceOfRole(User user,UpdateAdminDto updateAdminDto)
     {
         var role = await _roleRepository.GetRoleByNameAsync(updateAdminDto.RoleName);
         if (role == null)
         {
             throw new RoleNotFoundException();
         }
+
+        await SetUpdatedInformation(user, updateAdminDto);
+        await _jwtService.UpdateUserCookie(user.Username, false);
     }
 
     private async Task SetUpdatedInformation(User user, UpdateAdminDto updateAdminDto)

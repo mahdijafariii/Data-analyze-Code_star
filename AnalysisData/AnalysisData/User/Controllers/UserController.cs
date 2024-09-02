@@ -46,8 +46,8 @@ public class UserController : ControllerBase
 
         return Ok(new { image, firstName, lastName, permission });
     }
-    [Authorize(Policy = "gold")]
-    [Authorize(Roles = "admin")]
+    // [Authorize(Policy = "gold")]
+    // [Authorize(Roles = "admin")]
     [HttpPost("reset-passadword")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
     {
@@ -76,7 +76,7 @@ public class UserController : ControllerBase
         return Ok(new { massage = "Uploaded successfully." });
     }
 
-    [Authorize(Policy = "gold")]
+    // [Authorize(Policy = "gold")]
     [HttpPut("update-user")]
     public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
     {

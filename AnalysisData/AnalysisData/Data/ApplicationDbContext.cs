@@ -7,13 +7,11 @@ namespace AnalysisData.Data;
 
 public class ApplicationDbContext : DbContext
 {
-    private readonly IPasswordHasher _passwordHasher;
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,IPasswordHasher passwordHasher)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
-        _passwordHasher = passwordHasher;
-
     }
+    
 
     public DbSet<User> Users { get; set; }
     public DbSet<AttributeEdge> AttributeEdges { get; set; }
@@ -30,19 +28,19 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
+    
         modelBuilder.Entity<Role>().HasData(
             new Role { Id = 1, RoleName = "admin", RolePolicy = "gold" },
             new Role { Id = 2, RoleName = "Data-Analyst", RolePolicy = "bronze" },
             new Role { Id = 3, RoleName = "Data-Manager", RolePolicy = "silver" }
         );
-
+    
         modelBuilder.Entity<User>().HasData(
             new User
             {
                 Id = Guid.NewGuid(),
                 Username = "admin",
-                Password = _passwordHasher.HashPassword("admin"), 
+                Password = ("admin"), 
                 PhoneNumber = "09131111111",
                 FirstName = "admin",
                 LastName = "admin",

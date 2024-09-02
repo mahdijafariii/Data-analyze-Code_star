@@ -1,11 +1,21 @@
+using System.Text;
 using AnalysisData;
 using AnalysisData.Data;
 using AnalysisData.MiddleWare;
+using AnalysisData.Repository.RoleRepository.Abstraction;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 builder.Configuration.AddJsonFile("appsettings.json").AddEnvironmentVariables();
-builder.Services.AddTransient<Authorization>();
+var connectionString = builder.Configuration["CONNECTION_STRING"];
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(connectionString));
+// builder.Services.AddScoped<Authorization>();
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddControllers();
@@ -13,16 +23,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 
-var connectionString = builder.Configuration["CONNECTION_STRING"];
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
-var services = builder.Services.BuildServiceProvider();
-var authorization = services.GetRequiredService<Authorization>();
-await authorization.ConfigureServices(builder.Services);
+
 
 
 var app = builder.Build();
 
+// using (var scope = app.Services.CreateScope())
+// {
+//     var services = scope.ServiceProvider;
+//     var authorization = services.GetRequiredService<Authorization>();
+//     await authorization.ConfigureAuthorizationPolicies(builder.Services); 
+// }
 
 
 if (app.Environment.IsDevelopment())

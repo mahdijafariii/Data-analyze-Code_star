@@ -306,11 +306,11 @@ namespace AnalysisData.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0cbdbc08-e5c5-4faf-a8bc-f6c2bda55308"),
+                            Id = new Guid("85906ba5-c7bb-4708-83db-46734d4adf09"),
                             Email = "admin@gmail.com",
                             FirstName = "admin",
                             LastName = "admin",
-                            Password = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=",
+                            Password = "admin",
                             PhoneNumber = "09131111111",
                             RoleId = 1,
                             Username = "admin"

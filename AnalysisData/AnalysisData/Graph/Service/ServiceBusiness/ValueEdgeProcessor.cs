@@ -14,7 +14,7 @@ public class ValueEdgeProcessor : IValueEdgeProcessor
     public ValueEdgeProcessor(
         IAttributeEdgeRepository attributeEdgeRepository,
         IValueEdgeRepository valueEdgeRepository,
-        int batchSize = 1000)
+        int batchSize = 100000)
     {
         _attributeEdgeRepository = attributeEdgeRepository;
         _valueEdgeRepository = valueEdgeRepository;

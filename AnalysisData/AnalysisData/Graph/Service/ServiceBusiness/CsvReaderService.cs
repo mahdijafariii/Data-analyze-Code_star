@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Text;
 using AnalysisData.EAV.Service.Business.Abstraction;
+using AnalysisData.Exception;
 using CsvHelper;
 using CsvHelper.Configuration;
 
@@ -19,13 +20,22 @@ public class CsvReaderService : ICsvReaderService
         return new CsvReader(reader, config);
     }
 
-    public IEnumerable<string> ReadHeaders(CsvReader csv)
+    public IEnumerable<string> ReadHeaders(CsvReader csv, List<string> requiredHeaders)
     {
         if (csv.Read())
         {
             csv.ReadHeader();
-            return csv.Context.Reader.HeaderRecord ?? Enumerable.Empty<string>();
+            var headers = csv.Context.Reader.HeaderRecord ?? Enumerable.Empty<string>();
+            
+            var missingHeaders = requiredHeaders.Where(h => !headers.Contains(h)).ToList();
+            if (missingHeaders.Any())
+            {
+                throw new HeaderIdNotFoundInNodeFile(missingHeaders);
+            }
+
+            return headers;
         }
+
         return Enumerable.Empty<string>();
     }
 }

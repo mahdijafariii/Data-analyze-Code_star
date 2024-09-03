@@ -60,7 +60,6 @@ public static class ConfigService
         services.AddScoped<IValidationService, ValidationService>();
         services.AddScoped<INodeToDbService, NodeToDbService>();
         services.AddScoped<ICsvReaderService, CsvReaderService>();
-        services.AddScoped<IEdgeRecordProcessor, EdgeRecordProcessor>();
         services.AddScoped<IHeaderProcessor, HeaderProcessor>();
         services.AddScoped<INodeRecordProcessor, EntityNodeRecordProcessor>();
         services.AddScoped<IFromToProcessor, FromToProcessor>();

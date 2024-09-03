@@ -258,7 +258,7 @@ namespace AnalysisData.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "FirstName", "ImageURL", "LastName", "Password", "PhoneNumber", "RoleId", "Username" },
-                values: new object[] { new Guid("50f3f0cd-f0a6-4337-a879-2bedc29bb1a5"), "admin@gmail.com", "admin", null, "admin", "admin", "09131111111", 1, "admin" });
+                values: new object[] { new Guid("05ab1595-6822-41f1-bf1c-cbb9ff3b0985"), "admin@gmail.com", "admin", null, "admin", "admin", "09131111111", 1, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_EntityEdges_EntityIDSource",

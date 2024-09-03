@@ -11,7 +11,7 @@ public class EntityNodeRecordProcessor : INodeRecordProcessor
     private readonly IEntityNodeRepository _entityNodeRepository;
     private readonly int _batchSize;
 
-    public EntityNodeRecordProcessor(IEntityNodeRepository entityNodeRepository, int batchSize = 1000)
+    public EntityNodeRecordProcessor(IEntityNodeRepository entityNodeRepository, int batchSize = 100000)
     {
         _entityNodeRepository = entityNodeRepository;
         _batchSize = batchSize;

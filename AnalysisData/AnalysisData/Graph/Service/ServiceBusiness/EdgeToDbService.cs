@@ -23,14 +23,15 @@ public class EdgeToDbService : IEdgeToDbService
     public async Task ProcessCsvFileAsync(IFormFile file, string from, string to)
     {
         var csv = _csvReaderService.CreateCsvReader(file);
-        var headers = _csvReaderService.ReadHeaders(csv);
-
+        var requiredHeaders = new List<string> { from, to };
+        var headers = _csvReaderService.ReadHeaders(csv, requiredHeaders);
+        
         await _fromToProcessor.ProcessFromToAsync(headers, from, to);
+        
         var entityEdges = await _entityEdgeRecordProcessor.ProcessEntityEdgesAsync(csv, from, to);
-
+        
         csv = _csvReaderService.CreateCsvReader(file);
-        headers = _csvReaderService.ReadHeaders(csv);
-
+        headers = _csvReaderService.ReadHeaders(csv, requiredHeaders);
         await _valueEdgeProcessor.ProcessEntityEdgeValuesAsync(csv, headers, from, to, entityEdges);
     }
 }

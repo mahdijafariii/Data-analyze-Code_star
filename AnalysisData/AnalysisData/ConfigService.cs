@@ -58,7 +58,6 @@ public static class ConfigService
         services.AddScoped<ICookieService, CookieService.CookieService>();
         services.AddScoped<IPermissionService, PermissionService>();
         services.AddScoped<IValidationService, ValidationService>();
-        services.AddScoped<IEdgeToDbService, EdgeToDbService>();
         services.AddScoped<INodeToDbService, NodeToDbService>();
         services.AddScoped<ICsvReaderService, CsvReaderService>();
         services.AddScoped<IEdgeRecordProcessor, EdgeRecordProcessor>();
@@ -81,6 +80,8 @@ public static class ConfigService
         services.AddScoped<IUploadImageService, UploadImageService>();
         services.AddScoped<IValueNodeProcessor, ValueNodeProcessor>();
         services.AddScoped<IEntityEdgeRecordProcessor, EntityEdgeRecordProcessor>();
+        services.AddScoped<IValueEdgeProcessor, ValueEdgeProcessor>();
+        services.AddScoped<IEdgeToDbService, EdgeToDbService>();
         return services;
     }
 }

@@ -47,11 +47,10 @@ public class EntityEdgeRecordProcessor : IEntityEdgeRecordProcessor
                 batch.Clear();
             }
             
-            if (batch.Any())
-            {
-                await InsertBatchAsync(batch);
-            }
-            
+        }
+        if (batch.Any())
+        {
+            await InsertBatchAsync(batch);
         }
         return entityEdges;
     }

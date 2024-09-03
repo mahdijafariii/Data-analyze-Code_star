@@ -23,15 +23,14 @@ public class NodeToDbService : INodeToDbService
 
     public async Task ProcessCsvFileAsync(IFormFile file, string id, int fileId)
     {
-        var csvReaderEnitityNodes = _csvReaderService.CreateCsvReader(file);
-        var headers = _csvReaderService.ReadHeaders(csvReaderEnitityNodes);
+        var csv = _csvReaderService.CreateCsvReader(file);
+        var headers = _csvReaderService.ReadHeaders(csv);
         
         await _headerProcessor.ProcessHeadersAsync(headers, id);
+        var entityNodes = await _nodeRecordProcessor.ProcessEntityNodesAsync(csv, headers, id, fileId);
         
-        var entityNodes = await _nodeRecordProcessor.ProcessEntityNodesAsync(csvReaderEnitityNodes, headers, id, fileId);
-        
-        using var csvReaderForValueNodes = _csvReaderService.CreateCsvReader(file);
-        var headers2 = _csvReaderService.ReadHeaders(csvReaderForValueNodes);
-        await _valueNodeProcessor.ProcessValueNodesAsync(csvReaderForValueNodes, entityNodes, headers2, id);
+        csv = _csvReaderService.CreateCsvReader(file);
+        headers = _csvReaderService.ReadHeaders(csv);
+        await _valueNodeProcessor.ProcessValueNodesAsync(csv, entityNodes, headers, id);
     }
 }

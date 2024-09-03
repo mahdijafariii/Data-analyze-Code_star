@@ -15,17 +15,18 @@ public class FromToProcessor : IFromToProcessor
 
     public async Task ProcessFromToAsync(IEnumerable<string> headers, string from, string to)
     {
-        var attributeEdges = new List<AttributeEdge>();
-        foreach (var header in headers)
-        {
-            if (header.Equals(from, StringComparison.OrdinalIgnoreCase) ||
-                header.Equals(to, StringComparison.OrdinalIgnoreCase)) continue;
+        var attributeEdges = headers
+            .Where(header => !header.Equals(from, StringComparison.OrdinalIgnoreCase) &&
+                             !header.Equals(to, StringComparison.OrdinalIgnoreCase))
+            .Select(header => new AttributeEdge { Name = header })
+            .ToList();
 
-            var existingAttribute = await _attributeEdgeRepository.GetByNameAsync(header);
-            if (existingAttribute != null) continue;
-            var attributeEdge = new AttributeEdge { Name = header };
-            attributeEdges.Add(attributeEdge);
+        foreach (var attributeEdge in attributeEdges)
+        {
+            if (await _attributeEdgeRepository.GetByNameAsync(attributeEdge.Name) == null)
+            {
+                await _attributeEdgeRepository.AddAsync(attributeEdge);
+            }
         }
-        await _attributeEdgeRepository.AddRangeAsync(attributeEdges);
     }
 }

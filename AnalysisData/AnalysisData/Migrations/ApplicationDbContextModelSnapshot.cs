@@ -89,6 +89,10 @@ namespace AnalysisData.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EntityIDSource");
+
+                    b.HasIndex("EntityIDTarget");
+
                     b.ToTable("EntityEdges");
                 });
 
@@ -306,7 +310,7 @@ namespace AnalysisData.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("585bc7f6-895d-4698-af86-bea702f770c2"),
+                            Id = new Guid("50f3f0cd-f0a6-4337-a879-2bedc29bb1a5"),
                             Email = "admin@gmail.com",
                             FirstName = "admin",
                             LastName = "admin",
@@ -315,6 +319,25 @@ namespace AnalysisData.Migrations
                             RoleId = 1,
                             Username = "admin"
                         });
+                });
+
+            modelBuilder.Entity("AnalysisData.EAV.Model.EntityEdge", b =>
+                {
+                    b.HasOne("AnalysisData.EAV.Model.EntityNode", "SourceNode")
+                        .WithMany()
+                        .HasForeignKey("EntityIDSource")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AnalysisData.EAV.Model.EntityNode", "TargetNode")
+                        .WithMany()
+                        .HasForeignKey("EntityIDTarget")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SourceNode");
+
+                    b.Navigation("TargetNode");
                 });
 
             modelBuilder.Entity("AnalysisData.EAV.Model.EntityNode", b =>

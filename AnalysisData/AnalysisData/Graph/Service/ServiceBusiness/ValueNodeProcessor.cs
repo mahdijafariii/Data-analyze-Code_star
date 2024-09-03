@@ -13,7 +13,7 @@ public class ValueNodeProcessor : IValueNodeProcessor
     private readonly int _batchSize;
 
     public ValueNodeProcessor(IAttributeNodeRepository attributeNodeRepository,
-        IValueNodeRepository valueNodeRepository, int batchSize = 1000)
+        IValueNodeRepository valueNodeRepository, int batchSize = 100000)
     {
         _attributeNodeRepository = attributeNodeRepository;
         _valueNodeRepository = valueNodeRepository;

@@ -24,7 +24,11 @@ public class ValueEdgeRepository : IValueEdgeRepository
     {
         return await _context.ValueEdges.ToListAsync();
     }
-
+    public async Task AddRangeAsync(IEnumerable<ValueEdge> valueEdges)
+    {
+        await _context.ValueEdges.AddRangeAsync(valueEdges);
+        await _context.SaveChangesAsync();
+    }
     public async Task<ValueEdge> GetByIdAsync(int id)
     {
         return await _context.ValueEdges.FindAsync(id);

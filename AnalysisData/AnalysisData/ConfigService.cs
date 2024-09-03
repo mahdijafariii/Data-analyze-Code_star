@@ -15,6 +15,8 @@ using AnalysisData.EAV.Service.Business.Abstraction;
 using AnalysisData.EAV.Service.GraphServices.NodeAndEdgeServices;
 using AnalysisData.EAV.Service.GraphServices.Relationship;
 using AnalysisData.EAV.Service.GraphSevices;
+using AnalysisData.Graph.Service.ServiceBusiness;
+using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 using AnalysisData.JwtService.abstractions;
 using AnalysisData.Repository.RoleRepository;
 using AnalysisData.Repository.RoleRepository.Abstraction;
@@ -56,12 +58,10 @@ public static class ConfigService
         services.AddScoped<ICookieService, CookieService.CookieService>();
         services.AddScoped<IPermissionService, PermissionService>();
         services.AddScoped<IValidationService, ValidationService>();
-        services.AddScoped<IEdgeToDbService, EdgeToDbService>();
         services.AddScoped<INodeToDbService, NodeToDbService>();
         services.AddScoped<ICsvReaderService, CsvReaderService>();
-        services.AddScoped<IEdgeRecordProcessor, EdgeRecordProcessor>();
         services.AddScoped<IHeaderProcessor, HeaderProcessor>();
-        services.AddScoped<INodeRecordProcessor, NodeRecordProcessor>();
+        services.AddScoped<INodeRecordProcessor, EntityNodeRecordProcessor>();
         services.AddScoped<IFromToProcessor, FromToProcessor>();
         services.AddScoped<INodePaginationService, NodePaginationService>();
         services.AddScoped<IAdminService, AdminService>();
@@ -77,8 +77,10 @@ public static class ConfigService
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IS3FileStorageService, S3FileStorageService>();
         services.AddScoped<IUploadImageService, UploadImageService>();
-
-
+        services.AddScoped<IValueNodeProcessor, ValueNodeProcessor>();
+        services.AddScoped<IEntityEdgeRecordProcessor, EntityEdgeRecordProcessor>();
+        services.AddScoped<IValueEdgeProcessor, ValueEdgeProcessor>();
+        services.AddScoped<IEdgeToDbService, EdgeToDbService>();
         return services;
     }
 }

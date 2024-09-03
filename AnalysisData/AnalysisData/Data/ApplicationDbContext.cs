@@ -36,11 +36,12 @@ public class ApplicationDbContext : DbContext
         );
     
         modelBuilder.Entity<User>().HasData(
+            
             new User
             {
                 Id = Guid.NewGuid(),
                 Username = "admin",
-                Password = ("admin"), 
+                Password = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", 
                 PhoneNumber = "09131111111",
                 FirstName = "admin",
                 LastName = "admin",

@@ -1,14 +1,14 @@
 ﻿using AnalysisData.Data;
 using AnalysisData.User.Model;
+using AnalysisData.User.Repository.UserRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TestProject.User.Repository.UserRepository;
 
 public class UserRepositoryTests
 {
     private readonly ServiceProvider _serviceProvider;
-    private readonly AnalysisData.User.Repository.UserRepository.UserRepository _sut;
+    private readonly UserRepository _sut;
 
     public UserRepositoryTests()
     {
@@ -19,7 +19,7 @@ public class UserRepositoryTests
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddScoped(_ => new ApplicationDbContext(options));
         _serviceProvider = serviceCollection.BuildServiceProvider();
-        _sut = new AnalysisData.User.Repository.UserRepository.UserRepository(CreateDbContext());
+        _sut = new UserRepository(CreateDbContext());
     }
 
     private ApplicationDbContext CreateDbContext()
@@ -35,7 +35,7 @@ public class UserRepositoryTests
 
         //Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
-        var user = new AnalysisData.User.Model.User
+        var user = new User
         {
             Username = "test", Password = "@Test1234",
             Email = "test@gmail.com",
@@ -61,7 +61,7 @@ public class UserRepositoryTests
 
         //Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
-        var user = new AnalysisData.User.Model.User
+        var user = new User
         {
             Username = "test", Password = "@Test1234",
             Email = "test@gmail.com",
@@ -86,7 +86,7 @@ public class UserRepositoryTests
 
         //Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
-        var user = new AnalysisData.User.Model.User
+        var user = new User
         {
             Username = "test", Password = "@Test1234",
             Email = "test@gmail.com",
@@ -112,7 +112,7 @@ public class UserRepositoryTests
 
         //Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
-        var user = new AnalysisData.User.Model.User
+        var user = new User
         {
             Username = "test", Password = "@Test1234",
             Email = "test@gmail.com",
@@ -138,7 +138,7 @@ public class UserRepositoryTests
         //Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
         var userId = Guid.NewGuid();
-        var user = new AnalysisData.User.Model.User
+        var user = new User
         {
             Id = userId, Username = "test", Password = "@Test1234",
             Email = "test@gmail.com", FirstName = "test", LastName = "test",
@@ -164,7 +164,7 @@ public class UserRepositoryTests
         //Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
         var userId = Guid.NewGuid();
-        var user = new AnalysisData.User.Model.User
+        var user = new User
         {
             Id = userId, Username = "test", Password = "@Test1234",
             Email = "test@gmail.com", FirstName = "test", LastName = "test",
@@ -188,7 +188,7 @@ public class UserRepositoryTests
 
         // Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
-        var users = new List<AnalysisData.User.Model.User>
+        var users = new List<User>
         {
             new()
             {
@@ -239,10 +239,10 @@ public class UserRepositoryTests
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
-        
+
         // Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
-        var users = new List<AnalysisData.User.Model.User>
+        var users = new List<User>
         {
             new()
             {
@@ -290,10 +290,10 @@ public class UserRepositoryTests
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
-        
+
         // Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
-        var users = new List<AnalysisData.User.Model.User>
+        var users = new List<User>
         {
             new()
             {
@@ -340,10 +340,10 @@ public class UserRepositoryTests
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
-        
+
         // Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
-        var users = new List<AnalysisData.User.Model.User>
+        var users = new List<User>
         {
             new()
             {
@@ -388,11 +388,11 @@ public class UserRepositoryTests
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
-        
+
         // Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
         var userId = Guid.NewGuid();
-        var user = new AnalysisData.User.Model.User
+        var user = new User
         {
             Id = userId, Username = "user1", Password = "@Test11234",
             Email = "user1@gmail.com", FirstName = "user1", LastName = "user1",
@@ -417,11 +417,11 @@ public class UserRepositoryTests
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
-        
+
         // Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
         var userId = Guid.NewGuid();
-        var user = new AnalysisData.User.Model.User
+        var user = new User
         {
             Id = userId, Username = "user1", Password = "@Test11234",
             Email = "user1@gmail.com", FirstName = "user1", LastName = "user1",
@@ -445,11 +445,11 @@ public class UserRepositoryTests
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
-        
+
         // Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
         var userId = Guid.NewGuid();
-        var user = new AnalysisData.User.Model.User
+        var user = new User
         {
             Id = userId, Username = "user1", Password = "@Test11234",
             Email = "user1@gmail.com", FirstName = "user1", LastName = "user1",
@@ -472,11 +472,11 @@ public class UserRepositoryTests
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
-        
+
         // Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
         var userId = Guid.NewGuid();
-        var user = new AnalysisData.User.Model.User
+        var user = new User
         {
             Id = userId, Username = "user1", Password = "@Test11234",
             Email = "user1@gmail.com", FirstName = "user1", LastName = "user1",
@@ -505,13 +505,13 @@ public class UserRepositoryTests
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
-        
+
         // Arrange
         var roleAdmin = new Role { RoleName = "Admin", RolePolicy = "gold" };
         var roleManager = new Role { RoleName = "Manager", RolePolicy = "silver" };
         var roleAnalyst = new Role { RoleName = "dataanalyst", RolePolicy = "bronze" };
 
-        var users = new List<AnalysisData.User.Model.User>
+        var users = new List<User>
         {
             new()
             {
@@ -552,13 +552,13 @@ public class UserRepositoryTests
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
-        
+
         // Arrange
         var roleAdmin = new Role { RoleName = "Admin", RolePolicy = "gold" };
         var roleManager = new Role { RoleName = "Manager", RolePolicy = "silver" };
         var roleAnalyst = new Role { RoleName = "dataanalyst", RolePolicy = "bronze" };
 
-        var users = new List<AnalysisData.User.Model.User>
+        var users = new List<User>
         {
             new()
             {

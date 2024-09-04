@@ -8,9 +8,6 @@ using AnalysisData.User.Services.ValidationService.Abstraction;
 using AnalysisData.User.UserDto.UserDto;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
-
-namespace TestProject.User.Services.AdminService;
-
 public class AdminRegisterServiceTests
 {
     private readonly IUserRepository _userRepository;
@@ -52,8 +49,8 @@ public class AdminRegisterServiceTests
         var existingRole = new Role { RoleName = "Admin" };
         _roleRepository.GetRoleByNameAsync(Arg.Is("admin")).Returns(existingRole);
 
-        _userRepository.GetUserByEmailAsync(userRegisterDto.Email).Returns((AnalysisData.User.Model.User)null);
-        _userRepository.GetUserByUsernameAsync(userRegisterDto.Username).Returns((AnalysisData.User.Model.User)null);
+        _userRepository.GetUserByEmailAsync(userRegisterDto.Email).Returns((User)null);
+        _userRepository.GetUserByUsernameAsync(userRegisterDto.Username).Returns((User)null);
 
         _passwordHasher.HashPassword(userRegisterDto.Password).Returns("hashedPassword");
 
@@ -61,7 +58,7 @@ public class AdminRegisterServiceTests
         await _sut.RegisterByAdminAsync(userRegisterDto);
 
         // Assert
-        await _userRepository.Received(1).AddUserAsync(Arg.Is<AnalysisData.User.Model.User>(u =>
+        await _userRepository.Received(1).AddUserAsync(Arg.Is<User>(u =>
             u.Username == userRegisterDto.Username &&
             u.Email == userRegisterDto.Email &&
             u.FirstName == userRegisterDto.FirstName &&
@@ -117,9 +114,9 @@ public class AdminRegisterServiceTests
         };
         var role = new Role { RoleName = "admin", RolePolicy = "gold" };
         _roleRepository.GetRoleByNameAsync(userRegisterDto.RoleName.ToLower()).Returns(role);
-        var existingUserWithUsername = new AnalysisData.User.Model.User
+        var existingUserWithUsername = new User
             { Id = Guid.NewGuid(), Username = "existingUsername", Email = "anotherEmail@gmail.com" };
-        var existingUserWithEmail = new AnalysisData.User.Model.User
+        var existingUserWithEmail = new User
             { Id = Guid.NewGuid(), Username = "anotherUsername", Email = "existingEmail@gmail.com" };
 
         _userRepository.GetUserByUsernameAsync(userRegisterDto.Username).Returns(existingUserWithUsername);

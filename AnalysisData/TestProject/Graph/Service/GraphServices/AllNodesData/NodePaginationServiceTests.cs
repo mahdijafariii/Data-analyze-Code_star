@@ -37,7 +37,8 @@ public class NodePaginationServiceTests
     public async Task GetAllNodesAsync_ShouldReturnsPaginatedNodesForUser_WhenNodesExist()
     {
         // Arrange
-        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", Guid.NewGuid().ToString());
+        var userId = Guid.NewGuid().ToString();
+        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", userId);
         var categoryId = 1;
 
         var entityNodes = new List<EntityNode>
@@ -64,7 +65,8 @@ public class NodePaginationServiceTests
     public async Task GetAllNodesAsync_ShouldReturnsPaginatedNodesForUserWithCategoryId_WhenNodesExist()
     {
         // Arrange
-        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", Guid.NewGuid().ToString());
+        var userId = Guid.NewGuid().ToString();
+        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", userId);
         var categoryId = 1;
 
         var entityNodes = new List<EntityNode>
@@ -93,7 +95,8 @@ public class NodePaginationServiceTests
     public async Task GetAllNodesAsync_ShouldReturnsPaginatedNodesForAdminWithCategoryId_WhenNodesExist()
     {
         // Arrange
-        var claimsPrincipal = CreateClaimsPrincipal("admin", Guid.NewGuid().ToString());
+        var userId = Guid.NewGuid().ToString();
+        var claimsPrincipal = CreateClaimsPrincipal("admin", userId);
         var categoryId = 1;
 
         var entityNodes = new List<EntityNode>
@@ -121,7 +124,8 @@ public class NodePaginationServiceTests
     public async Task GetAllNodesAsync_ShouldReturnsPaginatedNodesForAdmin_WhenNodesExist()
     {
         // Arrange
-        var claimsPrincipal = CreateClaimsPrincipal("admin", Guid.NewGuid().ToString());
+        var userId = Guid.NewGuid().ToString();
+        var claimsPrincipal = CreateClaimsPrincipal("admin", userId);
         var categoryId = 1;
 
         var entityNodes = new List<EntityNode>
@@ -149,7 +153,8 @@ public class NodePaginationServiceTests
     public async Task GetAllNodesAsync_ShouldThrowsNodeNotFoundException_WhenNoNodesExist()
     {
         // Arrange
-        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", Guid.NewGuid().ToString());
+        var userId = Guid.NewGuid().ToString();
+        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", userId);
         _graphNodeRepository.GetEntityNodesForUserAsync(Arg.Any<Guid>())
             .Returns(Enumerable.Empty<EntityNode>());
 
@@ -164,7 +169,8 @@ public class NodePaginationServiceTests
     public async Task GetAllNodesAsync_shouldThrowsCategoryResultNotFoundException_WhenNoNodesExistForCategory()
     {
         // Arrange
-        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", Guid.NewGuid().ToString());
+        var userId = Guid.NewGuid().ToString();
+        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", userId);
         var categoryId = 1;
 
 

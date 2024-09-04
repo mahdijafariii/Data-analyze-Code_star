@@ -1,10 +1,11 @@
-﻿using AnalysisData.Graph.Model.Node;
+﻿using AnalysisData.Graph.Dto.NodeDto;
+using AnalysisData.Graph.Model.Node;
 
 namespace AnalysisData.Graph.Repository.GraphNodeRepository;
 
 public interface IGraphNodeRepository
 {
-    Task<IEnumerable<dynamic>> GetNodeAttributeValueAsync(int id);
+    Task<IEnumerable<NodeInformationDto>> GetNodeAttributeValueAsync(int id);
     Task<bool> IsNodeAccessibleByUser(Guid userName, int nodeId);
     Task<IEnumerable<EntityNode>> GetEntityNodesForAdminAsync();
     Task<IEnumerable<EntityNode>> GetNodeContainSearchInputForAdminAsync(string input);

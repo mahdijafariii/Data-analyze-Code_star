@@ -25,20 +25,7 @@ public class CategoriesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddCategory([FromBody] NewCategoryDto categoryDto)
     {
-        if (categoryDto == null || string.IsNullOrEmpty(categoryDto.Name))
-        {
-            return BadRequest(new { message = "Category name is required." });
-        }
-
-        try
-        {
-            await _categoryService.AddAsync(categoryDto);
-        }
-        catch (InvalidOperationException ex)
-        {
-            return Conflict(new { message = ex.Message });
-        }
-
+        await _categoryService.AddAsync(categoryDto);
         return Ok(new { message = "Category added!" });
     }
 

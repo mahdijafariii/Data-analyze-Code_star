@@ -43,6 +43,14 @@
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.mahdiTest2.FilePermissionService.FilePermissionServiceTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.mahdiTest2.AccessManagment.AccessManagementServiceTest.GrantUserAccessAsync_ShouldAddUserFileEntries_WhenValidUserIdsAreProvided&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.mahdiTest2.AccessManagment.AccessManagementServiceTest.RevokeUserAccessAsync_ShouldRemoveUserFileEntries_WhenValidUserIdsAreProvided&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.mahdiTest2.CategoryControllersTest.GetCategories_ShouldReturnOkResult_WhenCategoriesAreFound&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.mahdiTest2.CategoryControllersTest.GetCategories_ShouldReturnOkResult_WhenNoCategoriesAreFound&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.mahdiTest2.CategoryControllersTest.AddCategory_ShouldReturnOk_WhenCategoryIsAddedSuccessfully&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.mahdiTest2.CategoryControllersTest.AddCategory_ShouldHandleException_WhenAddAsyncThrowsException&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.mahdiTest2.CategoryControllersTest.DeleteCategory_ShouldReturnNoContent_WhenCategoryExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.mahdiTest2.CategoryControllersTest.DeleteCategory_ShouldReturnNotFound_WhenCategoryDoesNotExist&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.mahdiTest2.CategoryControllersTest.UpdateCategory_ShouldReturnOk_WhenCategoryIsUpdatedSuccessfully&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.mahdiTest2.CategoryControllersTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8ae15fa0_002Dd719_002D4ce1_002D847c_002De586feccc67f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddRole_ShouldAddsRoleToDatabase_Whenever" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;

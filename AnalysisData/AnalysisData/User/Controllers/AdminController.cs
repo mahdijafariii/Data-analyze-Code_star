@@ -1,11 +1,9 @@
-﻿using AnalysisData.Services;
-using AnalysisData.Services.Abstraction;
-using AnalysisData.UserManage.RegisterModel;
-using AnalysisData.UserManage.UpdateModel;
+﻿using AnalysisData.User.Services.AdminService.Abstraction;
+using AnalysisData.User.UserDto.UserDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnalysisData.Controllers;
+namespace AnalysisData.User.Controllers;
 
 [ApiController]
 //[Authorize(Roles = "admin")]
@@ -64,11 +62,5 @@ public class AdminController : ControllerBase
         return Ok(new { massage = "updated successfully" });
     }
 
-    [HttpPost("first-admin")]
-    [AllowAnonymous]
-    public async Task<IActionResult> FirstAdmin()
-    {
-        await _adminRegisterService.AddFirstAdminAsync();
-        return Ok(new { message = "success" });
-    }
+    
 }

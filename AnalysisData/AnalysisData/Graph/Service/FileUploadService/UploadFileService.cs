@@ -1,10 +1,9 @@
 ﻿using System.Security.Claims;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.EAV.Repository.FileUploadedRepository;
-using AnalysisData.EAV.Service.Abstraction;
+using AnalysisData.Graph.Model.File;
+using AnalysisData.Graph.Repository.FileUploadedRepository.Abstraction;
+using AnalysisData.Graph.Service.FileUploadService.Abstraction;
 
-namespace AnalysisData.EAV.Service;
+namespace AnalysisData.Graph.Service.FileUploadService;
 
 public class UploadFileService : IUploadFileService
 {

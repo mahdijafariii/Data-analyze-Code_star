@@ -1,9 +1,10 @@
 using AnalysisData.Exception;
-using AnalysisData.Repository.RoleRepository.Abstraction;
-using AnalysisData.Services;
-using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.RolePaginationModel;
-using Moq;
+using AnalysisData.Exception.UserException;
+
+using AnalysisData.User.Model;
+using AnalysisData.User.Repository.RoleRepository.Abstraction;
+using AnalysisData.User.Services.RoleService;
+using AnalysisData.User.UserDto.RoleDto;
 using NSubstitute;
 
 namespace TestProject.mahdi_test;

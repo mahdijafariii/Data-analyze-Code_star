@@ -1,4 +1,4 @@
-namespace AnalysisData.UserManage.ResetPasswordModel;
+namespace AnalysisData.User.UserDto.PasswordDto;
 
 public class ResetPasswordDto
 {

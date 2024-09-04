@@ -1,9 +1,9 @@
 using AnalysisData.Data;
-using AnalysisData.Repository.RoleRepository.Abstraction;
-using AnalysisData.UserManage.Model;
+using AnalysisData.User.Model;
+using AnalysisData.User.Repository.RoleRepository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
-namespace AnalysisData.Repository.RoleRepository;
+namespace AnalysisData.User.Repository.RoleRepository;
 
 public class RoleRepository : IRoleRepository
 {
@@ -48,5 +48,15 @@ public class RoleRepository : IRoleRepository
     public async Task<int> GetRolesCountAsync()
     {
         return await _context.Roles.CountAsync();
+    }
+    
+    
+    
+    public async Task<IEnumerable<string>> GetRolesByPolicyAsync(string policy)
+    {
+        return await _context.Roles
+            .Where(r => r.RolePolicy.ToLower() == policy.ToLower())
+            .Select(r => r.RoleName.ToLower())
+            .ToListAsync();
     }
 }

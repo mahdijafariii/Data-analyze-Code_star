@@ -1,10 +1,9 @@
 ﻿using AnalysisData.Data;
-using AnalysisData.EAV.Dto;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.CategoryRepository.asbtraction;
+using AnalysisData.Graph.Model.Category;
+using AnalysisData.Graph.Repository.CategoryRepository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
-namespace AnalysisData.EAV.Repository.CategoryRepository;
+namespace AnalysisData.Graph.Repository.CategoryRepository;
 
 public class CategoryRepository : ICategoryRepository
 {

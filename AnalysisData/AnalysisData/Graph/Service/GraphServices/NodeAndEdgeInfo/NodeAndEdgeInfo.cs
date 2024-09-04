@@ -1,8 +1,9 @@
 using System.Security.Claims;
-using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.Exception;
+using AnalysisData.Exception.GraphException;
+using AnalysisData.Graph.Repository.GraphEdgeRepository;
+using AnalysisData.Graph.Repository.GraphNodeRepository;
 
-namespace AnalysisData.EAV.Service.GraphServices.NodeAndEdgeServices;
+namespace AnalysisData.Graph.Service.GraphServices.NodeAndEdgeInfo;
 
 public class NodeAndEdgeInfo : INodeAndEdgeInfo
 {

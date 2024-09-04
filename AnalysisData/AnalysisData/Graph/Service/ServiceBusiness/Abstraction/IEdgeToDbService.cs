@@ -1,4 +1,4 @@
-﻿namespace AnalysisData.EAV.Service.Abstraction;
+﻿namespace AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 
 public interface IEdgeToDbService
 {

@@ -1,17 +1,12 @@
 using System.Security.Claims;
-using AnalysisData.Exception;
-using AnalysisData.Services;
-using AnalysisData.Services.Abstraction;
-using AnalysisData.UserDto.UserDto;
-using AnalysisData.UserManage.LoginModel;
-using AnalysisData.UserManage.NewPasswordModel;
-using AnalysisData.UserManage.RegisterModel;
-using AnalysisData.UserManage.ResetPasswordModel;
-using AnalysisData.UserManage.UpdateModel;
+using AnalysisData.User.Services.PermissionService.Abstraction;
+using AnalysisData.User.Services.UserService.Abstraction;
+using AnalysisData.User.UserDto.PasswordDto;
+using AnalysisData.User.UserDto.UserDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnalysisData.Controllers;
+namespace AnalysisData.User.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -19,11 +14,13 @@ public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IPermissionService _permissionService;
+    private readonly IUploadImageService _uploadImageService;
 
-    public UserController(IUserService userService, IPermissionService permissionService)
+    public UserController(IUserService userService, IPermissionService permissionService,IUploadImageService uploadImageService)
     {
         _userService = userService;
         _permissionService = permissionService;
+        _uploadImageService = uploadImageService;
     }
 
     [HttpPost("login")]
@@ -34,18 +31,17 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("permissions")]
-    public IActionResult GetPermissions()
+    public async Task<IActionResult> GetPermissions()
     {
         var userClaims = User;
-        var permission = _permissionService.GetPermission(userClaims);
+        var permission = await _permissionService.GetPermission(userClaims);
         var firstName = userClaims.FindFirstValue("firstname");
         var lastName = userClaims.FindFirstValue("lastname");
         var image = userClaims.FindFirstValue("image");
 
         return Ok(new { image, firstName, lastName, permission });
     }
-
-    [Authorize(Roles = "admin")]
+    [Authorize(Policy = "gold")]
     [HttpPost("reset-passadword")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
     {
@@ -60,9 +56,8 @@ public class UserController : ControllerBase
         return BadRequest(new { massage = "not success" });
     }
 
-    [Authorize(Roles = "admin")]
     [HttpPost("upload-image")]
-    public IActionResult UploadImage(IFormFile file)
+    public async Task<IActionResult> UploadImage(IFormFile file)
     {
         var user = User;
         if (file == null || file.Length == 0)
@@ -70,11 +65,12 @@ public class UserController : ControllerBase
             return BadRequest(new { massage = "No file uploaded." });
         }
 
-        _userService.UploadImageAsync(user, file.FileName);
+        await _uploadImageService.UploadImageAsync(user, file);
 
         return Ok(new { massage = "Uploaded successfully." });
     }
 
+    // [Authorize(Policy = "gold")]
     [HttpPut("update-user")]
     public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
     {

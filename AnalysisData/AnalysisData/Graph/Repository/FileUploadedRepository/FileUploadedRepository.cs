@@ -1,9 +1,9 @@
 using AnalysisData.Data;
-using AnalysisData.EAV.Model;
-using AnalysisData.UserManage.Model;
+using AnalysisData.Graph.Model.File;
+using AnalysisData.Graph.Repository.FileUploadedRepository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
-namespace AnalysisData.EAV.Repository.FileUploadedRepository;
+namespace AnalysisData.Graph.Repository.FileUploadedRepository;
 
 public class FileUploadedRepository : IFileUploadedRepository
 {

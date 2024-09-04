@@ -1,10 +1,11 @@
-﻿using System.Security.Claims;
-using AnalysisData.EAV.Dto;
-using AnalysisData.EAV.Service.Abstraction;
-using AnalysisData.Exception;
+﻿using AnalysisData.Exception.GraphException;
+using AnalysisData.Graph.Dto.EdgeDto;
+using AnalysisData.Graph.Dto.NodeDto;
+using AnalysisData.Graph.Service.FileUploadService.Abstraction;
+using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnalysisData.EAV.Controllers;
+namespace AnalysisData.Graph.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

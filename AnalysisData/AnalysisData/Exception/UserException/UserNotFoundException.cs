@@ -1,6 +1,4 @@
-namespace AnalysisData.Exception;
-
-using System;
+namespace AnalysisData.Exception.UserException;
 
 public class UserNotFoundException : ServiceException
 {

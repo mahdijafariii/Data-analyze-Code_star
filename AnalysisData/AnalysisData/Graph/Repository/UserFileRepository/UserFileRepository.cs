@@ -1,10 +1,9 @@
 ﻿using AnalysisData.Data;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.UserManage.Model;
+using AnalysisData.Graph.Model.File;
+using AnalysisData.Graph.Repository.UserFileRepository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
-namespace AnalysisData.EAV.Repository;
+namespace AnalysisData.Graph.Repository.UserFileRepository;
 
 public class UserFileRepository : IUserFileRepository
 {

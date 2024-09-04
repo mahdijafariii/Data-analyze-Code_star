@@ -1,9 +1,9 @@
 ﻿using AnalysisData.Data;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
+using AnalysisData.Graph.Model.Node;
+using AnalysisData.Graph.Repository.NodeRepository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
-namespace AnalysisData.EAV.Repository.NodeRepository;
+namespace AnalysisData.Graph.Repository.NodeRepository;
 
 public class ValueNodeRepository : IValueNodeRepository
 {
@@ -20,6 +20,11 @@ public class ValueNodeRepository : IValueNodeRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task AddRangeAsync(IEnumerable<ValueNode> valueNodes)
+    {
+        await _context.ValueNodes.AddRangeAsync(valueNodes);
+        await _context.SaveChangesAsync();
+    }
     public async Task<IEnumerable<ValueNode>> GetAllAsync()
     {
         return await _context.ValueNodes.ToListAsync();

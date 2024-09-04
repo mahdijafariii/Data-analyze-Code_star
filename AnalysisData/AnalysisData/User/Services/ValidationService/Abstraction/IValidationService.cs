@@ -1,4 +1,4 @@
-namespace AnalysisData.Services.Abstraction;
+namespace AnalysisData.User.Services.ValidationService.Abstraction;
 
 public interface IValidationService
 {

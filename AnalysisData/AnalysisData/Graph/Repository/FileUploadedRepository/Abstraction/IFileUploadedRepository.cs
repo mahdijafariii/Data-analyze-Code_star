@@ -1,6 +1,6 @@
-using AnalysisData.EAV.Model;
+using AnalysisData.Graph.Model.File;
 
-namespace AnalysisData.EAV.Repository.FileUploadedRepository;
+namespace AnalysisData.Graph.Repository.FileUploadedRepository.Abstraction;
 
 public interface IFileUploadedRepository
 {

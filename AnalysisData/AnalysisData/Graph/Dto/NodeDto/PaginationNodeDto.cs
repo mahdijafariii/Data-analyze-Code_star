@@ -1,4 +1,4 @@
-namespace AnalysisData.EAV.Dto;
+namespace AnalysisData.Graph.Dto.NodeDto;
 
 public class PaginationNodeDto
 {

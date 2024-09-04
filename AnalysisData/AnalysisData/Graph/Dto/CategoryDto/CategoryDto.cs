@@ -1,4 +1,4 @@
-﻿namespace AnalysisData.EAV.Model;
+﻿namespace AnalysisData.Graph.Dto.CategoryDto;
 
 public class CategoryDto
 {

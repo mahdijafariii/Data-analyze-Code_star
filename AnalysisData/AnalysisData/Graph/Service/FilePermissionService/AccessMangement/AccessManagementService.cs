@@ -1,8 +1,7 @@
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.Repository.UserRepository.Abstraction;
+using AnalysisData.Graph.Model.File;
+using AnalysisData.Graph.Repository.UserFileRepository.Abstraction;
 
-namespace AnalysisData.EAV.Service;
+namespace AnalysisData.Graph.Service.FilePermissionService.AccessMangement;
 
 public class AccessManagementService : IAccessManagementService
 {

@@ -1,6 +1,6 @@
-﻿using AnalysisData.EAV.Model;
+﻿using AnalysisData.Graph.Model.Node;
 
-namespace AnalysisData.EAV.Repository.Abstraction;
+namespace AnalysisData.Graph.Repository.GraphNodeRepository;
 
 public interface IGraphNodeRepository
 {

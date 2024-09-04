@@ -1,18 +1,14 @@
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
-using AnalysisData.CookieService.abstractions;
-using AnalysisData.Exception;
-using AnalysisData.JwtService.abstractions;
-using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Services.Abstraction;
-using AnalysisData.Services.S3FileStorageService;
-using AnalysisData.Services.SecurityPasswordService.Abstraction;
-using AnalysisData.UserManage.LoginModel;
-using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.UpdateModel;
+using AnalysisData.Exception.UserException;
+using AnalysisData.User.CookieService.abstractions;
+using AnalysisData.User.JwtService.abstractions;
+using AnalysisData.User.Repository.UserRepository.Abstraction;
+using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
+using AnalysisData.User.Services.UserService.Abstraction;
+using AnalysisData.User.Services.ValidationService.Abstraction;
+using AnalysisData.User.UserDto.UserDto;
 
-namespace AnalysisData.Services;
+namespace AnalysisData.User.Services.UserService;
 
 public class UserService : IUserService
 {
@@ -79,7 +75,7 @@ public class UserService : IUserService
         return true;
     }
 
-    public async Task<User> LoginAsync(UserLoginDto userLoginDto)
+    public async Task<Model.User> LoginAsync(UserLoginDto userLoginDto)
     {
         var user = await _userRepository.GetUserByUsernameAsync(userLoginDto.userName);
         if (user == null)
@@ -97,7 +93,7 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<User> GetUserAsync(ClaimsPrincipal userClaim)
+    public async Task<Model.User> GetUserAsync(ClaimsPrincipal userClaim)
     {
         var userName = userClaim.FindFirstValue("username");
         var user = await _userRepository.GetUserByUsernameAsync(userName);
@@ -125,7 +121,7 @@ public class UserService : IUserService
         return true;
     }
 
-    private async Task ReplaceUserDetails(User user, UpdateUserDto updateUserDto)
+    private async Task ReplaceUserDetails(Model.User user, UpdateUserDto updateUserDto)
     {
         user.FirstName = updateUserDto.FirstName;
         user.LastName = updateUserDto.LastName;

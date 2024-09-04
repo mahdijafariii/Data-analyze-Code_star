@@ -1,6 +1,4 @@
-﻿using AnalysisData.EAV.Model;
-
-namespace AnalysisData.EAV.Dto;
+﻿namespace AnalysisData.Graph.Dto.CategoryDto;
 
 public class PaginationCategoryDto
 {

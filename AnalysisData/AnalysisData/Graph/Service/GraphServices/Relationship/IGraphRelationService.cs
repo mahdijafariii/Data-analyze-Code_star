@@ -1,7 +1,8 @@
 using System.Security.Claims;
-using AnalysisData.EAV.Dto;
+using AnalysisData.Graph.Dto.EdgeDto;
+using AnalysisData.Graph.Dto.NodeDto;
 
-namespace AnalysisData.EAV.Service.GraphServices.Relationship;
+namespace AnalysisData.Graph.Service.GraphServices.Relationship;
 
 public interface IGraphRelationService
 {

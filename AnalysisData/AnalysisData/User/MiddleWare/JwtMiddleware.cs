@@ -2,7 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AnalysisData.MiddleWare;
+namespace AnalysisData.User.MiddleWare;
 
 public class JwtMiddleware
 {

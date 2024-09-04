@@ -1,4 +1,4 @@
-namespace AnalysisData.CookieService.abstractions;
+namespace AnalysisData.User.CookieService.abstractions;
 
 public interface ICookieService
 {

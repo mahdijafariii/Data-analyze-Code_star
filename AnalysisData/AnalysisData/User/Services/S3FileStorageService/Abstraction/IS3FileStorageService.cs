@@ -1,4 +1,4 @@
-namespace AnalysisData.Services.S3FileStorageService;
+namespace AnalysisData.User.Services.S3FileStorageService.Abstraction;
 
 public interface IS3FileStorageService
 {

@@ -1,8 +1,6 @@
-using AnalysisData.EAV.Dto;
-using AnalysisData.EAV.Model;
-using AnalysisData.UserManage.Model;
+using AnalysisData.Graph.Dto;
 
-namespace AnalysisData.EAV.Service;
+namespace AnalysisData.Graph.Service.FilePermissionService;
 
 public interface IFilePermissionService
 {

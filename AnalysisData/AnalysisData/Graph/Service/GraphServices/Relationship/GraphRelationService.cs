@@ -1,12 +1,13 @@
 using System.Security.Claims;
-using AnalysisData.EAV.Dto;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
-using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
-using AnalysisData.Exception;
+using AnalysisData.Exception.GraphException;
+using AnalysisData.Graph.Dto.EdgeDto;
+using AnalysisData.Graph.Dto.NodeDto;
+using AnalysisData.Graph.Model.Node;
+using AnalysisData.Graph.Repository.EdgeRepository.Abstraction;
+using AnalysisData.Graph.Repository.GraphNodeRepository;
+using AnalysisData.Graph.Repository.NodeRepository.Abstraction;
 
-namespace AnalysisData.EAV.Service.GraphServices.Relationship;
+namespace AnalysisData.Graph.Service.GraphServices.Relationship;
 
 public class GraphRelationService : IGraphRelationService
 {

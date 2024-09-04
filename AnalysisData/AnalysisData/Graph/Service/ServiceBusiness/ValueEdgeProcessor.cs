@@ -1,5 +1,5 @@
-﻿using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
+﻿using AnalysisData.Graph.Model.Edge;
+using AnalysisData.Graph.Repository.EdgeRepository.Abstraction;
 using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 using CsvHelper;
 

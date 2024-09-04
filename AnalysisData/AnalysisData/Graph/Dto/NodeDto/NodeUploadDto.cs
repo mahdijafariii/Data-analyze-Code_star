@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using AnalysisData.EAV.Model;
 
-namespace AnalysisData.EAV.Dto;
+namespace AnalysisData.Graph.Dto.NodeDto;
 
 public class NodeUploadDto
 {

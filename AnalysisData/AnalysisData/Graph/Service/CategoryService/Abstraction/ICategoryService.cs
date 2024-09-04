@@ -1,7 +1,7 @@
-﻿using AnalysisData.EAV.Dto;
-using AnalysisData.EAV.Model;
+﻿using AnalysisData.Graph.Dto.CategoryDto;
+using AnalysisData.Graph.Model.Category;
 
-namespace AnalysisData.EAV.Service.Abstraction;
+namespace AnalysisData.Graph.Service.CategoryService.Abstraction;
 
 public interface ICategoryService
 {

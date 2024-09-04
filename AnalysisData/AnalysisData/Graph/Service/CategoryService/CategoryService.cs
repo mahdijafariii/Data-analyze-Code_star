@@ -1,11 +1,11 @@
-﻿using AnalysisData.EAV.Dto;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.CategoryRepository.asbtraction;
-using AnalysisData.EAV.Repository.FileUploadedRepository;
-using AnalysisData.EAV.Service.Abstraction;
-using AnalysisData.Exception;
+﻿using AnalysisData.Exception.GraphException;
+using AnalysisData.Graph.Dto.CategoryDto;
+using AnalysisData.Graph.Model.Category;
+using AnalysisData.Graph.Repository.CategoryRepository.Abstraction;
+using AnalysisData.Graph.Repository.FileUploadedRepository.Abstraction;
+using AnalysisData.Graph.Service.CategoryService.Abstraction;
 
-namespace AnalysisData.EAV.Service;
+namespace AnalysisData.Graph.Service.CategoryService;
 
 public class CategoryService : ICategoryService
 {

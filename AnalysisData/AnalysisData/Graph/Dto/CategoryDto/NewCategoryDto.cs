@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AnalysisData.EAV.Dto;
+namespace AnalysisData.Graph.Dto.CategoryDto;
 
 public class NewCategoryDto
 {

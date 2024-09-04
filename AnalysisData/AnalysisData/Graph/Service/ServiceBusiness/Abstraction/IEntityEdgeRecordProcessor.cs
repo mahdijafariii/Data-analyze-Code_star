@@ -1,4 +1,4 @@
-﻿using AnalysisData.EAV.Model;
+﻿using AnalysisData.Graph.Model.Edge;
 using CsvHelper;
 
 namespace AnalysisData.Graph.Service.ServiceBusiness.Abstraction;

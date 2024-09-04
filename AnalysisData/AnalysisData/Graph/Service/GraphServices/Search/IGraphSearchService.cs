@@ -1,7 +1,7 @@
 using System.Security.Claims;
-using AnalysisData.EAV.Model;
+using AnalysisData.Graph.Model.Node;
 
-namespace AnalysisData.EAV.Service.GraphSevices;
+namespace AnalysisData.Graph.Service.GraphServices.Search;
 
 public interface IGraphSearchService
 {

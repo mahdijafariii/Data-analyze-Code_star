@@ -1,17 +1,12 @@
 using System.Security.Claims;
-using AnalysisData.Exception;
-using AnalysisData.Services;
-using AnalysisData.Services.Abstraction;
-using AnalysisData.UserDto.UserDto;
-using AnalysisData.UserManage.LoginModel;
-using AnalysisData.UserManage.NewPasswordModel;
-using AnalysisData.UserManage.RegisterModel;
-using AnalysisData.UserManage.ResetPasswordModel;
-using AnalysisData.UserManage.UpdateModel;
+using AnalysisData.User.Services.PermissionService.Abstraction;
+using AnalysisData.User.Services.UserService.Abstraction;
+using AnalysisData.User.UserDto.PasswordDto;
+using AnalysisData.User.UserDto.UserDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnalysisData.Controllers;
+namespace AnalysisData.User.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

@@ -1,12 +1,10 @@
-using AnalysisData.Exception;
-using AnalysisData.JwtService.abstractions;
-using AnalysisData.Repository.RoleRepository.Abstraction;
-using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Services.Abstraction;
-using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.RolePaginationModel;
+using AnalysisData.Exception.UserException;
+using AnalysisData.User.Model;
+using AnalysisData.User.Repository.RoleRepository.Abstraction;
+using AnalysisData.User.Services.RoleService.Abstraction;
+using AnalysisData.User.UserDto.RoleDto;
 
-namespace AnalysisData.Services;
+namespace AnalysisData.User.Services.RoleService;
 
 public class RoleManagementService : IRoleManagementService
 {

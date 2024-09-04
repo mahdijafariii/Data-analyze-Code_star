@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using AnalysisData.Graph.Model.File;
 
-namespace AnalysisData.EAV.Model;
+namespace AnalysisData.Graph.Model.Node;
 
 public class EntityNode
 {

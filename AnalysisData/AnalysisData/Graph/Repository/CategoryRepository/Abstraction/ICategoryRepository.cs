@@ -1,7 +1,6 @@
-﻿using AnalysisData.EAV.Dto;
-using AnalysisData.EAV.Model;
+﻿using AnalysisData.Graph.Model.Category;
 
-namespace AnalysisData.EAV.Repository.CategoryRepository.asbtraction;
+namespace AnalysisData.Graph.Repository.CategoryRepository.Abstraction;
 
 public interface ICategoryRepository
 {

@@ -33,12 +33,7 @@ public class FilePermissionService : IFilePermissionService
         {
             Id = x.Id, FileName = x.FileName, Category = x.Category.Name, UploadDate = x.UploadDate,
         }).ToList();
-        return new PaginatedFileDto()
-        {
-            Items = paginationFiles,
-            TotalCount = totalFilesCount,
-            PageIndex = page
-        };
+        return new PaginatedFileDto(paginationFiles, totalFilesCount, page);
     }
 
     public async Task<List<UserAccessDto>> GetUserForAccessingFileAsync(string username)

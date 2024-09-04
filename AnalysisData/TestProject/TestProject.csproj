@@ -27,4 +27,8 @@
       <ProjectReference Include="..\AnalysisData\AnalysisData.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="mahdiTest2\AccessManagment\" />
+    </ItemGroup>
+
 </Project>

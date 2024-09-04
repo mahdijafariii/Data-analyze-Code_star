@@ -73,7 +73,7 @@ public class FilePermissionService : IFilePermissionService
 
         await CheckGuidOfUsersAsync(inputUserIdes, validUserGuids);
 
-        await GetUsers(validUserGuids);
+        await CheckUserExistence(validUserGuids);
 
         if (await _fileUploadedRepository.GetByIdAsync(fileId) is null)
         {
@@ -88,7 +88,7 @@ public class FilePermissionService : IFilePermissionService
         await _accessManagementService.GrantUserAccessAsync(newUsers, fileId);
     }
 
-    private async Task GetUsers(List<Guid> validUserGuids)
+    private async Task CheckUserExistence(List<Guid> validUserGuids)
     {
         foreach (var userId in validUserGuids)
         {

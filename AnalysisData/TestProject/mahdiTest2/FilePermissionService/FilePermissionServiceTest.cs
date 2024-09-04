@@ -4,6 +4,7 @@ using AnalysisData.EAV.Repository.FileUploadedRepository;
 using AnalysisData.EAV.Service;
 using AnalysisData.Exception;
 using AnalysisData.Repository.UserRepository.Abstraction;
+using AnalysisData.Services;
 using AnalysisData.UserManage.Model;
 using Moq;
 
@@ -176,16 +177,18 @@ public class FilePermissionServiceTest
     {
         // Arrange
         var fileId = 1;
-        var inputUserIds = new List<string> { "guid1", "guid2" };
+        var guid1 = Guid.NewGuid();
+        var guid2 = Guid.NewGuid();
+        var inputUserIds = new List<string> { guid1.ToString(), guid2.ToString() };
 
         var validGuids = new List<Guid>
         {
-            Guid.Parse("guid1"),
-            Guid.Parse("guid2")
+            guid1,
+            guid2
         };
 
         var currentAccessor = new List<string> { "guid3", "guid4" }; 
-
+        
         _fileUploadedRepositoryMock.Setup(repo => repo.GetByIdAsync(fileId))
             .ReturnsAsync(new FileEntity()); 
 
@@ -197,7 +200,10 @@ public class FilePermissionServiceTest
 
         _accessManagementServiceMock.Setup(service => service.GrantUserAccessAsync(It.IsAny<List<string>>(), fileId))
             .Returns(Task.CompletedTask);
-        
+
+        _userRepositoryMock.Setup(repo => repo.GetUserByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(new User()); 
+
         // Act
         await _sut.AccessFileToUserAsync(inputUserIds, fileId);
 

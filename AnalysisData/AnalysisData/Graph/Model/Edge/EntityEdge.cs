@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using AnalysisData.Graph.Model.Node;
 
-namespace AnalysisData.EAV.Model;
+namespace AnalysisData.Graph.Model.Edge;
 
 public class EntityEdge
 {

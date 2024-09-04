@@ -1,9 +1,8 @@
-using AnalysisData.EAV.Controllers;
-using AnalysisData.EAV.Dto;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.EAV.Service;
-using AnalysisData.UserManage.Model;
+using AnalysisData.Graph.Controllers;
+using AnalysisData.Graph.Dto;
+using AnalysisData.Graph.Model.File;
+using AnalysisData.Graph.Repository.UserFileRepository.Abstraction;
+using AnalysisData.Graph.Service.FilePermissionService;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Newtonsoft.Json;
@@ -110,8 +109,8 @@ public class FileAccessControllersTest
         
         var userFile = new List<UserFile>
         {
-            new UserFile() { Id = Guid.NewGuid(), User = new User() },
-            new UserFile() { Id = Guid.NewGuid(), User = new User() }
+            new UserFile() { Id = Guid.NewGuid(), User = new AnalysisData.User.Model.User() },
+            new UserFile() { Id = Guid.NewGuid(), User = new AnalysisData.User.Model.User() }
         };
     
         _userFileRepositoryMock.Setup(repo => repo.GetByFileIdAsync(fileId))

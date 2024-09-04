@@ -1,9 +1,8 @@
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.EAV.Service;
-using Moq;
 
-namespace TestProject.mahdiTest2.AccessManagment;
+using AnalysisData.Graph.Model.File;
+using AnalysisData.Graph.Repository.UserFileRepository.Abstraction;
+using AnalysisData.Graph.Service.FilePermissionService.AccessMangement;
+using Moq;
 
 public class AccessManagementServiceTest
 {

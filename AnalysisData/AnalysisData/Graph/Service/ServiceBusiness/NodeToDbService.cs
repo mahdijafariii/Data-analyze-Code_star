@@ -1,9 +1,8 @@
-﻿using AnalysisData.EAV.Service.Abstraction;
-using AnalysisData.EAV.Service.Business.Abstraction;
-using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
+﻿using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 using CsvHelper;
+using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 
-namespace AnalysisData.EAV.Service;
+namespace AnalysisData.Graph.Service.ServiceBusiness;
 
 public class NodeToDbService : INodeToDbService
 {

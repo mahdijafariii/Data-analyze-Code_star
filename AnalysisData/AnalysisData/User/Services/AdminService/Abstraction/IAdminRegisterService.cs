@@ -1,6 +1,6 @@
-using AnalysisData.UserManage.RegisterModel;
+using AnalysisData.User.UserDto.UserDto;
 
-namespace AnalysisData.Services;
+namespace AnalysisData.User.Services.AdminService.Abstraction;
 
 public interface IAdminRegisterService
 {

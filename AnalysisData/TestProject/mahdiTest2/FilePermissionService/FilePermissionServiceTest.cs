@@ -1,14 +1,15 @@
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.EAV.Repository.FileUploadedRepository;
-using AnalysisData.EAV.Service;
-using AnalysisData.Exception;
-using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Services;
-using AnalysisData.UserManage.Model;
+
+using AnalysisData.Exception.UserException;
+using AnalysisData.Graph.Model.Category;
+using AnalysisData.Graph.Model.File;
+using AnalysisData.Graph.Repository.FileUploadedRepository.Abstraction;
+using AnalysisData.Graph.Repository.UserFileRepository.Abstraction;
+using AnalysisData.Graph.Service.FilePermissionService;
+using AnalysisData.Graph.Service.FilePermissionService.AccessMangement;
+using AnalysisData.User.Model;
+using AnalysisData.User.Repository.UserRepository.Abstraction;
 using Moq;
 
-namespace TestProject.mahdiTest2.FilePermissionService;
 
 public class FilePermissionServiceTest
 {
@@ -16,7 +17,7 @@ public class FilePermissionServiceTest
     private readonly Mock<IUserRepository> _userRepositoryMock;
     private readonly Mock<IUserFileRepository> _userFileRepositoryMock;
     private readonly Mock<IAccessManagementService> _accessManagementServiceMock;
-    private readonly AnalysisData.EAV.Service.FilePermissionService _sut;
+    private readonly FilePermissionService _sut;
 
     public FilePermissionServiceTest()
     {
@@ -26,7 +27,7 @@ public class FilePermissionServiceTest
         _accessManagementServiceMock = new Mock<IAccessManagementService>();
         _fileUploadedRepositoryMock = new Mock<IFileUploadedRepository>();
         
-        _sut = new AnalysisData.EAV.Service.FilePermissionService(
+        _sut = new FilePermissionService(
             _fileUploadedRepositoryMock.Object,
             _userRepositoryMock.Object,
             _userFileRepositoryMock.Object,
@@ -97,10 +98,10 @@ public class FilePermissionServiceTest
         int limit = 2;
         string username = "mahdi";
 
-        var mockUsers = new List<User>()
+        var mockUsers = new List<AnalysisData.User.Model.User>()
         {
-            new User {Id = Guid.NewGuid(), Username = "mahdijm", FirstName ="mahdi", LastName = "jafari"},
-            new User {Id = Guid.NewGuid(), Username = "mahdijasem", FirstName ="mahdi", LastName = "jasemi"},
+            new AnalysisData.User.Model.User {Id = Guid.NewGuid(), Username = "mahdijm", FirstName ="mahdi", LastName = "jafari"},
+            new AnalysisData.User.Model.User {Id = Guid.NewGuid(), Username = "mahdijasem", FirstName ="mahdi", LastName = "jasemi"},
         };
 
         _userRepositoryMock.Setup(repo => repo.GetTopUsersByUsernameSearchAsync(username))

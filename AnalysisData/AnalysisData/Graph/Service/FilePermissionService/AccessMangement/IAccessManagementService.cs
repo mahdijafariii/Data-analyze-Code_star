@@ -1,4 +1,4 @@
-namespace AnalysisData.EAV.Service;
+namespace AnalysisData.Graph.Service.FilePermissionService.AccessMangement;
 
 public interface IAccessManagementService
 {

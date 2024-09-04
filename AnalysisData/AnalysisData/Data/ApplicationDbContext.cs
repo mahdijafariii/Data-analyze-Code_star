@@ -1,6 +1,8 @@
-using AnalysisData.EAV.Model;
-using AnalysisData.Services.SecurityPasswordService.Abstraction;
-using AnalysisData.UserManage.Model;
+using AnalysisData.Graph.Model.Category;
+using AnalysisData.Graph.Model.Edge;
+using AnalysisData.Graph.Model.File;
+using AnalysisData.Graph.Model.Node;
+using AnalysisData.User.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace AnalysisData.Data;
@@ -11,9 +13,8 @@ public class ApplicationDbContext : DbContext
         : base(options)
     {
     }
-    
 
-    public DbSet<User> Users { get; set; }
+    public DbSet<User.Model.User> Users { get; set; }
     public DbSet<AttributeEdge> AttributeEdges { get; set; }
     public DbSet<AttributeNode> AttributeNodes { get; set; }
     public DbSet<EntityEdge> EntityEdges { get; set; }
@@ -35,9 +36,9 @@ public class ApplicationDbContext : DbContext
             new Role { Id = 3, RoleName = "Data-Manager", RolePolicy = "silver" }
         );
     
-        modelBuilder.Entity<User>().HasData(
+        modelBuilder.Entity<User.Model.User>().HasData(
             
-            new User
+            new User.Model.User
             {
                 Id = Guid.NewGuid(),
                 Username = "admin",

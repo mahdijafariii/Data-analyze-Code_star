@@ -1,4 +1,4 @@
-namespace AnalysisData.Exception;
+namespace AnalysisData.Exception.GraphException;
 
 public class NodeNotFoundException : ServiceException
 {

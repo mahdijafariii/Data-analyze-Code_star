@@ -1,10 +1,9 @@
-﻿using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
-using AnalysisData.EAV.Service.Business.Abstraction;
+﻿using AnalysisData.Graph.Model.Node;
+using AnalysisData.Graph.Repository.NodeRepository.Abstraction;
+using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 using CsvHelper;
-using Microsoft.Extensions.Azure;
 
-namespace AnalysisData.EAV.Service.Business;
+namespace AnalysisData.Graph.Service.ServiceBusiness;
 
 public class EntityNodeRecordProcessor : INodeRecordProcessor
 {

@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace AnalysisData.Services.Abstraction;
+namespace AnalysisData.User.Services.PermissionService.Abstraction;
 
 public interface IPermissionService
 {

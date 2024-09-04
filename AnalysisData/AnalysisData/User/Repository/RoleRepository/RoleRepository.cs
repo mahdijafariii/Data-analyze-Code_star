@@ -1,9 +1,9 @@
 using AnalysisData.Data;
-using AnalysisData.Repository.RoleRepository.Abstraction;
-using AnalysisData.UserManage.Model;
+using AnalysisData.User.Model;
+using AnalysisData.User.Repository.RoleRepository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
-namespace AnalysisData.Repository.RoleRepository;
+namespace AnalysisData.User.Repository.RoleRepository;
 
 public class RoleRepository : IRoleRepository
 {

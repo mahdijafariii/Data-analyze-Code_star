@@ -1,8 +1,7 @@
 using System.Text;
 using AnalysisData;
 using AnalysisData.Data;
-using AnalysisData.MiddleWare;
-using AnalysisData.Repository.RoleRepository.Abstraction;
+using AnalysisData.User.MiddleWare;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

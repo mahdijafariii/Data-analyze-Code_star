@@ -1,7 +1,7 @@
-using AnalysisData.EAV.Controllers;
-using AnalysisData.EAV.Dto;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Service.Abstraction;
+using AnalysisData.Graph.Controllers;
+using AnalysisData.Graph.Dto.CategoryDto;
+using AnalysisData.Graph.Model.Category;
+using AnalysisData.Graph.Service.CategoryService.Abstraction;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

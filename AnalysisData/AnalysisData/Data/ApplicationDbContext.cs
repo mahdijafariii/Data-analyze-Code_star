@@ -30,7 +30,7 @@ public class ApplicationDbContext : DbContext
         base.OnModelCreating(modelBuilder);
     
         modelBuilder.Entity<Role>().HasData(
-            new Role { Id = 1, RoleName = "admin", RolePolicy = "gold" },
+            new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" },
             new Role { Id = 2, RoleName = "Data-Analyst", RolePolicy = "bronze" },
             new Role { Id = 3, RoleName = "Data-Manager", RolePolicy = "silver" }
         );

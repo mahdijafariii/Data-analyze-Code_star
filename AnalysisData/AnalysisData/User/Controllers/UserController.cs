@@ -46,8 +46,7 @@ public class UserController : ControllerBase
 
         return Ok(new { image, firstName, lastName, permission });
     }
-    // [Authorize(Policy = "gold")]
-    // [Authorize(Roles = "admin")]
+    [Authorize(Policy = "gold")]
     [HttpPost("reset-passadword")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
     {

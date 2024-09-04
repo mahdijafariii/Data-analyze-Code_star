@@ -38,7 +38,7 @@ public class UserFileRepository : IUserFileRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<string>> GetUserIdsWithAccessToFileAsync(int fileId)
+    public async Task<IEnumerable<string>> GetUserIdsAccessHasToFile(int fileId)
     {
         return await _context.UserFiles
             .Where(u => u.FileId == fileId).Select(x => x.UserId.ToString())

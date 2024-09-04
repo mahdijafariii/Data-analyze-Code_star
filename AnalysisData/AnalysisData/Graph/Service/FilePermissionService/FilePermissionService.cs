@@ -73,6 +73,23 @@ public class FilePermissionService : IFilePermissionService
 
         await CheckGuidOfUsersAsync(inputUserIdes, validUserGuids);
 
+        await GetUsers(validUserGuids);
+
+        if (await _fileUploadedRepository.GetByIdAsync(fileId) is null)
+        {
+            throw new NoFileUploadedException();
+        }
+
+        var currentAccessor = await _userFileRepository.GetUserIdsAccessHasToFile(fileId);
+        var newUsers = validUserGuids.Select(g => g.ToString()).Except(currentAccessor).ToList();
+        var blockAccessToFile = currentAccessor
+            .Except(currentAccessor.Intersect(validUserGuids.Select(g => g.ToString()))).ToList();
+        await _accessManagementService.RevokeUserAccessAsync(blockAccessToFile);
+        await _accessManagementService.GrantUserAccessAsync(newUsers, fileId);
+    }
+
+    private async Task GetUsers(List<Guid> validUserGuids)
+    {
         foreach (var userId in validUserGuids)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
@@ -81,18 +98,6 @@ public class FilePermissionService : IFilePermissionService
                 throw new UserNotFoundException();
             }
         }
-
-        if (await _fileUploadedRepository.GetByIdAsync(fileId) is null)
-        {
-            throw new NoFileUploadedException();
-        }
-
-        var currentAccessor = await _userFileRepository.GetUserIdsWithAccessToFileAsync(fileId);
-        var newUsers = validUserGuids.Select(g => g.ToString()).Except(currentAccessor).ToList();
-        var blockAccessToFile = currentAccessor
-            .Except(currentAccessor.Intersect(validUserGuids.Select(g => g.ToString()))).ToList();
-        await _accessManagementService.RevokeUserAccessAsync(blockAccessToFile);
-        await _accessManagementService.GrantUserAccessAsync(newUsers, fileId);
     }
 
     private async Task CheckGuidOfUsersAsync(List<string> inputUserIdes, List<Guid> validUserGuids)

@@ -14,8 +14,6 @@ public class EntityEdgeRecordProcessor : IEntityEdgeRecordProcessor
 {
     private readonly IEntityNodeRepository _entityNodeRepository;
     private readonly IEntityEdgeRepository _entityEdgeRepository;
-    private readonly int _batchSize;
-
     public EntityEdgeRecordProcessor(
         IEntityNodeRepository entityNodeRepository, 
         IEntityEdgeRepository entityEdgeRepository 

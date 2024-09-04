@@ -74,8 +74,10 @@ public static class ConfigService
         services.AddScoped<ICookieService, CookieService>();
         services.AddScoped<IPermissionService, PermissionService>();
         services.AddScoped<IValidationService, ValidationService>();
+        services.AddScoped<ICsvReaderFactory, CsvReaderFactory>();
         services.AddScoped<INodeToDbService, NodeToDbService>();
         services.AddScoped<ICsvReaderService, CsvReaderService>();
+        services.AddScoped<ICsvHeaderValidator, CsvHeaderValidator>();
         services.AddScoped<IHeaderProcessor, HeaderProcessor>();
         services.AddScoped<INodeRecordProcessor, EntityNodeRecordProcessor>();
         services.AddScoped<IFromToProcessor, FromToProcessor>();

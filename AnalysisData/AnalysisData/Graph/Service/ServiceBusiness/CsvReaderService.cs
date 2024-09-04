@@ -10,33 +10,18 @@ namespace AnalysisData.Graph.Service.ServiceBusiness;
 
 public class CsvReaderService : ICsvReaderService
 {
-    public CsvReader CreateCsvReader(IFormFile file)
+    private readonly ICsvReaderFactory _csvReaderFactory;
+    private readonly ICsvHeaderValidator _csvHeaderValidator;
+
+    public CsvReaderService(ICsvReaderFactory csvReaderFactory, ICsvHeaderValidator csvHeaderValidator)
     {
-        var reader = new StreamReader(file.OpenReadStream());
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            Encoding = Encoding.UTF8,
-            HasHeaderRecord = true
-        };
-        return new CsvReader(reader, config);
+        _csvReaderFactory = csvReaderFactory;
+        _csvHeaderValidator = csvHeaderValidator;
     }
 
-    public IEnumerable<string> ReadHeaders(CsvReader csv, List<string> requiredHeaders)
+    public IEnumerable<string> ValidateCsvHeaders(IFormFile file, List<string> requiredHeaders)
     {
-        if (csv.Read())
-        {
-            csv.ReadHeader();
-            var headers = csv.Context.Reader.HeaderRecord ?? Enumerable.Empty<string>();
-            
-            var missingHeaders = requiredHeaders.Where(h => !headers.Contains(h)).ToList();
-            if (missingHeaders.Any())
-            {
-                throw new HeaderIdNotFoundInNodeFile(missingHeaders);
-            }
-
-            return headers;
-        }
-
-        return Enumerable.Empty<string>();
+        var csvReader = _csvReaderFactory.CreateCsvReader(file);
+        return _csvHeaderValidator.ReadAndValidateHeaders(csvReader, requiredHeaders);
     }
 }

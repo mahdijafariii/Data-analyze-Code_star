@@ -16,9 +16,7 @@ public class NodePaginationService : INodePaginationService
     private readonly ICategoryService _categoryService;
 
 
-    public NodePaginationService(IGraphNodeRepository graphNodeRepository, IGraphEdgeRepository graphEdgeRepository,
-        IEntityNodeRepository entityNodeRepository, IEntityEdgeRepository entityEdgeRepository,
-        ICategoryService categoryService)
+    public NodePaginationService(IGraphNodeRepository graphNodeRepository, ICategoryService categoryService)
     {
         _graphNodeRepository = graphNodeRepository;
         _categoryService = categoryService;
@@ -81,7 +79,7 @@ public class NodePaginationService : INodePaginationService
             throw new CategoryResultNotFoundException();
         }
 
-        if (valueNodes is null)
+        if (!valueNodes.Any())
         {
             throw new NodeNotFoundException();
         }

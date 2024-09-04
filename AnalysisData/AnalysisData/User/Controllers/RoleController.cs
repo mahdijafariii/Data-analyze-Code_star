@@ -1,9 +1,8 @@
-using AnalysisData.Services;
-using AnalysisData.Services.RoleService.Abstraction;
-using AnalysisData.UserDto.RoleDto;
+using AnalysisData.User.Services.RoleService.Abstraction;
+using AnalysisData.User.UserDto.RoleDto;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnalysisData.Controllers;
+namespace AnalysisData.User.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

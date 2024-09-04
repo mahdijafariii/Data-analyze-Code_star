@@ -1,14 +1,12 @@
 using System.Security.Claims;
-using AnalysisData.Exception;
-using AnalysisData.Services;
-using AnalysisData.Services.PermissionService.Abstraction;
-using AnalysisData.Services.UserService.Abstraction;
-using AnalysisData.UserDto.PasswordDto;
-using AnalysisData.UserDto.UserDto;
+using AnalysisData.User.Services.PermissionService.Abstraction;
+using AnalysisData.User.Services.UserService.Abstraction;
+using AnalysisData.User.UserDto.PasswordDto;
+using AnalysisData.User.UserDto.UserDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnalysisData.Controllers;
+namespace AnalysisData.User.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -43,8 +41,7 @@ public class UserController : ControllerBase
 
         return Ok(new { image, firstName, lastName, permission });
     }
-    // [Authorize(Policy = "gold")]
-    // [Authorize(Roles = "admin")]
+    [Authorize(Policy = "gold")]
     [HttpPost("reset-passadword")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
     {

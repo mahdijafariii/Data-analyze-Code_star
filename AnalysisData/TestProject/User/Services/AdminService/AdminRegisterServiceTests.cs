@@ -1,11 +1,11 @@
 ﻿using AnalysisData.Exception.UserException;
-using AnalysisData.Model;
-using AnalysisData.Repository.RoleRepository.Abstraction;
-using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Services.AdminService;
-using AnalysisData.Services.SecurityPasswordService.Abstraction;
-using AnalysisData.Services.ValidationService.Abstraction;
-using AnalysisData.UserDto.UserDto;
+using AnalysisData.User.Model;
+using AnalysisData.User.Repository.RoleRepository.Abstraction;
+using AnalysisData.User.Repository.UserRepository.Abstraction;
+using AnalysisData.User.Services.AdminService;
+using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
+using AnalysisData.User.Services.ValidationService.Abstraction;
+using AnalysisData.User.UserDto.UserDto;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 
@@ -52,8 +52,8 @@ public class AdminRegisterServiceTests
         var existingRole = new Role { RoleName = "Admin" };
         _roleRepository.GetRoleByNameAsync(Arg.Is("admin")).Returns(existingRole);
 
-        _userRepository.GetUserByEmailAsync(userRegisterDto.Email).Returns((AnalysisData.Model.User)null);
-        _userRepository.GetUserByUsernameAsync(userRegisterDto.Username).Returns((AnalysisData.Model.User)null);
+        _userRepository.GetUserByEmailAsync(userRegisterDto.Email).Returns((AnalysisData.User.Model.User)null);
+        _userRepository.GetUserByUsernameAsync(userRegisterDto.Username).Returns((AnalysisData.User.Model.User)null);
 
         _passwordHasher.HashPassword(userRegisterDto.Password).Returns("hashedPassword");
 
@@ -61,7 +61,7 @@ public class AdminRegisterServiceTests
         await _sut.RegisterByAdminAsync(userRegisterDto);
 
         // Assert
-        await _userRepository.Received(1).AddUserAsync(Arg.Is<AnalysisData.Model.User>(u =>
+        await _userRepository.Received(1).AddUserAsync(Arg.Is<AnalysisData.User.Model.User>(u =>
             u.Username == userRegisterDto.Username &&
             u.Email == userRegisterDto.Email &&
             u.FirstName == userRegisterDto.FirstName &&
@@ -117,9 +117,9 @@ public class AdminRegisterServiceTests
         };
         var role = new Role { RoleName = "admin", RolePolicy = "gold" };
         _roleRepository.GetRoleByNameAsync(userRegisterDto.RoleName.ToLower()).Returns(role);
-        var existingUserWithUsername = new AnalysisData.Model.User
+        var existingUserWithUsername = new AnalysisData.User.Model.User
             { Id = Guid.NewGuid(), Username = "existingUsername", Email = "anotherEmail@gmail.com" };
-        var existingUserWithEmail = new AnalysisData.Model.User
+        var existingUserWithEmail = new AnalysisData.User.Model.User
             { Id = Guid.NewGuid(), Username = "anotherUsername", Email = "existingEmail@gmail.com" };
 
         _userRepository.GetUserByUsernameAsync(userRegisterDto.Username).Returns(existingUserWithUsername);

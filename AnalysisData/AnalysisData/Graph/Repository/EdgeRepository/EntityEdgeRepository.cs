@@ -24,7 +24,11 @@ public class EntityEdgeRepository : IEntityEdgeRepository
     {
         return await _context.EntityEdges.ToListAsync();
     }
-
+    public async Task AddRangeAsync(IEnumerable<EntityEdge> entityEdges)
+    {
+        await _context.EntityEdges.AddRangeAsync(entityEdges);
+        await _context.SaveChangesAsync();
+    }
     public async Task<EntityEdge> GetByIdAsync(int id)
     {
         return await _context.EntityEdges.FindAsync(id);

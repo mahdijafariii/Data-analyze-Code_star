@@ -1,13 +1,12 @@
 ﻿using AnalysisData.Exception.UserException;
-using AnalysisData.JwtService.abstractions;
-using AnalysisData.Model;
-using AnalysisData.Repository.RoleRepository.Abstraction;
-using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Services.AdminService.Abstraction;
-using AnalysisData.Services.ValidationService.Abstraction;
-using AnalysisData.UserDto.UserDto;
+using AnalysisData.User.JwtService.abstractions;
+using AnalysisData.User.Repository.RoleRepository.Abstraction;
+using AnalysisData.User.Repository.UserRepository.Abstraction;
+using AnalysisData.User.Services.AdminService.Abstraction;
+using AnalysisData.User.Services.ValidationService.Abstraction;
+using AnalysisData.User.UserDto.UserDto;
 
-namespace AnalysisData.Services.AdminService;
+namespace AnalysisData.User.Services.AdminService;
 
 public class AdminService : IAdminService
 {
@@ -38,7 +37,7 @@ public class AdminService : IAdminService
         await _jwtService.UpdateUserCookie(user.Username, false);
     }
 
-    private async Task ValidateUserInformation(User user,UpdateAdminDto updateAdminDto)
+    private async Task ValidateUserInformation(Model.User user,UpdateAdminDto updateAdminDto)
     {
         var checkUsername = await _userRepository.GetUserByUsernameAsync(updateAdminDto.Username);
         var checkEmail = await _userRepository.GetUserByEmailAsync(updateAdminDto.Email);
@@ -47,7 +46,7 @@ public class AdminService : IAdminService
             throw new DuplicateUserException();
     }
 
-    private async Task CheckExistenceOfRole(User user,UpdateAdminDto updateAdminDto)
+    private async Task CheckExistenceOfRole(Model.User user,UpdateAdminDto updateAdminDto)
     {
         var role = await _roleRepository.GetRoleByNameAsync(updateAdminDto.RoleName);
         if (role == null)
@@ -59,7 +58,7 @@ public class AdminService : IAdminService
         await _jwtService.UpdateUserCookie(user.Username, false);
     }
 
-    private async Task SetUpdatedInformation(User user, UpdateAdminDto updateAdminDto)
+    private async Task SetUpdatedInformation(Model.User user, UpdateAdminDto updateAdminDto)
     {
         user.FirstName = updateAdminDto.FirstName;
         user.LastName = updateAdminDto.LastName;

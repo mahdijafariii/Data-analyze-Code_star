@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AnalysisData.Model;
+namespace AnalysisData.User.Model;
 
 public class Role
 {

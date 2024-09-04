@@ -4,7 +4,7 @@ using AnalysisData.Graph.Dto;
 using AnalysisData.Graph.Repository.FileUploadedRepository.Abstraction;
 using AnalysisData.Graph.Repository.UserFileRepository.Abstraction;
 using AnalysisData.Graph.Service.FilePermissionService.AccessMangement;
-using AnalysisData.Repository.UserRepository.Abstraction;
+using AnalysisData.User.Repository.UserRepository.Abstraction;
 
 namespace AnalysisData.Graph.Service.FilePermissionService;
 

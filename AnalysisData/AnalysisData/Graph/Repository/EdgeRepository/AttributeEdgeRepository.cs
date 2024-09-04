@@ -19,7 +19,11 @@ public class AttributeEdgeRepository : IAttributeEdgeRepository
         await _context.AttributeEdges.AddAsync(entity);
         await _context.SaveChangesAsync();
     }
-
+    public async Task AddRangeAsync(IEnumerable<AttributeEdge> attributeEdges)
+    {
+        await _context.AttributeEdges.AddRangeAsync(attributeEdges);
+        await _context.SaveChangesAsync();
+    }
     public async Task<IEnumerable<AttributeEdge>> GetAllAsync()
     {
         return await _context.AttributeEdges.ToListAsync();

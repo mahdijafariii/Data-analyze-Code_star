@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using AnalysisData.Data;
-using AnalysisData.Model;
+using AnalysisData.User.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -10,7 +10,7 @@ namespace TestProject.User.Repository.RoleRepository;
 
 public class RoleRepositoryTests
 {
-    private readonly AnalysisData.Repository.RoleRepository.RoleRepository _sut;
+    private readonly AnalysisData.User.Repository.RoleRepository.RoleRepository _sut;
     private readonly ServiceProvider _serviceProvider;
 
     public RoleRepositoryTests()
@@ -23,7 +23,7 @@ public class RoleRepositoryTests
         serviceCollection.AddScoped(_ => new ApplicationDbContext(options));
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
-        _sut = new AnalysisData.Repository.RoleRepository.RoleRepository(CreateDbContext());
+        _sut = new AnalysisData.User.Repository.RoleRepository.RoleRepository(CreateDbContext());
     }
 
     private ApplicationDbContext CreateDbContext()

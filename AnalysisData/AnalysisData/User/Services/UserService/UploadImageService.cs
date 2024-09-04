@@ -1,10 +1,10 @@
 using System.Security.Claims;
 using AnalysisData.Exception.UserException;
-using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Services.S3FileStorageService.Abstraction;
-using AnalysisData.Services.UserService.Abstraction;
+using AnalysisData.User.Repository.UserRepository.Abstraction;
+using AnalysisData.User.Services.S3FileStorageService.Abstraction;
+using AnalysisData.User.Services.UserService.Abstraction;
 
-namespace AnalysisData.Services.UserService;
+namespace AnalysisData.User.Services.UserService;
 
 public class UploadImageService : IUploadImageService
 {

@@ -1,4 +1,4 @@
-namespace AnalysisData.UserDto.RoleDto;
+namespace AnalysisData.User.UserDto.RoleDto;
 
 public class AddRoleDto
 {

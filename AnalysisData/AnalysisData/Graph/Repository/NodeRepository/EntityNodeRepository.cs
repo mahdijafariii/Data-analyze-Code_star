@@ -29,7 +29,11 @@ public class EntityNodeRepository : IEntityNodeRepository
     {
         return await _context.EntityNodes.FirstOrDefaultAsync(x => x.Name == name);
     }
-
+    public async Task AddRangeAsync(IEnumerable<EntityNode> entityNodes)
+    {
+        await _context.EntityNodes.AddRangeAsync(entityNodes);
+        await _context.SaveChangesAsync();
+    }
     public async Task<EntityNode> GetByIdAsync(int id)
     {
         return await _context.EntityNodes.FirstOrDefaultAsync(x => x.Id == id);

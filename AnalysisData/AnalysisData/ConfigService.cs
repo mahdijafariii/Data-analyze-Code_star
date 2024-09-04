@@ -1,4 +1,5 @@
-using AnalysisData.CookieService.abstractions;
+using AnalysisData.Graph.Service.ServiceBusiness;
+using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 using AnalysisData.Graph.Repository.CategoryRepository;
 using AnalysisData.Graph.Repository.CategoryRepository.Abstraction;
 using AnalysisData.Graph.Repository.EdgeRepository;
@@ -21,29 +22,28 @@ using AnalysisData.Graph.Service.GraphServices.AllNodesData;
 using AnalysisData.Graph.Service.GraphServices.NodeAndEdgeInfo;
 using AnalysisData.Graph.Service.GraphServices.Relationship;
 using AnalysisData.Graph.Service.GraphServices.Search;
-using AnalysisData.Graph.Service.ServiceBusiness;
-using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
-using AnalysisData.JwtService.abstractions;
-using AnalysisData.Repository.RoleRepository;
-using AnalysisData.Repository.RoleRepository.Abstraction;
-using AnalysisData.Repository.UserRepository;
-using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Services;
-using AnalysisData.Services.AdminService;
-using AnalysisData.Services.AdminService.Abstraction;
-using AnalysisData.Services.PermissionService;
-using AnalysisData.Services.PermissionService.Abstraction;
-using AnalysisData.Services.RoleService;
-using AnalysisData.Services.RoleService.Abstraction;
-using AnalysisData.Services.S3FileStorageService;
-using AnalysisData.Services.S3FileStorageService.Abstraction;
-using AnalysisData.Services.SecurityPasswordService;
-using AnalysisData.Services.SecurityPasswordService.Abstraction;
-using AnalysisData.Services.UserService;
-using AnalysisData.Services.UserService.Abstraction;
-using AnalysisData.Services.ValidationService;
-using AnalysisData.Services.ValidationService.Abstraction;
-using Microsoft.AspNetCore.Identity;
+using AnalysisData.User.CookieService;
+using AnalysisData.User.CookieService.abstractions;
+using AnalysisData.User.JwtService;
+using AnalysisData.User.JwtService.abstractions;
+using AnalysisData.User.Repository.RoleRepository;
+using AnalysisData.User.Repository.RoleRepository.Abstraction;
+using AnalysisData.User.Repository.UserRepository;
+using AnalysisData.User.Repository.UserRepository.Abstraction;
+using AnalysisData.User.Services.AdminService;
+using AnalysisData.User.Services.AdminService.Abstraction;
+using AnalysisData.User.Services.PermissionService;
+using AnalysisData.User.Services.PermissionService.Abstraction;
+using AnalysisData.User.Services.RoleService;
+using AnalysisData.User.Services.RoleService.Abstraction;
+using AnalysisData.User.Services.S3FileStorageService;
+using AnalysisData.User.Services.S3FileStorageService.Abstraction;
+using AnalysisData.User.Services.SecurityPasswordService;
+using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
+using AnalysisData.User.Services.UserService;
+using AnalysisData.User.Services.UserService.Abstraction;
+using AnalysisData.User.Services.ValidationService;
+using AnalysisData.User.Services.ValidationService.Abstraction;
 
 namespace AnalysisData;
 
@@ -70,16 +70,14 @@ public static class ConfigService
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
-        services.AddScoped<IJwtService, JwtService.JwtService>();
-        services.AddScoped<ICookieService, CookieService.CookieService>();
+        services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<ICookieService, CookieService>();
         services.AddScoped<IPermissionService, PermissionService>();
         services.AddScoped<IValidationService, ValidationService>();
-        services.AddScoped<IEdgeToDbService, EdgeToDbService>();
         services.AddScoped<INodeToDbService, NodeToDbService>();
         services.AddScoped<ICsvReaderService, CsvReaderService>();
-        services.AddScoped<IEdgeRecordProcessor, EdgeRecordProcessor>();
         services.AddScoped<IHeaderProcessor, HeaderProcessor>();
-        services.AddScoped<INodeRecordProcessor, NodeRecordProcessor>();
+        services.AddScoped<INodeRecordProcessor, EntityNodeRecordProcessor>();
         services.AddScoped<IFromToProcessor, FromToProcessor>();
         services.AddScoped<INodePaginationService, NodePaginationService>();
         services.AddScoped<IAdminService, AdminService>();
@@ -95,8 +93,10 @@ public static class ConfigService
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IS3FileStorageService, S3FileStorageService>();
         services.AddScoped<IUploadImageService, UploadImageService>();
-
-
+        services.AddScoped<IValueNodeProcessor, ValueNodeProcessor>();
+        services.AddScoped<IEntityEdgeRecordProcessor, EntityEdgeRecordProcessor>();
+        services.AddScoped<IValueEdgeProcessor, ValueEdgeProcessor>();
+        services.AddScoped<IEdgeToDbService, EdgeToDbService>();
         return services;
     }
 }

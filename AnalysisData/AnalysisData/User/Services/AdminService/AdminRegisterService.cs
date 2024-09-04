@@ -1,13 +1,13 @@
 using AnalysisData.Exception.UserException;
-using AnalysisData.Model;
-using AnalysisData.Repository.RoleRepository.Abstraction;
-using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Services.AdminService.Abstraction;
-using AnalysisData.Services.SecurityPasswordService.Abstraction;
-using AnalysisData.Services.ValidationService.Abstraction;
-using AnalysisData.UserDto.UserDto;
+using AnalysisData.User.Model;
+using AnalysisData.User.Repository.RoleRepository.Abstraction;
+using AnalysisData.User.Repository.UserRepository.Abstraction;
+using AnalysisData.User.Services.AdminService.Abstraction;
+using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
+using AnalysisData.User.Services.ValidationService.Abstraction;
+using AnalysisData.User.UserDto.UserDto;
 
-namespace AnalysisData.Services.AdminService;
+namespace AnalysisData.User.Services.AdminService;
 
 public class AdminRegisterService : IAdminRegisterService
 {
@@ -69,9 +69,9 @@ public class AdminRegisterService : IAdminRegisterService
             throw new DuplicateUserException();
     }
 
-    private async Task<User> MakeUser(UserRegisterDto userRegisterDto, Role role)
+    private async Task<Model.User> MakeUser(UserRegisterDto userRegisterDto, Role role)
     {
-        var user = new User
+        var user = new Model.User
         {
             Username = userRegisterDto.Username,
             Password = _passwordHasher.HashPassword(userRegisterDto.Password),

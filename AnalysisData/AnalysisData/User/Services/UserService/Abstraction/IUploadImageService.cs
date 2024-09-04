@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace AnalysisData.Services.UserService.Abstraction;
+namespace AnalysisData.User.Services.UserService.Abstraction;
 
 public interface IUploadImageService
 {

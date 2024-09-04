@@ -1,9 +1,9 @@
-﻿using AnalysisData.Services.AdminService.Abstraction;
-using AnalysisData.UserDto.UserDto;
+﻿using AnalysisData.User.Services.AdminService.Abstraction;
+using AnalysisData.User.UserDto.UserDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnalysisData.Controllers;
+namespace AnalysisData.User.Controllers;
 
 [ApiController]
 //[Authorize(Roles = "admin")]

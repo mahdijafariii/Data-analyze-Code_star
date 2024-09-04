@@ -1,10 +1,10 @@
 using AnalysisData.Exception.UserException;
-using AnalysisData.Model;
-using AnalysisData.Repository.RoleRepository.Abstraction;
-using AnalysisData.Services.RoleService.Abstraction;
-using AnalysisData.UserDto.RoleDto;
+using AnalysisData.User.Model;
+using AnalysisData.User.Repository.RoleRepository.Abstraction;
+using AnalysisData.User.Services.RoleService.Abstraction;
+using AnalysisData.User.UserDto.RoleDto;
 
-namespace AnalysisData.Services.RoleService;
+namespace AnalysisData.User.Services.RoleService;
 
 public class RoleManagementService : IRoleManagementService
 {

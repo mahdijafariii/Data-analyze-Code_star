@@ -1,9 +1,9 @@
 using System.Text.RegularExpressions;
 using AnalysisData.Exception.UserException;
-using AnalysisData.Model;
-using AnalysisData.Services.ValidationService.Abstraction;
+using AnalysisData.User.Model;
+using AnalysisData.User.Services.ValidationService.Abstraction;
 
-namespace AnalysisData.Services.ValidationService;
+namespace AnalysisData.User.Services.ValidationService;
 
 public class ValidationService : IValidationService
 {

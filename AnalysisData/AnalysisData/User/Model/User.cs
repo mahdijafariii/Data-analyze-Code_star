@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using AnalysisData.Graph.Model.File;
 
-namespace AnalysisData.Model;
+namespace AnalysisData.User.Model;
 
 public class User
 {

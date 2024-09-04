@@ -66,7 +66,7 @@ public class GraphRelationService : IGraphRelationService
         var edges = await _entityEdgeRepository.FindNodeLoopsAsync(node.Id);
         var uniqueNodes = edges.SelectMany(x => new[] { x.EntityIDTarget, x.EntityIDSource }).Distinct().ToList();
         var nodes = await GetEntityNodesByIdsAsync(uniqueNodes);
-        var nodeDto = nodes.Select(x => new NodeDto() { Id = x.Id.ToString(), Label = x.Name });
+        var nodeDto = nodes.Select(x => new NodeDto() { Id = x.Id, Label = x.Name });
         var edgeDto = edges.Select(x => new EdgeDto()
             { From = x.EntityIDSource, To = x.EntityIDTarget, Id = x.Id });
         return (nodeDto, edgeDto);

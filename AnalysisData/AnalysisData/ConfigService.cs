@@ -82,6 +82,7 @@ public static class ConfigService
         services.AddScoped<INodeRecordProcessor, EntityNodeRecordProcessor>();
         services.AddScoped<IFromToProcessor, FromToProcessor>();
         services.AddScoped<INodePaginationService, NodePaginationService>();
+        services.AddScoped<INodeValidator, NodeValidator>();
         services.AddScoped<IAdminService, AdminService>();
         services.AddScoped<INodeAndEdgeInfo, NodeAndEdgeInfo>();
         services.AddScoped<IGraphRelationService, GraphRelationService>();

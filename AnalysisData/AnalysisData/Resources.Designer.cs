@@ -177,6 +177,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Header(s) Node is not accessible for this user! {0}.
+        /// </summary>
+        internal static string NodeNotAccessibleForUserException {
+            get {
+                return ResourceManager.GetString("NodeNotAccessibleForUserException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Node was not found!.
         /// </summary>
         internal static string NodeNotFoundException {

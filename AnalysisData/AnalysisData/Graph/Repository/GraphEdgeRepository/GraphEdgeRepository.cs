@@ -1,4 +1,5 @@
 ﻿using AnalysisData.Data;
+using AnalysisData.Graph.Dto.EdgeDto;
 using Microsoft.EntityFrameworkCore;
 
 namespace AnalysisData.Graph.Repository.GraphEdgeRepository;
@@ -12,13 +13,13 @@ public class GraphEdgeRepository : IGraphEdgeRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<dynamic>> GetEdgeAttributeValues(int id)
+    public async Task<IEnumerable<EdgeInformationDto>> GetEdgeAttributeValues(int id)
     {
         var result = await _context.ValueEdges
             .Include(vn => vn.Entity)
             .Include(vn => vn.Attribute)
             .Where(vn => vn.Entity.Id == id)
-            .Select(vn => new
+            .Select(vn => new EdgeInformationDto
             {
                 Attribute = vn.Attribute.Name,
                 Value = vn.Value

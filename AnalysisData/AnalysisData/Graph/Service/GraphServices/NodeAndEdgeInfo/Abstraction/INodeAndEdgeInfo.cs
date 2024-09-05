@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace AnalysisData.Graph.Service.GraphServices.NodeAndEdgeInfo;
+namespace AnalysisData.Graph.Service.GraphServices.NodeAndEdgeInfo.Abstraction;
 
 public interface INodeAndEdgeInfo
 {

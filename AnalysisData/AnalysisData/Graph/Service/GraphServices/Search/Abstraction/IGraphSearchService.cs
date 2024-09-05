@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using AnalysisData.Graph.Model.Node;
 
-namespace AnalysisData.Graph.Service.GraphServices.Search;
+namespace AnalysisData.Graph.Service.GraphServices.Search.Abstraction;
 
 public interface IGraphSearchService
 {

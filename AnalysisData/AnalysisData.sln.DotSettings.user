@@ -28,6 +28,17 @@
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.UserRepository.UserRepositoryTests.GetAllUser_ShouldReturnsAllUsers_Whenever&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3d21d5cd_002D876f_002D4631_002D892b_002Df1a272c7d4ce/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetAllNodesAsync_ShouldReturnsPaginatedNodes_WhenNodesExist" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.GraphServices.AllNodesData.NodePaginationServiceTests.GetAllNodesAsync_ShouldReturnsPaginatedNodes_WhenNodesExist&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=580d1d66_002D6a9d_002D41c5_002D9bbc_002D4f090dd2983a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetAllNodesAsync_ShouldReturnsPaginatedNodes_WhenNodesExist #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.GraphServices.AllNodesData.NodePaginationServiceTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.GraphServices.NodeAndEdgeInfo.NodeAndEdgeInfoTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=648b354f_002D77fb_002D41ba_002D80a0_002D6eeb12c1c94d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetRole_ShouldReturnsRole_WhenRoleExists #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.GetRole_ShouldReturnsRole_WhenRoleExists&lt;/TestId&gt;&#xD;
@@ -39,6 +50,7 @@
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=826a2c7b_002D653f_002D4c68_002D93e1_002Db3cd3a5e8b15/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="AccessFileToUserAsync_ShouldAccessFilesToInputUsers_WhenFileAndUserExist #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7daf18b0_002D56cf_002D4c0c_002Da004_002D0da528af25ea/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CheckExistenceOfRole_ShouldNotThrowException_WhenRoleExists" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.mahdiTest2.FilePermissionService.FilePermissionServiceTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.mahdiTest2.AccessManagment.AccessManagementServiceTest.GrantUserAccessAsync_ShouldAddUserFileEntries_WhenValidUserIdsAreProvided&lt;/TestId&gt;&#xD;
@@ -57,11 +69,47 @@
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.mahdiTest2.FileAccessControllersTest.WhoAccessToThisFile_ShouldThrowFileNotFoundException_WhenFileDoesNotExist&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.mahdiTest2.FileAccessControllersTest.WhoAccessToThisFile_ShouldReturnOkResult_WhenFileIsFound&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.mahdiTest2.FileAccessControllersTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.AdminService.AdminServiceTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.AdminService.AdminRegisterServiceTests.RegisterByAdminAsync_ShouldThrowDuplicateUserException_WhenUserAlreadyExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.AdminService.AdminRegisterServiceTests.CheckExistenceRole_ShouldThrowRoleNotFoundException_WhenRoleDoesNotExist&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.AdminService.AdminRegisterServiceTests.ValidateUserInformation_ShouldThrowDuplicateUserException_WhenUserAlreadyExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.AdminService.AdminRegisterServiceTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Repository.RoleRepository.RoleRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Repository.UserRepository.UserRepositoryTests.GetUserByUsernameAsync_ShouldReturnsUserWithInputUsername_WhenUserWithInputUsernameExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Repository.UserRepository.UserRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Controllers.RoleControllerTests.GetAllRoles_ReturnsOkResult_WithRolesAndCount&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=88874ef4_002De555_002D4c0a_002Db58b_002Da18db20161dc/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="GetRelationalEdgeBaseNodeAsync_ShouldReturnNodesAndEdges_WhenUserIsDataAnalyst_AndNodeIsAccessible" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.GraphServices.Relationship.GraphRelationServiceTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.GraphServices.Search.GraphSearchServiceTests.SearchInEntityNodeNameAsync_ShouldReturnResults_WhenRoleIsAdminAndSearchTypeStartsWith&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.GraphServices.Search.GraphSearchServiceTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Repository.RoleRepository.RoleRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Repository.UserRepository.UserRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.AdminService.AdminRegisterServiceTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Services.AdminService.AdminServiceTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Controllers.AdminControllerTests.Register_ShouldThrowException_WhenPasswordMismatch&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Controllers.AdminControllerTests.Register_ShouldReturnOk_WhenUserRegisteredSuccessfully&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Controllers.AdminControllerTests.DeleteUser_ShouldReturnOk_WhenUserIsDeletedSuccessfully&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Controllers.AdminControllerTests.DeleteUser_ShouldReturnNotFound_WhenUserIsNotFound&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Controllers.AdminControllerTests.GetAllUsers_ShouldReturnOkWithUsers_WhenUsersExist&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Controllers.AdminControllerTests.Register_ShouldThrowPasswordMismatchException_WhenPasswordsDoNotMatch&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Controllers.AdminControllerTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Controllers.UserControllerTests.GetPermissions_ShouldReturnOk_WithPermissionsAndUserDetails&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Controllers.UserControllerTests.Logout_ShouldReturnOk_WhenLogoutIsSuccessful&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Controllers.UserControllerTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8ae15fa0_002Dd719_002D4ce1_002D847c_002De586feccc67f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddRole_ShouldAddsRoleToDatabase_Whenever" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Repository.RoleRepository.RoleRepositoryTests.AddRole_ShouldAddsRoleToDatabase_Whenever&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=afa4e954_002D85a0_002D4096_002D99ef_002D3399461fac78/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="NodeAndEdgeInfoTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.GraphServices.NodeAndEdgeInfo.NodeAndEdgeInfoTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.GraphServices.Relationship.GraphRelationServiceTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a547b70f_002D4749_002D4bb9_002D8ab6_002Dec5f4a4887c5/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AccessFileToUserAsync_ShouldAccessFilesToInputUsers_WhenFileAndUserExist" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
@@ -79,7 +127,11 @@
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ff0aa496_002Df562_002D44d7_002Db40c_002D780e81cc354b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;TestProject&amp;gt; #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="C:\Users\Mahdi\Desktop\New folder (2)\Summer1403-Project-Group03-Backend\AnalysisData\TestProject" Presentation="&amp;lt;TestProject&amp;gt;" /&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.GraphServices.AllNodesData.NodePaginationServiceTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AnalysisData_002FResources/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean></wpf:ResourceDictionary>
-
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/OrderByFullPath/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/ShowComments/@EntryValue">False</s:Boolean></s:String></wpf:ResourceDictionary>

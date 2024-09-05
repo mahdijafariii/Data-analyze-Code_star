@@ -6,6 +6,7 @@ using AnalysisData.Graph.Model.Node;
 using AnalysisData.Graph.Repository.EdgeRepository.Abstraction;
 using AnalysisData.Graph.Repository.GraphNodeRepository;
 using AnalysisData.Graph.Repository.NodeRepository.Abstraction;
+using AnalysisData.Graph.Service.GraphServices.Relationship.Abstraction;
 
 namespace AnalysisData.Graph.Service.GraphServices.Relationship;
 
@@ -44,7 +45,7 @@ public class GraphRelationService : IGraphRelationService
         }
         else
         {
-            throw new NodeNotFoundException();
+            throw new NodeNotAccessibleForUserException();
         }
 
         if (!result.nodes.Any() && !result.edges.Any())

@@ -1,3 +1,4 @@
+using System.Globalization;
 using AnalysisData.Graph.Service.ServiceBusiness;
 using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 using AnalysisData.Graph.Repository.CategoryRepository;
@@ -44,6 +45,8 @@ using AnalysisData.User.Services.UserService;
 using AnalysisData.User.Services.UserService.Abstraction;
 using AnalysisData.User.Services.ValidationService;
 using AnalysisData.User.Services.ValidationService.Abstraction;
+using CsvHelper;
+using CsvHelper.Configuration;
 
 namespace AnalysisData;
 
@@ -69,20 +72,30 @@ public static class ConfigService
 
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
+        var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture);
+        services.AddSingleton(csvConfig);
+        
+        services.AddScoped<CsvReader>(provider =>
+        {
+            var config = provider.GetRequiredService<CsvConfiguration>();
+            var textReader = new StringReader("");
+            return new CsvReader(textReader, config);
+        });
+        services.AddScoped<ICsvReader, CsvReaderWrapper>();
+        services.AddScoped<ICsvReaderService, CsvReaderService>();
+        services.AddScoped<IHeaderValidator, HeaderValidator>();
+        services.AddScoped<ICsvHeaderReader, CsvHeaderReader>();
+        services.AddScoped<IEdgeToDbService, EdgeToDbService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<ICookieService, CookieService>();
         services.AddScoped<IPermissionService, PermissionService>();
         services.AddScoped<IValidationService, ValidationService>();
-        services.AddScoped<ICsvReaderFactory, CsvReaderFactory>();
         services.AddScoped<INodeToDbService, NodeToDbService>();
-        services.AddScoped<ICsvReaderService, CsvReaderService>();
-        services.AddScoped<ICsvHeaderValidator, CsvHeaderValidator>();
         services.AddScoped<IHeaderProcessor, HeaderProcessor>();
         services.AddScoped<INodeRecordProcessor, EntityNodeRecordProcessor>();
         services.AddScoped<IFromToProcessor, FromToProcessor>();
         services.AddScoped<INodePaginationService, NodePaginationService>();
-        services.AddScoped<INodeValidator, NodeValidator>();
         services.AddScoped<IAdminService, AdminService>();
         services.AddScoped<INodeAndEdgeInfo, NodeAndEdgeInfo>();
         services.AddScoped<IGraphRelationService, GraphRelationService>();
@@ -99,7 +112,6 @@ public static class ConfigService
         services.AddScoped<IValueNodeProcessor, ValueNodeProcessor>();
         services.AddScoped<IEntityEdgeRecordProcessor, EntityEdgeRecordProcessor>();
         services.AddScoped<IValueEdgeProcessor, ValueEdgeProcessor>();
-        services.AddScoped<IEdgeToDbService, EdgeToDbService>();
         return services;
     }
 }

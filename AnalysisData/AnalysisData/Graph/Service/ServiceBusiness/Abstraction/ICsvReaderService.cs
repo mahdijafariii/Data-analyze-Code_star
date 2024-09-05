@@ -4,5 +4,6 @@ namespace AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 
 public interface ICsvReaderService
 {
-    IEnumerable<string> ValidateCsvHeaders(IFormFile file, List<string> requiredHeaders);
+    ICsvReader CreateCsvReader(IFormFile file);
+    IEnumerable<string> ReadHeaders(ICsvReader csv, List<string> requiredHeaders);
 }

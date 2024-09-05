@@ -3,5 +3,7 @@
 public interface ICsvReader
 {
     bool Read();
-    string GetField(string name);
+    void ReadHeader();
+    string[] HeaderRecord { get; }
+    string GetField(string fieldName); 
 }

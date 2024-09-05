@@ -1,8 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
 using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
-using AnalysisData.Exception;
-using AnalysisData.Exception.GraphException;
 using CsvHelper;
 using CsvHelper.Configuration;
 
@@ -10,18 +8,31 @@ namespace AnalysisData.Graph.Service.ServiceBusiness;
 
 public class CsvReaderService : ICsvReaderService
 {
-    private readonly ICsvReaderFactory _csvReaderFactory;
-    private readonly ICsvHeaderValidator _csvHeaderValidator;
+    private readonly ICsvHeaderReader _csvHeaderReader;
+    private readonly IHeaderValidator _headerValidator;
 
-    public CsvReaderService(ICsvReaderFactory csvReaderFactory, ICsvHeaderValidator csvHeaderValidator)
+    public CsvReaderService(ICsvHeaderReader csvHeaderReader, IHeaderValidator headerValidator)
     {
-        _csvReaderFactory = csvReaderFactory;
-        _csvHeaderValidator = csvHeaderValidator;
+        _csvHeaderReader = csvHeaderReader;
+        _headerValidator = headerValidator;
     }
 
-    public IEnumerable<string> ValidateCsvHeaders(IFormFile file, List<string> requiredHeaders)
+    public ICsvReader CreateCsvReader(IFormFile file)
     {
-        var csvReader = _csvReaderFactory.CreateCsvReader(file);
-        return _csvHeaderValidator.ReadAndValidateHeaders(csvReader, requiredHeaders);
+        var reader = new StreamReader(file.OpenReadStream());
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            Encoding = Encoding.UTF8,
+            HasHeaderRecord = true
+        };
+        var csvHelperReader = new CsvHelper.CsvReader(reader, config);
+        return new CsvReaderWrapper(csvHelperReader);
+    }
+
+    public IEnumerable<string> ReadHeaders(ICsvReader csv, List<string> requiredHeaders)
+    {
+        var headers = _csvHeaderReader.ReadHeaders(csv);
+        _headerValidator.ValidateHeaders(headers, requiredHeaders);
+        return headers;
     }
 }

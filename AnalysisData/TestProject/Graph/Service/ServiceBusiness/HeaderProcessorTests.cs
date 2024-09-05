@@ -8,12 +8,12 @@ namespace TestProject.Graph.Service.ServiceBusiness;
 public class HeaderProcessorTests
 {
     private readonly IAttributeNodeRepository _attributeNodeRepository;
-    private readonly HeaderProcessor _headerProcessor;
+    private readonly HeaderProcessor _sut;
 
     public HeaderProcessorTests()
     {
         _attributeNodeRepository = Substitute.For<IAttributeNodeRepository>();
-        _headerProcessor = new HeaderProcessor(_attributeNodeRepository);
+        _sut = new HeaderProcessor(_attributeNodeRepository);
     }
 
     [Fact]
@@ -26,7 +26,7 @@ public class HeaderProcessorTests
         _attributeNodeRepository.GetByNameAsync(Arg.Any<string>()).Returns(Task.FromResult<AttributeNode>(null));
 
         // Act
-        await _headerProcessor.ProcessHeadersAsync(headers, uniqueAttribute);
+        await _sut.ProcessHeadersAsync(headers, uniqueAttribute);
 
         // Assert
         await _attributeNodeRepository.Received().GetByNameAsync("Header1");
@@ -47,7 +47,7 @@ public class HeaderProcessorTests
         _attributeNodeRepository.GetByNameAsync(Arg.Any<string>()).Returns(Task.FromResult(new AttributeNode()));
 
         // Act
-        await _headerProcessor.ProcessHeadersAsync(headers, uniqueAttribute);
+        await _sut.ProcessHeadersAsync(headers, uniqueAttribute);
 
         // Assert
         await _attributeNodeRepository.Received().GetByNameAsync("Header1");

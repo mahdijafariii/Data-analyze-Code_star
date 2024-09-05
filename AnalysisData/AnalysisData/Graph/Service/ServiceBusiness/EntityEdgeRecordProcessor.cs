@@ -1,6 +1,4 @@
-﻿
-using AnalysisData.Exception;
-using AnalysisData.Exception.GraphException;
+﻿using AnalysisData.Exception.GraphException;
 using AnalysisData.Graph.Model.Edge;
 using AnalysisData.Graph.Model.Node;
 using AnalysisData.Graph.Repository.EdgeRepository.Abstraction;
@@ -14,30 +12,25 @@ public class EntityEdgeRecordProcessor : IEntityEdgeRecordProcessor
 {
     private readonly IEntityNodeRepository _entityNodeRepository;
     private readonly IEntityEdgeRepository _entityEdgeRepository;
-    private readonly INodeValidator _nodeValidator;
-    private readonly ICsvReader _csvReader;
+    private readonly int _batchSize;
 
     public EntityEdgeRecordProcessor(
         IEntityNodeRepository entityNodeRepository, 
-        IEntityEdgeRepository entityEdgeRepository,
-        INodeValidator nodeValidator,
-        ICsvReader csvReader
-    )
+        IEntityEdgeRepository entityEdgeRepository 
+        )
     {
         _entityNodeRepository = entityNodeRepository;
         _entityEdgeRepository = entityEdgeRepository;
-        _nodeValidator = nodeValidator;
-        _csvReader = csvReader;
     }
 
-    public async Task<IEnumerable<EntityEdge>> ProcessEntityEdgesAsync(string from, string to)
+    public async Task<IEnumerable<EntityEdge>> ProcessEntityEdgesAsync(ICsvReader csv, string from, string to)
     {
         var entityEdges = new List<EntityEdge>();
         var batch = new List<EntityEdge>();
 
-        while (_csvReader.Read())
+        while (csv.Read())
         {
-            var entityEdge = await CreateEntityEdgeAsync(from, to);
+            var entityEdge = await CreateEntityEdgeAsync(csv, from, to);
             entityEdges.Add(entityEdge);
             batch.Add(entityEdge);
         }
@@ -50,21 +43,34 @@ public class EntityEdgeRecordProcessor : IEntityEdgeRecordProcessor
         return entityEdges;
     }
 
-    private async Task<EntityEdge> CreateEntityEdgeAsync(string from, string to)
+    private async Task<EntityEdge> CreateEntityEdgeAsync(ICsvReader csv, string from, string to)
     {
-        var entityFrom = _csvReader.GetField(from);
-        var entityTo = _csvReader.GetField(to);
+        var entityFrom = csv.GetField(from);
+        var entityTo = csv.GetField(to);
 
         var fromNode = await _entityNodeRepository.GetByNameAsync(entityFrom);
         var toNode = await _entityNodeRepository.GetByNameAsync(entityTo);
 
-        await _nodeValidator.ValidateNodesExistenceAsync(fromNode, toNode, entityFrom, entityTo);
+        ValidateNodesExistence(fromNode, toNode, entityFrom, entityTo);
 
         return new EntityEdge
         {
             EntityIDSource = fromNode.Id,
             EntityIDTarget = toNode.Id
         };
+    }
+
+    private static void ValidateNodesExistence(EntityNode fromNode, EntityNode toNode, string entityFrom, string entityTo)
+    {
+        var missingNodeIds = new List<string>();
+
+        if (fromNode == null) missingNodeIds.Add(entityFrom);
+        if (toNode == null) missingNodeIds.Add(entityTo);
+
+        if (missingNodeIds.Any())
+        {
+            throw new NodeNotFoundInEntityEdgeException(missingNodeIds);
+        }
     }
 
     private async Task InsertBatchAsync(IEnumerable<EntityEdge> batch)

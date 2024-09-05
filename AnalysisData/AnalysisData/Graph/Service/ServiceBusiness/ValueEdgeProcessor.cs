@@ -22,7 +22,7 @@ public class ValueEdgeProcessor : IValueEdgeProcessor
     }
 
     public async Task ProcessEntityEdgeValuesAsync(
-        CsvReader csv, 
+        ICsvReader csv, 
         IEnumerable<string> headers, 
         string from, 
         string to, 
@@ -51,6 +51,7 @@ public class ValueEdgeProcessor : IValueEdgeProcessor
                     Value = valueString
                 });
 
+                // Process batch if the size exceeds the limit
                 if (valueEdges.Count >= _batchSize)
                 {
                     await ProcessBatchAsync(valueEdges);
@@ -59,6 +60,7 @@ public class ValueEdgeProcessor : IValueEdgeProcessor
             }
         }
 
+        // Process remaining records
         if (valueEdges.Any())
         {
             await ProcessBatchAsync(valueEdges);

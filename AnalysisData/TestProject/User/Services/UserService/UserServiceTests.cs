@@ -1,24 +1,23 @@
 ﻿using System.Security.Claims;
-using AnalysisData.User.Services.UserService;
-using AnalysisData.User.Services.UserService.Abstraction;
+using AnalysisData.User.Services.UserService.Business.Abstraction;
 using AnalysisData.User.UserDto.UserDto;
 using NSubstitute;
 
-namespace TestProject.User.Services.UserServiceTests;
+namespace TestProject.User.Services.UserService;
 
 public class UserServiceTests
 {
     private readonly IUserManager _userManager;
     private readonly IPasswordManager _passwordManager;
     private readonly ILoginManager _loginManager;
-    private readonly UserService _sut;
+    private readonly AnalysisData.User.Services.UserService.UserService _sut;
 
     public UserServiceTests()
     {
         _userManager = Substitute.For<IUserManager>();
         _passwordManager = Substitute.For<IPasswordManager>();
         _loginManager = Substitute.For<ILoginManager>();
-        _sut = new UserService(_userManager, _passwordManager, _loginManager);
+        _sut = new AnalysisData.User.Services.UserService.UserService(_userManager, _passwordManager, _loginManager);
     }
 
     [Fact]

@@ -1,6 +1,7 @@
 ﻿
 using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
 using AnalysisData.User.Services.UserService.Abstraction;
+using AnalysisData.User.Services.UserService.Business.Abstraction;
 using AnalysisData.User.Services.ValidationService.Abstraction;
 
 namespace AnalysisData.User.Services.UserService.Business;

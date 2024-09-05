@@ -6,7 +6,7 @@ using AnalysisData.User.Services.ValidationService.Abstraction;
 using AnalysisData.User.UserDto.UserDto;
 using NSubstitute;
 
-namespace TestProject.User.Services.UserServiceTests.BuisinessTests;
+namespace TestProject.User.Services.UserService.BuisinessTests;
 
 public class UserManagerTests
 {

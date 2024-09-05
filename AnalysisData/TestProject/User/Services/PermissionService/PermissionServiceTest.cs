@@ -1,13 +1,8 @@
-using System.Reflection;
-using System.Security.Claims;
-using AnalysisData.User.Services.PermissionService;
-using NSubstitute;
-
-namespace TestProject.mahdi_test;
+namespace TestProject.User.Services.PermissionService;
 
 public class PermissionServiceTest
 {
-    private readonly PermissionService _sut;
+    private readonly AnalysisData.User.Services.PermissionService.PermissionService _sut;
 
     // public PermissionServiceTest()
     // {

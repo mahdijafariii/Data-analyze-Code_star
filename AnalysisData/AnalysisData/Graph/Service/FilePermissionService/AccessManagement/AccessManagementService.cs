@@ -1,7 +1,7 @@
 using AnalysisData.Graph.Model.File;
 using AnalysisData.Graph.Repository.UserFileRepository.Abstraction;
 
-namespace AnalysisData.Graph.Service.FilePermissionService.AccessMangement;
+namespace AnalysisData.Graph.Service.FilePermissionService.AccessManagement;
 
 public class AccessManagementService : IAccessManagementService
 {

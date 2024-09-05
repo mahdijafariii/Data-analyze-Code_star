@@ -1,13 +1,11 @@
-using AnalysisData.Exception;
 using AnalysisData.Exception.UserException;
-
 using AnalysisData.User.Model;
 using AnalysisData.User.Repository.RoleRepository.Abstraction;
 using AnalysisData.User.Services.RoleService;
 using AnalysisData.User.UserDto.RoleDto;
 using NSubstitute;
 
-namespace TestProject.mahdi_test;
+namespace TestProject.User.Services.RoleService;
 
 public class RoleManagementServiceTests
 {

@@ -2,12 +2,11 @@ using AnalysisData.Graph.Controllers;
 using AnalysisData.Graph.Dto.CategoryDto;
 using AnalysisData.Graph.Model.Category;
 using AnalysisData.Graph.Service.CategoryService.Abstraction;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Newtonsoft.Json;
 
-namespace TestProject.mahdiTest2;
+namespace TestProject.Graph.Controllers;
 
 public class CategoryControllersTest
 {

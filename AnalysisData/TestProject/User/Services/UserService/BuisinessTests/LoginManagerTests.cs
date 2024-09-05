@@ -2,12 +2,12 @@
 using AnalysisData.User.CookieService.abstractions;
 using AnalysisData.User.JwtService.abstractions;
 using AnalysisData.User.Repository.UserRepository.Abstraction;
-using AnalysisData.User.Services.UserService.Abstraction;
 using AnalysisData.User.Services.UserService.Business;
+using AnalysisData.User.Services.UserService.Business.Abstraction;
 using AnalysisData.User.UserDto.UserDto;
 using NSubstitute;
 
-namespace TestProject.User.Services.UserServiceTests.BuisinessTests;
+namespace TestProject.User.Services.UserService.BuisinessTests;
 
 public class LoginManagerTests
 {

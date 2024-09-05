@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Newtonsoft.Json;
 
-namespace TestProject.mahdiTest2;
+namespace TestProject.Graph.Controllers;
 
 public class FileAccessControllersTest
 {

@@ -4,7 +4,7 @@ using AnalysisData.User.Services.UserService.Business;
 using AnalysisData.User.Services.ValidationService.Abstraction;
 using NSubstitute;
 
-namespace TestProject.User.Services.UserServiceTests.BuisinessTests;
+namespace TestProject.User.Services.UserService.BuisinessTests;
 
 public class PasswordServiceTests
 {

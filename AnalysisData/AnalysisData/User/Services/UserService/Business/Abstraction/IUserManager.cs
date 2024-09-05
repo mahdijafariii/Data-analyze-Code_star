@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using AnalysisData.User.UserDto.UserDto;
 
-namespace AnalysisData.User.Services.UserService.Abstraction;
+namespace AnalysisData.User.Services.UserService.Business.Abstraction;
 
 public interface IUserManager
 {

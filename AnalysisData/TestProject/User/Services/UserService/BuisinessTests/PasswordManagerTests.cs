@@ -1,11 +1,10 @@
 ﻿using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
-using AnalysisData.User.Services.UserService.Abstraction;
 using AnalysisData.User.Services.UserService.Business;
+using AnalysisData.User.Services.UserService.Business.Abstraction;
 using AnalysisData.User.Services.ValidationService.Abstraction;
-using Microsoft.AspNetCore.Identity;
 using NSubstitute;
 
-namespace TestProject.User.Services.UserServiceTests.BuisinessTests;
+namespace TestProject.User.Services.UserService.BuisinessTests;
 
 public class PasswordManagerTests
 {

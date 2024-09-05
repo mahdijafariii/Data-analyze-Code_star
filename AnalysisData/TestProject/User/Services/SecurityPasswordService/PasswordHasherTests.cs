@@ -1,8 +1,7 @@
-﻿using AnalysisData.Exception;
+﻿using AnalysisData.Exception.UserException;
 using AnalysisData.User.Services.SecurityPasswordService;
-using Microsoft.AspNetCore.Identity;
 
-namespace TestProject.User.Services.SecurityPasswordServiceTests;
+namespace TestProject.User.Services.SecurityPasswordService;
 
 public class PasswordHasherTests
 {

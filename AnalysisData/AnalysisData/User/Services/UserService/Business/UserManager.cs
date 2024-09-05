@@ -2,6 +2,7 @@
 using AnalysisData.Exception.UserException;
 using AnalysisData.User.Repository.UserRepository.Abstraction;
 using AnalysisData.User.Services.UserService.Abstraction;
+using AnalysisData.User.Services.UserService.Business.Abstraction;
 using AnalysisData.User.Services.ValidationService.Abstraction;
 using AnalysisData.User.UserDto.UserDto;
 

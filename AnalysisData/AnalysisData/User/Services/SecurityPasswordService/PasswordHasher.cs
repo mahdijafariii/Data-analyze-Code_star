@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using AnalysisData.Exception;
+using AnalysisData.Exception.UserException;
 using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
 
 namespace AnalysisData.User.Services.SecurityPasswordService;

@@ -39,7 +39,7 @@ public class AdminService : IAdminService
 
     private async Task ValidateUserInformation(Model.User user,UpdateAdminDto updateAdminDto)
     {
-        var checkUsername = await _userRepository.GetUserByUsernameAsync(updateAdminDto.Username);
+        var checkUsername = await _userRepository.GetUserByUsernameAsync(updateAdminDto.UserName);
         var checkEmail = await _userRepository.GetUserByEmailAsync(updateAdminDto.Email);
 
         if ((checkUsername != null && !user.Equals(checkUsername)) || (checkEmail != null && !user.Equals(checkEmail)))
@@ -64,7 +64,7 @@ public class AdminService : IAdminService
         user.LastName = updateAdminDto.LastName;
         user.Email = updateAdminDto.Email;
         user.PhoneNumber = updateAdminDto.PhoneNumber;
-        user.Username = updateAdminDto.Username;
+        user.Username = updateAdminDto.UserName;
         user.Role.RoleName = updateAdminDto.RoleName;
         await _userRepository.UpdateUserAsync(user.Id, user);
     }
@@ -88,7 +88,7 @@ public class AdminService : IAdminService
         var users = await _userRepository.GetAllUserPaginationAsync(page, limit);
         var paginationUsers = users.Select(x => new UserPaginationDto()
         {
-            Guid = x.Id.ToString(), Username = x.Username, FirstName = x.FirstName, LastName = x.LastName,
+            Guid = x.Id.ToString(), UserName = x.Username, FirstName = x.FirstName, LastName = x.LastName,
             Email = x.Email, PhoneNumber = x.PhoneNumber, RoleName = x.Role.RoleName
         });
         return paginationUsers.ToList();

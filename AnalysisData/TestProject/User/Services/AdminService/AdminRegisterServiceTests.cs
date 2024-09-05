@@ -8,6 +8,8 @@ using AnalysisData.User.Services.ValidationService.Abstraction;
 using AnalysisData.User.UserDto.UserDto;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
+namespace TestProject.User.Services.AdminService;
+
 public class AdminRegisterServiceTests
 {
     private readonly IUserRepository _userRepository;
@@ -36,7 +38,7 @@ public class AdminRegisterServiceTests
         // Arrange
         var userRegisterDto = new UserRegisterDto
         {
-            Username = "newUser",
+            UserName = "newUser",
             Email = "newuser@test.com",
             Password = "Password123",
             ConfirmPassword = "Password123",
@@ -49,8 +51,8 @@ public class AdminRegisterServiceTests
         var existingRole = new Role { RoleName = "Admin" };
         _roleRepository.GetRoleByNameAsync(Arg.Is("admin")).Returns(existingRole);
 
-        _userRepository.GetUserByEmailAsync(userRegisterDto.Email).Returns((User)null);
-        _userRepository.GetUserByUsernameAsync(userRegisterDto.Username).Returns((User)null);
+        _userRepository.GetUserByEmailAsync(userRegisterDto.Email).Returns((AnalysisData.User.Model.User)null);
+        _userRepository.GetUserByUsernameAsync(userRegisterDto.UserName).Returns((AnalysisData.User.Model.User)null);
 
         _passwordHasher.HashPassword(userRegisterDto.Password).Returns("hashedPassword");
 
@@ -58,8 +60,8 @@ public class AdminRegisterServiceTests
         await _sut.RegisterByAdminAsync(userRegisterDto);
 
         // Assert
-        await _userRepository.Received(1).AddUserAsync(Arg.Is<User>(u =>
-            u.Username == userRegisterDto.Username &&
+        await _userRepository.Received(1).AddUserAsync(Arg.Is<AnalysisData.User.Model.User>(u =>
+            u.Username == userRegisterDto.UserName &&
             u.Email == userRegisterDto.Email &&
             u.FirstName == userRegisterDto.FirstName &&
             u.LastName == userRegisterDto.LastName &&
@@ -79,7 +81,7 @@ public class AdminRegisterServiceTests
         // Arrange
         var userRegisterDto = new UserRegisterDto
         {
-            Username = "newUser",
+            UserName = "newUser",
             Email = "newUser@example.com",
             Password = "SecurePassword123",
             ConfirmPassword = "DifferentPassword",
@@ -103,7 +105,7 @@ public class AdminRegisterServiceTests
         // Arrange
         var userRegisterDto = new UserRegisterDto
         {
-            Username = "existingUsername",
+            UserName = "existingUsername",
             Email = "existingEmail@gmail.com",
             Password = "SecurePassword123",
             ConfirmPassword = "SecurePassword123",
@@ -114,12 +116,12 @@ public class AdminRegisterServiceTests
         };
         var role = new Role { RoleName = "admin", RolePolicy = "gold" };
         _roleRepository.GetRoleByNameAsync(userRegisterDto.RoleName.ToLower()).Returns(role);
-        var existingUserWithUsername = new User
+        var existingUserWithUsername = new AnalysisData.User.Model.User
             { Id = Guid.NewGuid(), Username = "existingUsername", Email = "anotherEmail@gmail.com" };
-        var existingUserWithEmail = new User
+        var existingUserWithEmail = new AnalysisData.User.Model.User
             { Id = Guid.NewGuid(), Username = "anotherUsername", Email = "existingEmail@gmail.com" };
 
-        _userRepository.GetUserByUsernameAsync(userRegisterDto.Username).Returns(existingUserWithUsername);
+        _userRepository.GetUserByUsernameAsync(userRegisterDto.UserName).Returns(existingUserWithUsername);
         _userRepository.GetUserByEmailAsync(userRegisterDto.Email).Returns(existingUserWithEmail);
         // Act
         var action = () => _sut.RegisterByAdminAsync(userRegisterDto);
@@ -133,7 +135,7 @@ public class AdminRegisterServiceTests
         // Arrange
         var userRegisterDto = new UserRegisterDto
         {
-            Username = "newUser",
+            UserName = "newUser",
             Email = "newUser@gmail.com",
             Password = "SecurePassword123",
             ConfirmPassword = "SecurePassword123",

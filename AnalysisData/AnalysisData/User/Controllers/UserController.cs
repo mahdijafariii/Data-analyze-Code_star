@@ -46,14 +46,9 @@ public class UserController : ControllerBase
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
     {
         var userClaim = User;
-        var check = await _userService.ResetPasswordAsync(userClaim, resetPasswordDto.NewPassword,
-            resetPasswordDto.ConfirmPassword);
-        if (check)
-        {
-            return Ok(new { massage = "success" });
-        }
-
-        return BadRequest(new { massage = "not success" });
+        await _userService.ResetPasswordAsync(userClaim, resetPasswordDto.NewPassword, resetPasswordDto.ConfirmPassword);
+        
+        return Ok(new { massage = "success" });
     }
 
     [HttpPost("upload-image")]
@@ -75,28 +70,18 @@ public class UserController : ControllerBase
     public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
     {
         var user = User;
-        var updatedUser = await _userService.UpdateUserInformationAsync(user, updateUserDto);
-        if (updatedUser != null)
-        {
-            return Ok(new { massage = "updated successfully" });
-        }
-
-        return BadRequest(new { massage = "not success" });
+        await _userService.UpdateUserInformationAsync(user, updateUserDto);
+        return Ok(new { massage = "updated successfully" });
     }
 
     [HttpPost("new-password")]
     public async Task<IActionResult> NewPassword([FromBody] NewPasswordDto newPasswordDto)
     {
         var userClaim = User;
-        var check = await _userService.NewPasswordAsync(userClaim, newPasswordDto.OldPassword,
+        await _userService.NewPasswordAsync(userClaim, newPasswordDto.OldPassword,
             newPasswordDto.NewPassword,
             newPasswordDto.ConfirmPassword);
-        if (check)
-        {
-            return Ok(new { massage = "reset successfully" });
-        }
-
-        return BadRequest(new { massage = "not success" });
+        return Ok(new { massage = "reset successfully" });
     }
 
 

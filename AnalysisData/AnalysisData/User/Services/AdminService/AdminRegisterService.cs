@@ -64,7 +64,7 @@ public class AdminRegisterService : IAdminRegisterService
     private async Task CheckForDuplicateUserAsync(UserRegisterDto userRegisterDto)
     {
         var existingUserByEmail = await _userRepository.GetUserByEmailAsync(userRegisterDto.Email);
-        var existingUserByUsername = await _userRepository.GetUserByUsernameAsync(userRegisterDto.Username);
+        var existingUserByUsername = await _userRepository.GetUserByUsernameAsync(userRegisterDto.UserName);
         if (existingUserByEmail != null || existingUserByUsername != null)
             throw new DuplicateUserException();
     }
@@ -73,7 +73,7 @@ public class AdminRegisterService : IAdminRegisterService
     {
         var user = new Model.User
         {
-            Username = userRegisterDto.Username,
+            Username = userRegisterDto.UserName,
             Password = _passwordHasher.HashPassword(userRegisterDto.Password),
             FirstName = userRegisterDto.FirstName,
             LastName = userRegisterDto.LastName,
@@ -84,5 +84,4 @@ public class AdminRegisterService : IAdminRegisterService
         };
         return user;
     }
-
 }

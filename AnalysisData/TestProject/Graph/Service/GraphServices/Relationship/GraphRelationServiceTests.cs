@@ -36,7 +36,7 @@ public class GraphRelationServiceTests
     }
 
     [Fact]
-    public async Task GetRelationalEdgeBaseNodeAsync_ShouldReturnNodesAndEdgesWhenUserIsAdmin()
+    public async Task GetRelationalEdgeBaseNodeAsync_ShouldReturnNodesAndEdges_WhenUserIsAdmin()
     {
         // Arrange
         var userId = Guid.NewGuid().ToString();

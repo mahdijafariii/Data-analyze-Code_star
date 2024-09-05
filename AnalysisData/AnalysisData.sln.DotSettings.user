@@ -33,6 +33,14 @@
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.GraphServices.AllNodesData.NodePaginationServiceTests.GetAllNodesAsync_ShouldReturnsPaginatedNodes_WhenNodesExist&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4036527e_002D1256_002D400e_002D9592_002Dd58dfbe85769/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;TestProject&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\amir\Desktop\New folder (4)\Summer1403-Project-Group03-Backend\AnalysisData\TestProject" Presentation="&amp;lt;TestProject&amp;gt;" /&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=57d88556_002Dabe9_002D4ba5_002Da041_002D358ccf783382/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="AddFileToDb_ShouldReturnCategoryId_WhenCategoryIdAdded" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.FileUploadServiceTests.UploadFileServiceTests.AddFileToDb_ShouldReturnFileId_WhenFileIsAdded&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=580d1d66_002D6a9d_002D41c5_002D9bbc_002D4f090dd2983a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetAllNodesAsync_ShouldReturnsPaginatedNodes_WhenNodesExist #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.GraphServices.AllNodesData.NodePaginationServiceTests&lt;/TestId&gt;&#xD;

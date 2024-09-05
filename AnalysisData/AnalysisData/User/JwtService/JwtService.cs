@@ -4,6 +4,7 @@ using System.Text;
 using AnalysisData.User.CookieService.abstractions;
 using AnalysisData.User.JwtService.abstractions;
 using AnalysisData.User.Model;
+using AnalysisData.User.Repository.PasswordResetTokensRepository.Abstraction;
 using AnalysisData.User.Repository.UserRepository.Abstraction;
 using Microsoft.IdentityModel.Tokens;
 
@@ -13,12 +14,14 @@ public class JwtService : IJwtService
     private readonly IConfiguration _configuration;
     private readonly IUserRepository _userRepository;
     private readonly ICookieService _cookieService;
+    private readonly IPasswordResetTokensRepository _resetTokensRepository;
 
-    public JwtService(IConfiguration configuration, IUserRepository userRepository, ICookieService cookieService)
+    public JwtService(IConfiguration configuration, IUserRepository userRepository, ICookieService cookieService,IPasswordResetTokensRepository resetTokensRepository)
     {
         _configuration = configuration;
         _userRepository = userRepository;
         _cookieService = cookieService;
+        _resetTokensRepository = resetTokensRepository;
     }
 
     public async Task<string> GenerateJwtToken(string userName)
@@ -60,7 +63,9 @@ public class JwtService : IJwtService
             Expiration = expiration,
             IsUsed = false
         };
-        
+
+        await _resetTokensRepository.AddToken(resetToken);
+
     }
 
     public async Task UpdateUserCookie(string userName, bool rememberMe)

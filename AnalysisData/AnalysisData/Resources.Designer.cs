@@ -132,7 +132,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Header Id not found in file that uploaded!.
+        ///   Looks up a localized string similar to Header(s) not found in the uploaded file: {0}.
         /// </summary>
         internal static string HeaderIdNotFoundInNodeFile {
             get {
@@ -200,6 +200,15 @@ namespace AnalysisData {
         internal static string NoFileUploadedException {
             get {
                 return ResourceManager.GetString("NoFileUploadedException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to password is null!.
+        /// </summary>
+        internal static string PasswordHasherInputNull {
+            get {
+                return ResourceManager.GetString("PasswordHasherInputNull", resourceCulture);
             }
         }
         

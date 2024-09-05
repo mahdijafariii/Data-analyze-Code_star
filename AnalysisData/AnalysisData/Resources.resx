@@ -79,4 +79,7 @@
     <data name="HeaderIdNotFoundInNodeFile" xml:space="preserve">
     	<value>Header(s) not found in the uploaded file: {0}</value>
     </data>
+    <data name="PasswordHasherInputNull" xml:space="preserve">
+        <value>password is null!</value>
+    </data>
 </root>

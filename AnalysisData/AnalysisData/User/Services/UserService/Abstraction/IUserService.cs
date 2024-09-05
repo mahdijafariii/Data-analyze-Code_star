@@ -7,7 +7,7 @@ public interface IUserService
 {
     Task<Model.User> LoginAsync(UserLoginDto userLoginDto);
     Task<Model.User> GetUserAsync(ClaimsPrincipal userClaim);
-    Task<bool> ResetPasswordAsync(ClaimsPrincipal userClaim, string password, string confirmPassword);
-    Task<bool> UpdateUserInformationAsync(ClaimsPrincipal userClaim, UpdateUserDto updateUserDto);
-    Task<bool> NewPasswordAsync(ClaimsPrincipal userClaim, string oldPassword, string password, string confirmPassword);
+    Task ResetPasswordAsync(ClaimsPrincipal userClaim, string password, string confirmPassword);
+    Task UpdateUserInformationAsync(ClaimsPrincipal userClaim, UpdateUserDto updateUserDto);
+    Task NewPasswordAsync(ClaimsPrincipal userClaim, string oldPassword, string password, string confirmPassword);
 }

@@ -1,13 +1,6 @@
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
-using AnalysisData.CookieService.abstractions;
-using AnalysisData.Exception;
-using AnalysisData.JwtService.abstractions;
-using AnalysisData.Repository.UserRepository.Abstraction;
 using AnalysisData.Services.Abstraction;
 using AnalysisData.Services.Business.Abstraction;
-using AnalysisData.Services.SecurityPasswordService.Abstraction;
 using AnalysisData.UserManage.LoginModel;
 using AnalysisData.UserManage.Model;
 using AnalysisData.UserManage.UpdateModel;
@@ -27,16 +20,16 @@ public class UserService : IUserService
         _loginManager = loginManager;
     }
 
-    public async Task<bool> ResetPasswordAsync(ClaimsPrincipal userClaim, string password, string confirmPassword)
+    public async Task ResetPasswordAsync(ClaimsPrincipal userClaim, string password, string confirmPassword)
     {
         var user = await _userManager.GetUserAsync(userClaim);
-        return await _passwordManager.ResetPasswordAsync(user, password, confirmPassword);
+        await _passwordManager.ResetPasswordAsync(user, password, confirmPassword);
     }
 
-    public async Task<bool> NewPasswordAsync(ClaimsPrincipal userClaim, string oldPassword, string password, string confirmPassword)
+    public async Task NewPasswordAsync(ClaimsPrincipal userClaim, string oldPassword, string password, string confirmPassword)
     {
         var user = await _userManager.GetUserAsync(userClaim);
-        return await _passwordManager.NewPasswordAsync(user, oldPassword, password, confirmPassword);
+        await _passwordManager.NewPasswordAsync(user, oldPassword, password, confirmPassword);
     }
 
     public async Task<User> LoginAsync(UserLoginDto userLoginDto)
@@ -49,15 +42,15 @@ public class UserService : IUserService
         return await _userManager.GetUserAsync(userClaim);
     }
 
-    public async Task<bool> UpdateUserInformationAsync(ClaimsPrincipal userClaim, UpdateUserDto updateUserDto)
+    public async Task UpdateUserInformationAsync(ClaimsPrincipal userClaim, UpdateUserDto updateUserDto)
     {
         var user = await _userManager.GetUserAsync(userClaim);
-        return await _userManager.UpdateUserInformationAsync(user, updateUserDto);
+        await _userManager.UpdateUserInformationAsync(user, updateUserDto);
     }
 
-    public async Task<bool> UploadImageAsync(ClaimsPrincipal claimsPrincipal, string imageUrl)
+    public async Task UploadImageAsync(ClaimsPrincipal claimsPrincipal, string imageUrl)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
-        return await _userManager.UploadImageAsync(user, imageUrl);
+        await _userManager.UploadImageAsync(user, imageUrl);
     }
 }

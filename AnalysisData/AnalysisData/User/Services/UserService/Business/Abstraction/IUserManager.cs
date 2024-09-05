@@ -7,6 +7,6 @@ namespace AnalysisData.Services.Business.Abstraction;
 public interface IUserManager
 {
     Task<User> GetUserAsync(ClaimsPrincipal userClaim);
-    Task<bool> UpdateUserInformationAsync(User user, UpdateUserDto updateUserDto);
-    Task<bool> UploadImageAsync(User user, string imageUrl);
+    Task UpdateUserInformationAsync(User user, UpdateUserDto updateUserDto);
+    Task UploadImageAsync(User user, string imageUrl);
 }

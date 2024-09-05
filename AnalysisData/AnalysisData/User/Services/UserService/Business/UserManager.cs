@@ -30,7 +30,7 @@ public class UserManager : IUserManager
         return user;
     }
 
-    public async Task<bool> UpdateUserInformationAsync(User user, UpdateUserDto updateUserDto)
+    public async Task UpdateUserInformationAsync(User user, UpdateUserDto updateUserDto)
     {
         await ValidateEmailAsync(user, updateUserDto.Email);
 
@@ -38,15 +38,12 @@ public class UserManager : IUserManager
         _validationService.PhoneNumberCheck(updateUserDto.PhoneNumber);
 
         await ReplaceUserDetails(user, updateUserDto);
-
-        return true;
     }
 
-    public async Task<bool> UploadImageAsync(User user, string imageUrl)
+    public async Task UploadImageAsync(User user, string imageUrl)
     {
         user.ImageURL = imageUrl;
         await _userRepository.UpdateUserAsync(user.Id, user);
-        return true;
     }
 
     private async Task ValidateEmailAsync(User user, string newEmail)

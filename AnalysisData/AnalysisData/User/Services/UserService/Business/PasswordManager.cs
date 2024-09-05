@@ -19,19 +19,17 @@ public class PasswordManager : IPasswordManager
         _validationService = validationService;
     }
 
-    public async Task<bool> ResetPasswordAsync(User user, string password, string confirmPassword)
+    public async Task ResetPasswordAsync(User user, string password, string confirmPassword)
     {
         _passwordService.ValidatePasswordAndConfirmation(password, confirmPassword);
         _validationService.PasswordCheck(password);
         user.Password = _passwordHasher.HashPassword(password);
-        return true;
     }
 
-    public async Task<bool> NewPasswordAsync(User user, string oldPassword, string password, string confirmPassword)
+    public async Task NewPasswordAsync(User user, string oldPassword, string password, string confirmPassword)
     {
         _passwordService.ValidatePassword(user, oldPassword);
         _passwordService.ValidatePasswordAndConfirmation(password, confirmPassword);
         user.Password = _passwordService.HashPassword(password);
-        return true;
     }
 }

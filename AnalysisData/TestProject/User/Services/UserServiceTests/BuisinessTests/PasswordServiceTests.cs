@@ -38,11 +38,11 @@ public class PasswordServiceTests
         _sut.ValidatePassword(user, plainText);
 
         // Assert
-        // No exception should be thrown, meaning the test passes if it reaches here without exceptions
+        // No exception
     }
 
     [Fact]
-    public void ValidatePassword_InvalidPassword_ThrowsPasswordMismatchException()
+    public void ValidatePassword_ShouldThrowPasswordMismatchException_WhenInvalidPasswordProvided()
     {
         // Arrange
         var user = new AnalysisData.UserManage.Model.User
@@ -55,13 +55,16 @@ public class PasswordServiceTests
         _passwordHasherMock
             .HashPassword(plainText)
             .Returns("08A9B262078244CB990CB5746A7364BFD0B1EF95F8DD9AB61491EDC050A1EB7E");
-        
-        // Act & Assert
-        Assert.Throws<PasswordMismatchException>(() => _sut.ValidatePassword(user, plainText));
+
+        // Act
+        Action act = () => _sut.ValidatePassword(user, plainText);
+
+        // Assert
+        Assert.Throws<PasswordMismatchException>(act);
     }
     
     [Fact]
-    public void ValidatePasswordAndConfirmation_MatchingPasswords_DoesNotThrowException()
+    public void ValidatePasswordAndConfirmation_ShouldNotThrowException_WhenPasswordsMatch()
     {
         // Arrange
         var password = "password";
@@ -72,7 +75,7 @@ public class PasswordServiceTests
     }
     
     [Fact]
-    public void ValidatePasswordAndConfirmation_NonMatchingPasswords_ThrowsPasswordMismatchException()
+    public void ValidatePasswordAndConfirmation_ShouldThrowPasswordMismatchException_WhenPasswordsDoNotMatch()
     {
         // Arrange
         var password = "password";
@@ -83,7 +86,7 @@ public class PasswordServiceTests
     }
     
     [Fact]
-    public void HashPassword_ValidPassword_ReturnsHashedPassword()
+    public void HashPassword_ShouldReturnHashedPassword_WhenValidPasswordProvided()
     {
         // Arrange
         var plainPassword = "ValidPass123!@#";
@@ -91,7 +94,7 @@ public class PasswordServiceTests
         
         _validationServiceMock
             .When(service => service.PasswordCheck(plainPassword))
-            .Do(call => { /* No exception should be thrown, meaning the password is valid */ });
+            .Do(call => { /* No exception */ });
         
         _passwordHasherMock
             .HashPassword(plainPassword)
@@ -106,19 +109,20 @@ public class PasswordServiceTests
     }
 
     [Fact]
-    public void HashPassword_InvalidPassword_ThrowsInvalidPasswordFormatException()
+    public void HashPassword_ShouldThrowInvalidPasswordFormatException_WhenInvalidPasswordProvided()
     {
         // Arrange
         var invalidPassword = "short";
-        
+    
         _validationServiceMock
             .When(service => service.PasswordCheck(invalidPassword))
             .Do(call => throw new InvalidPasswordFormatException());
 
-        // Act & Assert
-        var exception = Assert.Throws<InvalidPasswordFormatException>(() => _sut.HashPassword(invalidPassword));
+        // Act
+        Func<string> act = () => _sut.HashPassword(invalidPassword);
 
-        
+        // Assert
+        var exception = Assert.Throws<InvalidPasswordFormatException>(act);
         _validationServiceMock.Received(1).PasswordCheck(invalidPassword);
     }
 }

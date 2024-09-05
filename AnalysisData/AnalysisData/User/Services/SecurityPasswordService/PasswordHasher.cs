@@ -9,7 +9,7 @@ public class PasswordHasher : IPasswordHasher
 {
     public string HashPassword(string password)
     {
-        if (password == null)
+        if (password is null)
         {
             throw new PasswordHasherInputNull();
         }

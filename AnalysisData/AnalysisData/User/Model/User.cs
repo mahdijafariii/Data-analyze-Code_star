@@ -32,16 +32,13 @@ public class User
                    PhoneNumber == otherUser.PhoneNumber &&
                    ImageURL == otherUser.ImageURL &&
                    RoleId == otherUser.RoleId &&
-                   Equals(Role, otherUser.Role);  // Assuming Role class has proper Equals method
+                   Equals(Role, otherUser.Role);  
         }
         return false;
     }
     public override int GetHashCode()
     {
-        // Combine the first 8 properties
         int hash = HashCode.Combine(Id, Username, Password, FirstName, LastName, Email, PhoneNumber, ImageURL);
-    
-        // Combine the hash of the first 8 properties with the remaining properties
         hash = HashCode.Combine(hash, RoleId, Role);
 
         return hash;

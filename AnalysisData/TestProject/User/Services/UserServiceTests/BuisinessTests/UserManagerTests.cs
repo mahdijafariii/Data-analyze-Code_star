@@ -23,7 +23,7 @@ public class UserManagerTests
     }
 
     [Fact]
-    public async Task GetUserAsync_UserExists_ReturnsUser()
+    public async Task GetUserAsync_ShouldReturnUser_WhenUserExists()
     {
         // Arrange
         var userClaim = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -50,7 +50,7 @@ public class UserManagerTests
     }
     
     [Fact]
-    public async Task GetUserAsync_UserDoesNotExist_ThrowsUserNotFoundException()
+    public async Task GetUserAsync_ShouldThrowUserNotFoundException_WhenUserDoesNotExist()
     {
         // Arrange
         var userClaim = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -64,7 +64,7 @@ public class UserManagerTests
         await Assert.ThrowsAsync<UserNotFoundException>(() => _sut.GetUserAsync(userClaim));
     }
     [Fact]
-    public async Task UpdateUserInformationAsync_ValidData_ReturnsTrue()
+    public async Task UpdateUserInformationAsync_ShouldReturnTrue_WhenDataIsValid()
     {
         // Arrange
         var user = new AnalysisData.UserManage.Model.User { Id = Guid.NewGuid(), Email = "info@example.com", FirstName = "sdas", LastName = "asdsdqss"};
@@ -79,17 +79,16 @@ public class UserManagerTests
         _userRepository.GetUserByEmailAsync("info2@example.com").Returns((AnalysisData.UserManage.Model.User)null);
 
         // Act
-        var result = await _sut.UpdateUserInformationAsync(user, updateUserDto);
+        await _sut.UpdateUserInformationAsync(user, updateUserDto);
 
         // Assert
-        Assert.True(result);
         _userRepository.Received(1).UpdateUserAsync(user.Id, user);
         _validationService.Received(1).EmailCheck(updateUserDto.Email);
         _validationService.Received(1).PhoneNumberCheck(updateUserDto.PhoneNumber);
     }
     
     [Fact]
-    public async Task UpdateUserInformationAsync_EmailAlreadyExists_ThrowsDuplicateUserException()
+    public async Task UpdateUserInformationAsync_ShouldThrowDuplicateUserException_WhenEmailAlreadyExists()
     {
         // Arrange
         var user = new AnalysisData.UserManage.Model.User { Id = Guid.NewGuid(), Email = "info@gmail.com" };
@@ -108,7 +107,4 @@ public class UserManagerTests
         // Act & Assert
         await Assert.ThrowsAsync<DuplicateUserException>(() => _sut.UpdateUserInformationAsync(user, updateUserDto));
     }
-
-
-
 }

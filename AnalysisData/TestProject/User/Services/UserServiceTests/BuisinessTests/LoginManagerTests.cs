@@ -28,7 +28,7 @@ public class LoginManagerTests
     }
     
     [Fact]
-    public async Task LoginAsync_ValidCredentials_ShouldReturnUserAndSetCookie()
+    public async Task LoginAsync_ShouldReturnUserAndSetCookie_WhenValidCredentialsProvided()
     {
         // Arrange
         var token = "generatedJwtToken";
@@ -38,7 +38,7 @@ public class LoginManagerTests
             Password = "ValidPassword123!",
             RememberMe = true
         };
-        var user = new AnalysisData.UserManage.Model.User
+        var user = new AnalysisData.UserManage.Model.User()
         {
             Username = "testUser",
             Password = "ValidPassword123",
@@ -47,17 +47,17 @@ public class LoginManagerTests
         _userRepository.GetUserByUsernameAsync(userLoginDto.UserName).Returns(user);
         _passwordService.ValidatePassword(user, userLoginDto.Password);
         _jwtService.GenerateJwtToken(userLoginDto.UserName).Returns(token);
-        
 
         // Act
         var result = await _sut.LoginAsync(userLoginDto);
-        
+
+        // Assert
         Assert.Equal(user, result);
         _cookieService.Received(1).SetCookie("AuthToken", token, userLoginDto.RememberMe);
     }
     
     [Fact]
-    public async Task LoginAsync_InvalidUsername_ShouldThrowUserNotFoundException()
+    public async Task LoginAsync_ShouldThrowUserNotFoundException_WhenInvalidUsernameProvided()
     {
         // Arrange
         var userLoginDto = new UserLoginDto
@@ -67,14 +67,15 @@ public class LoginManagerTests
             RememberMe = false
         };
 
-        _userRepository.GetUserByUsernameAsync(userLoginDto.UserName).Returns(Task.FromResult<AnalysisData.UserManage.Model.User>(null));
+        _userRepository.GetUserByUsernameAsync(userLoginDto.UserName)
+            .Returns(Task.FromResult<AnalysisData.UserManage.Model.User>(null));
 
         // Act & Assert
         await Assert.ThrowsAsync<UserNotFoundException>(() => _sut.LoginAsync(userLoginDto));
     }
 
     [Fact]
-    public async Task LoginAsync_InvalidPassword_ShouldThrowPasswordMismatchException()
+    public async Task LoginAsync_ShouldThrowPasswordMismatchException_WhenInvalidPasswordProvided()
     {
         // Arrange
         var userLoginDto = new UserLoginDto

@@ -32,10 +32,9 @@ public class UserServiceTests
             .Returns(Task.FromResult(true));
 
         // Act
-        var result = await _sut.ResetPasswordAsync(userClaim, "password", "password");
+        await _sut.ResetPasswordAsync(userClaim, "password", "password");
 
         // Assert
-        Assert.True(result);
         await _userManager.Received(1).GetUserAsync(userClaim);
         await _passwordManager.Received(1).ResetPasswordAsync(user, "password", "password");
     }
@@ -51,10 +50,9 @@ public class UserServiceTests
             .Returns(Task.FromResult(true));
 
         // Act
-        var result = await _sut.NewPasswordAsync(userClaim, "oldPassword", "newPassword", "newPassword");
+        await _sut.NewPasswordAsync(userClaim, "oldPassword", "newPassword", "newPassword");
 
         // Assert
-        Assert.True(result);
         await _userManager.Received(1).GetUserAsync(userClaim);
         await _passwordManager.Received(1).NewPasswordAsync(user, "oldPassword", "newPassword", "newPassword");
     }
@@ -102,10 +100,9 @@ public class UserServiceTests
         _userManager.UpdateUserInformationAsync(user, updateUserDto).Returns(Task.FromResult(true));
 
         // Act
-        var result = await _sut.UpdateUserInformationAsync(userClaim, updateUserDto);
+        await _sut.UpdateUserInformationAsync(userClaim, updateUserDto);
 
         // Assert
-        Assert.True(result);
         await _userManager.Received(1).GetUserAsync(userClaim);
         await _userManager.Received(1).UpdateUserInformationAsync(user, updateUserDto);
     }

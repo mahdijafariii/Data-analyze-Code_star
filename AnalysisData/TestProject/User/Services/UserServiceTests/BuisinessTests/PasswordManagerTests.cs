@@ -19,85 +19,107 @@ public class PasswordManagerTests
         _passwordHasher = Substitute.For<IPasswordHasher>();
         _passwordService = Substitute.For<IPasswordService>();
         _validationService = Substitute.For<IValidationService>();
-        
         _sut = new PasswordManager(_passwordHasher, _passwordService, _validationService);
     }
 
-
     [Fact]
-    public async Task ResetPasswordAsync_ValidInput_ShouldReturnTrue()
+    public async Task ResetPasswordAsync_ShouldCallValidatePasswordAndConfirmation_WhenCalled()
     {
         // Arrange
-        var password = "amir123@";
-        var comfirmPassword = "amir123@";
         var user = new AnalysisData.UserManage.Model.User();
-        _passwordService.ValidatePasswordAndConfirmation(password, comfirmPassword);
-        _validationService.PasswordCheck(password);
-        _passwordHasher.HashPassword(password).Returns("HashedPassword");
-        
+        var password = "newPassword";
+        var confirmPassword = "newPassword";
+
         // Act
-        var result = await _sut.ResetPasswordAsync(user, password, comfirmPassword);
-        
+        await _sut.ResetPasswordAsync(user, password, confirmPassword);
+
         // Assert
-        Assert.True(result);
-        Assert.Equal("HashedPassword", user.Password);
+        _passwordService.Received().ValidatePasswordAndConfirmation(password, confirmPassword);
     }
 
     [Fact]
-    public async Task NewPasswordAsync_ValidInput_ShouldReturnTrue()
-    {
-        var oldPassword = "HashedPassword";
-        var newPassword = "NewPassword";
-        var ConfirmNewPassword = "NewPassword";
-        
-        var user = new AnalysisData.UserManage.Model.User
-        {
-            Password = "HashedPassword",
-        };
-
-        _passwordService.ValidatePassword(user, oldPassword);
-        _passwordService.ValidatePasswordAndConfirmation(newPassword, ConfirmNewPassword);
-        _passwordService.HashPassword(newPassword).Returns("NewHashedPassword");
-        
-        // Act
-        var result = await _sut.NewPasswordAsync(user, oldPassword, newPassword, ConfirmNewPassword);
-
-        Assert.True(result);
-        Assert.Equal("NewHashedPassword", user.Password);
-
-    }
-    
-    [Fact]
-    public async Task ResetPasswordAsync_PasswordsDoNotMatch_ShouldThrowException()
+    public async Task ResetPasswordAsync_ShouldCallPasswordCheck_WhenCalled()
     {
         // Arrange
         var user = new AnalysisData.UserManage.Model.User();
-        var password = "Password123";
-        var confirmPassword = "Password123!";
-        
-        _passwordService.When(x => x.ValidatePasswordAndConfirmation(password, confirmPassword))
-            .Do(x => throw new PasswordMismatchException());
+        var password = "newPassword";
+        var confirmPassword = "newPassword";
 
-        // Act & Assert
-        await Assert.ThrowsAsync<PasswordMismatchException>(() => _sut.ResetPasswordAsync(user, password, confirmPassword));
+        // Act
+        await _sut.ResetPasswordAsync(user, password, confirmPassword);
 
-
+        // Assert
+        _validationService.Received().PasswordCheck(password);
     }
-    
+
     [Fact]
-    public async Task NewPasswordAsync_InvalidOldPassword_ShouldThrowException()
+    public async Task ResetPasswordAsync_ShouldCallHashPasswordAndSetUserPassword_WhenCalled()
     {
         // Arrange
-        var user = new AnalysisData.UserManage.Model.User { Password = "OldHashedPassword" };
-        var oldPassword = "InvalidOldPassword";
-        var newPassword = "NewPassword123!";
-        var confirmPassword = "NewPassword123!";
+        var user = new AnalysisData.UserManage.Model.User();
+        var password = "newPassword";
+        var hashedPassword = "hashedPassword";
+        var confirmPassword = "newPassword";
 
-        _passwordService.When(x => x.ValidatePassword(user, oldPassword))
-            .Do(x => throw new PasswordMismatchException());
+        _passwordHasher.HashPassword(password).Returns(hashedPassword);
 
-        // Act & Assert
-        await Assert.ThrowsAsync<PasswordMismatchException>(() => _sut.NewPasswordAsync(user, oldPassword, newPassword, confirmPassword));
+        // Act
+        await _sut.ResetPasswordAsync(user, password, confirmPassword);
+
+        // Assert
+        Assert.Equal(hashedPassword, user.Password);
+        _passwordHasher.Received().HashPassword(password);
     }
-    
+
+    [Fact]
+    public async Task NewPasswordAsync_ShouldCallValidatePassword_WhenCalled()
+    {
+        // Arrange
+        var user = new AnalysisData.UserManage.Model.User();
+        var oldPassword = "oldPassword";
+        var password = "newPassword";
+        var confirmPassword = "newPassword";
+
+        // Act
+        await _sut.NewPasswordAsync(user, oldPassword, password, confirmPassword);
+
+        // Assert
+        _passwordService.Received().ValidatePassword(user, oldPassword);
+    }
+
+    [Fact]
+    public async Task NewPasswordAsync_ShouldCallValidatePasswordAndConfirmation_WhenCalled()
+    {
+        // Arrange
+        var user = new AnalysisData.UserManage.Model.User();
+        var oldPassword = "oldPassword";
+        var password = "newPassword";
+        var confirmPassword = "newPassword";
+
+        // Act
+        await _sut.NewPasswordAsync(user, oldPassword, password, confirmPassword);
+
+        // Assert
+        _passwordService.Received().ValidatePasswordAndConfirmation(password, confirmPassword);
+    }
+
+    [Fact]
+    public async Task NewPasswordAsync_ShouldCallHashPasswordAndSetUserPassword_WhenCalled()
+    {
+        // Arrange
+        var user = new AnalysisData.UserManage.Model.User();
+        var oldPassword = "oldPassword";
+        var password = "newPassword";
+        var hashedPassword = "hashedPassword";
+        var confirmPassword = "newPassword";
+
+        _passwordHasher.HashPassword(password).Returns(hashedPassword);
+
+        // Act
+        await _sut.NewPasswordAsync(user, oldPassword, password, confirmPassword);
+
+        // Assert
+        Assert.Equal(hashedPassword, user.Password);
+        _passwordHasher.Received().HashPassword(password);
+    }
 }

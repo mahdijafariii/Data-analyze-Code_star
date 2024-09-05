@@ -248,7 +248,7 @@ namespace AnalysisData.Migrations
                         new
                         {
                             Id = 1,
-                            RoleName = "admin",
+                            RoleName = "Admin",
                             RolePolicy = "gold"
                         },
                         new
@@ -310,7 +310,7 @@ namespace AnalysisData.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("5673beec-e6d8-465b-8176-9f170329148a"),
+                            Id = new Guid("31a2df40-d66d-4a7e-967c-6c3b7561da0f"),
                             Email = "admin@gmail.com",
                             FirstName = "admin",
                             LastName = "admin",

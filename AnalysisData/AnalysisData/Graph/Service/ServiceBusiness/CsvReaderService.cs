@@ -1,8 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
 using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
-using AnalysisData.Exception;
-using AnalysisData.Exception.GraphException;
 using CsvHelper;
 using CsvHelper.Configuration;
 
@@ -10,7 +8,16 @@ namespace AnalysisData.Graph.Service.ServiceBusiness;
 
 public class CsvReaderService : ICsvReaderService
 {
-    public CsvReader CreateCsvReader(IFormFile file)
+    private readonly ICsvHeaderReader _csvHeaderReader;
+    private readonly IHeaderValidator _headerValidator;
+
+    public CsvReaderService(ICsvHeaderReader csvHeaderReader, IHeaderValidator headerValidator)
+    {
+        _csvHeaderReader = csvHeaderReader;
+        _headerValidator = headerValidator;
+    }
+
+    public ICsvReader CreateCsvReader(IFormFile file)
     {
         var reader = new StreamReader(file.OpenReadStream());
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
@@ -18,25 +25,14 @@ public class CsvReaderService : ICsvReaderService
             Encoding = Encoding.UTF8,
             HasHeaderRecord = true
         };
-        return new CsvReader(reader, config);
+        var csvHelperReader = new CsvHelper.CsvReader(reader, config);
+        return new CsvReaderWrapper(csvHelperReader);
     }
 
-    public IEnumerable<string> ReadHeaders(CsvReader csv, List<string> requiredHeaders)
+    public IEnumerable<string> ReadHeaders(ICsvReader csv, List<string> requiredHeaders)
     {
-        if (csv.Read())
-        {
-            csv.ReadHeader();
-            var headers = csv.Context.Reader.HeaderRecord ?? Enumerable.Empty<string>();
-            
-            var missingHeaders = requiredHeaders.Where(h => !headers.Contains(h)).ToList();
-            if (missingHeaders.Any())
-            {
-                throw new HeaderIdNotFoundInNodeFile(missingHeaders);
-            }
-
-            return headers;
-        }
-
-        return Enumerable.Empty<string>();
+        var headers = _csvHeaderReader.ReadHeaders(csv);
+        _headerValidator.ValidateHeaders(headers, requiredHeaders);
+        return headers;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using AnalysisData.Graph.Model.Edge;
 using AnalysisData.Graph.Repository.EdgeRepository.Abstraction;
 using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
-using CsvHelper;
 
 namespace AnalysisData.Graph.Service.ServiceBusiness;
 
@@ -22,7 +21,7 @@ public class ValueEdgeProcessor : IValueEdgeProcessor
     }
 
     public async Task ProcessEntityEdgeValuesAsync(
-        CsvReader csv, 
+        ICsvReader csv, 
         IEnumerable<string> headers, 
         string from, 
         string to, 
@@ -50,7 +49,7 @@ public class ValueEdgeProcessor : IValueEdgeProcessor
                     AttributeId = attribute.Id,
                     Value = valueString
                 });
-
+                
                 if (valueEdges.Count >= _batchSize)
                 {
                     await ProcessBatchAsync(valueEdges);
@@ -58,7 +57,7 @@ public class ValueEdgeProcessor : IValueEdgeProcessor
                 }
             }
         }
-
+        
         if (valueEdges.Any())
         {
             await ProcessBatchAsync(valueEdges);

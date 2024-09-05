@@ -6,7 +6,7 @@ namespace AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 public interface IValueEdgeProcessor
 {
     Task ProcessEntityEdgeValuesAsync(
-        CsvReader csv, 
+        ICsvReader csv, 
         IEnumerable<string> headers, 
         string from, 
         string to, 

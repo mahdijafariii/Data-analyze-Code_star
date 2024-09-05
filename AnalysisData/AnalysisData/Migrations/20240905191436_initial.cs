@@ -250,7 +250,7 @@ namespace AnalysisData.Migrations
                 columns: new[] { "Id", "RoleName", "RolePolicy" },
                 values: new object[,]
                 {
-                    { 1, "admin", "gold" },
+                    { 1, "Admin", "gold" },
                     { 2, "Data-Analyst", "bronze" },
                     { 3, "Data-Manager", "silver" }
                 });
@@ -258,7 +258,7 @@ namespace AnalysisData.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "FirstName", "ImageURL", "LastName", "Password", "PhoneNumber", "RoleId", "Username" },
-                values: new object[] { new Guid("5673beec-e6d8-465b-8176-9f170329148a"), "admin@gmail.com", "admin", null, "admin", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", "09131111111", 1, "admin" });
+                values: new object[] { new Guid("31a2df40-d66d-4a7e-967c-6c3b7561da0f"), "admin@gmail.com", "admin", null, "admin", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", "09131111111", 1, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_EntityEdges_EntityIDSource",

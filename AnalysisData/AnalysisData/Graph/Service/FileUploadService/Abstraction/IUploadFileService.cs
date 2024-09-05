@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace AnalysisData.EAV.Service.Abstraction;
+namespace AnalysisData.Graph.Service.FileUploadService.Abstraction;
 
 public interface IUploadFileService
 {

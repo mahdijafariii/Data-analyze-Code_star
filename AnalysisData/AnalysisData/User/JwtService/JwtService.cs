@@ -1,14 +1,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using AnalysisData.CookieService.abstractions;
-using AnalysisData.Exception;
-using AnalysisData.JwtService.abstractions;
-using AnalysisData.Repository.UserRepository.Abstraction;
-using JWT.Exceptions;
+using AnalysisData.User.CookieService.abstractions;
+using AnalysisData.User.JwtService.abstractions;
+using AnalysisData.User.Repository.UserRepository.Abstraction;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AnalysisData.JwtService;
+namespace AnalysisData.User.JwtService;
 
 public class JwtService : IJwtService
 {

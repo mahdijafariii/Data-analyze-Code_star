@@ -1,9 +1,9 @@
 ﻿using CsvHelper;
 
-namespace AnalysisData.EAV.Service.Business.Abstraction;
+namespace AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 
 public interface ICsvReaderService
 {
-    public CsvReader CreateCsvReader(IFormFile file);
-    public IEnumerable<string> ReadHeaders(CsvReader csv);
+    CsvReader CreateCsvReader(IFormFile file);
+    IEnumerable<string> ReadHeaders(CsvReader csv, List<string> requiredHeaders);
 }

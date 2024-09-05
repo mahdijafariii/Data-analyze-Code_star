@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AnalysisData.EAV.Model;
+namespace AnalysisData.Graph.Model.Node;
 
 public class ValueNode
 {

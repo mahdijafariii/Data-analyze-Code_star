@@ -1,13 +1,11 @@
-﻿using AnalysisData.CookieService.abstractions;
-using AnalysisData.Exception;
-using AnalysisData.JwtService.abstractions;
-using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Services.Business.Abstraction;
-using AnalysisData.UserManage.LoginModel;
-using AnalysisData.UserManage.Model;
-using Xunit;
+﻿using AnalysisData.Exception.UserException;
+using AnalysisData.User.CookieService.abstractions;
+using AnalysisData.User.JwtService.abstractions;
+using AnalysisData.User.Repository.UserRepository.Abstraction;
+using AnalysisData.User.Services.UserService.Abstraction;
+using AnalysisData.User.UserDto.UserDto;
 
-namespace AnalysisData.Services.Business;
+namespace AnalysisData.User.Services.UserService.Business;
 
 public class LoginManager : ILoginManager
 {
@@ -24,7 +22,7 @@ public class LoginManager : ILoginManager
         _cookieService = cookieService;
     }
 
-    public async Task<User> LoginAsync(UserLoginDto userLoginDto)
+    public async Task<Model.User> LoginAsync(UserLoginDto userLoginDto)
     {
         var user = await _userRepository.GetUserByUsernameAsync(userLoginDto.UserName);
         if (user == null)

@@ -1,10 +1,6 @@
-﻿using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.RegisterModel;
-using AnalysisData.UserManage.RolePaginationModel;
-using AnalysisData.UserManage.UpdateModel;
-using AnalysisData.UserManage.UserPaginationModel;
+﻿using AnalysisData.User.UserDto.UserDto;
 
-namespace AnalysisData.Services.Abstraction;
+namespace AnalysisData.User.Services.AdminService.Abstraction;
 
 public interface IAdminService
 {

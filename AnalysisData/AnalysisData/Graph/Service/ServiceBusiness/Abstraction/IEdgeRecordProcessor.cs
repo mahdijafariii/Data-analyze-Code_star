@@ -1,6 +1,7 @@
-﻿using CsvHelper;
+﻿
+using CsvHelper;
 
-namespace AnalysisData.EAV.Service.Business.Abstraction;
+namespace AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 
 public interface IEdgeRecordProcessor
 {

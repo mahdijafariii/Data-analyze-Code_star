@@ -1,13 +1,14 @@
 using System.Security.Claims;
-using AnalysisData.EAV.Dto;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
-using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
-using AnalysisData.EAV.Service.Abstraction;
-using AnalysisData.Exception;
+using AnalysisData.Exception.GraphException;
+using AnalysisData.Graph.Dto.NodeDto;
+using AnalysisData.Graph.Model.Node;
+using AnalysisData.Graph.Repository.EdgeRepository.Abstraction;
+using AnalysisData.Graph.Repository.GraphEdgeRepository;
+using AnalysisData.Graph.Repository.GraphNodeRepository;
+using AnalysisData.Graph.Repository.NodeRepository.Abstraction;
+using AnalysisData.Graph.Service.CategoryService.Abstraction;
 
-namespace AnalysisData.EAV.Service;
+namespace AnalysisData.Graph.Service.GraphServices.AllNodesData;
 
 public class NodePaginationService : INodePaginationService
 {

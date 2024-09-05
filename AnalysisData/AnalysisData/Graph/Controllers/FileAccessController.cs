@@ -1,10 +1,9 @@
-using AnalysisData.EAV.Dto;
-using AnalysisData.EAV.Repository.Abstraction;
-using AnalysisData.EAV.Service;
-using AnalysisData.Repository.UserRepository.Abstraction;
+using AnalysisData.Graph.Dto;
+using AnalysisData.Graph.Repository.UserFileRepository.Abstraction;
+using AnalysisData.Graph.Service.FilePermissionService;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnalysisData.EAV.Controllers;
+namespace AnalysisData.Graph.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -33,7 +32,7 @@ public class FileAccessController : ControllerBase
         return Ok(users);
     }
 
-    [HttpPost("files/{fileId}/access")]
+    [HttpPost("files/access")]
     public async Task<IActionResult> AccessFileToUser([FromBody] AccessFileToUserDto request)
     {
         await _filePermissionService.AccessFileToUserAsync(request.UserGuidIds.ToList(), request.FileId);
@@ -43,7 +42,7 @@ public class FileAccessController : ControllerBase
         });
     }
 
-    [HttpGet("files/{fileId}/users")]
+    [HttpGet("files/users")]
     public async Task<IActionResult> WhoAccessToThisFile([FromQuery] int fileId)
     {
         var file = await _userFileRepository.GetByFileIdAsync(fileId);

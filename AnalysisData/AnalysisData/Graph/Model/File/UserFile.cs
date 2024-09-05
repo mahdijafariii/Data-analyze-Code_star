@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using AnalysisData.UserManage.Model;
 
-namespace AnalysisData.EAV.Model;
+namespace AnalysisData.Graph.Model.File;
 
 public class UserFile
 {
@@ -10,7 +9,7 @@ public class UserFile
 
     public Guid UserId { get; set; }
 
-    [ForeignKey("UserId")] public User User { get; set; }
+    [ForeignKey("UserId")] public User.Model.User User { get; set; }
 
     public int FileId { get; set; }
 

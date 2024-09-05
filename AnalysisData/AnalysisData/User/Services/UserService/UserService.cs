@@ -1,11 +1,8 @@
 using System.Security.Claims;
-using AnalysisData.Services.Abstraction;
-using AnalysisData.Services.Business.Abstraction;
-using AnalysisData.UserManage.LoginModel;
-using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.UpdateModel;
+using AnalysisData.User.Services.UserService.Abstraction;
+using AnalysisData.User.UserDto.UserDto;
 
-namespace AnalysisData.Services;
+namespace AnalysisData.User.Services.UserService;
 
 public class UserService : IUserService
 {
@@ -32,12 +29,12 @@ public class UserService : IUserService
         await _passwordManager.NewPasswordAsync(user, oldPassword, password, confirmPassword);
     }
 
-    public async Task<User> LoginAsync(UserLoginDto userLoginDto)
+    public async Task<Model.User> LoginAsync(UserLoginDto userLoginDto)
     {
         return await _loginManager.LoginAsync(userLoginDto);
     }
 
-    public async Task<User> GetUserAsync(ClaimsPrincipal userClaim)
+    public async Task<Model.User> GetUserAsync(ClaimsPrincipal userClaim)
     {
         return await _userManager.GetUserAsync(userClaim);
     }

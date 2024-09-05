@@ -1,12 +1,11 @@
 ﻿using System.Security.Claims;
-using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.UpdateModel;
+using AnalysisData.User.UserDto.UserDto;
 
-namespace AnalysisData.Services.Business.Abstraction;
+namespace AnalysisData.User.Services.UserService.Abstraction;
 
 public interface IUserManager
 {
-    Task<User> GetUserAsync(ClaimsPrincipal userClaim);
-    Task UpdateUserInformationAsync(User user, UpdateUserDto updateUserDto);
-    Task UploadImageAsync(User user, string imageUrl);
+    Task<Model.User> GetUserAsync(ClaimsPrincipal userClaim);
+    Task UpdateUserInformationAsync(Model.User user, UpdateUserDto updateUserDto);
+    Task UploadImageAsync(Model.User user, string imageUrl);
 }

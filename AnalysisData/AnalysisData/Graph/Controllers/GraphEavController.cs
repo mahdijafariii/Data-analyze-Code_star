@@ -1,11 +1,10 @@
-using AnalysisData.Data;
-using AnalysisData.EAV.Service.Abstraction;
-using AnalysisData.EAV.Service.GraphServices.NodeAndEdgeServices;
-using AnalysisData.EAV.Service.GraphServices.Relationship;
-using AnalysisData.EAV.Service.GraphSevices;
+using AnalysisData.Graph.Service.GraphServices.AllNodesData;
+using AnalysisData.Graph.Service.GraphServices.NodeAndEdgeInfo;
+using AnalysisData.Graph.Service.GraphServices.Relationship;
+using AnalysisData.Graph.Service.GraphServices.Search;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnalysisData.EAV.Controllers;
+namespace AnalysisData.Graph.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -34,11 +33,11 @@ public class GraphEavController : ControllerBase
         return Ok(paginatedNodes);
     }
 
-    [HttpGet("nodes/{headerUniqueId}/attributes")]
-    public async Task<IActionResult> GetNodeAttributes(int id)
+    [HttpGet("nodes/{nodeId}/attributes")]
+    public async Task<IActionResult> GetNodeAttributes(int nodeId)
     {
         var user = User;
-        var output = await _nodeAndEdgeInfo.GetNodeInformationAsync(user, id);
+        var output = await _nodeAndEdgeInfo.GetNodeInformationAsync(user, nodeId);
         return Ok(output);
     }
 

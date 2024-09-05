@@ -1,8 +1,8 @@
-﻿using AnalysisData.EAV.Dto;
-using AnalysisData.EAV.Service.Abstraction;
+﻿using AnalysisData.Graph.Dto.CategoryDto;
+using AnalysisData.Graph.Service.CategoryService.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnalysisData.EAV.Controllers;
+namespace AnalysisData.Graph.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

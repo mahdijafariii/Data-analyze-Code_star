@@ -1,17 +1,12 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using AnalysisData.Exception;
-using AnalysisData.JwtService.abstractions;
-using AnalysisData.Repository.RoleRepository.Abstraction;
-using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Services.Abstraction;
-using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.RegisterModel;
-using AnalysisData.UserManage.RolePaginationModel;
-using AnalysisData.UserManage.UpdateModel;
-using AnalysisData.UserManage.UserPaginationModel;
+﻿using AnalysisData.Exception.UserException;
+using AnalysisData.User.JwtService.abstractions;
+using AnalysisData.User.Repository.RoleRepository.Abstraction;
+using AnalysisData.User.Repository.UserRepository.Abstraction;
+using AnalysisData.User.Services.AdminService.Abstraction;
+using AnalysisData.User.Services.ValidationService.Abstraction;
+using AnalysisData.User.UserDto.UserDto;
 
-namespace AnalysisData.Services;
+namespace AnalysisData.User.Services.AdminService;
 
 public class AdminService : IAdminService
 {
@@ -32,25 +27,38 @@ public class AdminService : IAdminService
     public async Task UpdateUserInformationByAdminAsync(Guid id, UpdateAdminDto updateAdminDto)
     {
         var user = await _userRepository.GetUserByIdAsync(id);
+        
+        await ValidateUserInformation(user, updateAdminDto);
+        _validationService.EmailCheck(updateAdminDto.Email);
+        _validationService.PhoneNumberCheck(updateAdminDto.PhoneNumber);
+        await CheckExistenceOfRole(user,updateAdminDto);
+        
+        await SetUpdatedInformation(user, updateAdminDto);
+        await _jwtService.UpdateUserCookie(user.Username, false);
+    }
+
+    private async Task ValidateUserInformation(Model.User user,UpdateAdminDto updateAdminDto)
+    {
         var checkUsername = await _userRepository.GetUserByUsernameAsync(updateAdminDto.UserName);
         var checkEmail = await _userRepository.GetUserByEmailAsync(updateAdminDto.Email);
 
         if ((checkUsername != null && !user.Equals(checkUsername)) || (checkEmail != null && !user.Equals(checkEmail)))
             throw new DuplicateUserException();
+    }
 
-        _validationService.EmailCheck(updateAdminDto.Email);
-        _validationService.PhoneNumberCheck(updateAdminDto.PhoneNumber);
+    private async Task CheckExistenceOfRole(Model.User user,UpdateAdminDto updateAdminDto)
+    {
         var role = await _roleRepository.GetRoleByNameAsync(updateAdminDto.RoleName);
         if (role == null)
         {
             throw new RoleNotFoundException();
         }
 
-        SetUpdatedInformation(user, updateAdminDto);
+        await SetUpdatedInformation(user, updateAdminDto);
         await _jwtService.UpdateUserCookie(user.Username, false);
     }
 
-    private async Task SetUpdatedInformation(User user, UpdateAdminDto updateAdminDto)
+    private async Task SetUpdatedInformation(Model.User user, UpdateAdminDto updateAdminDto)
     {
         user.FirstName = updateAdminDto.FirstName;
         user.LastName = updateAdminDto.LastName;
@@ -60,6 +68,7 @@ public class AdminService : IAdminService
         user.Role.RoleName = updateAdminDto.RoleName;
         await _userRepository.UpdateUserAsync(user.Id, user);
     }
+    
 
     public async Task<bool> DeleteUserAsync(Guid id)
     {

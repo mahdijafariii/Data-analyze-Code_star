@@ -1,9 +1,9 @@
 ﻿using AnalysisData.Data;
-using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
+using AnalysisData.Graph.Model.Edge;
+using AnalysisData.Graph.Repository.EdgeRepository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
-namespace AnalysisData.EAV.Repository.EdgeRepository;
+namespace AnalysisData.Graph.Repository.EdgeRepository;
 
 public class AttributeEdgeRepository : IAttributeEdgeRepository
 {
@@ -19,7 +19,11 @@ public class AttributeEdgeRepository : IAttributeEdgeRepository
         await _context.AttributeEdges.AddAsync(entity);
         await _context.SaveChangesAsync();
     }
-
+    public async Task AddRangeAsync(IEnumerable<AttributeEdge> attributeEdges)
+    {
+        await _context.AttributeEdges.AddRangeAsync(attributeEdges);
+        await _context.SaveChangesAsync();
+    }
     public async Task<IEnumerable<AttributeEdge>> GetAllAsync()
     {
         return await _context.AttributeEdges.ToListAsync();

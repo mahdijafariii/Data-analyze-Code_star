@@ -1,8 +1,8 @@
-﻿using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.NodeRepository.Abstraction;
-using AnalysisData.EAV.Service.Business.Abstraction;
+﻿using AnalysisData.Graph.Model.Node;
+using AnalysisData.Graph.Repository.NodeRepository.Abstraction;
+using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 
-namespace AnalysisData.EAV.Service.Business;
+namespace AnalysisData.Graph.Service.ServiceBusiness;
 
 public class HeaderProcessor : IHeaderProcessor
 {
@@ -20,9 +20,11 @@ public class HeaderProcessor : IHeaderProcessor
             if (header == uniqueAttribute) continue;
 
             var existingAttribute = await _attributeNodeRepository.GetByNameAsync(header);
-            if (existingAttribute != null) continue;
-            var attributeNode = new AttributeNode { Name = header };
-            await _attributeNodeRepository.AddAsync(attributeNode);
+            if (existingAttribute == null)
+            {
+                var attributeNode = new AttributeNode { Name = header };
+                await _attributeNodeRepository.AddAsync(attributeNode);
+            }
         }
     }
 }

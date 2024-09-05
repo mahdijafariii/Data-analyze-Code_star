@@ -1,9 +1,9 @@
 using System.Security.Cryptography;
 using System.Text;
 using AnalysisData.Exception;
-using AnalysisData.Services.SecurityPasswordService.Abstraction;
+using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
 
-namespace AnalysisData.Services.SecurityPasswordService;
+namespace AnalysisData.User.Services.SecurityPasswordService;
 
 public class PasswordHasher : IPasswordHasher
 {

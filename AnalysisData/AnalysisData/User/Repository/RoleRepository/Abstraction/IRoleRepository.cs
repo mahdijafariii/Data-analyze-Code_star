@@ -1,6 +1,6 @@
-using AnalysisData.UserManage.Model;
+using AnalysisData.User.Model;
 
-namespace AnalysisData.Repository.RoleRepository.Abstraction;
+namespace AnalysisData.User.Repository.RoleRepository.Abstraction;
 
 public interface IRoleRepository
 {
@@ -10,4 +10,5 @@ public interface IRoleRepository
     Task<bool> DeleteRoleAsync(string roleId);
     Task<List<Role>> GetAllRolesPaginationAsync(int page, int limit);
     Task<int> GetRolesCountAsync();
+    Task<IEnumerable<string>> GetRolesByPolicyAsync(string policy);
 }

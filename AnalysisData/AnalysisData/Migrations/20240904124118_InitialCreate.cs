@@ -4,6 +4,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace AnalysisData.Migrations
 {
     /// <inheritdoc />
@@ -52,20 +54,6 @@ namespace AnalysisData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EntityEdges",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    EntityIDSource = table.Column<int>(type: "integer", nullable: false),
-                    EntityIDTarget = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EntityEdges", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -77,33 +65,6 @@ namespace AnalysisData.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ValueEdges",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    EntityId = table.Column<int>(type: "integer", nullable: false),
-                    AttributeId = table.Column<int>(type: "integer", nullable: false),
-                    Value = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ValueEdges", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ValueEdges_AttributeEdges_AttributeId",
-                        column: x => x.AttributeId,
-                        principalTable: "AttributeEdges",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ValueEdges_EntityEdges_EntityId",
-                        column: x => x.EntityId,
-                        principalTable: "EntityEdges",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -205,6 +166,32 @@ namespace AnalysisData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EntityEdges",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EntityIDSource = table.Column<int>(type: "integer", nullable: false),
+                    EntityIDTarget = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EntityEdges", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EntityEdges_EntityNodes_EntityIDSource",
+                        column: x => x.EntityIDSource,
+                        principalTable: "EntityNodes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EntityEdges_EntityNodes_EntityIDTarget",
+                        column: x => x.EntityIDTarget,
+                        principalTable: "EntityNodes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ValueNodes",
                 columns: table => new
                 {
@@ -230,6 +217,58 @@ namespace AnalysisData.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "ValueEdges",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EntityId = table.Column<int>(type: "integer", nullable: false),
+                    AttributeId = table.Column<int>(type: "integer", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ValueEdges", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ValueEdges_AttributeEdges_AttributeId",
+                        column: x => x.AttributeId,
+                        principalTable: "AttributeEdges",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ValueEdges_EntityEdges_EntityId",
+                        column: x => x.EntityId,
+                        principalTable: "EntityEdges",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "RoleName", "RolePolicy" },
+                values: new object[,]
+                {
+                    { 1, "admin", "gold" },
+                    { 2, "Data-Analyst", "bronze" },
+                    { 3, "Data-Manager", "silver" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Email", "FirstName", "ImageURL", "LastName", "Password", "PhoneNumber", "RoleId", "Username" },
+                values: new object[] { new Guid("eb35fe46-76b2-4809-bc1b-c3ac0b3357e4"), "admin@gmail.com", "admin", null, "admin", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", "09131111111", 1, "admin" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EntityEdges_EntityIDSource",
+                table: "EntityEdges",
+                column: "EntityIDSource");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EntityEdges_EntityIDTarget",
+                table: "EntityEdges",
+                column: "EntityIDTarget");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EntityNodes_NodeFileReferenceId",

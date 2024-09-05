@@ -1,10 +1,9 @@
-﻿using AnalysisData.Services.Abstraction;
-using AnalysisData.Services.Business.Abstraction;
-using AnalysisData.Services.SecurityPasswordService.Abstraction;
-using AnalysisData.UserManage.Model;
-using Microsoft.AspNetCore.Identity;
+﻿
+using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
+using AnalysisData.User.Services.UserService.Abstraction;
+using AnalysisData.User.Services.ValidationService.Abstraction;
 
-namespace AnalysisData.Services.Business;
+namespace AnalysisData.User.Services.UserService.Business;
 
 public class PasswordManager : IPasswordManager
 {
@@ -19,14 +18,14 @@ public class PasswordManager : IPasswordManager
         _validationService = validationService;
     }
 
-    public async Task ResetPasswordAsync(User user, string password, string confirmPassword)
+    public async Task ResetPasswordAsync(Model.User user, string password, string confirmPassword)
     {
         _passwordService.ValidatePasswordAndConfirmation(password, confirmPassword);
         _validationService.PasswordCheck(password);
         user.Password = _passwordHasher.HashPassword(password);
     }
 
-    public async Task NewPasswordAsync(User user, string oldPassword, string password, string confirmPassword)
+    public async Task NewPasswordAsync(Model.User user, string oldPassword, string password, string confirmPassword)
     {
         _passwordService.ValidatePassword(user, oldPassword);
         _passwordService.ValidatePasswordAndConfirmation(password, confirmPassword);

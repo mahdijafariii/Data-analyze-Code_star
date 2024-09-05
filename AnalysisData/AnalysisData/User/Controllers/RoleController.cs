@@ -1,9 +1,8 @@
-using AnalysisData.Services;
-using AnalysisData.UserManage.Model;
-using AnalysisData.UserManage.RolePaginationModel;
+using AnalysisData.User.Services.RoleService.Abstraction;
+using AnalysisData.User.UserDto.RoleDto;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnalysisData.Controllers;
+namespace AnalysisData.User.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -39,7 +38,7 @@ public class RoleController : ControllerBase
         var rolesCount = await _roleManagementService.GetRoleCount();
         return Ok(new
         {
-            users = rolesPagination,
+            roles = rolesPagination,
             count = rolesCount,
             thisPage = page,
         });

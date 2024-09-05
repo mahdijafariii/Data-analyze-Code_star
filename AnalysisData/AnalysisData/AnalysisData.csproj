@@ -7,12 +7,19 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AWSSDK.S3" Version="4.0.0-preview.2" />
         <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.3.2" />
         <PackageReference Include="Azure.Identity" Version="1.12.0" />
+        <PackageReference Include="CoverageChecker" Version="0.3.1" />
+        <PackageReference Include="coverlet.collector" Version="6.0.2">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
         <PackageReference Include="CsvHelper" Version="33.0.1" />
         <PackageReference Include="JWT" Version="10.1.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />
+        <PackageReference Include="Microsoft.CodeCoverage" Version="17.11.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7">
           <PrivateAssets>all</PrivateAssets>
@@ -44,14 +51,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="User\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <_ContentIncludedByDefault Remove="out\web.config" />
       <_ContentIncludedByDefault Remove="out\AnalysisData.runtimeconfig.json" />
       <_ContentIncludedByDefault Remove="out\appsettings.Development.json" />
       <_ContentIncludedByDefault Remove="out\appsettings.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="User\" />
     </ItemGroup>
 
 </Project>

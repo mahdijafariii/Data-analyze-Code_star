@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <root>
     <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <xsd:element name="root" msdata:IsDataSet="true">
-            
         </xsd:element>
     </xsd:schema>
     <resheader name="resmimetype">
@@ -19,63 +17,69 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="UserNotFoundException" xml:space="preserve">
-        <value>user not found ! </value>
+        <value>User not found!</value>
     </data>
     <data name="InvalidPasswordException" xml:space="preserve">
-        <value>Password is invalid !</value>
+        <value>Password is invalid!</value>
     </data>
     <data name="DuplicateUserException" xml:space="preserve">
-        <value>We have user with this information !</value>
+        <value>We have a user with this information!</value>
     </data>
     <data name="PasswordMismatchException" xml:space="preserve">
-        <value>Password is not match ! </value>
+        <value>Password does not match!</value>
     </data>
     <data name="RoleNotFoundException" xml:space="preserve">
-        <value>We do not have this role !</value>
+        <value>We do not have this role!</value>
     </data>
     <data name="InvalidEmailFormatException" xml:space="preserve">
-        <value>Invalid Email format !</value>
+        <value>Invalid email format!</value>
     </data>
     <data name="InvalidPhoneNumberFormatException" xml:space="preserve">
-        <value>Invalid Phone number format !</value>
+        <value>Invalid phone number format!</value>
     </data>
     <data name="InvalidPasswordFormatException" xml:space="preserve">
-        <value>password format is invlaid ! </value>
+        <value>Password format is invalid!</value>
     </data>
     <data name="AdminExistenceException" xml:space="preserve">
-        <value>There is an admin!</value>
+        <value>There is already an admin!</value>
     </data>
     <data name="TokenNotFoundInCookieException" xml:space="preserve">
-        <value>Token not found in cookies !</value>
+        <value>Token not found in cookies!</value>
     </data>
     <data name="TokenExpiredException" xml:space="preserve">
-        <value>Token expired  !</value>
+        <value>Token expired!</value>
     </data>
     <data name="FileExistenceException" xml:space="preserve">
-        <value>We have this file ! </value>
+        <value>We already have this file!</value>
     </data>
     <data name="CategoryResultNotFoundException" xml:space="preserve">
-        <value>Category not exists in our system!</value>
+        <value>Category does not exist in our system!</value>
     </data>
     <data name="NodeNotFoundException" xml:space="preserve">
-        <value>Node not found Exception ! </value>
+        <value>Node was not found!</value>
     </data>
     <data name="NoFileUploadedException" xml:space="preserve">
-        <value>No file uploaded exception !</value>
+        <value>No file uploaded!</value>
     </data>
     <data name="EdgeNotFoundException" xml:space="preserve">
-        <value>Edge not found exception !</value>
+        <value>Edge not found!</value>
     </data>
     <data name="DuplicateRoleException" xml:space="preserve">
-        <value>We have this role in db ! </value>
+        <value>We already have this role in the database!</value>
     </data>
     <data name="CategoryAlreadyExist" xml:space="preserve">
-        <value>This category already exist!</value>
+        <value>This category already exists!</value>
     </data>
     <data name="GuidNotCorrectFormatException" xml:space="preserve">
-        <value>Guid format is invalid !</value>
+        <value>GUID format is invalid!</value>
+    </data>
+    <data name="NodeNotFoundInEntityEdgeException" xml:space="preserve">
+        <value>Nodes with IDs {0} were not found!</value>
+    </data>
+    <data name="HeaderIdNotFoundInNodeFile" xml:space="preserve">
+    	<value>Header(s) not found in the uploaded file: {0}</value>
     </data>
     <data name="PasswordHasherInputNull" xml:space="preserve">
-        <value>Password is null!</value>
+        <value>password is null!</value>
     </data>
 </root>

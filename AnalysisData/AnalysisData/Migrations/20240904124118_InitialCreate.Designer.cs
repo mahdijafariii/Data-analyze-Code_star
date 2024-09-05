@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240830211432_InitialCreate")]
+    [Migration("20240904124118_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,41 +25,7 @@ namespace AnalysisData.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.AttributeEdge", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AttributeEdges");
-                });
-
-            modelBuilder.Entity("AnalysisData.EAV.Model.AttributeNode", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AttributeNodes");
-                });
-
-            modelBuilder.Entity("AnalysisData.EAV.Model.Category", b =>
+            modelBuilder.Entity("AnalysisData.Graph.Model.Category.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -76,7 +42,24 @@ namespace AnalysisData.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.EntityEdge", b =>
+            modelBuilder.Entity("AnalysisData.Graph.Model.Edge.AttributeEdge", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AttributeEdges");
+                });
+
+            modelBuilder.Entity("AnalysisData.Graph.Model.Edge.EntityEdge", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -92,10 +75,14 @@ namespace AnalysisData.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EntityIDSource");
+
+                    b.HasIndex("EntityIDTarget");
+
                     b.ToTable("EntityEdges");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.EntityNode", b =>
+            modelBuilder.Entity("AnalysisData.Graph.Model.Edge.ValueEdge", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -103,22 +90,26 @@ namespace AnalysisData.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<int>("NodeFileReferenceId")
+                    b.Property<int>("AttributeId")
                         .HasColumnType("integer");
+
+                    b.Property<int>("EntityId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NodeFileReferenceId");
+                    b.HasIndex("AttributeId");
 
-                    b.ToTable("EntityNodes");
+                    b.HasIndex("EntityId");
+
+                    b.ToTable("ValueEdges");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.FileEntity", b =>
+            modelBuilder.Entity("AnalysisData.Graph.Model.File.FileEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -148,7 +139,7 @@ namespace AnalysisData.Migrations
                     b.ToTable("FileUploadedDb");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.UserFile", b =>
+            modelBuilder.Entity("AnalysisData.Graph.Model.File.UserFile", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -169,7 +160,7 @@ namespace AnalysisData.Migrations
                     b.ToTable("UserFiles");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.ValueEdge", b =>
+            modelBuilder.Entity("AnalysisData.Graph.Model.Node.AttributeNode", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -177,26 +168,39 @@ namespace AnalysisData.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AttributeId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("EntityId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Value")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AttributeId");
-
-                    b.HasIndex("EntityId");
-
-                    b.ToTable("ValueEdges");
+                    b.ToTable("AttributeNodes");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.ValueNode", b =>
+            modelBuilder.Entity("AnalysisData.Graph.Model.Node.EntityNode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("NodeFileReferenceId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NodeFileReferenceId");
+
+                    b.ToTable("EntityNodes");
+                });
+
+            modelBuilder.Entity("AnalysisData.Graph.Model.Node.ValueNode", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -223,7 +227,7 @@ namespace AnalysisData.Migrations
                     b.ToTable("ValueNodes");
                 });
 
-            modelBuilder.Entity("AnalysisData.UserManage.Model.Role", b =>
+            modelBuilder.Entity("AnalysisData.User.Model.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -242,9 +246,29 @@ namespace AnalysisData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            RoleName = "admin",
+                            RolePolicy = "gold"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            RoleName = "Data-Analyst",
+                            RolePolicy = "bronze"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            RoleName = "Data-Manager",
+                            RolePolicy = "silver"
+                        });
                 });
 
-            modelBuilder.Entity("AnalysisData.UserManage.Model.User", b =>
+            modelBuilder.Entity("AnalysisData.User.Model.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -285,28 +309,68 @@ namespace AnalysisData.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("eb35fe46-76b2-4809-bc1b-c3ac0b3357e4"),
+                            Email = "admin@gmail.com",
+                            FirstName = "admin",
+                            LastName = "admin",
+                            Password = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=",
+                            PhoneNumber = "09131111111",
+                            RoleId = 1,
+                            Username = "admin"
+                        });
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.EntityNode", b =>
+            modelBuilder.Entity("AnalysisData.Graph.Model.Edge.EntityEdge", b =>
                 {
-                    b.HasOne("AnalysisData.EAV.Model.FileEntity", "FileEntity")
-                        .WithMany("EntityNodes")
-                        .HasForeignKey("NodeFileReferenceId")
+                    b.HasOne("AnalysisData.Graph.Model.Node.EntityNode", "SourceNode")
+                        .WithMany()
+                        .HasForeignKey("EntityIDSource")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("FileEntity");
+                    b.HasOne("AnalysisData.Graph.Model.Node.EntityNode", "TargetNode")
+                        .WithMany()
+                        .HasForeignKey("EntityIDTarget")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SourceNode");
+
+                    b.Navigation("TargetNode");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.FileEntity", b =>
+            modelBuilder.Entity("AnalysisData.Graph.Model.Edge.ValueEdge", b =>
                 {
-                    b.HasOne("AnalysisData.EAV.Model.Category", "Category")
+                    b.HasOne("AnalysisData.Graph.Model.Edge.AttributeEdge", "Attribute")
+                        .WithMany()
+                        .HasForeignKey("AttributeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AnalysisData.Graph.Model.Edge.EntityEdge", "Entity")
+                        .WithMany()
+                        .HasForeignKey("EntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attribute");
+
+                    b.Navigation("Entity");
+                });
+
+            modelBuilder.Entity("AnalysisData.Graph.Model.File.FileEntity", b =>
+                {
+                    b.HasOne("AnalysisData.Graph.Model.Category.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AnalysisData.UserManage.Model.User", "User")
+                    b.HasOne("AnalysisData.User.Model.User", "User")
                         .WithMany("UploadData")
                         .HasForeignKey("UploaderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -317,15 +381,15 @@ namespace AnalysisData.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.UserFile", b =>
+            modelBuilder.Entity("AnalysisData.Graph.Model.File.UserFile", b =>
                 {
-                    b.HasOne("AnalysisData.EAV.Model.FileEntity", "FileEntity")
+                    b.HasOne("AnalysisData.Graph.Model.File.FileEntity", "FileEntity")
                         .WithMany()
                         .HasForeignKey("FileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AnalysisData.UserManage.Model.User", "User")
+                    b.HasOne("AnalysisData.User.Model.User", "User")
                         .WithMany("UserFiles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -336,15 +400,26 @@ namespace AnalysisData.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.ValueEdge", b =>
+            modelBuilder.Entity("AnalysisData.Graph.Model.Node.EntityNode", b =>
                 {
-                    b.HasOne("AnalysisData.EAV.Model.AttributeEdge", "Attribute")
+                    b.HasOne("AnalysisData.Graph.Model.File.FileEntity", "FileEntity")
+                        .WithMany("EntityNodes")
+                        .HasForeignKey("NodeFileReferenceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FileEntity");
+                });
+
+            modelBuilder.Entity("AnalysisData.Graph.Model.Node.ValueNode", b =>
+                {
+                    b.HasOne("AnalysisData.Graph.Model.Node.AttributeNode", "Attribute")
                         .WithMany()
                         .HasForeignKey("AttributeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AnalysisData.EAV.Model.EntityEdge", "Entity")
+                    b.HasOne("AnalysisData.Graph.Model.Node.EntityNode", "Entity")
                         .WithMany()
                         .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -355,28 +430,9 @@ namespace AnalysisData.Migrations
                     b.Navigation("Entity");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.ValueNode", b =>
+            modelBuilder.Entity("AnalysisData.User.Model.User", b =>
                 {
-                    b.HasOne("AnalysisData.EAV.Model.AttributeNode", "Attribute")
-                        .WithMany()
-                        .HasForeignKey("AttributeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AnalysisData.EAV.Model.EntityNode", "Entity")
-                        .WithMany()
-                        .HasForeignKey("EntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Attribute");
-
-                    b.Navigation("Entity");
-                });
-
-            modelBuilder.Entity("AnalysisData.UserManage.Model.User", b =>
-                {
-                    b.HasOne("AnalysisData.UserManage.Model.Role", "Role")
+                    b.HasOne("AnalysisData.User.Model.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -385,12 +441,12 @@ namespace AnalysisData.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("AnalysisData.EAV.Model.FileEntity", b =>
+            modelBuilder.Entity("AnalysisData.Graph.Model.File.FileEntity", b =>
                 {
                     b.Navigation("EntityNodes");
                 });
 
-            modelBuilder.Entity("AnalysisData.UserManage.Model.User", b =>
+            modelBuilder.Entity("AnalysisData.User.Model.User", b =>
                 {
                     b.Navigation("UploadData");
 

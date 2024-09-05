@@ -60,7 +60,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There is an admin!.
+        ///   Looks up a localized string similar to There is already an admin!.
         /// </summary>
         internal static string AdminExistenceException {
             get {
@@ -69,7 +69,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This category already exist!.
+        ///   Looks up a localized string similar to This category already exists!.
         /// </summary>
         internal static string CategoryAlreadyExist {
             get {
@@ -78,7 +78,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Category not exists in our system!.
+        ///   Looks up a localized string similar to Category does not exist in our system!.
         /// </summary>
         internal static string CategoryResultNotFoundException {
             get {
@@ -87,7 +87,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We have this role in db ! .
+        ///   Looks up a localized string similar to We already have this role in the database!.
         /// </summary>
         internal static string DuplicateRoleException {
             get {
@@ -96,7 +96,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We have user with this information !.
+        ///   Looks up a localized string similar to We have a user with this information!.
         /// </summary>
         internal static string DuplicateUserException {
             get {
@@ -105,7 +105,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edge not found exception !.
+        ///   Looks up a localized string similar to Edge not found!.
         /// </summary>
         internal static string EdgeNotFoundException {
             get {
@@ -114,7 +114,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We have this file ! .
+        ///   Looks up a localized string similar to We already have this file!.
         /// </summary>
         internal static string FileExistenceException {
             get {
@@ -123,7 +123,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Guid format is invalid !.
+        ///   Looks up a localized string similar to GUID format is invalid!.
         /// </summary>
         internal static string GuidNotCorrectFormatException {
             get {
@@ -132,7 +132,16 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid Email format !.
+        ///   Looks up a localized string similar to Header(s) not found in the uploaded file: {0}.
+        /// </summary>
+        internal static string HeaderIdNotFoundInNodeFile {
+            get {
+                return ResourceManager.GetString("HeaderIdNotFoundInNodeFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid email format!.
         /// </summary>
         internal static string InvalidEmailFormatException {
             get {
@@ -141,7 +150,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password is invalid !.
+        ///   Looks up a localized string similar to Password is invalid!.
         /// </summary>
         internal static string InvalidPasswordException {
             get {
@@ -150,7 +159,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to password format is invlaid ! .
+        ///   Looks up a localized string similar to Password format is invalid!.
         /// </summary>
         internal static string InvalidPasswordFormatException {
             get {
@@ -159,7 +168,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid Phone number format !.
+        ///   Looks up a localized string similar to Invalid phone number format!.
         /// </summary>
         internal static string InvalidPhoneNumberFormatException {
             get {
@@ -168,7 +177,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Node not found Exception ! .
+        ///   Looks up a localized string similar to Node was not found!.
         /// </summary>
         internal static string NodeNotFoundException {
             get {
@@ -177,7 +186,16 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No file uploaded exception !.
+        ///   Looks up a localized string similar to Nodes with IDs {0} were not found!.
+        /// </summary>
+        internal static string NodeNotFoundInEntityEdgeException {
+            get {
+                return ResourceManager.GetString("NodeNotFoundInEntityEdgeException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No file uploaded!.
         /// </summary>
         internal static string NoFileUploadedException {
             get {
@@ -186,7 +204,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password is null!.
+        ///   Looks up a localized string similar to password is null!.
         /// </summary>
         internal static string PasswordHasherInputNull {
             get {
@@ -195,7 +213,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password is not match ! .
+        ///   Looks up a localized string similar to Password does not match!.
         /// </summary>
         internal static string PasswordMismatchException {
             get {
@@ -204,7 +222,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We do not have this role !.
+        ///   Looks up a localized string similar to We do not have this role!.
         /// </summary>
         internal static string RoleNotFoundException {
             get {
@@ -213,7 +231,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Token expired  !.
+        ///   Looks up a localized string similar to Token expired!.
         /// </summary>
         internal static string TokenExpiredException {
             get {
@@ -222,7 +240,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Token not found in cookies !.
+        ///   Looks up a localized string similar to Token not found in cookies!.
         /// </summary>
         internal static string TokenNotFoundInCookieException {
             get {
@@ -231,7 +249,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to user not found ! .
+        ///   Looks up a localized string similar to User not found!.
         /// </summary>
         internal static string UserNotFoundException {
             get {

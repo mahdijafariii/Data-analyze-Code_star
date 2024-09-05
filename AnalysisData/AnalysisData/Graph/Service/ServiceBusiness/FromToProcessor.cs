@@ -1,8 +1,8 @@
-﻿using AnalysisData.EAV.Model;
-using AnalysisData.EAV.Repository.EdgeRepository.Abstraction;
-using AnalysisData.EAV.Service.Business.Abstraction;
+﻿using AnalysisData.Graph.Model.Edge;
+using AnalysisData.Graph.Repository.EdgeRepository.Abstraction;
+using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 
-namespace AnalysisData.EAV.Service.Business;
+namespace AnalysisData.Graph.Service.ServiceBusiness;
 
 public class FromToProcessor : IFromToProcessor
 {
@@ -15,15 +15,18 @@ public class FromToProcessor : IFromToProcessor
 
     public async Task ProcessFromToAsync(IEnumerable<string> headers, string from, string to)
     {
-        foreach (var header in headers)
-        {
-            if (header.Equals(from, StringComparison.OrdinalIgnoreCase) ||
-                header.Equals(to, StringComparison.OrdinalIgnoreCase)) continue;
+        var attributeEdges = headers
+            .Where(header => !header.Equals(from, StringComparison.OrdinalIgnoreCase) &&
+                             !header.Equals(to, StringComparison.OrdinalIgnoreCase))
+            .Select(header => new AttributeEdge { Name = header })
+            .ToList();
 
-            var existingAttribute = await _attributeEdgeRepository.GetByNameAsync(header);
-            if (existingAttribute != null) continue;
-            var attributeEdge = new AttributeEdge { Name = header };
-            await _attributeEdgeRepository.AddAsync(attributeEdge);
+        foreach (var attributeEdge in attributeEdges)
+        {
+            if (await _attributeEdgeRepository.GetByNameAsync(attributeEdge.Name) == null)
+            {
+                await _attributeEdgeRepository.AddAsync(attributeEdge);
+            }
         }
     }
 }

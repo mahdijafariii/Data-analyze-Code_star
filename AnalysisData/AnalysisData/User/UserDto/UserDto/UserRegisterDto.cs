@@ -1,4 +1,4 @@
-﻿namespace AnalysisData.UserManage.RegisterModel;
+﻿namespace AnalysisData.User.UserDto.UserDto;
 
 public class UserRegisterDto
 {

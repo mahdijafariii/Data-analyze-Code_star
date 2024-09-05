@@ -7,6 +7,7 @@ using AnalysisData.Graph.Repository.GraphEdgeRepository;
 using AnalysisData.Graph.Repository.GraphNodeRepository;
 using AnalysisData.Graph.Repository.NodeRepository.Abstraction;
 using AnalysisData.Graph.Service.CategoryService.Abstraction;
+using AnalysisData.Graph.Service.GraphServices.AllNodesData.Abstraction;
 
 namespace AnalysisData.Graph.Service.GraphServices.AllNodesData;
 

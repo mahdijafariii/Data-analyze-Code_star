@@ -4,6 +4,7 @@ using AnalysisData.Graph.Dto.EdgeDto;
 using AnalysisData.Graph.Dto.NodeDto;
 using AnalysisData.Graph.Repository.GraphEdgeRepository;
 using AnalysisData.Graph.Repository.GraphNodeRepository;
+using AnalysisData.Graph.Service.GraphServices.NodeAndEdgeInfo.Abstraction;
 
 namespace AnalysisData.Graph.Service.GraphServices.NodeAndEdgeInfo;
 

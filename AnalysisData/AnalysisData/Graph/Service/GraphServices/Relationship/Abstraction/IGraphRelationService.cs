@@ -2,7 +2,7 @@ using System.Security.Claims;
 using AnalysisData.Graph.Dto.EdgeDto;
 using AnalysisData.Graph.Dto.NodeDto;
 
-namespace AnalysisData.Graph.Service.GraphServices.Relationship;
+namespace AnalysisData.Graph.Service.GraphServices.Relationship.Abstraction;
 
 public interface IGraphRelationService
 {

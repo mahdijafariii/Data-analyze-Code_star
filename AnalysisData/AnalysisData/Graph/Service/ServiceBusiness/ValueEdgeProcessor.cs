@@ -1,7 +1,6 @@
 ﻿using AnalysisData.Graph.Model.Edge;
 using AnalysisData.Graph.Repository.EdgeRepository.Abstraction;
 using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
-using CsvHelper;
 
 namespace AnalysisData.Graph.Service.ServiceBusiness;
 
@@ -50,8 +49,7 @@ public class ValueEdgeProcessor : IValueEdgeProcessor
                     AttributeId = attribute.Id,
                     Value = valueString
                 });
-
-                // Process batch if the size exceeds the limit
+                
                 if (valueEdges.Count >= _batchSize)
                 {
                     await ProcessBatchAsync(valueEdges);
@@ -59,8 +57,7 @@ public class ValueEdgeProcessor : IValueEdgeProcessor
                 }
             }
         }
-
-        // Process remaining records
+        
         if (valueEdges.Any())
         {
             await ProcessBatchAsync(valueEdges);

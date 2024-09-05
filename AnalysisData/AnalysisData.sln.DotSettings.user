@@ -50,32 +50,11 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b8a852dd_002D3a29_002D4398_002Daf04_002D8630dbef52a0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="DeleteRole_ShouldRemovesRoleAndReturnsTrue_WhenRoleExists #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="C:\Users\amir\Desktop\New folder (4)\Summer1403-Project-Group03-Backend\AnalysisData\TestProject" Presentation="&amp;lt;TestProject&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bc4e43d9_002D8b43_002D47c9_002D8398_002Dae0de858947e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="ProcessEntityEdgesAsync_CreatesAndInsertsEdges" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.EntityEdgeRecordProcessorTests.ProcessEntityEdgesAsync_CreatesAndInsertsEdges&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.EntityEdgeRecordProcessorTests.CreateEntityEdgeAsync_ThrowsExceptionIfNodeNotFound&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.FromToProcessorTests.ProcessFromToAsync_ShouldIgnoreFromAndToHeaders&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.FromToProcessorTests.ProcessFromToAsync_ShouldAddNewEdgesIfNotExists&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.FromToProcessorTests.ProcessFromToAsync_ShouldNotAddEdgesIfAlreadyExists&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.HeaderProcessorTests.ProcessHeadersAsync_ShouldAddNewAttributes_WhenHeadersDoNotExist&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.HeaderProcessorTests.ProcessHeadersAsync_ShouldNotAddAttributes_WhenHeadersExist&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.NodeValidatorTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.EntityEdgeRecordProcessorTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.EntityNodeRecordProcessorTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.EntityEdgeFactoryTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.CsvReaderAdapterTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.CsvReaderFactoryTests.CreateCsvReader_ShouldReturnCsvReader&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.EdgeToDbServiceTests.ProcessCsvFileAsync_ShouldProcessCsvCorrectly&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.ValueNodeProcessorTests.ProcessValueNodesAsync_ShouldInsertRemainingBatch&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.CsvReaderServiceTests.ReadHeaders_ShouldReturnHeaders_WhenCsvContainsRequiredHeaders&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.CsvReaderServiceTests.CreateCsvReader_ShouldReturnValidCsvReader&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.CsvReaderServiceTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.CsvHeaderReaderTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.CsvReaderWrapperTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.FromToProcessorTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.HeaderProcessorTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Service.ServiceBusiness.HeaderValidatorTests&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bc4e43d9_002D8b43_002D47c9_002D8398_002Dae0de858947e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ProcessEntityEdgesAsync_CreatesAndInsertsEdges" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\amir\Desktop\New folder (4)\Summer1403-Project-Group03-Backend\AnalysisData\TestProject" Presentation="&amp;lt;TestProject&amp;gt;" /&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bfe6b216_002Da5ff_002D4d37_002D8779_002D18d9108f8998/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;TestProject&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\amir\Desktop\New folder (4)\Summer1403-Project-Group03-Backend\AnalysisData\TestProject" Presentation="&amp;lt;TestProject&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
 	

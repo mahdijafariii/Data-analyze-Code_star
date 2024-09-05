@@ -17,7 +17,7 @@ public class FromToProcessorTests
     }
 
     [Fact]
-    public async Task ProcessFromToAsync_ShouldExcludeFromAndToHeaders()
+    public async Task ProcessFromToAsync_ShouldExcludeFromAndToHeaders_WhenInputHeadersContainFromAndTo()
     {
         // Arrange
         var headers = new List<string> { "From", "To", "Attribute1", "Attribute2" };
@@ -34,7 +34,7 @@ public class FromToProcessorTests
     }
 
     [Fact]
-    public async Task ProcessFromToAsync_ShouldAddAttributeEdge_WhenNotExists()
+    public async Task ProcessFromToAsync_ShouldAddAttributeEdge_WhenAttributeDoesNotExist()
     {
         // Arrange
         var headers = new List<string> { "Attribute1" };
@@ -51,7 +51,7 @@ public class FromToProcessorTests
     }
 
     [Fact]
-    public async Task ProcessFromToAsync_ShouldNotAddAttributeEdge_WhenAlreadyExists()
+    public async Task ProcessFromToAsync_ShouldNotAddAttributeEdge_WhenAttributeAlreadyExists()
     {
         // Arrange
         var headers = new List<string> { "Attribute1" };
@@ -69,7 +69,7 @@ public class FromToProcessorTests
     }
 
     [Fact]
-    public async Task ProcessFromToAsync_ShouldProcessMultipleAttributes()
+    public async Task ProcessFromToAsync_ShouldProcessMultipleAttributes_WhenHeadersContainMultipleAttribut()
     {
         // Arrange
         var headers = new List<string> { "Attribute1", "Attribute2", "From", "To" };
@@ -87,7 +87,7 @@ public class FromToProcessorTests
     }
 
     [Fact]
-    public async Task ProcessFromToAsync_ShouldNotAddAnything_WhenNoHeaders()
+    public async Task ProcessFromToAsync_ShouldNotAddAnything_WhenHeadersListIsEmpty()
     {
         // Arrange
         var headers = new List<string>();

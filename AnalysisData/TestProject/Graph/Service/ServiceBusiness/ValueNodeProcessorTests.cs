@@ -24,7 +24,7 @@ public class ValueNodeProcessorTests
     }
 
     [Fact]
-    public async Task ProcessValueNodesAsync_ShouldProcessAndBatchNodes()
+    public async Task ProcessValueNodesAsync_ShouldBatchAndProcessNodes_WhenCsvHasMultipleRecords()
     {
         // Arrange
         var entityNodes = new List<EntityNode>
@@ -49,7 +49,7 @@ public class ValueNodeProcessorTests
     }
 
     [Fact]
-    public async Task ProcessValueNodesAsync_ShouldHandleEmptyCsv()
+    public async Task ProcessValueNodesAsync_ShouldNotAddNodes_WhenCsvIsEmpty()
     {
         // Arrange
         var entityNodes = new List<EntityNode>

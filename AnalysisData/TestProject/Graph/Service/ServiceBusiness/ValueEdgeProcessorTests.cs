@@ -27,7 +27,7 @@ public class ValueEdgeProcessorTests
     }
 
     [Fact]
-    public async Task ProcessEntityEdgeValuesAsync_ShouldProcessBatchesCorrectly()
+    public async Task ProcessEntityEdgeValuesAsync_ShouldProcessBatches_WhenRecordsExceedBatchSize()
     {
         // Arrange
         var entityEdges = new List<EntityEdge>
@@ -59,7 +59,7 @@ public class ValueEdgeProcessorTests
     }
 
     [Fact]
-    public async Task ProcessEntityEdgeValuesAsync_ShouldHandleEmptyCsv()
+    public async Task ProcessEntityEdgeValuesAsync_ShouldNotAddRange_WhenCsvIsEmpty()
     {
         // Arrange
         var entityEdges = new List<EntityEdge>();
@@ -81,7 +81,7 @@ public class ValueEdgeProcessorTests
     }
 
     [Fact]
-    public async Task ProcessEntityEdgeValuesAsync_ShouldProcessRemainingRecords()
+    public async Task ProcessEntityEdgeValuesAsync_ShouldProcessRemainingRecords_WhenCsvHasRemainingRecords()
     {
         // Arrange
         var entityEdges = new List<EntityEdge>

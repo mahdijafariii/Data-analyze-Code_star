@@ -59,13 +59,13 @@ public class RoleControllerTests
     }
 
     [Fact]
-    public async Task GetAllRoles_ShouldReturnOk_WithPaginationData()
+    public async Task GetAllRoles_ShouldReturnPaginationRolesList_WhenRolesExist()
     {
         // Arrange
         var roles = new List<RolePaginationDto>
         {
-            new RolePaginationDto(){Name = "admin",Policy = "gold"},
-            new RolePaginationDto(){Name = "dataanalyst",Policy = "silver"}
+            new(){Name = "admin",Policy = "gold"},
+            new(){Name = "dataanalyst",Policy = "silver"}
         };
         var page = 0;
         var limit = 10;

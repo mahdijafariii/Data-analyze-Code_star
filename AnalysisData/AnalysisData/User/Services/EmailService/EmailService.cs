@@ -19,6 +19,7 @@ public class EmailService : IEmailService
         _smtpPass = configuration["EmailSettings:SmtpPass"];
         _fromEmail = configuration["EmailSettings:FromEmail"];
     }
+
     public async Task SendPasswordResetEmail(string toEmail, string resetLink)
     {
         var mailMessage = new MailMessage
@@ -37,7 +38,15 @@ public class EmailService : IEmailService
             EnableSsl = true
         };
 
-
-        await smtpClient.SendMailAsync(mailMessage);
+        try
+        {
+            await smtpClient.SendMailAsync(mailMessage);
+        }
+        catch (SmtpException ex)
+        {
+            // Handle the exception
+            Console.WriteLine($"SMTP Exception: {ex.Message}");
+            throw;
+        }
     }
 }

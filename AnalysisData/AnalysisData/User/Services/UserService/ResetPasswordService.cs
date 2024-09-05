@@ -3,10 +3,11 @@ using AnalysisData.Exception.UserException;
 using AnalysisData.User.JwtService.abstractions;
 using AnalysisData.User.Repository.UserRepository.Abstraction;
 using AnalysisData.User.Services.EmailService;
+using AnalysisData.User.Services.UserService.Abstraction;
 
 namespace AnalysisData.User.Services.UserService;
 
-public class ResetPasswordService
+public class ResetPasswordService : IResetPasswordService
 {
     private readonly IJwtService _jwtService;
     private readonly IUserRepository _userRepository;

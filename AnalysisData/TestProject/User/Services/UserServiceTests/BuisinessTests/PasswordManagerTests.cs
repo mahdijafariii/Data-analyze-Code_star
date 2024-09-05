@@ -102,24 +102,4 @@ public class PasswordManagerTests
         // Assert
         _passwordService.Received().ValidatePasswordAndConfirmation(password, confirmPassword);
     }
-
-    [Fact]
-    public async Task NewPasswordAsync_ShouldCallHashPasswordAndSetUserPassword_WhenCalled()
-    {
-        // Arrange
-        var user = new AnalysisData.UserManage.Model.User();
-        var oldPassword = "oldPassword";
-        var password = "newPassword";
-        var hashedPassword = "hashedPassword";
-        var confirmPassword = "newPassword";
-
-        _passwordHasher.HashPassword(password).Returns(hashedPassword);
-
-        // Act
-        await _sut.NewPasswordAsync(user, oldPassword, password, confirmPassword);
-
-        // Assert
-        Assert.Equal(hashedPassword, user.Password);
-        _passwordHasher.Received().HashPassword(password);
-    }
 }

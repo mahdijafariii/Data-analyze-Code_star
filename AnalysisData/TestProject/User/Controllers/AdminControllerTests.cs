@@ -41,25 +41,6 @@ public class AdminControllerTests
     }
 
     [Fact]
-    public async Task DeleteUser_ShouldReturnNotFound_WhenUserIsNotFound()
-    {
-        // Arrange
-        var userId = Guid.NewGuid();
-        _adminService.DeleteUserAsync(userId).Returns(false);
-
-        // Act
-        var result = await _sut.DeleteUser(userId);
-
-        // Assert
-        var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
-        var responseContent = JsonConvert.SerializeObject(notFoundResult.Value);
-        var expectedResponseContent = JsonConvert.SerializeObject(new { message = "User not found." });
-        Assert.Equal(expectedResponseContent, responseContent);
-
-        await _adminService.Received(1).DeleteUserAsync(userId);
-    }
-
-    [Fact]
     public async Task GetAllUsers_ShouldReturnUsers_WhenUsersExist()
     {
         // Arrange

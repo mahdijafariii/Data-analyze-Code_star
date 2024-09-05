@@ -310,7 +310,7 @@ namespace AnalysisData.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("eb35fe46-76b2-4809-bc1b-c3ac0b3357e4"),
+                            Id = new Guid("ac34d5b9-c1f0-4f90-bf35-6a80b25c96b0"),
                             Email = "admin@gmail.com",
                             FirstName = "admin",
                             LastName = "admin",

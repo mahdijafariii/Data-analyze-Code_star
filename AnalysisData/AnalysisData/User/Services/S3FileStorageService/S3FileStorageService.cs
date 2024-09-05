@@ -12,12 +12,13 @@ public class S3FileStorageService : IS3FileStorageService
 
     public S3FileStorageService(IConfiguration configuration)
     {
+        var awsCredentials = new Amazon.Runtime.BasicAWSCredentials(configuration["AWS:AccessKey"], configuration["AWS:SecretKey"]);
+        var config = new AmazonS3Config
+        {
+            ServiceURL = configuration["AWS:ServiceURL"] 
+        };
+        _s3Client = new AmazonS3Client(awsCredentials, config);
         _bucketName = configuration["AWS:BucketName"];
-        _s3Client = new AmazonS3Client(
-            configuration["AWS:AccessKey"],
-            configuration["AWS:SecretKey"],
-            RegionEndpoint.GetBySystemName(configuration["AWS:Region"])
-        );
     }
 
     public async Task<string> UploadFileAsync(IFormFile file, string folderName)
@@ -32,8 +33,15 @@ public class S3FileStorageService : IS3FileStorageService
             ContentType = file.ContentType
         };
 
-        await _s3Client.PutObjectAsync(putRequest);
-
-        return $"https://{_bucketName}.s3.amazonaws.com/{fileKey}";
+        var response = await _s3Client.PutObjectAsync(putRequest);
+        if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+        {
+            var fileUrl = $"https://{_bucketName}.s3.{RegionEndpoint.USEast1.SystemName}.amazonaws.com/{fileKey}";
+            return fileUrl;        
+        }
+        else
+        {
+            return "Could not upload .";
+        }
     }
 }

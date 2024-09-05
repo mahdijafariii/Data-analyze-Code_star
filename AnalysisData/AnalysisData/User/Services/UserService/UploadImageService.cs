@@ -29,7 +29,7 @@ public class UploadImageService : IUploadImageService
         string imageUrl = null; 
         if (file != null && file.Length > 0)
         {
-            imageUrl = await _s3FileStorageService.UploadFileAsync(file, "UserImages");
+            imageUrl = await _s3FileStorageService.UploadFileAsync(file, "usersProfile");
             user.ImageURL = imageUrl;
         }
         user.ImageURL = imageUrl;

@@ -68,7 +68,7 @@ public class AdminControllerTests
             new()
             {
                 Guid = Guid.NewGuid().ToString(),
-                Username = "test"
+                UserName = "test"
             }
         };
         _adminService.GetAllUserAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(usersPagination);
@@ -97,7 +97,7 @@ public class AdminControllerTests
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var updateAdminDto = new UpdateAdminDto { Username = "test" };
+        var updateAdminDto = new UpdateAdminDto { UserName = "test" };
 
         // Act
         var result = await _sut.UpdateUser(userId, updateAdminDto);
@@ -117,7 +117,7 @@ public class AdminControllerTests
         // Arrange
         var userRegisterDto = new UserRegisterDto
         {
-            Username = "test",
+            UserName = "test",
             Email = "test@gmail.com",
             Password = "Test@123",
             ConfirmPassword = "Test@123"
@@ -141,7 +141,7 @@ public class AdminControllerTests
         // Arrange
         var userRegisterDto = new UserRegisterDto
         {
-            Username = "test",
+            UserName = "test",
             Email = "test@gmail.com",
             Password = "Test@123",
             ConfirmPassword = "WrongPassword"

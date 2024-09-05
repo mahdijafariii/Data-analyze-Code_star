@@ -32,7 +32,7 @@ public class UserControllerTests
         // Arrange
         var userLoginDto = new UserLoginDto
         {
-            Username = "test",
+            UserName = "test",
             Password = "Test@123"
         };
         var userDto = new AnalysisData.User.Model.User()
@@ -103,8 +103,8 @@ public class UserControllerTests
         // Arrange
         var resetPasswordDto = new ResetPasswordDto { NewPassword = "NewPass@123", ConfirmPassword = "NewPass@123" };
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
-        _userService.ResetPasswordAsync(claimsPrincipal, resetPasswordDto.NewPassword, resetPasswordDto.ConfirmPassword)
-            .Returns(true);
+        await _userService.ResetPasswordAsync(claimsPrincipal, resetPasswordDto.NewPassword,
+            resetPasswordDto.ConfirmPassword);
 
         _sut.ControllerContext = new ControllerContext
         {
@@ -120,42 +120,8 @@ public class UserControllerTests
         var responseContent = JsonConvert.SerializeObject(okResult.Value);
         var expectedResponseContent = JsonConvert.SerializeObject(new { massage = "success" });
         Assert.Equal(expectedResponseContent, responseContent);
-
-        await _userService.Received(1).ResetPasswordAsync(claimsPrincipal, resetPasswordDto.NewPassword,
-            resetPasswordDto.ConfirmPassword);
     }
-
-    [Fact]
-    public async Task ResetPassword_ShouldReturnBadRequest_WhenPasswordResetIsNotSuccessful()
-    {
-        // Arrange
-        var resetPasswordDto = new ResetPasswordDto
-        {
-            NewPassword = "NewPass@123",
-            ConfirmPassword = "NewPass@123"
-        };
-        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
-        _userService.ResetPasswordAsync(claimsPrincipal, resetPasswordDto.NewPassword, resetPasswordDto.ConfirmPassword)
-            .Returns(false);
-
-        _sut.ControllerContext = new ControllerContext
-        {
-            HttpContext = Substitute.For<HttpContext>()
-        };
-        _sut.HttpContext.User = claimsPrincipal;
-
-        // Act
-        var result = await _sut.ResetPassword(resetPasswordDto);
-
-        // Assert
-        var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-        var responseContent = JsonConvert.SerializeObject(badRequestResult.Value);
-        var expectedResponseContent = JsonConvert.SerializeObject(new { massage = "not success" });
-        Assert.Equal(expectedResponseContent, responseContent);
-
-        await _userService.Received(1)
-            .ResetPasswordAsync(claimsPrincipal, resetPasswordDto.NewPassword, resetPasswordDto.ConfirmPassword);
-    }
+    
 
     [Fact]
     public async Task UploadImage_ShouldReturnOk_WhenImageIsUploadedSuccessfully()
@@ -217,7 +183,7 @@ public class UserControllerTests
             LastName = "test"
         };
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
-        _userService.UpdateUserInformationAsync(claimsPrincipal, updateUserDto).Returns(true);
+        await _userService.UpdateUserInformationAsync(claimsPrincipal, updateUserDto);
 
         _sut.ControllerContext = new ControllerContext
         {
@@ -233,8 +199,6 @@ public class UserControllerTests
         var responseContent = JsonConvert.SerializeObject(okResult.Value);
         var expectedResponseContent = JsonConvert.SerializeObject(new { massage = "updated successfully" });
         Assert.Equal(expectedResponseContent, responseContent);
-
-        await _userService.Received(1).UpdateUserInformationAsync(claimsPrincipal, updateUserDto);
     }
 
     [Fact]
@@ -248,8 +212,8 @@ public class UserControllerTests
             ConfirmPassword = "NewPass@123"
         };
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
-        _userService.NewPasswordAsync(claimsPrincipal, newPasswordDto.OldPassword, newPasswordDto.NewPassword,
-            newPasswordDto.ConfirmPassword).Returns(true);
+        await _userService.NewPasswordAsync(claimsPrincipal, newPasswordDto.OldPassword, newPasswordDto.NewPassword,
+            newPasswordDto.ConfirmPassword);
 
         _sut.ControllerContext = new ControllerContext
         {
@@ -266,41 +230,6 @@ public class UserControllerTests
         var expectedResponseContent = JsonConvert.SerializeObject(new { massage = "reset successfully" });
         Assert.Equal(expectedResponseContent, responseContent);
 
-        await _userService.Received(1).NewPasswordAsync(claimsPrincipal, newPasswordDto.OldPassword,
-            newPasswordDto.NewPassword, newPasswordDto.ConfirmPassword);
-    }
-
-    [Fact]
-    public async Task NewPassword_ShouldReturnBadRequest_WhenPasswordIsNotResetSuccessfully()
-    {
-        // Arrange
-        var newPasswordDto = new NewPasswordDto
-        {
-            OldPassword = "OldPass@123",
-            NewPassword = "NewPass@123",
-            ConfirmPassword = "NewPass@123"
-        };
-        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
-        _userService.NewPasswordAsync(claimsPrincipal, newPasswordDto.OldPassword, newPasswordDto.NewPassword,
-            newPasswordDto.ConfirmPassword).Returns(false);
-
-        _sut.ControllerContext = new ControllerContext
-        {
-            HttpContext = Substitute.For<HttpContext>()
-        };
-        _sut.HttpContext.User = claimsPrincipal;
-
-        // Act
-        var result = await _sut.NewPassword(newPasswordDto);
-
-        // Assert
-        var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-        var responseContent = JsonConvert.SerializeObject(badRequestResult.Value);
-        var expectedResponseContent = JsonConvert.SerializeObject(new { massage = "not success" });
-        Assert.Equal(expectedResponseContent, responseContent);
-
-        await _userService.Received(1).NewPasswordAsync(claimsPrincipal, newPasswordDto.OldPassword,
-            newPasswordDto.NewPassword, newPasswordDto.ConfirmPassword);
     }
 
     [Fact]

@@ -8,7 +8,6 @@ using AnalysisData.User.UserDto.UserDto;
 using NSubstitute;
 
 namespace TestProject.User.Services.AdminService;
-
 public class AdminServiceTests
 {
     private readonly IUserRepository _userRepository;
@@ -51,7 +50,7 @@ public class AdminServiceTests
 
         var updateAdminDto = new UpdateAdminDto
         {
-            Username = "newUsername",
+            UserName = "newUsername",
             Email = "newEmail@gmail.com",
             FirstName = "NewFirstName",
             LastName = "NewLastName",
@@ -60,7 +59,7 @@ public class AdminServiceTests
         };
 
         _userRepository.GetUserByIdAsync(userId).Returns(user);
-        _userRepository.GetUserByUsernameAsync(updateAdminDto.Username).Returns((AnalysisData.User.Model.User)null);
+        _userRepository.GetUserByUsernameAsync(updateAdminDto.UserName).Returns((AnalysisData.User.Model.User)null);
         _userRepository.GetUserByEmailAsync(updateAdminDto.Email).Returns((AnalysisData.User.Model.User)null);
         _roleRepository.GetRoleByNameAsync(updateAdminDto.RoleName).Returns(role);
 
@@ -72,7 +71,7 @@ public class AdminServiceTests
         await _userRepository
             .Received()
             .UpdateUserAsync(userId, Arg.Is<AnalysisData.User.Model.User>(u =>
-                u.Username == updateAdminDto.Username &&
+                u.Username == updateAdminDto.UserName &&
                 u.Email == updateAdminDto.Email &&
                 u.FirstName == updateAdminDto.FirstName &&
                 u.LastName == updateAdminDto.LastName &&
@@ -82,7 +81,7 @@ public class AdminServiceTests
 
         await _jwtService
             .Received()
-            .UpdateUserCookie(updateAdminDto.Username, false);
+            .UpdateUserCookie(updateAdminDto.UserName, false);
     }
 
     [Fact]
@@ -101,7 +100,7 @@ public class AdminServiceTests
 
         var updateAdminDto = new UpdateAdminDto
         {
-            Username = "existingUsername",
+            UserName = "existingUsername",
             Email = "existingEmail@test.com"
         };
 
@@ -111,7 +110,7 @@ public class AdminServiceTests
             { Id = Guid.NewGuid(), Username = "anotherUsername", Email = "existingEmail@gmail.com" };
 
         _userRepository.GetUserByIdAsync(userId).Returns(user);
-        _userRepository.GetUserByUsernameAsync(updateAdminDto.Username).Returns(existingUserWithUsername);
+        _userRepository.GetUserByUsernameAsync(updateAdminDto.UserName).Returns(existingUserWithUsername);
         _userRepository.GetUserByEmailAsync(updateAdminDto.Email).Returns(existingUserWithEmail);
 
         // Act
@@ -218,7 +217,7 @@ public class AdminServiceTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(2, result.Count);
-        Assert.Equal("user1", result[0].Username);
-        Assert.Equal("user2", result[1].Username);
+        Assert.Equal("user1", result[0].UserName);
+        Assert.Equal("user2", result[1].UserName);
     }
 }

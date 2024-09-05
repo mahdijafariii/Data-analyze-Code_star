@@ -87,4 +87,7 @@
     <data name="NodeNotAccessibleForUserException" xml:space="preserve">
     	<value>Header(s) Node is not accessible for this user! {0}</value>
     </data>
+    <data name="PasswordHasherInputNull" xml:space="preserve">
+        <value>password is null!</value>
+    </data>
 </root>

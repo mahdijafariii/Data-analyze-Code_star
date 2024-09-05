@@ -46,8 +46,10 @@ using AnalysisData.User.Services.SecurityPasswordService;
 using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
 using AnalysisData.User.Services.UserService;
 using AnalysisData.User.Services.UserService.Abstraction;
+using AnalysisData.User.Services.UserService.Business;
 using AnalysisData.User.Services.ValidationService;
 using AnalysisData.User.Services.ValidationService.Abstraction;
+using Microsoft.AspNetCore.Identity;
 
 namespace AnalysisData;
 
@@ -78,9 +80,13 @@ public static class ConfigService
         services.AddScoped<ICookieService, CookieService>();
         services.AddScoped<IPermissionService, PermissionService>();
         services.AddScoped<IValidationService, ValidationService>();
+        services.AddScoped<ILoginManager, LoginManager>();
         services.AddScoped<INodeToDbService, NodeToDbService>();
         services.AddScoped<ICsvReaderService, CsvReaderService>();
+        services.AddScoped<IUserManager, UserManager>();
+        services.AddScoped<IPasswordManager, PasswordManager>();
         services.AddScoped<IHeaderProcessor, HeaderProcessor>();
+        services.AddScoped<IPasswordService, PasswordService>();
         services.AddScoped<INodeRecordProcessor, EntityNodeRecordProcessor>();
         services.AddScoped<IFromToProcessor, FromToProcessor>();
         services.AddScoped<INodePaginationService, NodePaginationService>();

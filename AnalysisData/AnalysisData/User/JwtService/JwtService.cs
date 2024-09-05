@@ -3,10 +3,10 @@ using System.Security.Claims;
 using System.Text;
 using AnalysisData.User.CookieService.abstractions;
 using AnalysisData.User.JwtService.abstractions;
+using AnalysisData.User.Model;
 using AnalysisData.User.Repository.UserRepository.Abstraction;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AnalysisData.User.JwtService;
 
 public class JwtService : IJwtService
 {
@@ -45,6 +45,22 @@ public class JwtService : IJwtService
             signingCredentials: creeds);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+
+    public async Task RequestResetPassword(User user)
+    {
+        var token = Guid.NewGuid().ToString();
+        var expiration = DateTime.UtcNow.AddMinutes(15); 
+
+        var resetToken = new PasswordResetToken()
+        {
+            UserId = user.Id,
+            Token = token,
+            Expiration = expiration,
+            IsUsed = false
+        };
+        
     }
 
     public async Task UpdateUserCookie(string userName, bool rememberMe)

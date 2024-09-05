@@ -55,6 +55,22 @@ public class UserController : ControllerBase
 
         return BadRequest(new { massage = "not success" });
     }
+    
+    // [HttpPost("request-reset")]
+    // public async Task<IActionResult> RequestResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
+    // {
+    //     var userClaim = User;
+    //
+    //     
+    //     
+    //     
+    //     
+    //     
+    //     
+    //     
+    //     
+    //     
+    // }
 
     [HttpPost("upload-image")]
     public async Task<IActionResult> UploadImage(IFormFile file)

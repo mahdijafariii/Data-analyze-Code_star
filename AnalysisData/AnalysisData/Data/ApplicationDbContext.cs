@@ -25,6 +25,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<FileEntity> FileUploadedDb { get; set; }
     public DbSet<UserFile> UserFiles { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<ResetPasswordToken> Tokens { get; set; }
+
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

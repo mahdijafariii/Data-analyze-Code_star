@@ -75,13 +75,9 @@ public class UserController : ControllerBase
     public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
     {
         var user = User;
-        var updatedUser = await _userService.UpdateUserInformationAsync(user, updateUserDto);
-        if (updatedUser != null)
-        {
-            return Ok(new { massage = "updated successfully" });
-        }
+        await _userService.UpdateUserInformationAsync(user, updateUserDto);
+        return Ok(new { massage = "updated successfully" });
 
-        return BadRequest(new { massage = "not success" });
     }
 
     [HttpPost("new-password")]

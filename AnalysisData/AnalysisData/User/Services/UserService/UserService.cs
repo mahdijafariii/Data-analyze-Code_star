@@ -77,19 +77,19 @@ public class UserService : IUserService
 
     public async Task<Model.User> LoginAsync(UserLoginDto userLoginDto)
     {
-        var user = await _userRepository.GetUserByUsernameAsync(userLoginDto.userName);
+        var user = await _userRepository.GetUserByUsernameAsync(userLoginDto.Username);
         if (user == null)
         {
             throw new UserNotFoundException();
         }
 
-        if (user.Password != _passwordHasher.HashPassword(userLoginDto.password))
+        if (user.Password != _passwordHasher.HashPassword(userLoginDto.Password))
         {
             throw new PasswordMismatchException();
         }
 
-        var token = await _jwtService.GenerateJwtToken(userLoginDto.userName);
-        _cookieService.SetCookie("AuthToken", token, userLoginDto.rememberMe);
+        var token = await _jwtService.GenerateJwtToken(userLoginDto.Username);
+        _cookieService.SetCookie("AuthToken", token, userLoginDto.RememberMe);
         return user;
     }
 

@@ -132,7 +132,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Header Id not found in file that uploaded!.
+        ///   Looks up a localized string similar to Header(s) not found in the uploaded file: {0}.
         /// </summary>
         internal static string HeaderIdNotFoundInNodeFile {
             get {
@@ -173,6 +173,15 @@ namespace AnalysisData {
         internal static string InvalidPhoneNumberFormatException {
             get {
                 return ResourceManager.GetString("InvalidPhoneNumberFormatException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Header(s) Node is not accessible for this user! {0}.
+        /// </summary>
+        internal static string NodeNotAccessibleForUserException {
+            get {
+                return ResourceManager.GetString("NodeNotAccessibleForUserException", resourceCulture);
             }
         }
         

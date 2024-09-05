@@ -94,7 +94,6 @@ public static class ConfigService
         services.AddScoped<IValidationService, ValidationService>();
         services.AddScoped<ILoginManager, LoginManager>();
         services.AddScoped<INodeToDbService, NodeToDbService>();
-        services.AddScoped<ICsvReaderService, CsvReaderService>();
         services.AddScoped<IUserManager, UserManager>();
         services.AddScoped<IPasswordManager, PasswordManager>();
         services.AddScoped<IHeaderProcessor, HeaderProcessor>();

@@ -1,11 +1,10 @@
-﻿using AnalysisData.Exception;
-using AnalysisData.Services.Abstraction;
-using AnalysisData.Services.Business;
-using AnalysisData.Services.SecurityPasswordService.Abstraction;
-using Microsoft.AspNetCore.Identity;
+﻿using AnalysisData.Exception.UserException;
+using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
+using AnalysisData.User.Services.UserService.Business;
+using AnalysisData.User.Services.ValidationService.Abstraction;
 using NSubstitute;
 
-namespace TestProject.User.Services.Buisiness;
+namespace TestProject.User.Services.UserServiceTests.BuisinessTests;
 
 public class PasswordServiceTests
 {
@@ -24,7 +23,7 @@ public class PasswordServiceTests
     public void ValidatePassword_ValidPassword_DoesNotThrowException()
     {
         // Arrange
-        var user = new AnalysisData.UserManage.Model.User
+        var user = new AnalysisData.User.Model.User()
         {
             Password = "9883AF16067978706D06310A5BD58D0FF176BD738AC675DC49BF8F244666456A" 
         };
@@ -45,7 +44,7 @@ public class PasswordServiceTests
     public void ValidatePassword_ShouldThrowPasswordMismatchException_WhenInvalidPasswordProvided()
     {
         // Arrange
-        var user = new AnalysisData.UserManage.Model.User
+        var user = new AnalysisData.User.Model.User()
         {
             Password = "9883AF16067978706D06310A5BD58D0FF176BD738AC675DC49BF8F244666456A" 
         };

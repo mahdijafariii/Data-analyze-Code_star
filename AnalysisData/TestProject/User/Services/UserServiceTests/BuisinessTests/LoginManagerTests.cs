@@ -1,14 +1,13 @@
-﻿using AnalysisData.CookieService.abstractions;
-using AnalysisData.Exception;
-using AnalysisData.JwtService.abstractions;
-using AnalysisData.Repository.UserRepository.Abstraction;
-using AnalysisData.Services.Business;
-using AnalysisData.Services.Business.Abstraction;
-using AnalysisData.Services.SecurityPasswordService.Abstraction;
-using AnalysisData.UserManage.LoginModel;
+﻿using AnalysisData.Exception.UserException;
+using AnalysisData.User.CookieService.abstractions;
+using AnalysisData.User.JwtService.abstractions;
+using AnalysisData.User.Repository.UserRepository.Abstraction;
+using AnalysisData.User.Services.UserService.Abstraction;
+using AnalysisData.User.Services.UserService.Business;
+using AnalysisData.User.UserDto.UserDto;
 using NSubstitute;
 
-namespace TestProject.User.Services.Buisiness;
+namespace TestProject.User.Services.UserServiceTests.BuisinessTests;
 
 public class LoginManagerTests
 {
@@ -38,7 +37,7 @@ public class LoginManagerTests
             Password = "ValidPassword123!",
             RememberMe = true
         };
-        var user = new AnalysisData.UserManage.Model.User()
+        var user = new AnalysisData.User.Model.User()
         {
             Username = "testUser",
             Password = "ValidPassword123",
@@ -68,7 +67,7 @@ public class LoginManagerTests
         };
 
         _userRepository.GetUserByUsernameAsync(userLoginDto.UserName)
-            .Returns(Task.FromResult<AnalysisData.UserManage.Model.User>(null));
+            .Returns(Task.FromResult<AnalysisData.User.Model.User>(null));
 
         // Act & Assert
         await Assert.ThrowsAsync<UserNotFoundException>(() => _sut.LoginAsync(userLoginDto));
@@ -84,7 +83,7 @@ public class LoginManagerTests
             Password = "InvalidPassword123!",
             RememberMe = false
         };
-        var user = new AnalysisData.UserManage.Model.User { Username = "testUser", Password = "HashedPassword" };
+        var user = new AnalysisData.User.Model.User() { Username = "testUser", Password = "HashedPassword" };
 
         _userRepository.GetUserByUsernameAsync(userLoginDto.UserName).Returns(Task.FromResult(user));
         _passwordService.When(x => x.ValidatePassword(user, userLoginDto.Password))

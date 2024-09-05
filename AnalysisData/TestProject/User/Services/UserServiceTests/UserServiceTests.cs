@@ -1,24 +1,24 @@
 ﻿using System.Security.Claims;
-using AnalysisData.Services.Business.Abstraction;
-using AnalysisData.UserManage.LoginModel;
-using AnalysisData.UserManage.UpdateModel;
+using AnalysisData.User.Services.UserService;
+using AnalysisData.User.Services.UserService.Abstraction;
+using AnalysisData.User.UserDto.UserDto;
 using NSubstitute;
 
-namespace TestProject.User.Services.UserService;
+namespace TestProject.User.Services.UserServiceTests;
 
 public class UserServiceTests
 {
     private readonly IUserManager _userManager;
     private readonly IPasswordManager _passwordManager;
     private readonly ILoginManager _loginManager;
-    private readonly AnalysisData.Services.UserService _sut;
+    private readonly UserService _sut;
 
     public UserServiceTests()
     {
         _userManager = Substitute.For<IUserManager>();
         _passwordManager = Substitute.For<IPasswordManager>();
         _loginManager = Substitute.For<ILoginManager>();
-        _sut = new AnalysisData.Services.UserService(_userManager, _passwordManager, _loginManager);
+        _sut = new UserService(_userManager, _passwordManager, _loginManager);
     }
 
     [Fact]
@@ -26,7 +26,7 @@ public class UserServiceTests
     {
         // Arrange
         var userClaim = new ClaimsPrincipal();
-        var user = new AnalysisData.UserManage.Model.User();
+        var user = new AnalysisData.User.Model.User();
         _userManager.GetUserAsync(userClaim).Returns(Task.FromResult(user));
         _passwordManager.ResetPasswordAsync(user, "password", "password")
             .Returns(Task.FromResult(true));
@@ -44,7 +44,7 @@ public class UserServiceTests
     {
         // Arrange
         var userClaim = new ClaimsPrincipal();
-        var user = new AnalysisData.UserManage.Model.User();
+        var user = new AnalysisData.User.Model.User();
         _userManager.GetUserAsync(userClaim).Returns(Task.FromResult(user));
         _passwordManager.NewPasswordAsync(user, "oldPassword", "newPassword", "newPassword")
             .Returns(Task.FromResult(true));
@@ -62,7 +62,7 @@ public class UserServiceTests
     {
         // Arrange
         var userLoginDto = new UserLoginDto { UserName = "test", Password = "password" };
-        var user = new AnalysisData.UserManage.Model.User();
+        var user = new AnalysisData.User.Model.User();
         _loginManager.LoginAsync(userLoginDto).Returns(Task.FromResult(user));
 
         // Act
@@ -78,7 +78,7 @@ public class UserServiceTests
     {
         // Arrange
         var userClaim = new ClaimsPrincipal();
-        var user = new AnalysisData.UserManage.Model.User();
+        var user = new AnalysisData.User.Model.User();
         _userManager.GetUserAsync(userClaim).Returns(Task.FromResult(user));
 
         // Act
@@ -95,7 +95,7 @@ public class UserServiceTests
         // Arrange
         var userClaim = new ClaimsPrincipal();
         var updateUserDto = new UpdateUserDto { FirstName = "John", LastName = "Doe" };
-        var user = new AnalysisData.UserManage.Model.User();
+        var user = new AnalysisData.User.Model.User();
         _userManager.GetUserAsync(userClaim).Returns(Task.FromResult(user));
         _userManager.UpdateUserInformationAsync(user, updateUserDto).Returns(Task.FromResult(true));
 

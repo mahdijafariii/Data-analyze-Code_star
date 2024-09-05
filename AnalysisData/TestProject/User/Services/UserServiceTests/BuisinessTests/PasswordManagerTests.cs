@@ -1,11 +1,11 @@
-﻿using AnalysisData.Exception;
-using AnalysisData.Services.Abstraction;
-using AnalysisData.Services.Business;
-using AnalysisData.Services.Business.Abstraction;
-using AnalysisData.Services.SecurityPasswordService.Abstraction;
+﻿using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
+using AnalysisData.User.Services.UserService.Abstraction;
+using AnalysisData.User.Services.UserService.Business;
+using AnalysisData.User.Services.ValidationService.Abstraction;
+using Microsoft.AspNetCore.Identity;
 using NSubstitute;
 
-namespace TestProject.User.Services.Buisiness;
+namespace TestProject.User.Services.UserServiceTests.BuisinessTests;
 
 public class PasswordManagerTests
 {
@@ -26,7 +26,7 @@ public class PasswordManagerTests
     public async Task ResetPasswordAsync_ShouldCallValidatePasswordAndConfirmation_WhenCalled()
     {
         // Arrange
-        var user = new AnalysisData.UserManage.Model.User();
+        var user = new AnalysisData.User.Model.User();
         var password = "newPassword";
         var confirmPassword = "newPassword";
 
@@ -41,7 +41,7 @@ public class PasswordManagerTests
     public async Task ResetPasswordAsync_ShouldCallPasswordCheck_WhenCalled()
     {
         // Arrange
-        var user = new AnalysisData.UserManage.Model.User();
+        var user = new AnalysisData.User.Model.User();
         var password = "newPassword";
         var confirmPassword = "newPassword";
 
@@ -56,7 +56,7 @@ public class PasswordManagerTests
     public async Task ResetPasswordAsync_ShouldCallHashPasswordAndSetUserPassword_WhenCalled()
     {
         // Arrange
-        var user = new AnalysisData.UserManage.Model.User();
+        var user = new AnalysisData.User.Model.User();
         var password = "newPassword";
         var hashedPassword = "hashedPassword";
         var confirmPassword = "newPassword";
@@ -75,7 +75,7 @@ public class PasswordManagerTests
     public async Task NewPasswordAsync_ShouldCallValidatePassword_WhenCalled()
     {
         // Arrange
-        var user = new AnalysisData.UserManage.Model.User();
+        var user = new AnalysisData.User.Model.User();
         var oldPassword = "oldPassword";
         var password = "newPassword";
         var confirmPassword = "newPassword";
@@ -91,7 +91,7 @@ public class PasswordManagerTests
     public async Task NewPasswordAsync_ShouldCallValidatePasswordAndConfirmation_WhenCalled()
     {
         // Arrange
-        var user = new AnalysisData.UserManage.Model.User();
+        var user = new AnalysisData.User.Model.User();
         var oldPassword = "oldPassword";
         var password = "newPassword";
         var confirmPassword = "newPassword";

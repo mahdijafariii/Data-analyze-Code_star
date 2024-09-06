@@ -22,6 +22,10 @@ public class EmailService : IEmailService
 
     public async Task SendPasswordResetEmail(string toEmail, string resetLink)
     {
+        string htmlTemplatePath = @"User\Services\EmailService\email-template.html";
+        string htmlContent = File.ReadAllText(htmlTemplatePath);
+        htmlContent = htmlContent.Replace("{resetLink}", resetLink);
+
         var mailMessage = new MailMessage
         {
             From = new MailAddress(_fromEmail),
@@ -40,11 +44,12 @@ public class EmailService : IEmailService
 
         try
         {
+            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlContent, null, "text/html");
+            mailMessage.AlternateViews.Add(htmlView);
             await smtpClient.SendMailAsync(mailMessage);
         }
         catch (SmtpException ex)
         {
-            // Handle the exception
             Console.WriteLine($"SMTP Exception: {ex.Message}");
             throw;
         }

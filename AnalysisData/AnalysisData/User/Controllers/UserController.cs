@@ -52,7 +52,7 @@ public class UserController : ControllerBase
     {
         var userClaim = User;
         var check = await _userService.ResetPasswordAsync(userClaim, resetPasswordDto.NewPassword,
-            resetPasswordDto.ConfirmPassword);
+            resetPasswordDto.ConfirmPassword ,resetPasswordDto.ResetPasswordToken);
         if (check)
         {
             return Ok(new { massage = "success" });

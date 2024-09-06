@@ -43,6 +43,7 @@ using AnalysisData.User.Services.S3FileStorageService;
 using AnalysisData.User.Services.S3FileStorageService.Abstraction;
 using AnalysisData.User.Services.SecurityPasswordService;
 using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
+using AnalysisData.User.Services.TokenService.Abstraction;
 using AnalysisData.User.Services.UserService;
 using AnalysisData.User.Services.UserService.Abstraction;
 using AnalysisData.User.Services.ValidationService;
@@ -104,6 +105,8 @@ public static class ConfigService
         services.AddScoped<IEdgeToDbService, EdgeToDbService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IResetPasswordService, ResetPasswordService>();
+        services.AddScoped<IValidateTokenService, ValidateTokenService>();
+
         
 
         return services;

@@ -32,7 +32,7 @@ public class UserService : IUserService
         _validateTokenService = validateTokenService;
     }
 
-    public async Task<bool> ResetPasswordAsync(ClaimsPrincipal userClaim, string password, string confirmPassword)
+    public async Task<bool> ResetPasswordAsync(ClaimsPrincipal userClaim, string password, string confirmPassword , string resetPasswordToken)
     {
         var userName = userClaim.FindFirstValue("username");
         var user = await _userRepository.GetUserByUsernameAsync(userName);
@@ -41,7 +41,7 @@ public class UserService : IUserService
             throw new UserNotFoundException();
         }
 
-        await _validateTokenService.ValidateResetToken(Guid.Parse(userName));
+        await _validateTokenService.ValidateResetToken(Guid.Parse(userName),resetPasswordToken);
 
         if (password != confirmPassword)
         {

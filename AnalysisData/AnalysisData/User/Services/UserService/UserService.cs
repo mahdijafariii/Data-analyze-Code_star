@@ -4,6 +4,7 @@ using AnalysisData.User.CookieService.abstractions;
 using AnalysisData.User.JwtService.abstractions;
 using AnalysisData.User.Repository.UserRepository.Abstraction;
 using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
+using AnalysisData.User.Services.TokenService.Abstraction;
 using AnalysisData.User.Services.UserService.Abstraction;
 using AnalysisData.User.Services.ValidationService.Abstraction;
 using AnalysisData.User.UserDto.UserDto;
@@ -17,16 +18,18 @@ public class UserService : IUserService
     private readonly IJwtService _jwtService;
     private readonly IValidationService _validationService;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IValidateTokenService _validateTokenService;
 
 
     public UserService(IUserRepository userRepository, ICookieService cookieService,
-        IJwtService jwtService, IValidationService validationService, IPasswordHasher passwordHasher)
+        IJwtService jwtService, IValidationService validationService, IPasswordHasher passwordHasher,IValidateTokenService validateTokenService)
     {
         _userRepository = userRepository;
         _cookieService = cookieService;
         _jwtService = jwtService;
         _validationService = validationService;
         _passwordHasher = passwordHasher;
+        _validateTokenService = validateTokenService;
     }
 
     public async Task<bool> ResetPasswordAsync(ClaimsPrincipal userClaim, string password, string confirmPassword)
@@ -37,6 +40,8 @@ public class UserService : IUserService
         {
             throw new UserNotFoundException();
         }
+
+        await _validateTokenService.ValidateResetToken(Guid.Parse(userName));
 
         if (password != confirmPassword)
         {

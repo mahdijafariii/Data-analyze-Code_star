@@ -20,9 +20,14 @@ public class PasswordResetTokensRepository : IPasswordResetTokensRepository
         await _context.SaveChangesAsync(); 
     }
 
-    public async Task<PasswordResetToken> GetToken(Guid guid)
+    public async Task<PasswordResetToken> GetToken(Guid userId)
     {
         return await _context.Tokens.Include(x => x.User).OrderByDescending(x => x.Id)
-            .FirstOrDefaultAsync(x => x.UserId == guid);
+            .FirstOrDefaultAsync(x => x.UserId == userId);
+    }
+    
+    public async Task SaveChange()
+    {
+        await _context.SaveChangesAsync();
     }
 }

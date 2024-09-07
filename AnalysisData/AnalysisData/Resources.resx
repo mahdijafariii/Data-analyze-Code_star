@@ -93,4 +93,7 @@
     <data name="TokenIsInvalidException" xml:space="preserve">
         <value>Token Invalid ! </value>
     </data>
+    <data name="FailedOpetaionException" xml:space="preserve">
+        <value>Failed Operation ! </value>
+    </data>
 </root>

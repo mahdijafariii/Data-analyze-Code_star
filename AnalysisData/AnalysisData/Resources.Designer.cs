@@ -114,6 +114,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed Operation ! .
+        /// </summary>
+        internal static string FailedOpetaionException {
+            get {
+                return ResourceManager.GetString("FailedOpetaionException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We already have this file!.
         /// </summary>
         internal static string FileExistenceException {

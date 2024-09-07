@@ -266,7 +266,9 @@ public class UserControllerTests
             FirstName = "test",
             LastName = "test",
             Email = "test@gmail.com",
-            PhoneNumber = "09111111111"
+            PhoneNumber = "09111111111",
+            Image = "User do not have information yet !"
+
         });
         Assert.Equal(expectedResponseContent, responseContent);
 

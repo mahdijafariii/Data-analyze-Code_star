@@ -46,10 +46,10 @@ public class GraphSearchServiceTests
         _graphNodeRepository.GetNodeStartsWithSearchInputForAdminAsync(searchInput).Returns(entityNodes);
 
         // Act
-        var result = await _sut.SearchInEntityNodeNameAsync(claimsPrincipal, searchInput, searchType);
+        var result = await _sut.SearchInEntityNodeNameAsync(claimsPrincipal, searchInput, searchType,0,10);
 
         // Assert
-        Assert.Equal(entityNodes, result);
+        Assert.Equal(entityNodes.Count, result.Items.Count);
         await _graphNodeRepository.Received(1).GetNodeStartsWithSearchInputForAdminAsync(searchInput);
     }
 
@@ -70,10 +70,10 @@ public class GraphSearchServiceTests
         _graphNodeRepository.GetNodeContainSearchInputForAdminAsync(searchInput).Returns(entityNodes);
 
         // Act
-        var result = await _sut.SearchInEntityNodeNameAsync(claimsPrincipal, searchInput, searchType);
+        var result = await _sut.SearchInEntityNodeNameAsync(claimsPrincipal, searchInput, searchType,0,10);
 
         // Assert
-        Assert.Equal(entityNodes, result);
+        Assert.Equal(entityNodes.Count, result.Items.Count);
         await _graphNodeRepository.Received(1).GetNodeContainSearchInputForAdminAsync(searchInput);
     }
 
@@ -94,10 +94,10 @@ public class GraphSearchServiceTests
         _graphNodeRepository.GetNodeEndsWithSearchInputForAdminAsync(searchInput).Returns(entityNodes);
 
         // Act
-        var result = await _sut.SearchInEntityNodeNameAsync(claimsPrincipal, searchInput, searchType);
+        var result = await _sut.SearchInEntityNodeNameAsync(claimsPrincipal, searchInput, searchType,0,10);
 
         // Assert
-        Assert.Equal(entityNodes, result);
+        Assert.Equal(entityNodes.Count, result.Items.Count);
         await _graphNodeRepository.Received(1).GetNodeEndsWithSearchInputForAdminAsync(searchInput);
     }
 
@@ -119,10 +119,10 @@ public class GraphSearchServiceTests
         _graphNodeRepository.GetNodeStartsWithSearchInputForUserAsync(Arg.Any<Guid>(),searchInput).Returns(entityNodes);
 
         // Act
-        var result = await _sut.SearchInEntityNodeNameAsync(claimsPrincipal, searchInput, searchType);
+        var result = await _sut.SearchInEntityNodeNameAsync(claimsPrincipal, searchInput, searchType,0,10);
 
         // Assert
-        Assert.Equal(entityNodes, result);
+        Assert.Equal(entityNodes.Count, result.Items.Count);
         await _graphNodeRepository.Received(1).GetNodeStartsWithSearchInputForUserAsync(Arg.Any<Guid>(),searchInput);
     }
     
@@ -143,10 +143,10 @@ public class GraphSearchServiceTests
         _graphNodeRepository.GetNodeContainSearchInputForUserAsync(Arg.Any<Guid>(), searchInput).Returns(entityNodes);
 
         // Act
-        var result = await _sut.SearchInEntityNodeNameAsync(claimsPrincipal, searchInput, searchType);
+        var result = await _sut.SearchInEntityNodeNameAsync(claimsPrincipal, searchInput, searchType,0,10);
 
         // Assert
-        Assert.Equal(entityNodes, result);
+        Assert.Equal(entityNodes.Count, result.Items.Count);
         await _graphNodeRepository.Received(1).GetNodeContainSearchInputForUserAsync(Arg.Any<Guid>(), searchInput);
     }
     
@@ -167,10 +167,10 @@ public class GraphSearchServiceTests
         _graphNodeRepository.GetNodeEndsWithSearchInputForUserAsync(Arg.Any<Guid>(), searchInput).Returns(entityNodes);
 
         // Act
-        var result = await _sut.SearchInEntityNodeNameAsync(claimsPrincipal, searchInput, searchType);
+        var result = await _sut.SearchInEntityNodeNameAsync(claimsPrincipal, searchInput, searchType,0,10);
 
         // Assert
-        Assert.Equal(entityNodes, result);
+        Assert.Equal(entityNodes.Count, result.Items.Count);
         await _graphNodeRepository.Received(1).GetNodeEndsWithSearchInputForUserAsync(Arg.Any<Guid>(), searchInput);
     }
 
@@ -187,7 +187,7 @@ public class GraphSearchServiceTests
             .Returns(Enumerable.Empty<EntityNode>());
 
         // Act
-        var action = () => _sut.SearchInEntityNodeNameAsync(claimsPrincipal, searchInput, searchType);
+        var action = () => _sut.SearchInEntityNodeNameAsync(claimsPrincipal, searchInput, searchType,0,10);
         
         // Assert
         await Assert.ThrowsAsync<NodeNotFoundException>(action);
@@ -207,7 +207,7 @@ public class GraphSearchServiceTests
             .Returns(Enumerable.Empty<EntityNode>());
 
         // Act
-        var action =()=> _sut.SearchInEntityNodeNameAsync(claimsPrincipal, searchInput, searchType);
+        var action =()=> _sut.SearchInEntityNodeNameAsync(claimsPrincipal, searchInput, searchType,1,10);
         
         // Assert
         await Assert.ThrowsAsync<NodeNotFoundException>(action);

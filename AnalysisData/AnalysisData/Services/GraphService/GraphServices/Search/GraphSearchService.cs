@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using AnalysisData.Dtos.GraphDto.NodeDto;
 using AnalysisData.Exception.GraphException.NodeException;
 using AnalysisData.Models.GraphModel.Node;
 using AnalysisData.Repositories.GraphRepositories.GraphRepository.GraphNodeRepository.Abstraction;
@@ -15,8 +16,8 @@ public class GraphSearchService : IGraphSearchService
         _graphNodeRepository = graphNodeRepository;
     }
 
-    public async Task<IEnumerable<EntityNode>> SearchInEntityNodeNameAsync(ClaimsPrincipal claimsPrincipal,
-        string inputSearch, string type)
+    public async Task<PaginationSearchDto> SearchInEntityNodeNameAsync(ClaimsPrincipal claimsPrincipal,
+        string inputSearch, string type,int pageIndex , int pageSize)
     {
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
@@ -34,8 +35,19 @@ public class GraphSearchService : IGraphSearchService
         {
             throw new NodeNotFoundException();
         }
+        var groupedNodes = entityNodes.Select(g => new PaginationNodeDto
+            {
+                Id = g.Id,
+                EntityName = g.Name,
+            })
+            .ToList();
 
-        return entityNodes;
+        var count = groupedNodes.Count;
+        var items = groupedNodes
+            .Skip(pageIndex * pageSize)
+            .Take(pageSize)
+            .ToList();
+        return new PaginationSearchDto(items,pageIndex,count);
     }
 
     private async Task<IEnumerable<EntityNode>> SearchEntityInNodeNameForAdminAsync(string inputSearch, string type)

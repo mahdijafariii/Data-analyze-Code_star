@@ -224,6 +224,31 @@ namespace AnalysisData.Migrations
                     b.ToTable("ValueNodes");
                 });
 
+            modelBuilder.Entity("AnalysisData.User.Model.PasswordResetToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Expiration")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Tokens");
+                });
+
             modelBuilder.Entity("AnalysisData.User.Model.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -248,7 +273,7 @@ namespace AnalysisData.Migrations
                         new
                         {
                             Id = 1,
-                            RoleName = "admin",
+                            RoleName = "Admin",
                             RolePolicy = "gold"
                         },
                         new
@@ -310,7 +335,7 @@ namespace AnalysisData.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ac34d5b9-c1f0-4f90-bf35-6a80b25c96b0"),
+                            Id = new Guid("8ab41e25-44bb-4b43-aa2f-6f697edd425f"),
                             Email = "admin@gmail.com",
                             FirstName = "admin",
                             LastName = "admin",
@@ -425,6 +450,17 @@ namespace AnalysisData.Migrations
                     b.Navigation("Attribute");
 
                     b.Navigation("Entity");
+                });
+
+            modelBuilder.Entity("AnalysisData.User.Model.PasswordResetToken", b =>
+                {
+                    b.HasOne("AnalysisData.User.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AnalysisData.User.Model.User", b =>

@@ -1,4 +1,5 @@
 ﻿using AnalysisData.Data;
+using AnalysisData.Graph.Dto.NodeDto;
 using AnalysisData.Graph.Model.Node;
 using Microsoft.EntityFrameworkCore;
 
@@ -72,13 +73,13 @@ public class GraphNodeRepository : IGraphNodeRepository
         return result.Count != 0;
     }
 
-    public async Task<IEnumerable<dynamic>> GetNodeAttributeValueAsync(int id)
+    public async Task<IEnumerable<NodeInformationDto>> GetNodeAttributeValueAsync(int id)
     {
         var result = await _context.ValueNodes
             .Include(vn => vn.Entity)
             .Include(vn => vn.Attribute)
             .Where(vn => vn.Entity.Id == id)
-            .Select(vn => new
+            .Select(vn => new NodeInformationDto
             {
                 Attribute = vn.Attribute.Name,
                 Value = vn.Value

@@ -1,5 +1,4 @@
-﻿
-using AnalysisData.Graph.Model.Node;
+﻿using AnalysisData.Graph.Model.Node;
 using AnalysisData.Graph.Repository.NodeRepository.Abstraction;
 using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 using CsvHelper;
@@ -20,7 +19,7 @@ public class ValueNodeProcessor : IValueNodeProcessor
         _batchSize = batchSize;
     }
 
-    public async Task ProcessValueNodesAsync(CsvReader csv, IEnumerable<EntityNode> entityNodes, IEnumerable<string> headers, string id)
+    public async Task ProcessValueNodesAsync(ICsvReader csv, IEnumerable<EntityNode> entityNodes, IEnumerable<string> headers, string id)
     {
         var attributeCache = new Dictionary<string, int>();
         var batch = new List<ValueNode>();

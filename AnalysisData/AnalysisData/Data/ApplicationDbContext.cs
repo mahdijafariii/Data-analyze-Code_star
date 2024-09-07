@@ -25,13 +25,15 @@ public class ApplicationDbContext : DbContext
     public DbSet<FileEntity> FileUploadedDb { get; set; }
     public DbSet<UserFile> UserFiles { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<PasswordResetToken> Tokens { get; set; }
+
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
     
         modelBuilder.Entity<Role>().HasData(
-            new Role { Id = 1, RoleName = "admin", RolePolicy = "gold" },
+            new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" },
             new Role { Id = 2, RoleName = "Data-Analyst", RolePolicy = "bronze" },
             new Role { Id = 3, RoleName = "Data-Manager", RolePolicy = "silver" }
         );

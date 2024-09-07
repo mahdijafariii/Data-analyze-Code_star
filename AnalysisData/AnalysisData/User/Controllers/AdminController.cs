@@ -45,13 +45,8 @@ public class AdminController : ControllerBase
     [HttpDelete("users/{id}")]
     public async Task<IActionResult> DeleteUser(Guid id)
     {
-        var isDeleted = await _adminService.DeleteUserAsync(id);
-        if (isDeleted)
-        {
-            return Ok(new { message = "User deleted successfully." });
-        }
-
-        return NotFound(new { message = "User not found." });
+        await _adminService.DeleteUserAsync(id);
+        return Ok(new { message = "User deleted successfully." });
     }
 
     [Authorize(Roles = "admin")]
@@ -61,6 +56,4 @@ public class AdminController : ControllerBase
         await _adminService.UpdateUserInformationByAdminAsync(id, updateAdminDto);
         return Ok(new { massage = "updated successfully" });
     }
-
-    
 }

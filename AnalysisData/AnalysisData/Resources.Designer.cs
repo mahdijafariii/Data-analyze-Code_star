@@ -132,7 +132,7 @@ namespace AnalysisData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Header Id not found in file that uploaded!.
+        ///   Looks up a localized string similar to Header(s) not found in the uploaded file: {0}.
         /// </summary>
         internal static string HeaderIdNotFoundInNodeFile {
             get {
@@ -177,6 +177,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Header(s) Node is not accessible for this user! {0}.
+        /// </summary>
+        internal static string NodeNotAccessibleForUserException {
+            get {
+                return ResourceManager.GetString("NodeNotAccessibleForUserException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Node was not found!.
         /// </summary>
         internal static string NodeNotFoundException {
@@ -204,6 +213,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to password is null!.
+        /// </summary>
+        internal static string PasswordHasherInputNull {
+            get {
+                return ResourceManager.GetString("PasswordHasherInputNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password does not match!.
         /// </summary>
         internal static string PasswordMismatchException {
@@ -227,6 +245,15 @@ namespace AnalysisData {
         internal static string TokenExpiredException {
             get {
                 return ResourceManager.GetString("TokenExpiredException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Token Invalid ! .
+        /// </summary>
+        internal static string TokenIsInvalidException {
+            get {
+                return ResourceManager.GetString("TokenIsInvalidException", resourceCulture);
             }
         }
         

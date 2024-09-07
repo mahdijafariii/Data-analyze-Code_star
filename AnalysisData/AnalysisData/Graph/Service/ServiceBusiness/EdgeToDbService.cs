@@ -9,9 +9,12 @@ public class EdgeToDbService : IEdgeToDbService
     private readonly IEntityEdgeRecordProcessor _entityEdgeRecordProcessor;
     private readonly IFromToProcessor _fromToProcessor;
     private readonly ICsvReaderService _csvReaderService;
-    
-    public EdgeToDbService(IFromToProcessor fromToProcessor,
-        ICsvReaderService csvReaderService, IEntityEdgeRecordProcessor entityEdgeRecordProcessor, IValueEdgeProcessor valueEdgeProcessor)
+
+    public EdgeToDbService(
+        IFromToProcessor fromToProcessor,
+        ICsvReaderService csvReaderService,
+        IEntityEdgeRecordProcessor entityEdgeRecordProcessor,
+        IValueEdgeProcessor valueEdgeProcessor)
     {
         _fromToProcessor = fromToProcessor;
         _csvReaderService = csvReaderService;
@@ -23,6 +26,7 @@ public class EdgeToDbService : IEdgeToDbService
     {
         var csv = _csvReaderService.CreateCsvReader(file);
         var requiredHeaders = new List<string> { from, to };
+        
         var headers = _csvReaderService.ReadHeaders(csv, requiredHeaders);
         
         await _fromToProcessor.ProcessFromToAsync(headers, from, to);
@@ -31,6 +35,7 @@ public class EdgeToDbService : IEdgeToDbService
         
         csv = _csvReaderService.CreateCsvReader(file);
         headers = _csvReaderService.ReadHeaders(csv, requiredHeaders);
+        
         await _valueEdgeProcessor.ProcessEntityEdgeValuesAsync(csv, headers, from, to, entityEdges);
     }
 }

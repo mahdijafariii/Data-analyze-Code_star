@@ -2,6 +2,7 @@ using System.Security.Claims;
 using AnalysisData.Exception.GraphException;
 using AnalysisData.Graph.Model.Node;
 using AnalysisData.Graph.Repository.GraphNodeRepository;
+using AnalysisData.Graph.Service.GraphServices.Search.Abstraction;
 
 namespace AnalysisData.Graph.Service.GraphServices.Search;
 

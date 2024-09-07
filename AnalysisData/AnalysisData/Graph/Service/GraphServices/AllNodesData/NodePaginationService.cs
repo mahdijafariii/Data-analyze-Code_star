@@ -7,6 +7,7 @@ using AnalysisData.Graph.Repository.GraphEdgeRepository;
 using AnalysisData.Graph.Repository.GraphNodeRepository;
 using AnalysisData.Graph.Repository.NodeRepository.Abstraction;
 using AnalysisData.Graph.Service.CategoryService.Abstraction;
+using AnalysisData.Graph.Service.GraphServices.AllNodesData.Abstraction;
 
 namespace AnalysisData.Graph.Service.GraphServices.AllNodesData;
 
@@ -16,9 +17,7 @@ public class NodePaginationService : INodePaginationService
     private readonly ICategoryService _categoryService;
 
 
-    public NodePaginationService(IGraphNodeRepository graphNodeRepository, IGraphEdgeRepository graphEdgeRepository,
-        IEntityNodeRepository entityNodeRepository, IEntityEdgeRepository entityEdgeRepository,
-        ICategoryService categoryService)
+    public NodePaginationService(IGraphNodeRepository graphNodeRepository, ICategoryService categoryService)
     {
         _graphNodeRepository = graphNodeRepository;
         _categoryService = categoryService;
@@ -81,7 +80,7 @@ public class NodePaginationService : INodePaginationService
             throw new CategoryResultNotFoundException();
         }
 
-        if (valueNodes is null)
+        if (!valueNodes.Any())
         {
             throw new NodeNotFoundException();
         }

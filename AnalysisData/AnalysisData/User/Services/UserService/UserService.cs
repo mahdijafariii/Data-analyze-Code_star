@@ -18,7 +18,6 @@ public class UserService : IUserService
     private readonly IPasswordManager _passwordManager;
     private readonly ILoginManager _loginManager;
     private readonly IUserRepository _userRepository;
-
     private readonly IValidationService _validationService;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IValidateTokenService _validateTokenService;
@@ -34,33 +33,10 @@ public class UserService : IUserService
         _passwordManager = passwordManager;
         _loginManager = loginManager;
     }
-
-    public async Task<bool> ResetPasswordAsync(ClaimsPrincipal userClaim, string password, string confirmPassword , string resetPasswordToken)
-    {
-        var userName = userClaim.FindFirstValue("username");
-        var user = await _userRepository.GetUserByUsernameAsync(userName);
-        if (user == null)
-        {
-            throw new UserNotFoundException();
-        }
-
-        await _validateTokenService.ValidateResetToken(Guid.Parse(userName),resetPasswordToken);
-
-        if (password != confirmPassword)
-        {
-            throw new PasswordMismatchException();
-        }
-
-        _validationService.PasswordCheck(password);
-        user.Password = _passwordHasher.HashPassword(password);
-        await _userRepository.UpdateUserAsync(user.Id, user);
-        return true;
-    }
-
-    public async Task ResetPasswordAsync(ClaimsPrincipal userClaim, string password, string confirmPassword)
+    public async Task ResetPasswordAsync(ClaimsPrincipal userClaim, string password, string confirmPassword,string resetPasswordToken)
     {
         var user = await _userManager.GetUserFromUserClaimsAsync(userClaim);
-        await _passwordManager.ResetPasswordAsync(user, password, confirmPassword);
+        await _passwordManager.ResetPasswordAsync(user, password, confirmPassword,resetPasswordToken);
     }
 
     public async Task NewPasswordAsync(ClaimsPrincipal userClaim, string oldPassword, string password, string confirmPassword)

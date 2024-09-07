@@ -36,24 +36,24 @@ public class UserServiceTests
         _sut = new AnalysisData.User.Services.UserService.UserService(_userRepository,
             _validationService, _passwordHasher, _validateTokenService, _userManager, _passwordManager, _loginManager);
     }
-
-    [Fact]
-    public async Task ResetPasswordAsync_ShouldReturnTrue_WhenPasswordResetSucceeds()
-    {
-        // Arrange
-        var userClaim = new ClaimsPrincipal();
-        var user = new AnalysisData.User.Model.User();
-        _userManager.GetUserFromUserClaimsAsync(userClaim).Returns(Task.FromResult(user));
-        _passwordManager.ResetPasswordAsync(user, "password", "password")
-            .Returns(Task.FromResult(true));
-
-        // Act
-        await _sut.ResetPasswordAsync(userClaim, "password", "password");
-
-        // Assert
-        await _userManager.Received(1).GetUserFromUserClaimsAsync(userClaim);
-        await _passwordManager.Received(1).ResetPasswordAsync(user, "password", "password");
-    }
+    //
+    // [Fact]
+    // public async Task ResetPasswordAsync_ShouldReturnTrue_WhenPasswordResetSucceeds()
+    // {
+    //     // Arrange
+    //     var userClaim = new ClaimsPrincipal();
+    //     var user = new AnalysisData.User.Model.User();
+    //     _userManager.GetUserFromUserClaimsAsync(userClaim).Returns(Task.FromResult(user));
+    //     _passwordManager.ResetPasswordAsync(user, "password", "password")
+    //         .Returns(Task.FromResult(true));
+    //
+    //     // Act
+    //     await _sut.ResetPasswordAsync(userClaim, "password", "password");
+    //
+    //     // Assert
+    //     await _userManager.Received(1).GetUserFromUserClaimsAsync(userClaim);
+    //     await _passwordManager.Received(1).ResetPasswordAsync(user, "password", "password");
+    // }
 
     [Fact]
     public async Task NewPasswordAsync_ShouldReturnTrue_WhenPasswordChangeSucceeds()

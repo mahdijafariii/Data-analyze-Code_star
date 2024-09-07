@@ -51,14 +51,9 @@ public class UserController : ControllerBase
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
     {
         var userClaim = User;
-        var check = await _userService.ResetPasswordAsync(userClaim, resetPasswordDto.NewPassword,
-            resetPasswordDto.ConfirmPassword ,resetPasswordDto.ResetPasswordToken);
-        if (check)
-        {
-            return Ok(new { massage = "success" });
-        }
-
-        return BadRequest(new { massage = "not success" });
+        await _userService.ResetPasswordAsync(userClaim, resetPasswordDto.NewPassword,
+            resetPasswordDto.ConfirmPassword, resetPasswordDto.ResetPasswordToken);
+        return Ok(new { massage = "success" });
     }
 
     [HttpPost("request-reset")]

@@ -20,7 +20,7 @@ public class PasswordManagerTests
         _validationService = Substitute.For<IValidationService>();
         _sut = new PasswordManager(_passwordHasher, _passwordService, _validationService);
     }
-
+    
     [Fact]
     public async Task ResetPasswordAsync_ShouldCallValidatePasswordAndConfirmation_WhenCalled()
     {
@@ -28,14 +28,15 @@ public class PasswordManagerTests
         var user = new AnalysisData.User.Model.User();
         var password = "newPassword";
         var confirmPassword = "newPassword";
-
+        var token = "321231";
+    
         // Act
-        await _sut.ResetPasswordAsync(user, password, confirmPassword);
-
+        await _sut.ResetPasswordAsync(user, password, confirmPassword,token);
+    
         // Assert
         _passwordService.Received().ValidatePasswordAndConfirmation(password, confirmPassword);
     }
-
+    
     [Fact]
     public async Task ResetPasswordAsync_ShouldCallPasswordCheck_WhenCalled()
     {
@@ -43,14 +44,16 @@ public class PasswordManagerTests
         var user = new AnalysisData.User.Model.User();
         var password = "newPassword";
         var confirmPassword = "newPassword";
+        var token = "321231";
 
+    
         // Act
-        await _sut.ResetPasswordAsync(user, password, confirmPassword);
-
+        await _sut.ResetPasswordAsync(user, password, confirmPassword,token);
+    
         // Assert
         _validationService.Received().PasswordCheck(password);
     }
-
+    
     [Fact]
     public async Task ResetPasswordAsync_ShouldCallHashPasswordAndSetUserPassword_WhenCalled()
     {
@@ -59,12 +62,12 @@ public class PasswordManagerTests
         var password = "newPassword";
         var hashedPassword = "hashedPassword";
         var confirmPassword = "newPassword";
-
+    
         _passwordHasher.HashPassword(password).Returns(hashedPassword);
-
+    
         // Act
         await _sut.ResetPasswordAsync(user, password, confirmPassword);
-
+    
         // Assert
         Assert.Equal(hashedPassword, user.Password);
         _passwordHasher.Received().HashPassword(password);

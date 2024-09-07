@@ -1,8 +1,8 @@
-using AnalysisData.Graph.Model.Category;
-using AnalysisData.Graph.Model.Edge;
-using AnalysisData.Graph.Model.File;
-using AnalysisData.Graph.Model.Node;
-using AnalysisData.User.Model;
+using AnalysisData.Models.GraphModel.Category;
+using AnalysisData.Models.GraphModel.Edge;
+using AnalysisData.Models.GraphModel.File;
+using AnalysisData.Models.GraphModel.Node;
+using AnalysisData.Models.UserModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace AnalysisData.Data;
@@ -14,7 +14,7 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    public DbSet<User.Model.User> Users { get; set; }
+    public DbSet<User> Users { get; set; }
     public DbSet<AttributeEdge> AttributeEdges { get; set; }
     public DbSet<AttributeNode> AttributeNodes { get; set; }
     public DbSet<EntityEdge> EntityEdges { get; set; }
@@ -38,9 +38,9 @@ public class ApplicationDbContext : DbContext
             new Role { Id = 3, RoleName = "Data-Manager", RolePolicy = "silver" }
         );
     
-        modelBuilder.Entity<User.Model.User>().HasData(
+        modelBuilder.Entity<User>().HasData(
             
-            new User.Model.User
+            new User
             {
                 Id = Guid.NewGuid(),
                 Username = "admin",

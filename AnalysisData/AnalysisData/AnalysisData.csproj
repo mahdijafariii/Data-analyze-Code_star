@@ -58,7 +58,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="User\" />
+      <Folder Include="Dtos\" />
+      <Folder Include="Models\" />
+      <Folder Include="Repositories\" />
+      <Folder Include="Repositories\GraphRepositories\GraphRepository\" />
+      <Folder Include="Services\" />
     </ItemGroup>
 
 </Project>

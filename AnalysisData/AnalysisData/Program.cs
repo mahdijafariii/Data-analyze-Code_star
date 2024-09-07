@@ -1,7 +1,7 @@
 using System.Text;
 using AnalysisData;
 using AnalysisData.Data;
-using AnalysisData.User.MiddleWare;
+using AnalysisData.MiddleWare;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -42,10 +42,9 @@ builder.Services.AddHttpContextAccessor();
 
 
 var authorization = new Authorization();
-await authorization.ConfigureAuthorizationPolicies(builder.Services);
+authorization.ConfigureAuthorizationPolicies(builder.Services);
 
 var app = builder.Build();
-
 
 
 if (app.Environment.IsDevelopment())

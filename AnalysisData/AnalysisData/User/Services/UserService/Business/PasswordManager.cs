@@ -30,12 +30,11 @@ public class PasswordManager : IPasswordManager
     public async Task ResetPasswordAsync(Model.User user, string password, string confirmPassword,
         string resetPasswordToken)
     {
-        await _validateTokenService.ValidateResetToken(Guid.Parse(user.Username), resetPasswordToken);
+        await _validateTokenService.ValidateResetToken(user.Id, resetPasswordToken);
         if (password != confirmPassword)
         {
             throw new PasswordMismatchException();
         }
-
         _validationService.PasswordCheck(password);
         user.Password = _passwordHasher.HashPassword(password);
         await _userRepository.UpdateUserAsync(user.Id, user);

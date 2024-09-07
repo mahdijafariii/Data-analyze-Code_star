@@ -25,7 +25,7 @@ public class AttributeNodeRepository : IAttributeNodeRepository
         return await _context.AttributeNodes.ToListAsync();
     }
 
-    public async Task<AttributeNode> GetByIdAsync(int id)
+    public async Task<AttributeNode> GetByIdAsync(Guid id)
     {
         return await _context.AttributeNodes.FindAsync(id);
     }
@@ -35,7 +35,7 @@ public class AttributeNodeRepository : IAttributeNodeRepository
         return await _context.AttributeNodes.FirstOrDefaultAsync(x => x.Name == name);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(Guid id)
     {
         var entity = await _context.AttributeNodes.FindAsync(id);
         if (entity != null)

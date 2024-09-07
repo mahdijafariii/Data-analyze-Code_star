@@ -4,6 +4,6 @@ namespace AnalysisData.Repositories.GraphRepositories.GraphRepository.GraphEdgeR
 
 public interface IGraphEdgeRepository
 {
-    Task<bool> IsEdgeAccessibleByUser(string userName, int edgeName);
-    Task<IEnumerable<EdgeInformationDto>> GetEdgeAttributeValues(int id);
+    Task<bool> IsEdgeAccessibleByUser(string userName, Guid edgeName);
+    Task<IEnumerable<EdgeInformationDto>> GetEdgeAttributeValues(Guid id);
 }

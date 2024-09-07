@@ -30,12 +30,12 @@ public class ValueNodeRepository : IValueNodeRepository
         return await _context.ValueNodes.ToListAsync();
     }
 
-    public async Task<ValueNode> GetByIdAsync(int id)
+    public async Task<ValueNode> GetByIdAsync(Guid id)
     {
         return await _context.ValueNodes.FindAsync(id);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(Guid id)
     {
         var entity = await _context.ValueNodes.FindAsync(id);
         if (entity != null)

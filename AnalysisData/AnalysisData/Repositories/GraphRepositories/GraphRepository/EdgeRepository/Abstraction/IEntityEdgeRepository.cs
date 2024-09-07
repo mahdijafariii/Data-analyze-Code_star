@@ -6,8 +6,8 @@ public interface IEntityEdgeRepository
 {
     Task AddAsync(EntityEdge entity);
     Task AddRangeAsync(IEnumerable<EntityEdge> entityEdges);
-    Task<List<EntityEdge>> FindNodeLoopsAsync(int id);
+    Task<List<EntityEdge>> FindNodeLoopsAsync(Guid id);
     Task<IEnumerable<EntityEdge>> GetAllAsync();
-    Task<EntityEdge> GetByIdAsync(int id);
-    Task DeleteAsync(int id);
+    Task<EntityEdge> GetByIdAsync(Guid id);
+    Task DeleteAsync(Guid id);
 }

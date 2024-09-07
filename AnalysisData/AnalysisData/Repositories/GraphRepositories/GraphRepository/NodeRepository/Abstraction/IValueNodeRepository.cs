@@ -7,6 +7,6 @@ public interface IValueNodeRepository
     Task AddRangeAsync(IEnumerable<ValueNode> valueNodes);
     Task AddAsync(ValueNode entity);
     Task<IEnumerable<ValueNode>> GetAllAsync();
-    Task<ValueNode> GetByIdAsync(int id);
-    Task DeleteAsync(int id);
+    Task<ValueNode> GetByIdAsync(Guid id);
+    Task DeleteAsync(Guid id);
 }

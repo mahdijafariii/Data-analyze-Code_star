@@ -6,7 +6,7 @@ namespace AnalysisData.Models.GraphModel.Node;
 
 public class EntityNode
 {
-    [Key] public int Id { get; set; }
+    [Key] public Guid Id { get; set; }
 
     [Required] [MaxLength(100)] public string Name { get; set; }
 

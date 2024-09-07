@@ -4,6 +4,7 @@ namespace AnalysisData.Models.GraphModel.Edge;
 
 public class AttributeEdge
 {
-    [Key] public int Id { get; set; }
+    [Key] 
+    public Guid Id { get; set; }
     public string Name { get; set; }
 }

@@ -29,7 +29,7 @@ public class AttributeEdgeRepository : IAttributeEdgeRepository
         return await _context.AttributeEdges.ToListAsync();
     }
 
-    public async Task<AttributeEdge> GetByIdAsync(int id)
+    public async Task<AttributeEdge> GetByIdAsync(Guid id)
     {
         return await _context.AttributeEdges.FindAsync(id);
     }
@@ -39,7 +39,7 @@ public class AttributeEdgeRepository : IAttributeEdgeRepository
         return await _context.AttributeEdges.FirstOrDefaultAsync(x => x.Name == name);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(Guid id)
     {
         var entity = await _context.AttributeEdges.FindAsync(id);
         if (entity != null)

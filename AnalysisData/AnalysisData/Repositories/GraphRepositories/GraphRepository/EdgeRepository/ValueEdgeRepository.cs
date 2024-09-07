@@ -29,12 +29,12 @@ public class ValueEdgeRepository : IValueEdgeRepository
         await _context.ValueEdges.AddRangeAsync(valueEdges);
         await _context.SaveChangesAsync();
     }
-    public async Task<ValueEdge> GetByIdAsync(int id)
+    public async Task<ValueEdge> GetByIdAsync(Guid id)
     {
         return await _context.ValueEdges.FindAsync(id);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(Guid id)
     {
         var entity = await _context.ValueEdges.FindAsync(id);
         if (entity != null)

@@ -7,6 +7,6 @@ public interface IValueEdgeRepository
     Task AddAsync(ValueEdge entity);
     Task AddRangeAsync(IEnumerable<ValueEdge> valueEdges);
     Task<IEnumerable<ValueEdge>> GetAllAsync();
-    Task<ValueEdge> GetByIdAsync(int id);
-    Task DeleteAsync(int id);
+    Task<ValueEdge> GetByIdAsync(Guid id);
+    Task DeleteAsync(Guid id);
 }

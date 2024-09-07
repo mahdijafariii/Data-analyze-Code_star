@@ -67,7 +67,12 @@ public class AdminService : IAdminService
         user.Email = updateAdminDto.Email;
         user.PhoneNumber = updateAdminDto.PhoneNumber;
         user.Username = updateAdminDto.UserName;
-        user.Role.RoleName = updateAdminDto.RoleName;
+        var role = await _roleRepository.GetRoleByNameAsync(updateAdminDto.RoleName);
+        if (role is null)
+        {
+            throw new RoleNotFoundException();
+        }
+        user.Role = role;
         await _userRepository.UpdateUserAsync(user.Id, user);
     }
     

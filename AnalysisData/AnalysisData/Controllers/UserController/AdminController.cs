@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace AnalysisData.Controllers.UserController;
 
 [ApiController]
-//[Authorize(Roles = "admin")]
 [Route("api/[controller]")]
 public class AdminController : ControllerBase
 {

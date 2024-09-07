@@ -34,7 +34,7 @@ public class UserController : ControllerBase
         return Ok(new { user.FirstName, user.LastName, user.ImageURL });
     }
 
-    [Authorize(Policy = "gold")]
+    [Authorize(Policy = "bronze")]
     [HttpGet("permissions")]
     public async Task<IActionResult> GetPermissions()
     {

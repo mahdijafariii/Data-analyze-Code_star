@@ -58,10 +58,9 @@ public class UserController : ControllerBase
 
     [Authorize(Policy = "bronze")]
     [HttpPost("request-reset-password")]
-    public async Task<IActionResult> RequestResetPassword()
+    public async Task<IActionResult> RequestResetPassword(EmailForResetPasswordDto resetPassword)
     {
-        var userClaim = User;
-        await _resetPasswordRequestService.SendRequestToResetPassword(userClaim);
+        await _resetPasswordRequestService.SendRequestToResetPassword(resetPassword.Email);
         return Ok(new { massage = "success" });
     }
     

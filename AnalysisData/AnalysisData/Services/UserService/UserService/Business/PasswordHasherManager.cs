@@ -5,7 +5,7 @@ using AnalysisData.Services.UserService.UserService.Business.Abstraction;
 
 namespace AnalysisData.Services.UserService.UserService.Business;
 
-public class PasswordHasherManagerManager : IPasswordHasherManager
+public class PasswordHasherManager : IPasswordHasherManager
 {
     public string HashPassword(string password)
     {

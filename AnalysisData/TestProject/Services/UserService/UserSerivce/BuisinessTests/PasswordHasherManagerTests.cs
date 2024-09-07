@@ -4,13 +4,13 @@ using AnalysisData.Services.UserService.UserService.Business;
 
 namespace TestProject.User.Services.SecurityPasswordService;
 
-public class PasswordHasherTests
+public class PasswordHasherManagerTests
 {
-    private readonly PasswordHasherManagerManager _passwordHasherManagerManager;
+    private readonly PasswordHasherManager _passwordHasherManager;
 
-    public PasswordHasherTests()
+    public PasswordHasherManagerTests()
     {
-        _passwordHasherManagerManager = new PasswordHasherManagerManager();
+        _passwordHasherManager = new PasswordHasherManager();
     }
 
     [Fact]
@@ -20,7 +20,7 @@ public class PasswordHasherTests
         var password = "MySecurePassword123!";
         
         // Act
-        var hashedPassword = _passwordHasherManagerManager.HashPassword(password);
+        var hashedPassword = _passwordHasherManager.HashPassword(password);
 
         // Assert
         Assert.NotNull(hashedPassword);
@@ -34,8 +34,8 @@ public class PasswordHasherTests
         var password = "MySecurePassword123!";
         
         // Act
-        var hashedPassword1 = _passwordHasherManagerManager.HashPassword(password);
-        var hashedPassword2 = _passwordHasherManagerManager.HashPassword(password);
+        var hashedPassword1 = _passwordHasherManager.HashPassword(password);
+        var hashedPassword2 = _passwordHasherManager.HashPassword(password);
 
         // Assert
         Assert.Equal(hashedPassword1, hashedPassword2);
@@ -49,8 +49,8 @@ public class PasswordHasherTests
         var password2 = "AnotherPassword456!";
         
         // Act
-        var hashedPassword1 = _passwordHasherManagerManager.HashPassword(password1);
-        var hashedPassword2 = _passwordHasherManagerManager.HashPassword(password2);
+        var hashedPassword1 = _passwordHasherManager.HashPassword(password1);
+        var hashedPassword2 = _passwordHasherManager.HashPassword(password2);
 
         // Assert
         Assert.NotEqual(hashedPassword1, hashedPassword2);
@@ -63,7 +63,7 @@ public class PasswordHasherTests
         var password = string.Empty;
         
         // Act
-        var hashedPassword = _passwordHasherManagerManager.HashPassword(password);
+        var hashedPassword = _passwordHasherManager.HashPassword(password);
 
         // Assert
         Assert.NotNull(hashedPassword);
@@ -74,6 +74,6 @@ public class PasswordHasherTests
     public void HashPassword_ShouldThrowArgumentNullException_WhenNullPasswordProvided()
     {
         // Act & Assert
-        Assert.Throws<PasswordHasherInputNull>(() => _passwordHasherManagerManager.HashPassword(null));
+        Assert.Throws<PasswordHasherInputNull>(() => _passwordHasherManager.HashPassword(null));
     }
 }

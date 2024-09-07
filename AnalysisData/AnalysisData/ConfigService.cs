@@ -132,7 +132,7 @@ public static class ConfigService
         services.AddScoped<IRoleManagementService, RoleManagementService>();
         services.AddScoped<IAccessManagementService, AccessManagementService>();
         services.AddScoped<IAdminRegisterService, AdminRegisterService>();
-        services.AddScoped<IPasswordHasherManager, PasswordHasherManagerManager>();
+        services.AddScoped<IPasswordHasherManager, PasswordHasherManager>();
         services.AddScoped<IS3FileStorageService, S3FileStorageService>();
         services.AddScoped<IUploadImageService, UploadImageService>();
         services.AddScoped<IValueNodeProcessor, ValueNodeProcessor>();

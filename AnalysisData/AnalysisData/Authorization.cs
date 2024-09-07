@@ -6,7 +6,7 @@ namespace AnalysisData;
 
 public class Authorization 
 {
-    public async Task ConfigureAuthorizationPolicies(IServiceCollection services)
+    public void ConfigureAuthorizationPolicies(IServiceCollection services)
     {
         services.AddAuthorization(options =>
         {

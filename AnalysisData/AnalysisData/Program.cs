@@ -42,10 +42,9 @@ builder.Services.AddHttpContextAccessor();
 
 
 var authorization = new Authorization();
-await authorization.ConfigureAuthorizationPolicies(builder.Services);
+authorization.ConfigureAuthorizationPolicies(builder.Services);
 
 var app = builder.Build();
-
 
 
 if (app.Environment.IsDevelopment())

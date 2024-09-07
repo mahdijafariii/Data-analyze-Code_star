@@ -142,9 +142,6 @@ public static class ConfigService
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IResetPasswordRequestService, ResetPasswordRequestService>();
         services.AddScoped<IValidateTokenService, ValidateTokenService>();
-
-        
-
         return services;
     }
 }

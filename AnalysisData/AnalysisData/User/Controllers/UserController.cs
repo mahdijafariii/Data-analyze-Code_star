@@ -110,7 +110,8 @@ public class UserController : ControllerBase
                 FirstName = result.FirstName,
                 LastName = result.LastName,
                 PhoneNumber = result.PhoneNumber,
-                Email = result.Email
+                Email = result.Email,
+                Image = result.ImageURL ?? "User do not have information yet !"
             });
         }
 

@@ -34,6 +34,7 @@ public class UserController : ControllerBase
         return Ok(new { user.FirstName, user.LastName, user.ImageURL });
     }
 
+    [Authorize(Policy = "gold")]
     [HttpGet("permissions")]
     public async Task<IActionResult> GetPermissions()
     {
@@ -45,8 +46,8 @@ public class UserController : ControllerBase
 
         return Ok(new { image, firstName, lastName, permission });
     }
-
-    [Authorize(Policy = "gold")]
+    
+    [Authorize(Policy = "bronze")]
     [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
     {
@@ -56,6 +57,7 @@ public class UserController : ControllerBase
         return Ok(new { massage = "success" });
     }
 
+    [Authorize(Policy = "bronze")]
     [HttpPost("request-reset")]
     public async Task<IActionResult> RequestResetPassword()
     {
@@ -63,7 +65,8 @@ public class UserController : ControllerBase
         await _resetPasswordService.SendRequestToResetPassword(userClaim);
         return Ok(new { massage = "success" });
     }
-
+    
+    [Authorize(Policy = "bronze")]
     [HttpPost("upload-image")]
     public async Task<IActionResult> UploadImage(IFormFile file)
     {
@@ -78,7 +81,7 @@ public class UserController : ControllerBase
         return Ok(new { massage = "Uploaded successfully." });
     }
 
-    // [Authorize(Policy = "gold")]
+    [Authorize(Policy = "gold")]
     [HttpPut("update-user")]
     public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
     {
@@ -86,7 +89,8 @@ public class UserController : ControllerBase
         await _userService.UpdateUserInformationAsync(user, updateUserDto);
         return Ok(new { massage = "updated successfully" });
     }
-
+    
+    [Authorize(Policy = "bronze")]
     [HttpPost("new-password")]
     public async Task<IActionResult> NewPassword([FromBody] NewPasswordDto newPasswordDto)
     {
@@ -97,7 +101,7 @@ public class UserController : ControllerBase
         return Ok(new { massage = "reset successfully" });
     }
 
-
+    [Authorize(Policy = "gold")]
     [HttpGet("get-user-information")]
     public async Task<IActionResult> GetUserInformation()
     {

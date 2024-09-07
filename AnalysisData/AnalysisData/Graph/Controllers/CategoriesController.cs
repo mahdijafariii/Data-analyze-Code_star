@@ -1,5 +1,6 @@
 ﻿using AnalysisData.Graph.Dto.CategoryDto;
 using AnalysisData.Graph.Service.CategoryService.Abstraction;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.Graph.Controllers;
@@ -15,6 +16,7 @@ public class CategoriesController : ControllerBase
         _categoryService = categoryService;
     }
 
+    [Authorize(Policy = "silver")]
     [HttpGet]
     public async Task<IActionResult> GetCategories(int pageNumber = 0, int pageSize = 10)
     {
@@ -22,13 +24,15 @@ public class CategoriesController : ControllerBase
         return Ok(paginatedCategories);
     }
 
+    [Authorize(Policy = "silver")]
     [HttpPost]
     public async Task<IActionResult> AddCategory([FromBody] NewCategoryDto categoryDto)
     {
         await _categoryService.AddAsync(categoryDto);
         return Ok(new { message = "Category added!" });
     }
-
+    
+    [Authorize(Policy = "silver")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCategory(int id)
     {
@@ -42,7 +46,7 @@ public class CategoriesController : ControllerBase
         return NoContent();
     }
 
-
+    [Authorize(Policy = "silver")]
     [HttpPut]
     public async Task<IActionResult> UpdateCategory(int id, [FromBody] NewCategoryDto newCategory)
     {

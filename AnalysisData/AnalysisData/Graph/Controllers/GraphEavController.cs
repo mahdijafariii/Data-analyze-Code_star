@@ -6,6 +6,7 @@ using AnalysisData.Graph.Service.GraphServices.Relationship;
 using AnalysisData.Graph.Service.GraphServices.Relationship.Abstraction;
 using AnalysisData.Graph.Service.GraphServices.Search;
 using AnalysisData.Graph.Service.GraphServices.Search.Abstraction;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.Graph.Controllers;
@@ -28,6 +29,7 @@ public class GraphEavController : ControllerBase
         _nodeAndEdgeInfo = nodeAndEdgeInfo;
     }
 
+    [Authorize(Policy = "bronze")]
     [HttpGet("nodes")]
     public async Task<IActionResult> GetNodesAsync([FromQuery] int pageIndex = 0, [FromQuery] int pageSize = 10,
         [FromQuery] int? category = null)
@@ -37,6 +39,7 @@ public class GraphEavController : ControllerBase
         return Ok(paginatedNodes);
     }
 
+    [Authorize(Policy = "bronze")]
     [HttpGet("nodes/{nodeId}/attributes")]
     public async Task<IActionResult> GetNodeAttributes(int nodeId)
     {
@@ -45,6 +48,7 @@ public class GraphEavController : ControllerBase
         return Ok(output);
     }
 
+    [Authorize(Policy = "bronze")]
     [HttpGet("edges/{edgeId}/attributes")]
     public async Task<IActionResult> GetEdgeAttribute(int edgeId)
     {
@@ -53,6 +57,7 @@ public class GraphEavController : ControllerBase
         return Ok(output);
     }
 
+    [Authorize(Policy = "bronze")]
     [HttpGet("nodes-relation")]
     public async Task<IActionResult> GetRelationalEdgeByNodeId([FromQuery] int nodeId)
     {
@@ -65,6 +70,7 @@ public class GraphEavController : ControllerBase
         });
     }
 
+    [Authorize(Policy = "bronze")]
     [HttpGet("Search")]
     public async Task<IActionResult> SearchEntityNode([FromQuery] string searchInput, string searchType = "contain")
     {

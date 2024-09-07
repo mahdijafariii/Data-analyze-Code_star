@@ -1,5 +1,6 @@
 using AnalysisData.User.Services.RoleService.Abstraction;
 using AnalysisData.User.UserDto.RoleDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.User.Controllers;
@@ -30,7 +31,7 @@ public class RoleController : ControllerBase
         return Ok(new { message = "Role added successfully." });
     }
 
-
+    [Authorize(Policy = "gold")]
     [HttpGet]
     public async Task<IActionResult> GetAllRoles(int page = 0, int limit = 10)
     {

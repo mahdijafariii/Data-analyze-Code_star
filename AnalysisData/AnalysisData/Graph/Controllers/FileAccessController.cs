@@ -1,6 +1,7 @@
 using AnalysisData.Graph.Dto;
 using AnalysisData.Graph.Repository.UserFileRepository.Abstraction;
 using AnalysisData.Graph.Service.FilePermissionService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.Graph.Controllers;
@@ -18,20 +19,22 @@ public class FileAccessController : ControllerBase
         _userFileRepository = userFileRepository;
     }
 
+    [Authorize(Policy = "silver")]
     [HttpGet("files")]
     public async Task<IActionResult> GetFilesAsync([FromQuery] int page = 0, [FromQuery] int limit = 10)
     {
         var paginatedFiles = await _filePermissionService.GetFilesAsync(page, limit);
         return Ok(paginatedFiles);
     }
-
+    
+    [Authorize(Policy = "silver")]
     [HttpGet("users")]
     public async Task<IActionResult> GetUsersAsync([FromQuery] string username)
     {
         var users = await _filePermissionService.GetUserForAccessingFileAsync(username);
         return Ok(users);
     }
-
+    [Authorize(Policy = "silver")]
     [HttpPost("files/access")]
     public async Task<IActionResult> AccessFileToUser([FromBody] AccessFileToUserDto request)
     {
@@ -42,6 +45,7 @@ public class FileAccessController : ControllerBase
         });
     }
 
+    [Authorize(Policy = "silver")]
     [HttpGet("files/users")]
     public async Task<IActionResult> WhoAccessToThisFile([FromQuery] int fileId)
     {

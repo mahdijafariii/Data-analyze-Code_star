@@ -3,7 +3,6 @@ using AnalysisData.Exception.UserException;
 using AnalysisData.User.Model;
 using AnalysisData.User.Services.ValidationService.Abstraction;
 
-namespace AnalysisData.User.Services.ValidationService;
 
 public class ValidationService : IValidationService
 {

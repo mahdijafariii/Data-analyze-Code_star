@@ -4,7 +4,6 @@ using AnalysisData.User.Repository.UserRepository.Abstraction;
 using AnalysisData.User.Services.S3FileStorageService.Abstraction;
 using AnalysisData.User.Services.UserService.Abstraction;
 
-namespace AnalysisData.User.Services.UserService;
 
 public class UploadImageService : IUploadImageService
 {

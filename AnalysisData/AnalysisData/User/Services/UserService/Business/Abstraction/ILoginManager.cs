@@ -1,8 +1,8 @@
-﻿using AnalysisData.User.UserDto.UserDto;
+﻿using AnalysisData.User.Model;
+using AnalysisData.User.UserDto.UserDto;
 
-namespace AnalysisData.User.Services.UserService.Business.Abstraction;
 
 public interface ILoginManager
 {
-    Task<Model.User> LoginAsync(UserLoginDto userLoginDto);
+    Task<User> LoginAsync(UserLoginDto userLoginDto);
 }

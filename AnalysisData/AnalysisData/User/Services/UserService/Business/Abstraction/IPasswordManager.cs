@@ -1,8 +1,9 @@
-﻿namespace AnalysisData.User.Services.UserService.Business.Abstraction;
+﻿
+using AnalysisData.User.Model;
 
 public interface IPasswordManager
 {
-    Task ResetPasswordAsync(Model.User user, string password, string confirmPassword,
+    Task ResetPasswordAsync(User user, string password, string confirmPassword,
         string resetPasswordToken);
-    Task NewPasswordAsync(Model.User user, string oldPassword, string password, string confirmPassword);
+    Task NewPasswordAsync(User user, string oldPassword, string password, string confirmPassword);
 }

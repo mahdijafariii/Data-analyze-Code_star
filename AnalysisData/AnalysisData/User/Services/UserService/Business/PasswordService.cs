@@ -1,10 +1,8 @@
 ﻿using AnalysisData.Exception.UserException;
+using AnalysisData.User.Model;
 using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
-using AnalysisData.User.Services.UserService.Abstraction;
-using AnalysisData.User.Services.UserService.Business.Abstraction;
 using AnalysisData.User.Services.ValidationService.Abstraction;
 
-namespace AnalysisData.User.Services.UserService.Business;
 
 public class PasswordService : IPasswordService
 {
@@ -17,7 +15,7 @@ public class PasswordService : IPasswordService
         _validationService = validationService ?? throw new ArgumentNullException(nameof(validationService));
     }
 
-    public void ValidatePassword(Model.User user, string password)
+    public void ValidatePassword(User user, string password)
     {
         if (user.Password != _passwordHasher.HashPassword(password))
         {

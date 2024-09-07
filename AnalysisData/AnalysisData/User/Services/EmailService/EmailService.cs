@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Mail;
+using AnalysisData.Exception;
 
 namespace AnalysisData.User.Services.EmailService;
 
@@ -22,7 +23,7 @@ public class EmailService : IEmailService
 
     public async Task SendPasswordResetEmail(string toEmail, string resetLink)
     {
-        string htmlTemplatePath = @"User\Services\EmailService\email-template.html";
+        string htmlTemplatePath = @"Assets\email-template.html";
         string htmlContent = File.ReadAllText(htmlTemplatePath);
         htmlContent = htmlContent.Replace("{resetLink}", resetLink);
 
@@ -51,7 +52,7 @@ public class EmailService : IEmailService
         catch (SmtpException ex)
         {
             Console.WriteLine($"SMTP Exception: {ex.Message}");
-            throw;
+            throw new OperationFailedException();
         }
     }
 }

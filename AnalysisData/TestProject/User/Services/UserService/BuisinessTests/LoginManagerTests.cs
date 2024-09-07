@@ -3,7 +3,6 @@ using AnalysisData.User.CookieService.abstractions;
 using AnalysisData.User.JwtService.abstractions;
 using AnalysisData.User.Repository.UserRepository.Abstraction;
 using AnalysisData.User.Services.UserService.Business;
-using AnalysisData.User.Services.UserService.Business.Abstraction;
 using AnalysisData.User.UserDto.UserDto;
 using NSubstitute;
 

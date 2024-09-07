@@ -1,8 +1,6 @@
 ﻿using AnalysisData.User.Repository.UserRepository.Abstraction;
 using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
 using AnalysisData.User.Services.TokenService.Abstraction;
-using AnalysisData.User.Services.UserService.Business;
-using AnalysisData.User.Services.UserService.Business.Abstraction;
 using AnalysisData.User.Services.ValidationService.Abstraction;
 using NSubstitute;
 

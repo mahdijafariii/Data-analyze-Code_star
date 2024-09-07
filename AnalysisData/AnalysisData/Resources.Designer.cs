@@ -249,6 +249,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Token Invalid ! .
+        /// </summary>
+        internal static string TokenIsInvalidException {
+            get {
+                return ResourceManager.GetString("TokenIsInvalidException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Token not found in cookies!.
         /// </summary>
         internal static string TokenNotFoundInCookieException {

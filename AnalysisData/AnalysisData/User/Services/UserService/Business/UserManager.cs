@@ -19,7 +19,7 @@ public class UserManager : IUserManager
         _validationService = validationService;
     }
 
-    public async Task<Model.User> GetUserAsync(ClaimsPrincipal userClaim)
+    public async Task<Model.User> GetUserFromUserClaimsAsync(ClaimsPrincipal userClaim)
     {
         var userName = userClaim.FindFirstValue("username");
         var user = await _userRepository.GetUserByUsernameAsync(userName);

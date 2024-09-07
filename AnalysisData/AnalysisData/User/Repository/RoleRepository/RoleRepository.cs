@@ -21,7 +21,7 @@ public class RoleRepository : IRoleRepository
 
     public async Task<Role> GetRoleByNameAsync(string roleName)
     {
-        return await _context.Roles.SingleOrDefaultAsync(x => x.RoleName == roleName);
+        return await _context.Roles.SingleOrDefaultAsync(x => x.RoleName.ToLower() == roleName.ToLower());
     }
 
     public async Task AddRoleAsync(Role role)

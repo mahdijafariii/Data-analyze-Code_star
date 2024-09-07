@@ -34,7 +34,7 @@ public class UserManagerTests
         _userRepository.GetUserByUsernameAsync("testUser").Returns(expectedUser);
 
         // Act
-        var result = await _sut.GetUserAsync(userClaim);
+        var result = await _sut.GetUserFromUserClaimsAsync(userClaim);
 
         // Assert
         Assert.NotNull(result);
@@ -60,7 +60,7 @@ public class UserManagerTests
         _userRepository.GetUserByUsernameAsync("nonExistingUser").Returns((AnalysisData.User.Model.User)null);
 
         // Act & Assert
-        await Assert.ThrowsAsync<UserNotFoundException>(() => _sut.GetUserAsync(userClaim));
+        await Assert.ThrowsAsync<UserNotFoundException>(() => _sut.GetUserFromUserClaimsAsync(userClaim));
     }
     [Fact]
     public async Task UpdateUserInformationAsync_ShouldReturnTrue_WhenDataIsValid()

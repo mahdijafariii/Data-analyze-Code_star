@@ -224,6 +224,31 @@ namespace AnalysisData.Migrations
                     b.ToTable("ValueNodes");
                 });
 
+            modelBuilder.Entity("AnalysisData.User.Model.PasswordResetToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Expiration")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Tokens");
+                });
+
             modelBuilder.Entity("AnalysisData.User.Model.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -310,7 +335,7 @@ namespace AnalysisData.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("31a2df40-d66d-4a7e-967c-6c3b7561da0f"),
+                            Id = new Guid("12cb995a-4885-4ec3-9a3b-126b0ff89602"),
                             Email = "admin@gmail.com",
                             FirstName = "admin",
                             LastName = "admin",
@@ -425,6 +450,17 @@ namespace AnalysisData.Migrations
                     b.Navigation("Attribute");
 
                     b.Navigation("Entity");
+                });
+
+            modelBuilder.Entity("AnalysisData.User.Model.PasswordResetToken", b =>
+                {
+                    b.HasOne("AnalysisData.User.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AnalysisData.User.Model.User", b =>

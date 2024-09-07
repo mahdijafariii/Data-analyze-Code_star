@@ -31,12 +31,15 @@ using AnalysisData.User.CookieService;
 using AnalysisData.User.CookieService.abstractions;
 using AnalysisData.User.JwtService;
 using AnalysisData.User.JwtService.abstractions;
+using AnalysisData.User.Repository.PasswordResetTokensRepository;
+using AnalysisData.User.Repository.PasswordResetTokensRepository.Abstraction;
 using AnalysisData.User.Repository.RoleRepository;
 using AnalysisData.User.Repository.RoleRepository.Abstraction;
 using AnalysisData.User.Repository.UserRepository;
 using AnalysisData.User.Repository.UserRepository.Abstraction;
 using AnalysisData.User.Services.AdminService;
 using AnalysisData.User.Services.AdminService.Abstraction;
+using AnalysisData.User.Services.EmailService;
 using AnalysisData.User.Services.PermissionService;
 using AnalysisData.User.Services.PermissionService.Abstraction;
 using AnalysisData.User.Services.RoleService;
@@ -45,6 +48,7 @@ using AnalysisData.User.Services.S3FileStorageService;
 using AnalysisData.User.Services.S3FileStorageService.Abstraction;
 using AnalysisData.User.Services.SecurityPasswordService;
 using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
+using AnalysisData.User.Services.TokenService.Abstraction;
 using AnalysisData.User.Services.UserService;
 using AnalysisData.User.Services.UserService.Abstraction;
 using AnalysisData.User.Services.UserService.Business;
@@ -73,6 +77,8 @@ public static class ConfigService
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IFileUploadedRepository, FileUploadedRepository>();
         services.AddScoped<IUserFileRepository, UserFileRepository>();
+        services.AddScoped<IPasswordResetTokensRepository, PasswordResetTokensRepository>();
+
         return services;
     }
 
@@ -122,6 +128,13 @@ public static class ConfigService
         services.AddScoped<IValueNodeProcessor, ValueNodeProcessor>();
         services.AddScoped<IEntityEdgeRecordProcessor, EntityEdgeRecordProcessor>();
         services.AddScoped<IValueEdgeProcessor, ValueEdgeProcessor>();
+        services.AddScoped<IEdgeToDbService, EdgeToDbService>();
+        services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IResetPasswordService, ResetPasswordService>();
+        services.AddScoped<IValidateTokenService, ValidateTokenService>();
+
+        
+
         return services;
     }
 }

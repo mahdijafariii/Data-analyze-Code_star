@@ -90,4 +90,7 @@
     <data name="PasswordHasherInputNull" xml:space="preserve">
         <value>password is null!</value>
     </data>
+    <data name="TokenIsInvalidException" xml:space="preserve">
+        <value>Token Invalid ! </value>
+    </data>
 </root>

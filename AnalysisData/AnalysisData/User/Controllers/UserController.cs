@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using AnalysisData.User.Services.EmailService;
 using AnalysisData.User.Services.PermissionService.Abstraction;
 using AnalysisData.User.Services.UserService.Abstraction;
 using AnalysisData.User.UserDto.PasswordDto;
@@ -15,12 +16,15 @@ public class UserController : ControllerBase
     private readonly IUserService _userService;
     private readonly IPermissionService _permissionService;
     private readonly IUploadImageService _uploadImageService;
+    private readonly IResetPasswordService _resetPasswordService;
 
-    public UserController(IUserService userService, IPermissionService permissionService,IUploadImageService uploadImageService)
+    public UserController(IUserService userService, IPermissionService permissionService,
+        IUploadImageService uploadImageService, IResetPasswordService resetPasswordService)
     {
         _userService = userService;
         _permissionService = permissionService;
         _uploadImageService = uploadImageService;
+        _resetPasswordService = resetPasswordService;
     }
 
     [HttpPost("login")]
@@ -41,13 +45,22 @@ public class UserController : ControllerBase
 
         return Ok(new { image, firstName, lastName, permission });
     }
+
     [Authorize(Policy = "gold")]
-    [HttpPost("reset-passadword")]
+    [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
     {
         var userClaim = User;
-        await _userService.ResetPasswordAsync(userClaim, resetPasswordDto.NewPassword, resetPasswordDto.ConfirmPassword);
-        
+        await _userService.ResetPasswordAsync(userClaim, resetPasswordDto.NewPassword,
+            resetPasswordDto.ConfirmPassword, resetPasswordDto.ResetPasswordToken);
+        return Ok(new { massage = "success" });
+    }
+
+    [HttpPost("request-reset")]
+    public async Task<IActionResult> RequestResetPassword()
+    {
+        var userClaim = User;
+        await _resetPasswordService.SendRequestToResetPassword(userClaim);
         return Ok(new { massage = "success" });
     }
 

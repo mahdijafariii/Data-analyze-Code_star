@@ -1,5 +1,7 @@
-﻿
+﻿using AnalysisData.Exception.UserException;
+using AnalysisData.User.Repository.UserRepository.Abstraction;
 using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
+using AnalysisData.User.Services.TokenService.Abstraction;
 using AnalysisData.User.Services.UserService.Abstraction;
 using AnalysisData.User.Services.UserService.Business.Abstraction;
 using AnalysisData.User.Services.ValidationService.Abstraction;
@@ -11,19 +13,31 @@ public class PasswordManager : IPasswordManager
     private readonly IPasswordHasher _passwordHasher;
     private readonly IPasswordService _passwordService;
     private readonly IValidationService _validationService;
-    
-    public PasswordManager(IPasswordHasher passwordHasher, IPasswordService passwordService, IValidationService validationService)
+    private readonly IValidateTokenService _validateTokenService;
+    private readonly IUserRepository _userRepository;
+
+    public PasswordManager(IPasswordHasher passwordHasher, IPasswordService passwordService,
+        IValidationService validationService, IValidateTokenService validateTokenService,
+        IUserRepository userRepository)
     {
         _passwordHasher = passwordHasher;
         _passwordService = passwordService;
         _validationService = validationService;
+        _validateTokenService = validateTokenService;
+        _userRepository = userRepository;
     }
 
-    public async Task ResetPasswordAsync(Model.User user, string password, string confirmPassword)
+    public async Task ResetPasswordAsync(Model.User user, string password, string confirmPassword,
+        string resetPasswordToken)
     {
-        _passwordService.ValidatePasswordAndConfirmation(password, confirmPassword);
+        await _validateTokenService.ValidateResetToken(user.Id, resetPasswordToken);
+        if (password != confirmPassword)
+        {
+            throw new PasswordMismatchException();
+        }
         _validationService.PasswordCheck(password);
         user.Password = _passwordHasher.HashPassword(password);
+        await _userRepository.UpdateUserAsync(user.Id, user);
     }
 
     public async Task NewPasswordAsync(Model.User user, string oldPassword, string password, string confirmPassword)

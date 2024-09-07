@@ -1,6 +1,4 @@
 ﻿using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
-using CsvHelper;
-using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 
 namespace AnalysisData.Graph.Service.ServiceBusiness;
 
@@ -22,22 +20,18 @@ public class NodeToDbService : INodeToDbService
 
     public async Task ProcessCsvFileAsync(IFormFile file, string id, int fileId)
     {
-        var requiredHeaders = new List<string> { id };
-    
         var csv = _csvReaderService.CreateCsvReader(file);
-        var headers = _csvReaderService.ReadHeaders(csv, requiredHeaders);
-    
+        var headers = _csvReaderService.ReadHeaders(csv, new List<string> { id });
+        
         await _headerProcessor.ProcessHeadersAsync(headers, id);
         
         csv = _csvReaderService.CreateCsvReader(file);
-        headers = _csvReaderService.ReadHeaders(csv, requiredHeaders);
-    
+        headers = _csvReaderService.ReadHeaders(csv, new List<string> { id });
+        
         var entityNodes = await _nodeRecordProcessor.ProcessEntityNodesAsync(csv, headers, id, fileId);
         
         csv = _csvReaderService.CreateCsvReader(file);
-        headers = _csvReaderService.ReadHeaders(csv, requiredHeaders);
-    
+        headers = _csvReaderService.ReadHeaders(csv, new List<string> { id });
         await _valueNodeProcessor.ProcessValueNodesAsync(csv, entityNodes, headers, id);
     }
-
 }

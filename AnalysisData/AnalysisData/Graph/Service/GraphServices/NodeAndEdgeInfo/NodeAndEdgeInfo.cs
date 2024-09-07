@@ -1,7 +1,10 @@
 using System.Security.Claims;
 using AnalysisData.Exception.GraphException;
+using AnalysisData.Graph.Dto.EdgeDto;
+using AnalysisData.Graph.Dto.NodeDto;
 using AnalysisData.Graph.Repository.GraphEdgeRepository;
 using AnalysisData.Graph.Repository.GraphNodeRepository;
+using AnalysisData.Graph.Service.GraphServices.NodeAndEdgeInfo.Abstraction;
 
 namespace AnalysisData.Graph.Service.GraphServices.NodeAndEdgeInfo;
 
@@ -21,7 +24,7 @@ public class NodeAndEdgeInfo : INodeAndEdgeInfo
     {
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
-        IEnumerable<dynamic> result = Enumerable.Empty<dynamic>();
+        var result = Enumerable.Empty<NodeInformationDto>();
         var usernameGuid = Guid.Parse(username);
         if (role != "dataanalyst")
         {
@@ -50,7 +53,7 @@ public class NodeAndEdgeInfo : INodeAndEdgeInfo
     {
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
-        var result = Enumerable.Empty<dynamic>();
+        var result = Enumerable.Empty<EdgeInformationDto>();
         if (role != "dataanalyst")
         {
             result = await _graphEdgeRepository.GetEdgeAttributeValues(edgeId);

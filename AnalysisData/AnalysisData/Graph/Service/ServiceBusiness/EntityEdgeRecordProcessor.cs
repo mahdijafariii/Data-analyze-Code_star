@@ -1,6 +1,4 @@
-﻿
-using AnalysisData.Exception;
-using AnalysisData.Exception.GraphException;
+﻿using AnalysisData.Exception.GraphException;
 using AnalysisData.Graph.Model.Edge;
 using AnalysisData.Graph.Model.Node;
 using AnalysisData.Graph.Repository.EdgeRepository.Abstraction;
@@ -25,7 +23,7 @@ public class EntityEdgeRecordProcessor : IEntityEdgeRecordProcessor
         _entityEdgeRepository = entityEdgeRepository;
     }
 
-    public async Task<IEnumerable<EntityEdge>> ProcessEntityEdgesAsync(CsvReader csv, string from, string to)
+    public async Task<IEnumerable<EntityEdge>> ProcessEntityEdgesAsync(ICsvReader csv, string from, string to)
     {
         var entityEdges = new List<EntityEdge>();
         var batch = new List<EntityEdge>();
@@ -45,7 +43,7 @@ public class EntityEdgeRecordProcessor : IEntityEdgeRecordProcessor
         return entityEdges;
     }
 
-    private async Task<EntityEdge> CreateEntityEdgeAsync(CsvReader csv, string from, string to)
+    private async Task<EntityEdge> CreateEntityEdgeAsync(ICsvReader csv, string from, string to)
     {
         var entityFrom = csv.GetField(from);
         var entityTo = csv.GetField(to);

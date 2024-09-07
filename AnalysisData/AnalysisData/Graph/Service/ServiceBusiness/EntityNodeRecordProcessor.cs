@@ -16,7 +16,7 @@ public class EntityNodeRecordProcessor : INodeRecordProcessor
         _batchSize = batchSize;
     }
 
-    public async Task<IEnumerable<EntityNode>> ProcessEntityNodesAsync(CsvReader csv, IEnumerable<string> headers, string id, int fileId)
+    public async Task<IEnumerable<EntityNode>> ProcessEntityNodesAsync(ICsvReader csv, IEnumerable<string> headers, string id, int fileId)
     {
         var entityNodes = new List<EntityNode>();
         var batch = new List<EntityNode>();
@@ -49,5 +49,4 @@ public class EntityNodeRecordProcessor : INodeRecordProcessor
     {
         await _entityNodeRepository.AddRangeAsync(batch);
     }
-    
 }

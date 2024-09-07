@@ -1,3 +1,4 @@
+using System.Globalization;
 using AnalysisData.Graph.Service.ServiceBusiness;
 using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
 using AnalysisData.Graph.Repository.CategoryRepository;
@@ -15,13 +16,17 @@ using AnalysisData.Graph.Repository.UserFileRepository.Abstraction;
 using AnalysisData.Graph.Service.CategoryService;
 using AnalysisData.Graph.Service.CategoryService.Abstraction;
 using AnalysisData.Graph.Service.FilePermissionService;
-using AnalysisData.Graph.Service.FilePermissionService.AccessMangement;
+using AnalysisData.Graph.Service.FilePermissionService.AccessManagement;
 using AnalysisData.Graph.Service.FileUploadService;
 using AnalysisData.Graph.Service.FileUploadService.Abstraction;
 using AnalysisData.Graph.Service.GraphServices.AllNodesData;
+using AnalysisData.Graph.Service.GraphServices.AllNodesData.Abstraction;
 using AnalysisData.Graph.Service.GraphServices.NodeAndEdgeInfo;
+using AnalysisData.Graph.Service.GraphServices.NodeAndEdgeInfo.Abstraction;
 using AnalysisData.Graph.Service.GraphServices.Relationship;
+using AnalysisData.Graph.Service.GraphServices.Relationship.Abstraction;
 using AnalysisData.Graph.Service.GraphServices.Search;
+using AnalysisData.Graph.Service.GraphServices.Search.Abstraction;
 using AnalysisData.User.CookieService;
 using AnalysisData.User.CookieService.abstractions;
 using AnalysisData.User.JwtService;
@@ -46,8 +51,12 @@ using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
 using AnalysisData.User.Services.TokenService.Abstraction;
 using AnalysisData.User.Services.UserService;
 using AnalysisData.User.Services.UserService.Abstraction;
+using AnalysisData.User.Services.UserService.Business;
+using AnalysisData.User.Services.UserService.Business.Abstraction;
 using AnalysisData.User.Services.ValidationService;
 using AnalysisData.User.Services.ValidationService.Abstraction;
+using CsvHelper;
+using CsvHelper.Configuration;
 
 namespace AnalysisData;
 
@@ -75,14 +84,31 @@ public static class ConfigService
 
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
+        var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture);
+        services.AddSingleton(csvConfig);
+        
+        services.AddScoped<CsvReader>(provider =>
+        {
+            var config = provider.GetRequiredService<CsvConfiguration>();
+            var textReader = new StringReader("");
+            return new CsvReader(textReader, config);
+        });
+        services.AddScoped<ICsvReader, CsvReaderWrapper>();
+        services.AddScoped<ICsvReaderService, CsvReaderService>();
+        services.AddScoped<IHeaderValidator, HeaderValidator>();
+        services.AddScoped<ICsvHeaderReader, CsvHeaderReader>();
+        services.AddScoped<IEdgeToDbService, EdgeToDbService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<ICookieService, CookieService>();
         services.AddScoped<IPermissionService, PermissionService>();
         services.AddScoped<IValidationService, ValidationService>();
+        services.AddScoped<ILoginManager, LoginManager>();
         services.AddScoped<INodeToDbService, NodeToDbService>();
-        services.AddScoped<ICsvReaderService, CsvReaderService>();
+        services.AddScoped<IUserManager, UserManager>();
+        services.AddScoped<IPasswordManager, PasswordManager>();
         services.AddScoped<IHeaderProcessor, HeaderProcessor>();
+        services.AddScoped<IPasswordService, PasswordService>();
         services.AddScoped<INodeRecordProcessor, EntityNodeRecordProcessor>();
         services.AddScoped<IFromToProcessor, FromToProcessor>();
         services.AddScoped<INodePaginationService, NodePaginationService>();

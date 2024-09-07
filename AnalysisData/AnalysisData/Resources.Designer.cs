@@ -177,6 +177,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Header(s) Node is not accessible for this user! {0}.
+        /// </summary>
+        internal static string NodeNotAccessibleForUserException {
+            get {
+                return ResourceManager.GetString("NodeNotAccessibleForUserException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Node was not found!.
         /// </summary>
         internal static string NodeNotFoundException {
@@ -200,6 +209,15 @@ namespace AnalysisData {
         internal static string NoFileUploadedException {
             get {
                 return ResourceManager.GetString("NoFileUploadedException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to password is null!.
+        /// </summary>
+        internal static string PasswordHasherInputNull {
+            get {
+                return ResourceManager.GetString("PasswordHasherInputNull", resourceCulture);
             }
         }
         

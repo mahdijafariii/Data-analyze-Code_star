@@ -1,28 +1,29 @@
-﻿using AnalysisData.User.Repository.UserRepository.Abstraction;
-using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
-using AnalysisData.User.Services.TokenService.Abstraction;
-using AnalysisData.User.Services.ValidationService.Abstraction;
+﻿using AnalysisData.Repositories.UserRepository.Abstraction;
+using AnalysisData.Services.TokenService.Abstraction;
+using AnalysisData.Services.UserService.UserService;
+using AnalysisData.Services.UserService.UserService.Business.Abstraction;
+using AnalysisData.Services.ValidationService.Abstraction;
 using NSubstitute;
 
 namespace TestProject.User.Services.UserService.BuisinessTests;
 
 public class PasswordManagerTests
 {
-    private readonly IPasswordHasher _passwordHasher;
-    private readonly IPasswordService _passwordService;
+    private readonly IPasswordHasherManager _passwordHasherManager;
+    private readonly IValidtionPasswordManager _validtionPasswordManager;
     private readonly IValidationService _validationService;
     private readonly IValidateTokenService _validateTokenService;
     private readonly IUserRepository _userRepository;
-    private readonly PasswordManager _sut;
+    private readonly PasswordService _sut;
 
     public PasswordManagerTests()
     {
-        _passwordHasher = Substitute.For<IPasswordHasher>();
-        _passwordService = Substitute.For<IPasswordService>();
+        _passwordHasherManager = Substitute.For<IPasswordHasherManager>();
+        _validtionPasswordManager = Substitute.For<IValidtionPasswordManager>();
         _validationService = Substitute.For<IValidationService>();
         _validateTokenService = Substitute.For<IValidateTokenService>();
         _userRepository = Substitute.For<IUserRepository>();
-        _sut = new PasswordManager(_passwordHasher, _passwordService, _validationService,_validateTokenService,_userRepository);
+        _sut = new PasswordService(_passwordHasherManager, _validtionPasswordManager, _validationService,_validateTokenService,_userRepository);
     }
 
     [Fact]
@@ -30,7 +31,7 @@ public class PasswordManagerTests
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var user = new AnalysisData.User.Model.User(){Id = userId, Password = "asd"};
+        var user = new AnalysisData.Models.UserModel.User(){Id = userId, Password = "asd"};
         var password = "newPassword";
         var confirmPassword = "newPassword";
         var token = "321231";
@@ -47,28 +48,28 @@ public class PasswordManagerTests
     public async Task ResetPasswordAsync_ShouldCallHashPasswordAndSetUserPassword_WhenCalled()
     {
         // Arrange
-        var user = new AnalysisData.User.Model.User();
+        var user = new AnalysisData.Models.UserModel.User();
         var password = "newPassword";
         var hashedPassword = "hashedPassword";
         var confirmPassword = "newPassword";
         var token = "321231";
 
     
-        _passwordHasher.HashPassword(password).Returns(hashedPassword);
+        _passwordHasherManager.HashPassword(password).Returns(hashedPassword);
     
         // Act
         await _sut.ResetPasswordAsync(user, password, confirmPassword,token);
     
         // Assert
         Assert.Equal(hashedPassword, user.Password);
-        _passwordHasher.Received().HashPassword(password);
+        _passwordHasherManager.Received().HashPassword(password);
     }
 
     [Fact]
     public async Task NewPasswordAsync_ShouldCallValidatePassword_WhenCalled()
     {
         // Arrange
-        var user = new AnalysisData.User.Model.User();
+        var user = new AnalysisData.Models.UserModel.User();
         var oldPassword = "oldPassword";
         var password = "newPassword";
         var confirmPassword = "newPassword";
@@ -77,14 +78,14 @@ public class PasswordManagerTests
         await _sut.NewPasswordAsync(user, oldPassword, password, confirmPassword);
 
         // Assert
-        _passwordService.Received().ValidatePassword(user, oldPassword);
+        _validtionPasswordManager.Received().ValidatePassword(user, oldPassword);
     }
 
     [Fact]
     public async Task NewPasswordAsync_ShouldCallValidatePasswordAndConfirmation_WhenCalled()
     {
         // Arrange
-        var user = new AnalysisData.User.Model.User();
+        var user = new AnalysisData.Models.UserModel.User();
         var oldPassword = "oldPassword";
         var password = "newPassword";
         var confirmPassword = "newPassword";
@@ -93,6 +94,6 @@ public class PasswordManagerTests
         await _sut.NewPasswordAsync(user, oldPassword, password, confirmPassword);
 
         // Assert
-        _passwordService.Received().ValidatePasswordAndConfirmation(password, confirmPassword);
+        _validtionPasswordManager.Received().ValidatePasswordAndConfirmation(password, confirmPassword);
     }
 }

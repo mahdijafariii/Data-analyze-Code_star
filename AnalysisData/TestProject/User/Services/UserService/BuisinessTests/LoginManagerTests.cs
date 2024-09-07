@@ -1,9 +1,11 @@
-﻿using AnalysisData.Exception.UserException;
-using AnalysisData.User.CookieService.abstractions;
-using AnalysisData.User.JwtService.abstractions;
-using AnalysisData.User.Repository.UserRepository.Abstraction;
-using AnalysisData.User.Services.UserService.Business;
-using AnalysisData.User.UserDto.UserDto;
+﻿using AnalysisData.Dtos.UserDto.UserDto;
+using AnalysisData.Exception.PasswordException;
+using AnalysisData.Exception.UserException;
+using AnalysisData.Repositories.UserRepository.Abstraction;
+using AnalysisData.Services.CookieService.Abstractions;
+using AnalysisData.Services.JwtService.Abstraction;
+using AnalysisData.Services.UserService.UserService.Business;
+using AnalysisData.Services.UserService.UserService.Business.Abstraction;
 using NSubstitute;
 
 namespace TestProject.User.Services.UserService.BuisinessTests;
@@ -11,7 +13,7 @@ namespace TestProject.User.Services.UserService.BuisinessTests;
 public class LoginManagerTests
 {
     private readonly IUserRepository _userRepository;
-    private readonly IPasswordService _passwordService;
+    private readonly IValidtionPasswordManager _validtionPasswordManager;
     private readonly IJwtService _jwtService;
     private readonly ICookieService _cookieService;
     private readonly LoginManager _sut;
@@ -19,10 +21,10 @@ public class LoginManagerTests
     public LoginManagerTests()
     {
         _userRepository = Substitute.For<IUserRepository>();
-        _passwordService = Substitute.For<IPasswordService>();
+        _validtionPasswordManager = Substitute.For<IValidtionPasswordManager>();
         _jwtService = Substitute.For<IJwtService>();
         _cookieService = Substitute.For<ICookieService>();
-        _sut = new LoginManager(_userRepository, _passwordService, _jwtService, _cookieService);
+        _sut = new LoginManager(_userRepository, _validtionPasswordManager, _jwtService, _cookieService);
     }
     
     [Fact]
@@ -36,14 +38,14 @@ public class LoginManagerTests
             Password = "ValidPassword123!",
             RememberMe = true
         };
-        var user = new AnalysisData.User.Model.User()
+        var user = new AnalysisData.Models.UserModel.User()
         {
             Username = "testUser",
             Password = "ValidPassword123",
         };
 
         _userRepository.GetUserByUsernameAsync(userLoginDto.UserName).Returns(user);
-        _passwordService.ValidatePassword(user, userLoginDto.Password);
+        _validtionPasswordManager.ValidatePassword(user, userLoginDto.Password);
         _jwtService.GenerateJwtToken(userLoginDto.UserName).Returns(token);
 
         // Act
@@ -66,7 +68,7 @@ public class LoginManagerTests
         };
 
         _userRepository.GetUserByUsernameAsync(userLoginDto.UserName)
-            .Returns(Task.FromResult<AnalysisData.User.Model.User>(null));
+            .Returns(Task.FromResult<AnalysisData.Models.UserModel.User>(null));
 
         // Act & Assert
         await Assert.ThrowsAsync<UserNotFoundException>(() => _sut.LoginAsync(userLoginDto));
@@ -82,10 +84,10 @@ public class LoginManagerTests
             Password = "InvalidPassword123!",
             RememberMe = false
         };
-        var user = new AnalysisData.User.Model.User() { Username = "testUser", Password = "HashedPassword" };
+        var user = new AnalysisData.Models.UserModel.User() { Username = "testUser", Password = "HashedPassword" };
 
         _userRepository.GetUserByUsernameAsync(userLoginDto.UserName).Returns(Task.FromResult(user));
-        _passwordService.When(x => x.ValidatePassword(user, userLoginDto.Password))
+        _validtionPasswordManager.When(x => x.ValidatePassword(user, userLoginDto.Password))
             .Do(x => throw new PasswordMismatchException());
 
         // Act & Assert

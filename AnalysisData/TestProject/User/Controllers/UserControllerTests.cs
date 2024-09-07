@@ -1,9 +1,9 @@
 ﻿using System.Security.Claims;
-using AnalysisData.User.Controllers;
-using AnalysisData.User.Services.PermissionService.Abstraction;
-using AnalysisData.User.Services.UserService.Abstraction;
-using AnalysisData.User.UserDto.PasswordDto;
-using AnalysisData.User.UserDto.UserDto;
+using AnalysisData.Controllers.UserController;
+using AnalysisData.Dtos.UserDto.PasswordDto;
+using AnalysisData.Dtos.UserDto.UserDto;
+using AnalysisData.Services.PermissionService.Abstraction;
+using AnalysisData.Services.UserService.UserService.Abstraction;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -17,15 +17,15 @@ public class UserControllerTests
     private readonly IUserService _userService;
     private readonly IPermissionService _permissionService;
     private readonly IUploadImageService _uploadImageService;
-    private readonly IResetPasswordService _resetPasswordService;
+    private readonly IResetPasswordRequestService _resetPasswordRequestService;
 
     public UserControllerTests()
     {
         _userService = Substitute.For<IUserService>();
         _permissionService = Substitute.For<IPermissionService>();
         _uploadImageService = Substitute.For<IUploadImageService>();
-        _resetPasswordService = Substitute.For<IResetPasswordService>();
-        _sut = new UserController(_userService, _permissionService, _uploadImageService,_resetPasswordService);
+        _resetPasswordRequestService = Substitute.For<IResetPasswordRequestService>();
+        _sut = new UserController(_userService, _permissionService, _uploadImageService,_resetPasswordRequestService);
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class UserControllerTests
             UserName = "test",
             Password = "Test@123"
         };
-        var userDto = new AnalysisData.User.Model.User()
+        var userDto = new AnalysisData.Models.UserModel.User()
         {
             FirstName = "test",
             LastName = "test",
@@ -238,7 +238,7 @@ public class UserControllerTests
     public async Task GetUserInformation_ShouldReturnOk_WhenUserExist()
     {
         // Arrange
-        var userDto = new AnalysisData.User.Model.User()
+        var userDto = new AnalysisData.Models.UserModel.User()
         {
             FirstName = "test",
             LastName = "test",
@@ -281,7 +281,7 @@ public class UserControllerTests
         // Arrange
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
 
-        _userService.GetUserAsync(claimsPrincipal).Returns((AnalysisData.User.Model.User)null);
+        _userService.GetUserAsync(claimsPrincipal).Returns((AnalysisData.Models.UserModel.User)null);
 
         _sut.ControllerContext = new ControllerContext
         {

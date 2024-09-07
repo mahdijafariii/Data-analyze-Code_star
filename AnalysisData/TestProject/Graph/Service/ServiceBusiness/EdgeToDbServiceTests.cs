@@ -1,6 +1,7 @@
-﻿using AnalysisData.Graph.Model.Edge;
-using AnalysisData.Graph.Service.ServiceBusiness;
-using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
+﻿using AnalysisData.Models.GraphModel.Edge;
+using AnalysisData.Services.GraphService.Business.CsvManager.Abstractions;
+using AnalysisData.Services.GraphService.Business.EdgeManager;
+using AnalysisData.Services.GraphService.Business.EdgeManager.Abstractions;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
 
@@ -11,19 +12,19 @@ public class EdgeToDbServiceTests
     private readonly IValueEdgeProcessor _valueEdgeProcessor;
     private readonly IEntityEdgeRecordProcessor _entityEdgeRecordProcessor;
     private readonly IFromToProcessor _fromToProcessor;
-    private readonly ICsvReaderService _csvReaderService;
-    private readonly EdgeToDbService _sut;
+    private readonly ICsvReaderManager _csvReaderManager;
+    private readonly EdgeToDbProcessor _sut;
 
     public EdgeToDbServiceTests()
     {
         _valueEdgeProcessor = Substitute.For<IValueEdgeProcessor>();
         _entityEdgeRecordProcessor = Substitute.For<IEntityEdgeRecordProcessor>();
         _fromToProcessor = Substitute.For<IFromToProcessor>();
-        _csvReaderService = Substitute.For<ICsvReaderService>();
+        _csvReaderManager = Substitute.For<ICsvReaderManager>();
 
-        _sut = new EdgeToDbService(
+        _sut = new EdgeToDbProcessor(
             _fromToProcessor,
-            _csvReaderService,
+            _csvReaderManager,
             _entityEdgeRecordProcessor,
             _valueEdgeProcessor
         );
@@ -34,7 +35,7 @@ public class EdgeToDbServiceTests
     {
         // Arrange
         var file = Substitute.For<IFormFile>(); 
-        var csvReader = Substitute.For<ICsvReader>();
+        var csvReader = Substitute.For<ICsvReaderProcessor>();
 
         var headers = new List<string> { "From", "To", "OtherHeader" };
         var entityEdges = new List<EntityEdge>
@@ -43,13 +44,13 @@ public class EdgeToDbServiceTests
             new EntityEdge { Id = 2 }
         };
 
-        _csvReaderService.CreateCsvReader(file).Returns(csvReader);
+        _csvReaderManager.CreateCsvReader(file).Returns(csvReader);
 
-        _csvReaderService.ReadHeaders(csvReader, Arg.Any<List<string>>())
+        _csvReaderManager.ReadHeaders(csvReader, Arg.Any<List<string>>())
             .Returns(headers);
         
         _entityEdgeRecordProcessor
-            .ProcessEntityEdgesAsync(Arg.Any<ICsvReader>(), Arg.Any<string>(), Arg.Any<string>())
+            .ProcessEntityEdgesAsync(Arg.Any<ICsvReaderProcessor>(), Arg.Any<string>(), Arg.Any<string>())
             .Returns(Task.FromResult((IEnumerable<EntityEdge>)entityEdges));
 
         // Act

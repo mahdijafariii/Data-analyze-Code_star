@@ -1,11 +1,13 @@
-﻿using AnalysisData.Exception.UserException;
-using AnalysisData.User.Model;
-using AnalysisData.User.Repository.RoleRepository.Abstraction;
-using AnalysisData.User.Repository.UserRepository.Abstraction;
-using AnalysisData.User.Services.AdminService;
-using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
-using AnalysisData.User.Services.ValidationService.Abstraction;
-using AnalysisData.User.UserDto.UserDto;
+﻿using AnalysisData.Dtos.UserDto.UserDto;
+using AnalysisData.Exception.PasswordException;
+using AnalysisData.Exception.RoleException;
+using AnalysisData.Exception.UserException;
+using AnalysisData.Models.UserModel;
+using AnalysisData.Repositories.RoleRepository.Abstraction;
+using AnalysisData.Repositories.UserRepository.Abstraction;
+using AnalysisData.Services.UserService.AdminService;
+using AnalysisData.Services.UserService.UserService.Business.Abstraction;
+using AnalysisData.Services.ValidationService.Abstraction;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 namespace TestProject.User.Services.AdminService;
@@ -15,7 +17,7 @@ public class AdminRegisterServiceTests
     private readonly IUserRepository _userRepository;
     private readonly IValidationService _validationService;
     private readonly IRoleRepository _roleRepository;
-    private readonly IPasswordHasher _passwordHasher;
+    private readonly IPasswordHasherManager _passwordHasherManager;
     private readonly AdminRegisterService _sut;
 
     public AdminRegisterServiceTests()
@@ -23,13 +25,13 @@ public class AdminRegisterServiceTests
         _userRepository = Substitute.For<IUserRepository>();
         _validationService = Substitute.For<IValidationService>();
         _roleRepository = Substitute.For<IRoleRepository>();
-        _passwordHasher = Substitute.For<IPasswordHasher>();
+        _passwordHasherManager = Substitute.For<IPasswordHasherManager>();
 
         _sut = new AdminRegisterService(
             _userRepository,
             _validationService,
             _roleRepository,
-            _passwordHasher);
+            _passwordHasherManager);
     }
 
     [Fact]
@@ -51,16 +53,16 @@ public class AdminRegisterServiceTests
         var existingRole = new Role { RoleName = "Admin" };
         _roleRepository.GetRoleByNameAsync(Arg.Is("admin")).Returns(existingRole);
 
-        _userRepository.GetUserByEmailAsync(userRegisterDto.Email).Returns((AnalysisData.User.Model.User)null);
-        _userRepository.GetUserByUsernameAsync(userRegisterDto.UserName).Returns((AnalysisData.User.Model.User)null);
+        _userRepository.GetUserByEmailAsync(userRegisterDto.Email).Returns((AnalysisData.Models.UserModel.User)null);
+        _userRepository.GetUserByUsernameAsync(userRegisterDto.UserName).Returns((AnalysisData.Models.UserModel.User)null);
 
-        _passwordHasher.HashPassword(userRegisterDto.Password).Returns("hashedPassword");
+        _passwordHasherManager.HashPassword(userRegisterDto.Password).Returns("hashedPassword");
 
         // Act
         await _sut.RegisterByAdminAsync(userRegisterDto);
 
         // Assert
-        await _userRepository.Received(1).AddUserAsync(Arg.Is<AnalysisData.User.Model.User>(u =>
+        await _userRepository.Received(1).AddUserAsync(Arg.Is<AnalysisData.Models.UserModel.User>(u =>
             u.Username == userRegisterDto.UserName &&
             u.Email == userRegisterDto.Email &&
             u.FirstName == userRegisterDto.FirstName &&
@@ -116,9 +118,9 @@ public class AdminRegisterServiceTests
         };
         var role = new Role { RoleName = "admin", RolePolicy = "gold" };
         _roleRepository.GetRoleByNameAsync(userRegisterDto.RoleName.ToLower()).Returns(role);
-        var existingUserWithUsername = new AnalysisData.User.Model.User
+        var existingUserWithUsername = new AnalysisData.Models.UserModel.User
             { Id = Guid.NewGuid(), Username = "existingUsername", Email = "anotherEmail@gmail.com" };
-        var existingUserWithEmail = new AnalysisData.User.Model.User
+        var existingUserWithEmail = new AnalysisData.Models.UserModel.User
             { Id = Guid.NewGuid(), Username = "anotherUsername", Email = "existingEmail@gmail.com" };
 
         _userRepository.GetUserByUsernameAsync(userRegisterDto.UserName).Returns(existingUserWithUsername);

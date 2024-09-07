@@ -1,10 +1,11 @@
-﻿using AnalysisData.Exception.UserException;
-using AnalysisData.User.JwtService.abstractions;
-using AnalysisData.User.Model;
-using AnalysisData.User.Repository.RoleRepository.Abstraction;
-using AnalysisData.User.Repository.UserRepository.Abstraction;
-using AnalysisData.User.Services.ValidationService.Abstraction;
-using AnalysisData.User.UserDto.UserDto;
+﻿using AnalysisData.Dtos.UserDto.UserDto;
+using AnalysisData.Exception.RoleException;
+using AnalysisData.Exception.UserException;
+using AnalysisData.Models.UserModel;
+using AnalysisData.Repositories.RoleRepository.Abstraction;
+using AnalysisData.Repositories.UserRepository.Abstraction;
+using AnalysisData.Services.JwtService.Abstraction;
+using AnalysisData.Services.ValidationService.Abstraction;
 using NSubstitute;
 
 namespace TestProject.User.Services.AdminService;
@@ -14,7 +15,7 @@ public class AdminServiceTests
     private readonly IValidationService _validationService;
     private readonly IRoleRepository _roleRepository;
     private readonly IJwtService _jwtService;
-    private readonly AnalysisData.User.Services.AdminService.AdminService _sut;
+    private readonly AnalysisData.Services.UserService.AdminService.AdminService _sut;
 
     public AdminServiceTests()
     {
@@ -23,7 +24,7 @@ public class AdminServiceTests
         _roleRepository = Substitute.For<IRoleRepository>();
         _jwtService = Substitute.For<IJwtService>();
 
-        _sut = new AnalysisData.User.Services.AdminService.AdminService(
+        _sut = new AnalysisData.Services.UserService.AdminService.AdminService(
             _userRepository,
             _validationService,
             _roleRepository,
@@ -36,7 +37,7 @@ public class AdminServiceTests
         // Arrange
         var userId = Guid.NewGuid();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        var user = new AnalysisData.User.Model.User
+        var user = new AnalysisData.Models.UserModel.User
         {
             Id = userId,
             Username = "Username",
@@ -59,8 +60,8 @@ public class AdminServiceTests
         };
 
         _userRepository.GetUserByIdAsync(userId).Returns(user);
-        _userRepository.GetUserByUsernameAsync(updateAdminDto.UserName).Returns((AnalysisData.User.Model.User)null);
-        _userRepository.GetUserByEmailAsync(updateAdminDto.Email).Returns((AnalysisData.User.Model.User)null);
+        _userRepository.GetUserByUsernameAsync(updateAdminDto.UserName).Returns((AnalysisData.Models.UserModel.User)null);
+        _userRepository.GetUserByEmailAsync(updateAdminDto.Email).Returns((AnalysisData.Models.UserModel.User)null);
         _roleRepository.GetRoleByNameAsync(updateAdminDto.RoleName).Returns(role);
 
 
@@ -70,7 +71,7 @@ public class AdminServiceTests
         // Assert
         await _userRepository
             .Received()
-            .UpdateUserAsync(userId, Arg.Is<AnalysisData.User.Model.User>(u =>
+            .UpdateUserAsync(userId, Arg.Is<AnalysisData.Models.UserModel.User>(u =>
                 u.Username == updateAdminDto.UserName &&
                 u.Email == updateAdminDto.Email &&
                 u.FirstName == updateAdminDto.FirstName &&
@@ -90,7 +91,7 @@ public class AdminServiceTests
         // Arrange
         var userId = Guid.NewGuid();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        var user = new AnalysisData.User.Model.User
+        var user = new AnalysisData.Models.UserModel.User
         {
             Username = "test", Password = "@Test1234",
             Email = "test@gmail.com",
@@ -104,9 +105,9 @@ public class AdminServiceTests
             Email = "existingEmail@test.com"
         };
 
-        var existingUserWithUsername = new AnalysisData.User.Model.User
+        var existingUserWithUsername = new AnalysisData.Models.UserModel.User
             { Id = Guid.NewGuid(), Username = "existingUsername", Email = "anotherEmail@gmail.com" };
-        var existingUserWithEmail = new AnalysisData.User.Model.User
+        var existingUserWithEmail = new AnalysisData.Models.UserModel.User
             { Id = Guid.NewGuid(), Username = "anotherUsername", Email = "existingEmail@gmail.com" };
 
         _userRepository.GetUserByIdAsync(userId).Returns(user);
@@ -126,7 +127,7 @@ public class AdminServiceTests
         // Arrange
         var userId = Guid.NewGuid();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        var user = new AnalysisData.User.Model.User
+        var user = new AnalysisData.Models.UserModel.User
         {
             Username = "test", Password = "@Test1234",
             Email = "test@gmail.com",
@@ -195,7 +196,7 @@ public class AdminServiceTests
     public async Task GetAllUserAsync_ShouldReturnPaginatedUsers_WhenUsersExist()
     {
         // Arrange
-        var users = new List<AnalysisData.User.Model.User>
+        var users = new List<AnalysisData.Models.UserModel.User>
         {
             new()
             {

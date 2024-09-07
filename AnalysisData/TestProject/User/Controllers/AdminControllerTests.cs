@@ -1,7 +1,8 @@
-﻿using AnalysisData.Exception.UserException;
-using AnalysisData.User.Controllers;
-using AnalysisData.User.Services.AdminService.Abstraction;
-using AnalysisData.User.UserDto.UserDto;
+﻿using AnalysisData.Controllers.UserController;
+using AnalysisData.Dtos.UserDto.UserDto;
+using AnalysisData.Exception.PasswordException;
+using AnalysisData.Exception.UserException;
+using AnalysisData.Services.UserService.AdminService.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NSubstitute;

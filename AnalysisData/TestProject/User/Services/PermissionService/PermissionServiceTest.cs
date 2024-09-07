@@ -2,7 +2,7 @@ namespace TestProject.User.Services.PermissionService;
 
 public class PermissionServiceTest
 {
-    private readonly AnalysisData.User.Services.PermissionService.PermissionService _sut;
+    private readonly AnalysisData.Services.PermissionService.PermissionService _sut;
 
     // public PermissionServiceTest()
     // {

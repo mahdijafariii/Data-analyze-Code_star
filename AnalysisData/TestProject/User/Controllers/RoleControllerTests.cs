@@ -1,8 +1,6 @@
-﻿using AnalysisData.User.Controllers;
-using AnalysisData.User.Services.PermissionService.Abstraction;
-using AnalysisData.User.Services.RoleService.Abstraction;
-using AnalysisData.User.Services.UserService.Abstraction;
-using AnalysisData.User.UserDto.RoleDto;
+﻿using AnalysisData.Controllers.RoleController;
+using AnalysisData.Dtos.RoleDto;
+using AnalysisData.Services.RoleService.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NSubstitute;

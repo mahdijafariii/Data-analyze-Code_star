@@ -1,6 +1,6 @@
-using AnalysisData.Graph.Model.File;
-using AnalysisData.Graph.Repository.UserFileRepository.Abstraction;
-using AnalysisData.Graph.Service.FilePermissionService.AccessManagement;
+using AnalysisData.Models.GraphModel.File;
+using AnalysisData.Repositories.GraphRepositories.UserFileRepository.Abstraction;
+using AnalysisData.Services.GraphService.FilePermissionService.AccessManagement;
 using Moq;
 
 namespace TestProject.Graph.Service.FilePermissionService.AccessManagement;

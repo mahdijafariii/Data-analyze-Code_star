@@ -1,7 +1,7 @@
-using AnalysisData.Graph.Controllers;
-using AnalysisData.Graph.Dto.CategoryDto;
-using AnalysisData.Graph.Model.Category;
-using AnalysisData.Graph.Service.CategoryService.Abstraction;
+using AnalysisData.Controllers.GraphController;
+using AnalysisData.Dtos.GraphDto.CategoryDto;
+using AnalysisData.Models.GraphModel.Category;
+using AnalysisData.Services.GraphService.CategoryService.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Newtonsoft.Json;

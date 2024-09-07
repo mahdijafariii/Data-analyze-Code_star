@@ -1,8 +1,9 @@
+using AnalysisData.Dtos.RoleDto;
+using AnalysisData.Exception.RoleException;
 using AnalysisData.Exception.UserException;
-using AnalysisData.User.Model;
-using AnalysisData.User.Repository.RoleRepository.Abstraction;
-using AnalysisData.User.Services.RoleService;
-using AnalysisData.User.UserDto.RoleDto;
+using AnalysisData.Models.UserModel;
+using AnalysisData.Repositories.RoleRepository.Abstraction;
+using AnalysisData.Services.RoleService;
 using NSubstitute;
 
 namespace TestProject.User.Services.RoleService;

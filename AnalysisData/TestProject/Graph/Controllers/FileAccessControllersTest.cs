@@ -1,8 +1,9 @@
-using AnalysisData.Graph.Controllers;
-using AnalysisData.Graph.Dto;
-using AnalysisData.Graph.Model.File;
-using AnalysisData.Graph.Repository.UserFileRepository.Abstraction;
-using AnalysisData.Graph.Service.FilePermissionService;
+using AnalysisData.Controllers.GraphController;
+using AnalysisData.Dtos.GraphDto.FileDto;
+using AnalysisData.Dtos.UserDto.UserDto;
+using AnalysisData.Models.GraphModel.File;
+using AnalysisData.Repositories.GraphRepositories.UserFileRepository.Abstraction;
+using AnalysisData.Services.GraphService.FilePermissionService.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Newtonsoft.Json;
@@ -109,8 +110,8 @@ public class FileAccessControllersTest
         
         var userFile = new List<UserFile>
         {
-            new UserFile() { Id = Guid.NewGuid(), User = new AnalysisData.User.Model.User() },
-            new UserFile() { Id = Guid.NewGuid(), User = new AnalysisData.User.Model.User() }
+            new UserFile() { Id = Guid.NewGuid(), User = new AnalysisData.Models.UserModel.User() },
+            new UserFile() { Id = Guid.NewGuid(), User = new AnalysisData.Models.UserModel.User() }
         };
     
         _userFileRepositoryMock.Setup(repo => repo.GetByFileIdAsync(fileId))

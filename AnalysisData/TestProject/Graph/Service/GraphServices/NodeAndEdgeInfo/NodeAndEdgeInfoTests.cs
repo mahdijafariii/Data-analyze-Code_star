@@ -1,9 +1,10 @@
 ﻿using System.Security.Claims;
-using AnalysisData.Exception.GraphException;
-using AnalysisData.Graph.Dto.EdgeDto;
-using AnalysisData.Graph.Dto.NodeDto;
-using AnalysisData.Graph.Repository.GraphEdgeRepository;
-using AnalysisData.Graph.Repository.GraphNodeRepository;
+using AnalysisData.Dtos.GraphDto.EdgeDto;
+using AnalysisData.Dtos.GraphDto.NodeDto;
+using AnalysisData.Exception.GraphException.EdgeException;
+using AnalysisData.Exception.GraphException.NodeException;
+using AnalysisData.Repositories.GraphRepositories.GraphRepository.GraphEdgeRepository.Abstraction;
+using AnalysisData.Repositories.GraphRepositories.GraphRepository.GraphNodeRepository.Abstraction;
 using NSubstitute;
 
 namespace TestProject.Graph.Service.GraphServices.NodeAndEdgeInfo;
@@ -12,13 +13,13 @@ public class NodeAndEdgeInfoTests
 {
     private readonly IGraphNodeRepository _graphNodeRepository;
     private readonly IGraphEdgeRepository _graphEdgeRepository;
-    private readonly AnalysisData.Graph.Service.GraphServices.NodeAndEdgeInfo.NodeAndEdgeInfo _sut;
+    private readonly AnalysisData.Services.GraphService.GraphServices.NodeAndEdgeInfo.NodeAndEdgeInfo _sut;
 
     public NodeAndEdgeInfoTests()
     {
         _graphNodeRepository = Substitute.For<IGraphNodeRepository>();
         _graphEdgeRepository = Substitute.For<IGraphEdgeRepository>();
-        _sut = new AnalysisData.Graph.Service.GraphServices.NodeAndEdgeInfo.NodeAndEdgeInfo(_graphNodeRepository,
+        _sut = new AnalysisData.Services.GraphService.GraphServices.NodeAndEdgeInfo.NodeAndEdgeInfo(_graphNodeRepository,
             _graphEdgeRepository);
     }
 

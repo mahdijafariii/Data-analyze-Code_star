@@ -1,6 +1,6 @@
-﻿using AnalysisData.Graph.Model.Node;
-using AnalysisData.Graph.Repository.NodeRepository.Abstraction;
-using AnalysisData.Graph.Service.ServiceBusiness;
+﻿using AnalysisData.Models.GraphModel.Node;
+using AnalysisData.Repositories.GraphRepositories.GraphRepository.NodeRepository.Abstraction;
+using AnalysisData.Services.GraphService.Business.CsvManager.CsvHeaderManager;
 using NSubstitute;
 
 namespace TestProject.Graph.Service.ServiceBusiness;

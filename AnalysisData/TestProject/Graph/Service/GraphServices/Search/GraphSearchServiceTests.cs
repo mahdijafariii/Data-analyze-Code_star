@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
-using AnalysisData.Exception.GraphException;
-using AnalysisData.Graph.Model.Node;
-using AnalysisData.Graph.Repository.GraphNodeRepository;
-using AnalysisData.Graph.Service.GraphServices.Search;
+using AnalysisData.Exception.GraphException.NodeException;
+using AnalysisData.Models.GraphModel.Node;
+using AnalysisData.Repositories.GraphRepositories.GraphRepository.GraphNodeRepository.Abstraction;
+using AnalysisData.Services.GraphService.GraphServices.Search;
 using NSubstitute;
 
 namespace TestProject.Graph.Service.GraphServices.Search;

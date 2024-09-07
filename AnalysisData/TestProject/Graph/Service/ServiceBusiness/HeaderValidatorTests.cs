@@ -1,15 +1,15 @@
-﻿using AnalysisData.Exception.GraphException;
-using AnalysisData.Graph.Service.ServiceBusiness;
+﻿using AnalysisData.Exception.FileException;
+using AnalysisData.Services.GraphService.Business.CsvManager.CsvHeaderManager;
 
 namespace TestProject.Graph.Service.ServiceBusiness;
 
 public class HeaderValidatorTests
 {
-    private readonly HeaderValidator _sut;
+    private readonly HeaderValidatorProcessorProcessor _sut;
 
     public HeaderValidatorTests()
     {
-        _sut = new HeaderValidator();
+        _sut = new HeaderValidatorProcessorProcessor();
     }
 
     [Fact]

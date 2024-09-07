@@ -1,7 +1,7 @@
 using System.Text;
 using AnalysisData;
 using AnalysisData.Data;
-using AnalysisData.User.MiddleWare;
+using AnalysisData.MiddleWare;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

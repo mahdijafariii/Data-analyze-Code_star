@@ -1,7 +1,7 @@
-﻿using AnalysisData.Graph.Model.Node;
-using AnalysisData.Graph.Repository.NodeRepository.Abstraction;
-using AnalysisData.Graph.Service.ServiceBusiness;
-using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
+﻿using AnalysisData.Models.GraphModel.Node;
+using AnalysisData.Repositories.GraphRepositories.GraphRepository.NodeRepository.Abstraction;
+using AnalysisData.Services.GraphService.Business.CsvManager.Abstractions;
+using AnalysisData.Services.GraphService.Business.NodeManager;
 using NSubstitute;
 
 namespace TestProject.Graph.Service.ServiceBusiness;
@@ -9,7 +9,7 @@ namespace TestProject.Graph.Service.ServiceBusiness;
 public class EntityNodeRecordProcessorTests
 {
     private readonly IEntityNodeRepository _entityNodeRepository;
-    private readonly ICsvReader _csvReader;
+    private readonly ICsvReaderProcessor _csvReaderProcessor;
     private readonly EntityNodeRecordProcessor _sut;
 
     private const int BatchSize = 3;
@@ -17,7 +17,7 @@ public class EntityNodeRecordProcessorTests
     public EntityNodeRecordProcessorTests()
     {
         _entityNodeRepository = Substitute.For<IEntityNodeRepository>();
-        _csvReader = Substitute.For<ICsvReader>();
+        _csvReaderProcessor = Substitute.For<ICsvReaderProcessor>();
         
         _sut = new EntityNodeRecordProcessor(_entityNodeRepository, BatchSize);
     }
@@ -26,11 +26,11 @@ public class EntityNodeRecordProcessorTests
     {
         // Arrange
         var headers = new List<string> { "Id" };
-        _csvReader.Read().Returns(true, true, true, false); 
-        _csvReader.GetField("Id").Returns("Node1", "", "Node3");
+        _csvReaderProcessor.Read().Returns(true, true, true, false); 
+        _csvReaderProcessor.GetField("Id").Returns("Node1", "", "Node3");
 
         // Act
-        var result = await _sut.ProcessEntityNodesAsync(_csvReader, headers, "Id", 1);
+        var result = await _sut.ProcessEntityNodesAsync(_csvReaderProcessor, headers, "Id", 1);
 
         // Assert
         Assert.Equal(2, result.Count());
@@ -41,11 +41,11 @@ public class EntityNodeRecordProcessorTests
     {
         // Arrange
         var headers = new List<string> { "Id" };
-        _csvReader.Read().Returns(true, true, false);
-        _csvReader.GetField("Id").Returns("Node1", "Node2");
+        _csvReaderProcessor.Read().Returns(true, true, false);
+        _csvReaderProcessor.GetField("Id").Returns("Node1", "Node2");
 
         // Act
-        var result = await _sut.ProcessEntityNodesAsync(_csvReader, headers, "Id", 1);
+        var result = await _sut.ProcessEntityNodesAsync(_csvReaderProcessor, headers, "Id", 1);
 
         // Assert
         Assert.Equal(2, result.Count());
@@ -57,11 +57,11 @@ public class EntityNodeRecordProcessorTests
     {
         // Arrange
         var headers = new List<string> { "Id" };
-        _csvReader.Read().Returns(true, true, true, true, true, false); 
-        _csvReader.GetField("Id").Returns("Node1", "Node2", "Node3", "Node4", "Node5");
+        _csvReaderProcessor.Read().Returns(true, true, true, true, true, false); 
+        _csvReaderProcessor.GetField("Id").Returns("Node1", "Node2", "Node3", "Node4", "Node5");
 
         // Act
-        var result = await _sut.ProcessEntityNodesAsync(_csvReader, headers, "Id", 1);
+        var result = await _sut.ProcessEntityNodesAsync(_csvReaderProcessor, headers, "Id", 1);
 
         // Assert
         Assert.Equal(5, result.Count());
@@ -74,10 +74,10 @@ public class EntityNodeRecordProcessorTests
     {
         // Arrange
         var headers = new List<string> { "Id" };
-        _csvReader.Read().Returns(false); 
+        _csvReaderProcessor.Read().Returns(false); 
 
         // Act
-        var result = await _sut.ProcessEntityNodesAsync(_csvReader, headers, "Id", 1);
+        var result = await _sut.ProcessEntityNodesAsync(_csvReaderProcessor, headers, "Id", 1);
 
         // Assert
         Assert.Empty(result);

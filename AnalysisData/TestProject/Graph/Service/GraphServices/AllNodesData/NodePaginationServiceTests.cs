@@ -1,10 +1,11 @@
 ﻿using System.Security.Claims;
-using AnalysisData.Exception.GraphException;
-using AnalysisData.Graph.Model.Category;
-using AnalysisData.Graph.Model.Node;
-using AnalysisData.Graph.Repository.GraphNodeRepository;
-using AnalysisData.Graph.Service.CategoryService.Abstraction;
-using AnalysisData.Graph.Service.GraphServices.AllNodesData;
+using AnalysisData.Exception.GraphException.CategoryException;
+using AnalysisData.Exception.GraphException.NodeException;
+using AnalysisData.Models.GraphModel.Category;
+using AnalysisData.Models.GraphModel.Node;
+using AnalysisData.Repositories.GraphRepositories.GraphRepository.GraphNodeRepository.Abstraction;
+using AnalysisData.Services.GraphService.CategoryService.Abstraction;
+using AnalysisData.Services.GraphService.GraphServices.AllNodesData;
 using NSubstitute;
 
 namespace TestProject.Graph.Service.GraphServices.AllNodesData;

@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
-using AnalysisData.Graph.Model.File;
-using AnalysisData.Graph.Repository.FileUploadedRepository.Abstraction;
-using AnalysisData.Graph.Service.FileUploadService;
+using AnalysisData.Models.GraphModel.File;
+using AnalysisData.Repositories.GraphRepositories.FileUploadedRepository.Abstraction;
+using AnalysisData.Services.GraphService.FileUploadService;
 using NSubstitute;
 
 namespace TestProject.Graph.Service.FileUploadServiceTests;

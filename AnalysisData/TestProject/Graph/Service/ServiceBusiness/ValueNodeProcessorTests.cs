@@ -1,7 +1,7 @@
-﻿using AnalysisData.Graph.Model.Node;
-using AnalysisData.Graph.Repository.NodeRepository.Abstraction;
-using AnalysisData.Graph.Service.ServiceBusiness;
-using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
+﻿using AnalysisData.Models.GraphModel.Node;
+using AnalysisData.Repositories.GraphRepositories.GraphRepository.NodeRepository.Abstraction;
+using AnalysisData.Services.GraphService.Business.CsvManager.Abstractions;
+using AnalysisData.Services.GraphService.Business.NodeManager;
 using NSubstitute;
 
 namespace TestProject.Graph.Service.ServiceBusiness;
@@ -34,7 +34,7 @@ public class ValueNodeProcessorTests
         };
         var headers = new List<string> { "Name", "age" };
 
-        var csv = Substitute.For<ICsvReader>();
+        var csv = Substitute.For<ICsvReaderProcessor>();
         csv.Read().Returns(true, true, false); 
         csv.GetField("Name").Returns("amir", "reza");
         csv.GetField("age").Returns("14", "13");
@@ -58,7 +58,7 @@ public class ValueNodeProcessorTests
         };
         var headers = new List<string> { "Attribute1" };
 
-        var csv = Substitute.For<ICsvReader>();
+        var csv = Substitute.For<ICsvReaderProcessor>();
         csv.Read().Returns(false); // No rows
 
         // Act

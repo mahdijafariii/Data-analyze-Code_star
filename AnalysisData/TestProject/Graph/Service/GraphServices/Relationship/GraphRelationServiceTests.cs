@@ -1,11 +1,11 @@
 ﻿using System.Security.Claims;
-using AnalysisData.Exception.GraphException;
-using AnalysisData.Graph.Model.Edge;
-using AnalysisData.Graph.Model.Node;
-using AnalysisData.Graph.Repository.EdgeRepository.Abstraction;
-using AnalysisData.Graph.Repository.GraphNodeRepository;
-using AnalysisData.Graph.Repository.NodeRepository.Abstraction;
-using AnalysisData.Graph.Service.GraphServices.Relationship;
+using AnalysisData.Exception.GraphException.NodeException;
+using AnalysisData.Models.GraphModel.Edge;
+using AnalysisData.Models.GraphModel.Node;
+using AnalysisData.Repositories.GraphRepositories.GraphRepository.EdgeRepository.Abstraction;
+using AnalysisData.Repositories.GraphRepositories.GraphRepository.GraphNodeRepository.Abstraction;
+using AnalysisData.Repositories.GraphRepositories.GraphRepository.NodeRepository.Abstraction;
+using AnalysisData.Services.GraphService.GraphServices.Relationship;
 using NSubstitute;
 
 namespace TestProject.Graph.Service.GraphServices.Relationship;

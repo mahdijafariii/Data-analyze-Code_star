@@ -1,35 +1,36 @@
-﻿using AnalysisData.Exception.UserException;
-using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
-using AnalysisData.User.Services.UserService.Business;
-using AnalysisData.User.Services.ValidationService.Abstraction;
+﻿using AnalysisData.Exception.PasswordException;
+using AnalysisData.Exception.UserException;
+using AnalysisData.Services.UserService.UserService.Business;
+using AnalysisData.Services.UserService.UserService.Business.Abstraction;
+using AnalysisData.Services.ValidationService.Abstraction;
 using NSubstitute;
 
 namespace TestProject.User.Services.UserService.BuisinessTests;
 
 public class PasswordServiceTests
 {
-    private readonly IPasswordHasher _passwordHasherMock;
+    private readonly IPasswordHasherManager _passwordHasherManagerMock;
     private readonly IValidationService _validationServiceMock;
-    private readonly PasswordService _sut;
+    private readonly ValidationPasswordManager _sut;
 
     public PasswordServiceTests()
     {
-        _passwordHasherMock = Substitute.For<IPasswordHasher>();
+        _passwordHasherManagerMock = Substitute.For<IPasswordHasherManager>();
         _validationServiceMock = Substitute.For<IValidationService>();
-        _sut = new PasswordService(_passwordHasherMock, _validationServiceMock);
+        _sut = new ValidationPasswordManager(_passwordHasherManagerMock, _validationServiceMock);
     }
 
     [Fact]
     public void ValidatePassword_ValidPassword_DoesNotThrowException()
     {
         // Arrange
-        var user = new AnalysisData.User.Model.User()
+        var user = new AnalysisData.Models.UserModel.User()
         {
             Password = "9883AF16067978706D06310A5BD58D0FF176BD738AC675DC49BF8F244666456A" 
         };
 
         var plainText = "lndkj";
-        _passwordHasherMock
+        _passwordHasherManagerMock
             .HashPassword(plainText)
             .Returns("9883AF16067978706D06310A5BD58D0FF176BD738AC675DC49BF8F244666456A");
 
@@ -44,14 +45,14 @@ public class PasswordServiceTests
     public void ValidatePassword_ShouldThrowPasswordMismatchException_WhenInvalidPasswordProvided()
     {
         // Arrange
-        var user = new AnalysisData.User.Model.User()
+        var user = new AnalysisData.Models.UserModel.User()
         {
             Password = "9883AF16067978706D06310A5BD58D0FF176BD738AC675DC49BF8F244666456A" 
         };
 
         var plainText = "plainText";
 
-        _passwordHasherMock
+        _passwordHasherManagerMock
             .HashPassword(plainText)
             .Returns("08A9B262078244CB990CB5746A7364BFD0B1EF95F8DD9AB61491EDC050A1EB7E");
 
@@ -95,7 +96,7 @@ public class PasswordServiceTests
             .When(service => service.PasswordCheck(plainPassword))
             .Do(call => { /* No exception */ });
         
-        _passwordHasherMock
+        _passwordHasherManagerMock
             .HashPassword(plainPassword)
             .Returns(hashedPassword);
 

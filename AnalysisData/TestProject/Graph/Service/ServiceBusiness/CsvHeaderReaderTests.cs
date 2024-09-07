@@ -1,29 +1,29 @@
-﻿using AnalysisData.Graph.Service.ServiceBusiness;
-using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
+﻿using AnalysisData.Services.GraphService.Business.CsvManager;
+using AnalysisData.Services.GraphService.Business.CsvManager.Abstractions;
 using NSubstitute;
 
 namespace TestProject.Graph.Service.ServiceBusiness;
 
 public class CsvHeaderReaderTests
 {
-    private readonly ICsvReader _csvReader;
-    private readonly CsvHeaderReader _sut;
+    private readonly ICsvReaderProcessor _csvReaderProcessor;
+    private readonly CsvHeaderReaderProcessor _sut;
     
     public CsvHeaderReaderTests()
     {
-        _csvReader = Substitute.For<ICsvReader>();
-        _sut = new CsvHeaderReader();
+        _csvReaderProcessor = Substitute.For<ICsvReaderProcessor>();
+        _sut = new CsvHeaderReaderProcessor();
     }
 
     [Fact]
     public void ReadHeaders_ShouldReturnHeaders_WhenCsvHasRecords()
     {
         // Arrange
-        _csvReader.Read().Returns(true);
-        _csvReader.HeaderRecord.Returns(new[] { "Header1", "Header2", "Header3" });
+        _csvReaderProcessor.Read().Returns(true);
+        _csvReaderProcessor.HeaderRecord.Returns(new[] { "Header1", "Header2", "Header3" });
 
         // Act
-        var result = _sut.ReadHeaders(_csvReader);
+        var result = _sut.ReadHeaders(_csvReaderProcessor);
 
         // Assert
         Assert.NotNull(result);
@@ -31,23 +31,23 @@ public class CsvHeaderReaderTests
         Assert.Contains("Header1", result);
         Assert.Contains("Header2", result);
         Assert.Contains("Header3", result);
-        _csvReader.Received(1).Read(); 
-        _csvReader.Received(1).ReadHeader(); 
+        _csvReaderProcessor.Received(1).Read(); 
+        _csvReaderProcessor.Received(1).ReadHeader(); 
     }
 
     [Fact]
     public void ReadHeaders_ShouldReturnEmpty_WhenCsvHasNoRecords()
     {
         // Arrange
-        _csvReader.Read().Returns(false);
+        _csvReaderProcessor.Read().Returns(false);
 
         // Act
-        var result = _sut.ReadHeaders(_csvReader);
+        var result = _sut.ReadHeaders(_csvReaderProcessor);
 
         // Assert
         Assert.NotNull(result);
         Assert.Empty(result);
-        _csvReader.Received(1).Read();
-        _csvReader.DidNotReceive().ReadHeader(); 
+        _csvReaderProcessor.Received(1).Read();
+        _csvReaderProcessor.DidNotReceive().ReadHeader(); 
     }
 }

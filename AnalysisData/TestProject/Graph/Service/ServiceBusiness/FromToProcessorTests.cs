@@ -1,6 +1,6 @@
-﻿using AnalysisData.Graph.Model.Edge;
-using AnalysisData.Graph.Repository.EdgeRepository.Abstraction;
-using AnalysisData.Graph.Service.ServiceBusiness;
+﻿using AnalysisData.Models.GraphModel.Edge;
+using AnalysisData.Repositories.GraphRepositories.GraphRepository.EdgeRepository.Abstraction;
+using AnalysisData.Services.GraphService.Business.EdgeManager;
 using NSubstitute;
 
 namespace TestProject.Graph.Service.ServiceBusiness;

@@ -1,12 +1,10 @@
 ﻿using System.Security.Claims;
 using AnalysisData.Exception.UserException;
+using AnalysisData.User.Model;
 using AnalysisData.User.Repository.UserRepository.Abstraction;
-using AnalysisData.User.Services.UserService.Abstraction;
-using AnalysisData.User.Services.UserService.Business.Abstraction;
 using AnalysisData.User.Services.ValidationService.Abstraction;
 using AnalysisData.User.UserDto.UserDto;
 
-namespace AnalysisData.User.Services.UserService.Business;
 
 public class UserManager : IUserManager
 {
@@ -19,7 +17,7 @@ public class UserManager : IUserManager
         _validationService = validationService;
     }
 
-    public async Task<Model.User> GetUserFromUserClaimsAsync(ClaimsPrincipal userClaim)
+    public async Task<User> GetUserFromUserClaimsAsync(ClaimsPrincipal userClaim)
     {
         var userName = userClaim.FindFirstValue("username");
         var user = await _userRepository.GetUserByUsernameAsync(userName);
@@ -30,7 +28,7 @@ public class UserManager : IUserManager
         return user;
     }
 
-    public async Task UpdateUserInformationAsync(Model.User user, UpdateUserDto updateUserDto)
+    public async Task UpdateUserInformationAsync(User user, UpdateUserDto updateUserDto)
     {
         await ValidateEmailAsync(user, updateUserDto.Email);
 
@@ -40,13 +38,13 @@ public class UserManager : IUserManager
         await ReplaceUserDetails(user, updateUserDto);
     }
 
-    public async Task UploadImageAsync(Model.User user, string imageUrl)
+    public async Task UploadImageAsync(User user, string imageUrl)
     {
         user.ImageURL = imageUrl;
         await _userRepository.UpdateUserAsync(user.Id, user);
     }
 
-    private async Task ValidateEmailAsync(Model.User user, string newEmail)
+    private async Task ValidateEmailAsync(User user, string newEmail)
     {
         var checkEmail = await _userRepository.GetUserByEmailAsync(newEmail);
         if (checkEmail != null && user.Email != newEmail)
@@ -55,7 +53,7 @@ public class UserManager : IUserManager
         }
     }
 
-    private async Task ReplaceUserDetails(Model.User user, UpdateUserDto updateUserDto)
+    private async Task ReplaceUserDetails(User user, UpdateUserDto updateUserDto)
     {
         user.FirstName = updateUserDto.FirstName;
         user.LastName = updateUserDto.LastName;

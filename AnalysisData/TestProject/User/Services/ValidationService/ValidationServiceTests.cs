@@ -1,14 +1,11 @@
 ﻿using AnalysisData.Exception.UserException;
-
-namespace TestProject.User.Services.ValidationService;
-
 public class ValidationServiceTests
 {
-    private readonly AnalysisData.User.Services.ValidationService.ValidationService _validationService;
+    private readonly ValidationService _validationService;
 
     public ValidationServiceTests()
     {
-        _validationService = new AnalysisData.User.Services.ValidationService.ValidationService();
+        _validationService = new ValidationService();
     }
     
     

@@ -1,12 +1,10 @@
 ﻿using AnalysisData.Exception.UserException;
+using AnalysisData.User.Model;
 using AnalysisData.User.Repository.UserRepository.Abstraction;
 using AnalysisData.User.Services.SecurityPasswordService.Abstraction;
 using AnalysisData.User.Services.TokenService.Abstraction;
-using AnalysisData.User.Services.UserService.Abstraction;
-using AnalysisData.User.Services.UserService.Business.Abstraction;
 using AnalysisData.User.Services.ValidationService.Abstraction;
 
-namespace AnalysisData.User.Services.UserService.Business;
 
 public class PasswordManager : IPasswordManager
 {
@@ -27,7 +25,7 @@ public class PasswordManager : IPasswordManager
         _userRepository = userRepository;
     }
 
-    public async Task ResetPasswordAsync(Model.User user, string password, string confirmPassword,
+    public async Task ResetPasswordAsync(User user, string password, string confirmPassword,
         string resetPasswordToken)
     {
         await _validateTokenService.ValidateResetToken(user.Id, resetPasswordToken);
@@ -40,7 +38,7 @@ public class PasswordManager : IPasswordManager
         await _userRepository.UpdateUserAsync(user.Id, user);
     }
 
-    public async Task NewPasswordAsync(Model.User user, string oldPassword, string password, string confirmPassword)
+    public async Task NewPasswordAsync(User user, string oldPassword, string password, string confirmPassword)
     {
         _passwordService.ValidatePassword(user, oldPassword);
         _passwordService.ValidatePasswordAndConfirmation(password, confirmPassword);

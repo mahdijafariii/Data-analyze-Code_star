@@ -1,9 +1,10 @@
 ﻿
-namespace AnalysisData.User.Services.UserService.Business.Abstraction;
+
+using AnalysisData.User.Model;
 
 public interface IPasswordService
 {
-    public void ValidatePassword(Model.User user, string password);
+    public void ValidatePassword(User user, string password);
     public void ValidatePasswordAndConfirmation(string password, string confirmPassword);
     public string HashPassword(string password);
 }

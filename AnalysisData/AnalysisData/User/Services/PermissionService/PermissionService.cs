@@ -17,7 +17,7 @@ public class PermissionService : IPermissionService
         _roleRepository = roleRepository;
     }
 
-    private Dictionary<string, List<string>> GetRolePermissions(Assembly assembly, string policyName)
+    private Dictionary<string, List<string>> GetRolePermissions(Assembly assembly)
     {
         var rolePermissions = new Dictionary<string, List<string>>();
 
@@ -36,22 +36,27 @@ public class PermissionService : IPermissionService
 
                 foreach (var authorizeAttribute in authorizeAttributes)
                 {
-                    if (authorizeAttribute.Policy?.Split(',').Contains(policyName) != true) continue;
-                    var controllerName = controller.Name.Replace("Controller", "");
-                    var actionName = action.Name;
+                    var policies = authorizeAttribute.Policy?.Split(',') ?? new string[0];
 
-                    if (!rolePermissions.ContainsKey(controllerName))
+                    foreach (var policy in policies)
                     {
-                        rolePermissions[controllerName] = new List<string>();
-                    }
+                        if (!rolePermissions.ContainsKey(policy))
+                        {
+                            rolePermissions[policy] = new List<string>();
+                        }
 
-                    rolePermissions[controllerName].Add(actionName);
+                        var controllerName = controller.Name.Replace("Controller", "");
+                        var actionName = action.Name;
+
+                        rolePermissions[policy].Add($"{actionName}");
+                    }
                 }
             }
         }
 
         return rolePermissions;
     }
+
 
 
     public async Task<IEnumerable<string>> GetPermission(ClaimsPrincipal userClaims)
@@ -66,8 +71,45 @@ public class PermissionService : IPermissionService
         {
             throw new RoleNotFoundException();
         }
-        var rolePermissions = GetRolePermissions(Assembly.GetExecutingAssembly(), existRole.RolePolicy);
-        var permissions = rolePermissions.Values.SelectMany(x => x);
+        var rolePermissions = GetRolePermissions(Assembly.GetExecutingAssembly());
+        IEnumerable<string> permissions;
+        
+        var allowedPolicies = GetAllowedPolicies(existRole.RolePolicy);
+        permissions = FilterByPolicy(rolePermissions, allowedPolicies);
+
         return permissions;
+        
+    }
+    
+    private string[] GetAllowedPolicies(string rolePolicy)
+    {
+        switch (rolePolicy.ToLower())
+        {
+            case "gold":
+                return new[] { "gold", "silver", "bronze" };
+            case "silver":
+                return new[] { "silver", "bronze" };
+            case "bronze":
+                return new[] { "bronze" };
+            default:
+                return Array.Empty<string>();
+        }
+    }
+    private IEnumerable<string> FilterByPolicy(Dictionary<string, List<string>> rolePermissions, string[] allowedPolicies)
+    {
+        var filteredPermissions = new List<string>();
+
+        // Iterate over each allowed policy
+        foreach (var policy in allowedPolicies)
+        {
+            // Check if the policy exists in the dictionary
+            if (rolePermissions.TryGetValue(policy, out var actions))
+            {
+                // Add the actions to the result
+                filteredPermissions.AddRange(actions);
+            }
+        }
+
+        return filteredPermissions;
     }
 }

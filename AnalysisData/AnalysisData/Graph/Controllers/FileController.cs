@@ -3,6 +3,7 @@ using AnalysisData.Graph.Dto.EdgeDto;
 using AnalysisData.Graph.Dto.NodeDto;
 using AnalysisData.Graph.Service.FileUploadService.Abstraction;
 using AnalysisData.Graph.Service.ServiceBusiness.Abstraction;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnalysisData.Graph.Controllers;
@@ -24,6 +25,7 @@ public class FileController : ControllerBase
         _uploadFileService = uploadFileService;
     }
 
+    [Authorize(Policy = "silver")]
     [HttpPost("upload-file-node")]
     public async Task<IActionResult> UploadNodeFile([FromForm] NodeUploadDto nodeUpload)
     {
@@ -53,7 +55,7 @@ public class FileController : ControllerBase
         }
     }
 
-
+    [Authorize(Policy = "silver")]
     [HttpPost("upload-file-edge")]
     public async Task<IActionResult> UploadEdgeFile([FromForm] EdgeUploadDto edgeUploadDto)
     {

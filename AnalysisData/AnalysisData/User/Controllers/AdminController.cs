@@ -19,7 +19,7 @@ public class AdminController : ControllerBase
         _adminRegisterService = adminRegisterService;
     }
 
-    [Authorize(Roles = "admin")]
+    [Authorize(Policy = "gold")]
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegisterDto)
     {
@@ -27,7 +27,7 @@ public class AdminController : ControllerBase
         return Ok(new { massage = "User added successfully" });
     }
 
-    //[Authorize(Roles = "admin")]
+    [Authorize(Policy = "gold")]
     [HttpGet("users")]
     public async Task<IActionResult> GetAllUsers(int page = 0, int limit = 10)
     {
@@ -41,7 +41,7 @@ public class AdminController : ControllerBase
         });
     }
 
-
+    [Authorize(Policy = "gold")]
     [HttpDelete("users/{id}")]
     public async Task<IActionResult> DeleteUser(Guid id)
     {

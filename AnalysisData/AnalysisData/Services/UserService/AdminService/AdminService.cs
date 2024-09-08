@@ -29,7 +29,10 @@ public class AdminService : IAdminService
     public async Task UpdateUserInformationByAdminAsync(Guid id, UpdateAdminDto updateAdminDto)
     {
         var user = await _userRepository.GetUserByIdAsync(id);
-        
+        if (user.Username == "admin")
+        {
+            throw new AdminProtectedException();
+        }
         await ValidateUserInformation(user, updateAdminDto);
         _validationService.EmailCheck(updateAdminDto.Email);
         _validationService.PhoneNumberCheck(updateAdminDto.PhoneNumber);

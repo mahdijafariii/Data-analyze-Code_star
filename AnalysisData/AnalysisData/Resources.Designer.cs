@@ -69,6 +69,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can not delete or modify admin information !.
+        /// </summary>
+        internal static string AdminProtectedException {
+            get {
+                return ResourceManager.GetString("AdminProtectedException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This category already exists!.
         /// </summary>
         internal static string CategoryAlreadyExist {

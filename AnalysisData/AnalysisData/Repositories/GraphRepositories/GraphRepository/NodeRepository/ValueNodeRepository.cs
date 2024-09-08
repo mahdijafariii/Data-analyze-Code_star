@@ -22,8 +22,15 @@ public class ValueNodeRepository : IValueNodeRepository
 
     public async Task AddRangeAsync(IEnumerable<ValueNode> valueNodes)
     {
-        await _context.ValueNodes.AddRangeAsync(valueNodes);
-        await _context.SaveChangesAsync();
+        var existingAttributeNodeIds = await _context.AttributeNodes.Select(an => an.Id).ToListAsync();
+        var validValueNodes = valueNodes
+            .Where(vn => existingAttributeNodeIds.Contains(vn.AttributeId)) 
+            .ToList();
+        if (validValueNodes.Any())
+        {
+            await _context.ValueNodes.AddRangeAsync(validValueNodes);
+            await _context.SaveChangesAsync();
+        }
     }
     public async Task<IEnumerable<ValueNode>> GetAllAsync()
     {

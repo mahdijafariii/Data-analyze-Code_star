@@ -36,6 +36,10 @@ public class EdgeDataProcessor : IEntityEdgeRecordProcessor
         while (csv.Read())
         {
             var entityEdge = await CreateEntityEdgeAsync(csv, from, to);
+            if (entityEdge.Id == null)
+            {
+                continue;
+            }
             entityEdges.Add(entityEdge);
 
             foreach (var header in attributeEdges)
@@ -76,7 +80,10 @@ public class EdgeDataProcessor : IEntityEdgeRecordProcessor
         var fromNode = await _entityNodeRepository.GetByNameAsync(entityFrom);
         var toNode = await _entityNodeRepository.GetByNameAsync(entityTo);
 
-        ValidateNodesExistence(fromNode, toNode, entityFrom, entityTo);
+        if (!ValidateNodesExistence(fromNode, toNode, entityFrom, entityTo))
+        {
+            return new EntityEdge();
+        }
 
         return new EntityEdge
         {
@@ -92,7 +99,7 @@ public class EdgeDataProcessor : IEntityEdgeRecordProcessor
         await _valueEdgeRepository.AddRangeAsync(valueEdges);
     }
 
-    private static void ValidateNodesExistence(EntityNode fromNode, EntityNode toNode, string entityFrom, string entityTo)
+    private static bool ValidateNodesExistence(EntityNode fromNode, EntityNode toNode, string entityFrom, string entityTo)
     {
         var missingNodeIds = new List<string>();
 
@@ -101,7 +108,8 @@ public class EdgeDataProcessor : IEntityEdgeRecordProcessor
 
         if (missingNodeIds.Any())
         {
-            throw new NodeNotFoundInEntityEdgeException(missingNodeIds);
+            return false;
         }
+        return true;
     }
 }

@@ -26,8 +26,18 @@ public class EntityEdgeRepository : IEntityEdgeRepository
     }
     public async Task AddRangeAsync(IEnumerable<EntityEdge> entityEdges)
     {
-        await _context.EntityEdges.AddRangeAsync(entityEdges);
-        await _context.SaveChangesAsync();
+        var existingEntityIds = await _context.EntityNodes.Select(en => en.Id).ToListAsync();
+
+        var validEntityEdges = entityEdges
+            .Where(ee => existingEntityIds.Contains(ee.EntityIDSource))
+            .ToList();
+
+        if (validEntityEdges.Any())
+        {
+            await _context.EntityEdges.AddRangeAsync(validEntityEdges);
+            await _context.SaveChangesAsync();
+        }
+        
     }
     public async Task<EntityEdge> GetByIdAsync(Guid id)
     {

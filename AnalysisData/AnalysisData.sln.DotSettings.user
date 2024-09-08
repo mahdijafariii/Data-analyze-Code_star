@@ -1,8 +1,11 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5a6db5c4_002D6b10_002D4bf8_002D8325_002D71b5cea4c333/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="UpdateCategory_ShouldReturnOk_WhenCategoryIsUpdatedSuccessfully" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=219940aa_002Df21c_002D44cf_002D9307_002Dab482de92a14/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="RoleRepositoryTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.Graph.Controllers.CategoryControllersTest.UpdateCategory_ShouldReturnOk_WhenCategoryIsUpdatedSuccessfully&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Repository.RoleRepository.RoleRepositoryTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5a6db5c4_002D6b10_002D4bf8_002D8325_002D71b5cea4c333/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="UpdateCategory_ShouldReturnOk_WhenCategoryIsUpdatedSuccessfully" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\Mahdi\Desktop\code star proje\Summer1403-Project-Group03-Backend\AnalysisData\TestProject" Presentation="&amp;lt;TestProject&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
 	

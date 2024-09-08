@@ -1,11 +1,11 @@
 ﻿using AnalysisData.Exception.PasswordException;
 using AnalysisData.Exception.UserException;
+using AnalysisData.Models.UserModel;
 using AnalysisData.Services.UserService.UserService.Business;
 using AnalysisData.Services.UserService.UserService.Business.Abstraction;
 using AnalysisData.Services.ValidationService.Abstraction;
 using NSubstitute;
 
-namespace TestProject.User.Services.UserService.BuisinessTests;
 
 public class PasswordServiceTests
 {
@@ -24,7 +24,7 @@ public class PasswordServiceTests
     public void ValidatePassword_ValidPassword_DoesNotThrowException()
     {
         // Arrange
-        var user = new AnalysisData.Models.UserModel.User()
+        var user = new User()
         {
             Password = "9883AF16067978706D06310A5BD58D0FF176BD738AC675DC49BF8F244666456A" 
         };
@@ -45,7 +45,7 @@ public class PasswordServiceTests
     public void ValidatePassword_ShouldThrowPasswordMismatchException_WhenInvalidPasswordProvided()
     {
         // Arrange
-        var user = new AnalysisData.Models.UserModel.User()
+        var user = new User()
         {
             Password = "9883AF16067978706D06310A5BD58D0FF176BD738AC675DC49BF8F244666456A" 
         };
@@ -60,7 +60,7 @@ public class PasswordServiceTests
         Action act = () => _sut.ValidatePassword(user, plainText);
 
         // Assert
-        Assert.Throws<PasswordMismatchException>(act);
+        Assert.Throws<InvalidPasswordException>(act);
     }
     
     [Fact]

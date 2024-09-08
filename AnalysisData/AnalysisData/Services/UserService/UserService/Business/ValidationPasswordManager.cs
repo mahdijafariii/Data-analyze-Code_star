@@ -20,7 +20,7 @@ public class ValidationPasswordManager : IValidtionPasswordManager
     {
         if (user.Password != _passwordHasherManager.HashPassword(password))
         {
-            throw new PasswordMismatchException();
+            throw new InvalidPasswordException();
         }
     }
 

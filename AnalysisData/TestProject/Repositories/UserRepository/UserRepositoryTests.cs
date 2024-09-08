@@ -509,7 +509,7 @@ public class UserRepositoryTests
         // Arrange
         var roleAdmin = new Role { RoleName = "Admin", RolePolicy = "gold" };
         var roleManager = new Role { RoleName = "Manager", RolePolicy = "silver" };
-        var roleAnalyst = new Role { RoleName = "dataanalyst", RolePolicy = "bronze" };
+        var roleAnalyst = new Role { RoleName = "data-analyst", RolePolicy = "bronze" };
 
         var users = new List<AnalysisData.Models.UserModel.User>
         {

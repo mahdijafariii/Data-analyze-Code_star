@@ -82,7 +82,7 @@ public class NodePaginationServiceTests
         // Arrange
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
         {
-            new Claim(ClaimTypes.Role, "dataanalyst"),
+            new Claim(ClaimTypes.Role, "data-analyst"),
             new Claim("id", Guid.NewGuid().ToString())
         }));
 

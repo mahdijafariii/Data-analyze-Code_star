@@ -49,16 +49,16 @@ public class CategoryService : ICategoryService
         await _categoryRepository.AddAsync(category);
     }
 
-    public async Task UpdateAsync(NewCategoryDto newCategoryDto)
+    public async Task UpdateAsync(UpdateCategoryDto updateCategoryDto)
     {
-        var currentCategory = await _categoryRepository.GetByIdAsync(newCategoryDto.Id);
-        var existingCategory = await _categoryRepository.GetByNameAsync(newCategoryDto.Name);
-        if (existingCategory != null && newCategoryDto.Name != currentCategory.Name)
+        var currentCategory = await _categoryRepository.GetByIdAsync(updateCategoryDto.Id);
+        var existingCategory = await _categoryRepository.GetByNameAsync(updateCategoryDto.Name);
+        if (existingCategory != null && updateCategoryDto.Name != currentCategory.Name)
         {
             throw new CategoryAlreadyExist();
         }
 
-        currentCategory.Name = newCategoryDto.Name;
+        currentCategory.Name = updateCategoryDto.Name;
         await _categoryRepository.UpdateAsync(currentCategory);
     }
 

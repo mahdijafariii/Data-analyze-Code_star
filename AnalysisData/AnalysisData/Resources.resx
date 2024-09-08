@@ -96,4 +96,7 @@
     <data name="FailedOpetaionException" xml:space="preserve">
         <value>Failed Operation ! </value>
     </data>
+    <data name="AdminProtectedException" xml:space="preserve">
+        <value>You can not delete or modify admin information !</value>
+    </data>
 </root>

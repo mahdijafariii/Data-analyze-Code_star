@@ -29,6 +29,10 @@ public class AdminService : IAdminService
     public async Task UpdateUserInformationByAdminAsync(Guid id, UpdateAdminDto updateAdminDto)
     {
         var user = await _userRepository.GetUserByIdAsync(id);
+        if (user !=null && user.Username == "admin")
+        {
+            throw new AdminProtectedException();
+        }
 
         await ValidateUserInformation(user, updateAdminDto);
         _validationService.EmailCheck(updateAdminDto.Email);
@@ -68,14 +72,18 @@ public class AdminService : IAdminService
         {
             throw new RoleNotFoundException();
         }
-
-        user.Role = role;
+        user.RoleId = role.Id;
         await _userRepository.UpdateUserAsync(user.Id, user);
     }
 
 
     public async Task<bool> DeleteUserAsync(Guid id)
     {
+        var user = await _userRepository.GetUserByIdAsync(id);
+        if (user != null && user.Username == "admin")
+        {
+            throw new AdminProtectedException();
+        }
         var isDelete = await _userRepository.DeleteUserAsync(id);
         if (!isDelete)
             throw new UserNotFoundException();

@@ -21,8 +21,16 @@ public class AttributeEdgeRepository : IAttributeEdgeRepository
     }
     public async Task AddRangeAsync(IEnumerable<AttributeEdge> attributeEdges)
     {
-        await _context.AttributeEdges.AddRangeAsync(attributeEdges);
-        await _context.SaveChangesAsync();
+        var existingIds = await _context.AttributeEdges
+            .Where(ae => attributeEdges.Select(e => e.Id).Contains(ae.Id))
+            .Select(ae => ae.Id)
+            .ToListAsync();
+        var newAttributeEdges = attributeEdges.Where(ae => !existingIds.Contains(ae.Id)).ToList();
+        if (newAttributeEdges.Any())
+        {
+            await _context.AttributeEdges.AddRangeAsync(newAttributeEdges);
+            await _context.SaveChangesAsync();
+        }
     }
     public async Task<IEnumerable<AttributeEdge>> GetAllAsync()
     {

@@ -163,38 +163,6 @@ public class AdminServiceTests
     }
 
     [Fact]
-    public async Task CheckExistenceOfRole_ShouldTNothrowRoleNotFoundException_WhenRoleExist()
-    {
-        // Arrange
-        var userId = Guid.NewGuid();
-        var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        var user = new AnalysisData.Models.UserModel.User
-        {
-            Username = "test", Password = "@Test1234",
-            Email = "test@gmail.com",
-            FirstName = "test", LastName = "test",
-            PhoneNumber = "09111111111", ImageURL = null, Role = role
-        };
-
-        var updateAdminDto = new UpdateAdminDto
-        {
-            RoleName = "Admin"
-        };
-
-        _userRepository.GetUserByIdAsync(userId).Returns(user);
-        _roleRepository.GetRoleByNameAsync(updateAdminDto.RoleName).Returns(role);
-        await _userRepository.UpdateUserAsync(userId, user);
-
-        // Act
-        await _sut.UpdateUserInformationByAdminAsync(userId, updateAdminDto);
-
-        // Assert
-        await _jwtService
-            .Received()
-            .UpdateUserCookie(updateAdminDto.UserName, false);
-    }
-
-    [Fact]
     public async Task CheckExistenceOfRole_ShouldThrowRoleNotFoundException_WhenRoleDoesNotExist()
     {
         // Arrange

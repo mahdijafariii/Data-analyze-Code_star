@@ -66,7 +66,8 @@ public class NodePaginationService : INodePaginationService
         }
         else if (category != null && role == "dataanalyst")
         {
-            valueNodes = await _graphNodeRepository.GetEntityNodeForUserWithCategoryIdAsync(usernameGuid, category.Value);
+            valueNodes =
+                await _graphNodeRepository.GetEntityNodeForUserWithCategoryIdAsync(usernameGuid, category.Value);
         }
         else if (category == null && role == "dataanalyst")
         {
@@ -76,11 +77,6 @@ public class NodePaginationService : INodePaginationService
         if (!valueNodes.Any() && category != null)
         {
             throw new CategoryResultNotFoundException();
-        }
-
-        if (!valueNodes.Any())
-        {
-            throw new NodeNotFoundException();
         }
 
         return valueNodes;

@@ -80,6 +80,11 @@ public class AdminService : IAdminService
 
     public async Task<bool> DeleteUserAsync(Guid id)
     {
+        var user = await _userRepository.GetUserByIdAsync(id);
+        if (user.Username == "admin")
+        {
+            throw new AdminProtectedException();
+        }
         var isDelete = await _userRepository.DeleteUserAsync(id);
         if (!isDelete)
             throw new UserNotFoundException();

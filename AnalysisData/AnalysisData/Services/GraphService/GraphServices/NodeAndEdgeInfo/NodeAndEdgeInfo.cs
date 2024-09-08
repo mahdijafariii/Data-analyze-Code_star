@@ -27,7 +27,7 @@ public class NodeAndEdgeInfo : INodeAndEdgeInfo
         var username = claimsPrincipal.FindFirstValue("id");
         var result = Enumerable.Empty<NodeInformationDto>();
         var usernameGuid = Guid.Parse(username);
-        if (role != "dataanalyst")
+        if (role != "data-analyst")
         {
             result = await _graphNodeRepository.GetNodeAttributeValueAsync(nodeId);
         }
@@ -55,7 +55,7 @@ public class NodeAndEdgeInfo : INodeAndEdgeInfo
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
         var result = Enumerable.Empty<EdgeInformationDto>();
-        if (role != "dataanalyst")
+        if (role != "data-analyst")
         {
             result = await _graphEdgeRepository.GetEdgeAttributeValues(edgeId);
         }

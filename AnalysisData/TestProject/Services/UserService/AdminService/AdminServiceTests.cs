@@ -7,8 +7,10 @@ using AnalysisData.Repositories.UserRepository.Abstraction;
 using AnalysisData.Services.JwtService.Abstraction;
 using AnalysisData.Services.ValidationService.Abstraction;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 
 namespace TestProject.User.Services.AdminService;
+
 public class AdminServiceTests
 {
     private readonly IUserRepository _userRepository;
@@ -60,7 +62,8 @@ public class AdminServiceTests
         };
 
         _userRepository.GetUserByIdAsync(userId).Returns(user);
-        _userRepository.GetUserByUsernameAsync(updateAdminDto.UserName).Returns((AnalysisData.Models.UserModel.User)null);
+        _userRepository.GetUserByUsernameAsync(updateAdminDto.UserName)
+            .Returns((AnalysisData.Models.UserModel.User)null);
         _userRepository.GetUserByEmailAsync(updateAdminDto.Email).Returns((AnalysisData.Models.UserModel.User)null);
         _roleRepository.GetRoleByNameAsync(updateAdminDto.RoleName).Returns(role);
 
@@ -80,6 +83,44 @@ public class AdminServiceTests
                 u.Role.RoleName == updateAdminDto.RoleName
             ));
         
+    }
+
+    [Fact]
+    public async Task UpdateUserInformationByAdminAsync_ShouldThrowsAdminProtectedException_WhenUsernameOfUserIsAdmin()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
+        var user = new AnalysisData.Models.UserModel.User
+        {
+            Id = userId,
+            Username = "admin",
+            Password = "@Username123",
+            PhoneNumber = "09111111111",
+            FirstName = "admin",
+            LastName = "admin",
+            Email = "Email@gmail.com",
+            Role = role
+        };
+
+        var updateAdminDto = new UpdateAdminDto
+        {
+            UserName = "newUsername",
+            Email = "newEmail@gmail.com",
+            FirstName = "NewFirstName",
+            LastName = "NewLastName",
+            PhoneNumber = "1234567890",
+            RoleName = "Admin"
+        };
+
+        _userRepository.GetUserByIdAsync(userId).Returns(user);
+
+
+        // Act
+        var action = () => _sut.UpdateUserInformationByAdminAsync(userId, updateAdminDto);
+
+        // Assert
+        await Assert.ThrowsAsync<AdminProtectedException>(action);
     }
 
     [Fact]
@@ -146,7 +187,7 @@ public class AdminServiceTests
         // Assert
         await Assert.ThrowsAsync<RoleNotFoundException>(action);
     }
-    
+
     [Fact]
     public async Task DeleteUserAsync_ShouldReturnTrue_WhenUserExists()
     {
@@ -159,6 +200,29 @@ public class AdminServiceTests
 
         // Assert
         Assert.True(result);
+    }
+
+    [Fact]
+    public async Task DeleteUserAsync_ShouldAdminProtectedException_WhenUserISAdmin()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var role = new Role { Id = 1, RoleName = "admin", RolePolicy = "gold" };
+        var user = new AnalysisData.Models.UserModel.User
+        {
+            Username = "admin", Password = "@Test1234",
+            Email = "test@gmail.com",
+            FirstName = "test", LastName = "test",
+            PhoneNumber = "09111111111", ImageURL = null, Role = role
+        };
+        _userRepository.GetUserByIdAsync(userId).Returns(user);
+        _userRepository.DeleteUserAsync(userId).ThrowsAsync(new AdminProtectedException());
+
+        // Act
+        var action = () => _sut.DeleteUserAsync(userId);
+
+        // Assert
+        await Assert.ThrowsAsync<AdminProtectedException>(action);
     }
 
     [Fact]

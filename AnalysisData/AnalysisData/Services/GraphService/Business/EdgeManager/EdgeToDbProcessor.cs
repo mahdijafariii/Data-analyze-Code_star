@@ -26,9 +26,9 @@ public class EdgeToDbProcessor : IEdgeToDbProcessor
         
         var headers = _csvReaderManager.ReadHeaders(csv, requiredHeaders);
         
-        var headerswithId = await _fromToProcessor.ProcessFromToAsync(headers, from, to);
+        var headersWithId = await _fromToProcessor.ProcessFromToAsync(headers, from, to);
         
-        await _entityEdgeRecordProcessor.ProcessEdgesAsync(csv, headerswithId, from, to);
+        await _entityEdgeRecordProcessor.ProcessEdgesAsync(csv, headersWithId, from, to);
         
     }
 }

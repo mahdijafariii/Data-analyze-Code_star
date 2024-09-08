@@ -7,7 +7,7 @@ using AnalysisData.Repositories.GraphRepositories.GraphRepository.GraphEdgeRepos
 using AnalysisData.Repositories.GraphRepositories.GraphRepository.GraphNodeRepository.Abstraction;
 using NSubstitute;
 
-namespace TestProject.Graph.Service.GraphServices.NodeAndEdgeInfo;
+namespace TestProject.Services.GraphService.GraphServices.NodeAndEdgeInfo;
 
 public class NodeAndEdgeInfoTests
 {
@@ -19,174 +19,160 @@ public class NodeAndEdgeInfoTests
     {
         _graphNodeRepository = Substitute.For<IGraphNodeRepository>();
         _graphEdgeRepository = Substitute.For<IGraphEdgeRepository>();
-        _sut = new AnalysisData.Services.GraphService.GraphServices.NodeAndEdgeInfo.NodeAndEdgeInfo(_graphNodeRepository,
-            _graphEdgeRepository);
-    }
-
-    private ClaimsPrincipal CreateClaimsPrincipal(string role, string userId)
-    {
-        var claims = new List<Claim>
-        {
-            new(ClaimTypes.Role, role),
-            new("id", userId)
-        };
-        var identity = new ClaimsIdentity(claims, "TestAuthType");
-        return new ClaimsPrincipal(identity);
+        _sut = new AnalysisData.Services.GraphService.GraphServices.NodeAndEdgeInfo.NodeAndEdgeInfo(_graphNodeRepository, _graphEdgeRepository);
     }
 
     [Fact]
-    public async Task GetNodeInformationAsync_ShouldReturnsNodeInformation_WhenNodeExistAndUserIsDataAnalyst()
+    public async Task GetNodeInformationAsync_ShouldReturnNodeAttributes_WhenRoleIsNotDataAnalyst()
     {
         // Arrange
-        var userId = Guid.NewGuid().ToString();
-        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", userId);
-        var nodeId = 1;
-
-        var nodeAttributeValues = new List<NodeInformationDto>
+        var nodeId = Guid.NewGuid();
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
         {
-            new() { Attribute = "Name1", Value = "Node1" },
-            new() { Attribute = "Name2", Value = "Node2" }
+            new Claim(ClaimTypes.Role, "admin"),
+            new Claim("id", Guid.NewGuid().ToString())
+        }));
+
+        var nodeAttributes = new List<NodeInformationDto>
+        {
+            new NodeInformationDto { Attribute = "Color", Value = "Red" },
+            new NodeInformationDto { Attribute = "Size", Value = "Large" }
         };
 
-        _graphNodeRepository.IsNodeAccessibleByUser(Arg.Any<Guid>(), nodeId)
-            .Returns(true);
-
-        _graphNodeRepository.GetNodeAttributeValueAsync(nodeId)
-            .Returns(nodeAttributeValues);
+        _graphNodeRepository.GetNodeAttributeValueAsync(nodeId).Returns(Task.FromResult(nodeAttributes.AsEnumerable()));
 
         // Act
         var result = await _sut.GetNodeInformationAsync(claimsPrincipal, nodeId);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal("Node1", result["Name1"]);
-        Assert.Equal("Node2", result["Name2"]);
+        Assert.Equal("Red", result["Color"]);
+        Assert.Equal("Large", result["Size"]);
     }
-    
+
     [Fact]
-    public async Task GetNodeInformationAsync_ShouldReturnsNodeInformation_WhenNodeExistAndUserIsNotDataAnalyst()
+    public async Task GetNodeInformationAsync_ShouldReturnNodeAttributes_WhenRoleIsDataAnalystAndNodeIsAccessible()
     {
         // Arrange
-        var userId = Guid.NewGuid().ToString();
-        var claimsPrincipal = CreateClaimsPrincipal("admin", userId);
-        var nodeId = 1;
-
-        var nodeAttributeValues = new List<NodeInformationDto>
+        var nodeId = Guid.NewGuid();
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
         {
-            new() { Attribute = "Name1", Value = "Node1" },
-            new() { Attribute = "Name2", Value = "Node2" }
+            new Claim(ClaimTypes.Role, "dataanalyst"),
+            new Claim("id", Guid.NewGuid().ToString())
+        }));
+
+        var nodeAttributes = new List<NodeInformationDto>
+        {
+            new NodeInformationDto { Attribute = "Color", Value = "Blue" }
         };
 
-        _graphNodeRepository.IsNodeAccessibleByUser(Arg.Any<Guid>(), nodeId)
-            .Returns(true);
+        var usernameGuid = Guid.Parse(claimsPrincipal.FindFirstValue("id"));
 
-        _graphNodeRepository.GetNodeAttributeValueAsync(nodeId)
-            .Returns(nodeAttributeValues);
+        _graphNodeRepository.IsNodeAccessibleByUser(usernameGuid, nodeId).Returns(Task.FromResult(true));
+        _graphNodeRepository.GetNodeAttributeValueAsync(nodeId).Returns(Task.FromResult(nodeAttributes.AsEnumerable()));
 
         // Act
         var result = await _sut.GetNodeInformationAsync(claimsPrincipal, nodeId);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal("Node1", result["Name1"]);
-        Assert.Equal("Node2", result["Name2"]);
+        Assert.Equal("Blue", result["Color"]);
     }
 
     [Fact]
-    public async Task GetNodeInformationAsync_ThrowsNodeNotFoundException_WhenNodeDoesNotExist()
+    public async Task GetNodeInformationAsync_ShouldThrowNodeNotFoundException_WhenNoAttributesFound()
     {
         // Arrange
-        var userId = Guid.NewGuid().ToString();
-        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", userId);
-        var nodeId = 1;
+        var nodeId = Guid.NewGuid();
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
+        {
+            new Claim(ClaimTypes.Role, "admin"),
+            new Claim("id", Guid.NewGuid().ToString())
+        }));
 
-        _graphNodeRepository.IsNodeAccessibleByUser(Arg.Any<Guid>(), nodeId)
-            .Returns(true);
-
-        _graphNodeRepository.GetNodeAttributeValueAsync(nodeId)
-            .Returns(Enumerable.Empty<NodeInformationDto>());
+        _graphNodeRepository.GetNodeAttributeValueAsync(nodeId).Returns(Task.FromResult(Enumerable.Empty<NodeInformationDto>()));
 
         // Act
-        var action = () => _sut.GetNodeInformationAsync(claimsPrincipal, nodeId);
+        Exception exception = await Record.ExceptionAsync(() => _sut.GetNodeInformationAsync(claimsPrincipal, nodeId));
+
         // Assert
-        await Assert.ThrowsAsync<NodeNotFoundException>(action);
+        Assert.NotNull(exception);
+        Assert.IsType<NodeNotFoundException>(exception);
     }
 
     [Fact]
-    public async Task GetEdgeInformationAsync_ShouldReturnsEdgeInformation_WhenEdgeExistAndUserIsDataAnalyst()
+    public async Task GetEdgeInformationAsync_ShouldReturnEdgeAttributes_WhenRoleIsNotDataAnalyst()
     {
         // Arrange
-        var userId = Guid.NewGuid().ToString();
-        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", userId);
-        var edgeId = 1;
+        var edgeId = Guid.NewGuid();
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
+        {
+            new Claim(ClaimTypes.Role, "admin"),
+            new Claim("id", Guid.NewGuid().ToString())
+        }));
 
         var edgeAttributes = new List<EdgeInformationDto>
         {
-            new (){ Attribute = "Name1", Value = "Edge1" },
-            new (){ Attribute = "Name2", Value = "Edge2" }
+            new EdgeInformationDto { Attribute = "Weight", Value = "5" }
         };
 
-        _graphEdgeRepository.IsEdgeAccessibleByUser(Arg.Any<string>(), edgeId)
-            .Returns(true);
-
-        _graphEdgeRepository.GetEdgeAttributeValues(edgeId)
-            .Returns(edgeAttributes);
+        _graphEdgeRepository.GetEdgeAttributeValues(edgeId).Returns(Task.FromResult(edgeAttributes.AsEnumerable()));
 
         // Act
         var result = await _sut.GetEdgeInformationAsync(claimsPrincipal, edgeId);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal("Edge1", result["Name1"]);
-        Assert.Equal("Edge2", result["Name2"]);
+        Assert.Equal("5", result["Weight"]);
     }
-    
+
     [Fact]
-    public async Task GetEdgeInformationAsync_ShouldReturnsEdgeInformation_WhenEdgeExistAndUserIsNotDataAnalyst()
+    public async Task GetEdgeInformationAsync_ShouldReturnEdgeAttributes_WhenRoleIsDataAnalystAndEdgeIsAccessible()
     {
         // Arrange
-        var userId = Guid.NewGuid().ToString();
-        var claimsPrincipal = CreateClaimsPrincipal("admin", userId);
-        var edgeId = 1;
+        var edgeId = Guid.NewGuid();
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
+        {
+            new Claim(ClaimTypes.Role, "dataanalyst"),
+            new Claim("id", Guid.NewGuid().ToString())
+        }));
 
         var edgeAttributes = new List<EdgeInformationDto>
         {
-            new (){ Attribute = "Name1", Value = "Edge1" },
-            new (){ Attribute = "Name2", Value = "Edge2" }
+            new EdgeInformationDto { Attribute = "Type", Value = "Direct" }
         };
 
-        _graphEdgeRepository.IsEdgeAccessibleByUser(Arg.Any<string>(), edgeId)
-            .Returns(true);
+        var username = claimsPrincipal.FindFirstValue("id");
 
-        _graphEdgeRepository.GetEdgeAttributeValues(edgeId)
-            .Returns(edgeAttributes);
+        _graphEdgeRepository.IsEdgeAccessibleByUser(username, edgeId).Returns(Task.FromResult(true));
+        _graphEdgeRepository.GetEdgeAttributeValues(edgeId).Returns(Task.FromResult(edgeAttributes.AsEnumerable()));
 
         // Act
         var result = await _sut.GetEdgeInformationAsync(claimsPrincipal, edgeId);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal("Edge1", result["Name1"]);
-        Assert.Equal("Edge2", result["Name2"]);
+        Assert.Equal("Direct", result["Type"]);
     }
 
     [Fact]
-    public async Task GetEdgeInformationAsync_ShouldThrowsEdgeNotFoundException_WhenEdgeDoesNotExist()
+    public async Task GetEdgeInformationAsync_ShouldThrowEdgeNotFoundException_WhenNoAttributesFound()
     {
         // Arrange
-        var userId = Guid.NewGuid().ToString();
-        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", userId);
-        var edgeId = 1;
+        var edgeId = Guid.NewGuid();
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
+        {
+            new Claim(ClaimTypes.Role, "admin"),
+            new Claim("id", Guid.NewGuid().ToString())
+        }));
 
-        _graphEdgeRepository.IsEdgeAccessibleByUser(Arg.Any<string>(), edgeId)
-            .Returns(true);
-
-        _graphEdgeRepository.GetEdgeAttributeValues(edgeId)
-            .Returns(Enumerable.Empty<EdgeInformationDto>());
+        _graphEdgeRepository.GetEdgeAttributeValues(edgeId).Returns(Task.FromResult(Enumerable.Empty<EdgeInformationDto>()));
 
         // Act
-        var action = () => _sut.GetEdgeInformationAsync(claimsPrincipal, edgeId);
+        Exception exception = await Record.ExceptionAsync(() => _sut.GetEdgeInformationAsync(claimsPrincipal, edgeId));
+
         // Assert
-        await Assert.ThrowsAsync<EdgeNotFoundException>(action);
+        Assert.NotNull(exception);
+        Assert.IsType<EdgeNotFoundException>(exception);
     }
 }

@@ -4,9 +4,9 @@ using AnalysisData.Services.GraphService.Business.CsvManager.CsvHeaderManager.Ab
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
 
-namespace TestProject.Graph.Service.ServiceBusiness;
+namespace TestProject.Services.GraphService.ServiceBusiness.CsvManager;
 
-public class CsvReaderServiceTests
+public class CsvReaderManagerTests
 {
     private readonly ICsvHeaderReaderProcessor _csvHeaderReaderProcessor;
     private readonly IHeaderValidatorProcessor _headerValidatorProcessor;
@@ -14,7 +14,7 @@ public class CsvReaderServiceTests
     private readonly IFormFile _formFile;
     private readonly MemoryStream _memoryStream;
 
-    public CsvReaderServiceTests()
+    public CsvReaderManagerTests()
     {
         _csvHeaderReaderProcessor = Substitute.For<ICsvHeaderReaderProcessor>();
         _headerValidatorProcessor = Substitute.For<IHeaderValidatorProcessor>();
@@ -34,7 +34,7 @@ public class CsvReaderServiceTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<CsvReaderProcessorProcessor>(result);
+        Assert.IsType<CsvReaderProcessor>(result);
     }
 
     [Fact]

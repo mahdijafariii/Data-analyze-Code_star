@@ -103,9 +103,9 @@ public static class ConfigService
             var textReader = new StringReader("");
             return new CsvReader(textReader, config);
         });
-        services.AddScoped<ICsvReaderProcessor, CsvReaderProcessorProcessor>();
+        services.AddScoped<ICsvReaderProcessor, CsvReaderProcessor>();
         services.AddScoped<ICsvReaderManager, CsvReaderManager>();
-        services.AddScoped<IHeaderValidatorProcessor, HeaderValidatorProcessorProcessor>();
+        services.AddScoped<IHeaderValidatorProcessor, HeaderValidatorProcessor>();
         services.AddScoped<ICsvHeaderReaderProcessor, CsvHeaderReaderProcessor>();
         services.AddScoped<IEdgeToDbProcessor, EdgeToDbProcessor>();
         services.AddScoped<IUserService, UserService>();

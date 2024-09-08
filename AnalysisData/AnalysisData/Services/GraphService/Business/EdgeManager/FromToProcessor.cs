@@ -21,38 +21,38 @@ public class FromToProcessor : IFromToProcessor
             .Where(header => !header.Equals(from, StringComparison.OrdinalIgnoreCase) &&
                              !header.Equals(to, StringComparison.OrdinalIgnoreCase))
             .ToList();
-        
-        var existingAttributeEdges = await _attributeEdgeRepository.GetByNamesAsync(filteredHeaders);
-        
-        var existingEdgesDict = existingAttributeEdges
-            .ToDictionary(ae => ae.Name, StringComparer.OrdinalIgnoreCase);
-        
-        var newAttributeEdges = new List<AttributeEdge>();
 
-        foreach (var header in filteredHeaders)
+        if (filteredHeaders.Count() != 0)
         {
-            if (existingEdgesDict.TryGetValue(header, out var existingAttributeEdge))
+            var existingAttributeEdges = await _attributeEdgeRepository.GetByNamesAsync(filteredHeaders);
+            var existingEdgesDict = existingAttributeEdges
+                .ToDictionary(ae => ae.Name, StringComparer.OrdinalIgnoreCase);
+            var newAttributeEdges = new List<AttributeEdge>();
+
+            foreach (var header in filteredHeaders)
             {
-                attributeEdgesResult.Add(existingAttributeEdge);
-            }
-            else
-            {
-                var newAttributeEdge = new AttributeEdge
+                if (existingEdgesDict.TryGetValue(header, out var existingAttributeEdge))
                 {
-                    Id = Guid.NewGuid(),
-                    Name = header
-                };
+                    attributeEdgesResult.Add(existingAttributeEdge);
+                }
+                else
+                {
+                    var newAttributeEdge = new AttributeEdge
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = header
+                    };
                 
-                newAttributeEdges.Add(newAttributeEdge);
-                attributeEdgesResult.Add(newAttributeEdge);
+                    newAttributeEdges.Add(newAttributeEdge);
+                    attributeEdgesResult.Add(newAttributeEdge);
+                }
+            }
+        
+            if (newAttributeEdges.Any())
+            {
+                await _attributeEdgeRepository.AddRangeAsync(newAttributeEdges);
             }
         }
-        
-        if (newAttributeEdges.Any())
-        {
-            await _attributeEdgeRepository.AddRangeAsync(newAttributeEdges);
-        }
-        
         return attributeEdgesResult;
     }
 }

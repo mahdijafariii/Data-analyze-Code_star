@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalysisData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240908080919_initial")]
+    [Migration("20240908111757_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -326,7 +326,7 @@ namespace AnalysisData.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("163bceab-bb37-46a6-b2ad-092cf2bcb9bc"),
+                            Id = new Guid("3420886b-a4d4-4701-8926-bb9bbe31db94"),
                             Email = "admin@gmail.com",
                             FirstName = "admin",
                             LastName = "admin",

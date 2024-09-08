@@ -26,7 +26,7 @@ public class CsvReaderManager : ICsvReaderManager
             HasHeaderRecord = true
         };
         var csvHelperReader = new CsvHelper.CsvReader(reader, config);
-        return new CsvReaderProcessorProcessor(csvHelperReader);
+        return new CsvReaderProcessor(csvHelperReader);
     }
 
     public IEnumerable<string> ReadHeaders(ICsvReaderProcessor csv, List<string> requiredHeaders)

@@ -5,19 +5,17 @@ using AnalysisData.Services.GraphService.Business.EdgeManager.Abstractions;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
 
-namespace TestProject.Graph.Service.ServiceBusiness;
+namespace TestProject.Services.GraphService.ServiceBusiness.EdgeManager;
 
-public class EdgeToDbServiceTests
+public class EdgeToDbProcessorTests
 {
-    private readonly IValueEdgeProcessor _valueEdgeProcessor;
     private readonly IEntityEdgeRecordProcessor _entityEdgeRecordProcessor;
     private readonly IFromToProcessor _fromToProcessor;
     private readonly ICsvReaderManager _csvReaderManager;
     private readonly EdgeToDbProcessor _sut;
 
-    public EdgeToDbServiceTests()
+    public EdgeToDbProcessorTests()
     {
-        _valueEdgeProcessor = Substitute.For<IValueEdgeProcessor>();
         _entityEdgeRecordProcessor = Substitute.For<IEntityEdgeRecordProcessor>();
         _fromToProcessor = Substitute.For<IFromToProcessor>();
         _csvReaderManager = Substitute.For<ICsvReaderManager>();
@@ -25,41 +23,40 @@ public class EdgeToDbServiceTests
         _sut = new EdgeToDbProcessor(
             _fromToProcessor,
             _csvReaderManager,
-            _entityEdgeRecordProcessor,
-            _valueEdgeProcessor
+            _entityEdgeRecordProcessor
         );
     }
 
     [Fact]
-    public async Task ProcessCsvFileAsync_ShouldProcessCsvCorrectly()
+    public async Task ProcessCsvFileAsync_Should_ProcessCsvCorrectly_When_FileAndHeadersAreValid()
     {
         // Arrange
         var file = Substitute.For<IFormFile>(); 
         var csvReader = Substitute.For<ICsvReaderProcessor>();
 
         var headers = new List<string> { "From", "To", "OtherHeader" };
-        var entityEdges = new List<EntityEdge>
+    
+        var headersWithId = new List<AttributeEdge>
         {
-            new EntityEdge { Id = 1 },
-            new EntityEdge { Id = 2 }
+            new AttributeEdge { Id = Guid.NewGuid(), Name = "OtherHeader" },
         };
-
+    
         _csvReaderManager.CreateCsvReader(file).Returns(csvReader);
-
         _csvReaderManager.ReadHeaders(csvReader, Arg.Any<List<string>>())
             .Returns(headers);
-        
+
+        _fromToProcessor.ProcessFromToAsync(headers, "From", "To")
+            .Returns(Task.FromResult<IEnumerable<AttributeEdge>>(headersWithId)); 
+    
         _entityEdgeRecordProcessor
-            .ProcessEntityEdgesAsync(Arg.Any<ICsvReaderProcessor>(), Arg.Any<string>(), Arg.Any<string>())
-            .Returns(Task.FromResult((IEnumerable<EntityEdge>)entityEdges));
+            .ProcessEdgesAsync(csvReader, headersWithId, "From", "To")
+            .Returns(Task.CompletedTask);
 
         // Act
         await _sut.ProcessCsvFileAsync(file, "From", "To");
 
         // Assert
         await _fromToProcessor.Received(1).ProcessFromToAsync(headers, "From", "To");
-        await _entityEdgeRecordProcessor.Received(1).ProcessEntityEdgesAsync(csvReader, "From", "To");
-        await _valueEdgeProcessor.Received(1)
-            .ProcessEntityEdgeValuesAsync(csvReader, headers, "From", "To", entityEdges);
+        await _entityEdgeRecordProcessor.Received(1).ProcessEdgesAsync(csvReader, headersWithId, "From", "To");
     }
 }

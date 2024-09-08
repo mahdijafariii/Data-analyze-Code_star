@@ -105,7 +105,7 @@ public class CategoryControllersTest
     {
         // Arrange
         int categoryId = 1;
-        var newCategoryDto = new NewCategoryDto { Id = 1, Name = "UpdatedCategory" };
+        var newCategoryDto = new UpdateCategoryDto() { Id = 1, Name = "UpdatedCategory" };
 
         // Act
         var result = await _controller.UpdateCategory(newCategoryDto);

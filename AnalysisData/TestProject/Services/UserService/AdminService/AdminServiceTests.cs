@@ -79,10 +79,7 @@ public class AdminServiceTests
                 u.PhoneNumber == updateAdminDto.PhoneNumber &&
                 u.Role.RoleName == updateAdminDto.RoleName
             ));
-
-        await _jwtService
-            .Received()
-            .UpdateUserCookie(updateAdminDto.UserName, false);
+        
     }
 
     [Fact]

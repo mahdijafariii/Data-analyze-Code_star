@@ -34,9 +34,7 @@ public class AdminService : IAdminService
         _validationService.EmailCheck(updateAdminDto.Email);
         _validationService.PhoneNumberCheck(updateAdminDto.PhoneNumber);
         await CheckExistenceOfRole(user,updateAdminDto);
-        
         await SetUpdatedInformation(user, updateAdminDto);
-        await _jwtService.UpdateUserCookie(user.Username, false);
     }
 
     private async Task ValidateUserInformation(User user,UpdateAdminDto updateAdminDto)

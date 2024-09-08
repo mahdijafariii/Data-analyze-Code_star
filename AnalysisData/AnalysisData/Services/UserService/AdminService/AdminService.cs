@@ -29,7 +29,7 @@ public class AdminService : IAdminService
     public async Task UpdateUserInformationByAdminAsync(Guid id, UpdateAdminDto updateAdminDto)
     {
         var user = await _userRepository.GetUserByIdAsync(id);
-        if (user.Username == "admin")
+        if (user !=null && user.Username == "admin")
         {
             throw new AdminProtectedException();
         }
@@ -81,7 +81,7 @@ public class AdminService : IAdminService
     public async Task<bool> DeleteUserAsync(Guid id)
     {
         var user = await _userRepository.GetUserByIdAsync(id);
-        if (user.Username == "admin")
+        if (user != null && user.Username == "admin")
         {
             throw new AdminProtectedException();
         }

@@ -105,10 +105,10 @@ public class CategoryControllersTest
     {
         // Arrange
         int categoryId = 1;
-        var newCategoryDto = new NewCategoryDto { Name = "UpdatedCategory" };
+        var newCategoryDto = new NewCategoryDto { Id = 1, Name = "UpdatedCategory" };
 
         // Act
-        var result = await _controller.UpdateCategory(categoryId, newCategoryDto);
+        var result = await _controller.UpdateCategory(newCategoryDto);
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
@@ -116,7 +116,7 @@ public class CategoryControllersTest
         var expectedResponseContent = JsonConvert.SerializeObject(new { massage = "updated successfully" });
         Assert.Equal(expectedResponseContent, responseContent);
 
-        _categoryServiceMock.Verify(service => service.UpdateAsync(newCategoryDto, categoryId), Times.Once);
+        _categoryServiceMock.Verify(service => service.UpdateAsync(newCategoryDto), Times.Once);
     }
 
     

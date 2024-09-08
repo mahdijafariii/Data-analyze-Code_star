@@ -49,9 +49,9 @@ public class CategoryService : ICategoryService
         await _categoryRepository.AddAsync(category);
     }
 
-    public async Task UpdateAsync(NewCategoryDto newCategoryDto, int preCategoryId)
+    public async Task UpdateAsync(NewCategoryDto newCategoryDto)
     {
-        var currentCategory = await _categoryRepository.GetByIdAsync(preCategoryId);
+        var currentCategory = await _categoryRepository.GetByIdAsync(newCategoryDto.Id);
         var existingCategory = await _categoryRepository.GetByNameAsync(newCategoryDto.Name);
         if (existingCategory != null && newCategoryDto.Name != currentCategory.Name)
         {

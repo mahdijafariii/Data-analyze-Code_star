@@ -5,5 +5,6 @@ namespace AnalysisData.Services.GraphService.Business.EdgeManager.Abstractions;
 
 public interface IEntityEdgeRecordProcessor
 {
-    Task<IEnumerable<EntityEdge>> ProcessEntityEdgesAsync(ICsvReaderProcessor csv, string fromId, string toId);
+    Task ProcessEdgesAsync(ICsvReaderProcessor csv, IEnumerable<AttributeEdge> attributeEdges, string from,
+        string to);
 }

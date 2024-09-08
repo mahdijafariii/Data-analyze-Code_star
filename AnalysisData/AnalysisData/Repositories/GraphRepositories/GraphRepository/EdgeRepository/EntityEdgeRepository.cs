@@ -29,19 +29,19 @@ public class EntityEdgeRepository : IEntityEdgeRepository
         await _context.EntityEdges.AddRangeAsync(entityEdges);
         await _context.SaveChangesAsync();
     }
-    public async Task<EntityEdge> GetByIdAsync(int id)
+    public async Task<EntityEdge> GetByIdAsync(Guid id)
     {
         return await _context.EntityEdges.FindAsync(id);
     }
 
-    public async Task<List<EntityEdge>> FindNodeLoopsAsync(int id)
+    public async Task<List<EntityEdge>> FindNodeLoopsAsync(Guid id)
     {
         return await _context.EntityEdges
             .Where(x => x.EntityIDSource == id || x.EntityIDTarget == id)
             .ToListAsync();
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(Guid id)
     {
         var entity = await _context.EntityEdges.FindAsync(id);
         if (entity != null)

@@ -8,6 +8,6 @@ public interface IEntityNodeRepository
     Task AddAsync(EntityNode entity);
     Task<IEnumerable<EntityNode>> GetAllAsync();
     Task<EntityNode> GetByNameAsync(string id);
-    Task DeleteAsync(int id);
-    Task<EntityNode> GetByIdAsync(int id);
+    Task DeleteAsync(Guid id);
+    Task<EntityNode> GetByIdAsync(Guid id);
 }

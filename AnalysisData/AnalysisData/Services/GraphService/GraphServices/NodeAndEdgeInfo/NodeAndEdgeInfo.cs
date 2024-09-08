@@ -21,7 +21,7 @@ public class NodeAndEdgeInfo : INodeAndEdgeInfo
     }
 
     public async Task<Dictionary<string, string>> GetNodeInformationAsync(ClaimsPrincipal claimsPrincipal,
-        int nodeId)
+        Guid nodeId)
     {
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
@@ -50,7 +50,7 @@ public class NodeAndEdgeInfo : INodeAndEdgeInfo
         return output;
     }
 
-    public async Task<Dictionary<string, string>> GetEdgeInformationAsync(ClaimsPrincipal claimsPrincipal, int edgeId)
+    public async Task<Dictionary<string, string>> GetEdgeInformationAsync(ClaimsPrincipal claimsPrincipal, Guid edgeId)
     {
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");

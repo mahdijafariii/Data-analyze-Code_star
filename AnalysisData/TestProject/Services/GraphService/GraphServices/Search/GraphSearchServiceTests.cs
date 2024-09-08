@@ -5,7 +5,7 @@ using AnalysisData.Repositories.GraphRepositories.GraphRepository.GraphNodeRepos
 using AnalysisData.Services.GraphService.GraphServices.Search;
 using NSubstitute;
 
-namespace TestProject.Graph.Service.GraphServices.Search;
+namespace TestProject.Services.GraphService.GraphServices.Search;
 
 public class GraphSearchServiceTests
 {
@@ -40,8 +40,8 @@ public class GraphSearchServiceTests
 
         var entityNodes = new List<EntityNode>
         {
-            new() { Id = 1, Name = "Node1" },
-            new() { Id = 2, Name = "Node2" }
+            new() { Id = Guid.NewGuid(), Name = "Node1" },
+            new() { Id = Guid.NewGuid(), Name = "Node2" }
         };
         _graphNodeRepository.GetNodeStartsWithSearchInputForAdminAsync(searchInput).Returns(entityNodes);
 
@@ -52,7 +52,8 @@ public class GraphSearchServiceTests
         Assert.Equal(entityNodes.Count, result.Items.Count);
         await _graphNodeRepository.Received(1).GetNodeStartsWithSearchInputForAdminAsync(searchInput);
     }
-
+    
+    
     [Fact]
     public async Task SearchInEntityNodeNameAsync_ShouldReturnResults_WhenRoleIsAdminAndSearchTypeContains()
     {
@@ -64,8 +65,8 @@ public class GraphSearchServiceTests
 
         var entityNodes = new List<EntityNode>
         {
-            new() { Id = 1, Name = "TheNode1" },
-            new() { Id = 2, Name = "NodeFound" }
+            new() { Id = Guid.NewGuid(), Name = "TheNode1" },
+            new() { Id = Guid.NewGuid(), Name = "NodeFound" }
         };
         _graphNodeRepository.GetNodeContainSearchInputForAdminAsync(searchInput).Returns(entityNodes);
 
@@ -76,7 +77,8 @@ public class GraphSearchServiceTests
         Assert.Equal(entityNodes.Count, result.Items.Count);
         await _graphNodeRepository.Received(1).GetNodeContainSearchInputForAdminAsync(searchInput);
     }
-
+    
+    
     [Fact]
     public async Task SearchInEntityNodeNameAsync_ShouldReturnResults_WhenRoleIsAdminAndSearchTypeEndsWith()
     {
@@ -88,8 +90,8 @@ public class GraphSearchServiceTests
 
         var entityNodes = new List<EntityNode>
         {
-            new() { Id = 1, Name = "MyNode" },
-            new() { Id = 2, Name = "YourNode" }
+            new() { Id = Guid.NewGuid(), Name = "MyNode" },
+            new() { Id = Guid.NewGuid(), Name = "YourNode" }
         };
         _graphNodeRepository.GetNodeEndsWithSearchInputForAdminAsync(searchInput).Returns(entityNodes);
 
@@ -100,7 +102,6 @@ public class GraphSearchServiceTests
         Assert.Equal(entityNodes.Count, result.Items.Count);
         await _graphNodeRepository.Received(1).GetNodeEndsWithSearchInputForAdminAsync(searchInput);
     }
-
     
     [Fact]
     public async Task SearchInEntityNodeNameAsync_ShouldReturnResults_WhenRoleIsUserAndSearchTypeStartsWith()
@@ -113,8 +114,8 @@ public class GraphSearchServiceTests
 
         var entityNodes = new List<EntityNode>
         {
-            new() { Id = 1, Name = "Node1" },
-            new() { Id = 2, Name = "Node2" }
+            new() { Id = Guid.NewGuid(), Name = "Node1" },
+            new() { Id = Guid.NewGuid(), Name = "Node2" }
         };
         _graphNodeRepository.GetNodeStartsWithSearchInputForUserAsync(Arg.Any<Guid>(),searchInput).Returns(entityNodes);
 
@@ -137,8 +138,8 @@ public class GraphSearchServiceTests
 
         var entityNodes = new List<EntityNode>
         {
-            new() { Id = 1, Name = "NodeA" },
-            new() { Id = 2, Name = "BNodeB" }
+            new() { Id = Guid.NewGuid(), Name = "NodeA" },
+            new() { Id = Guid.NewGuid(), Name = "BNodeB" }
         };
         _graphNodeRepository.GetNodeContainSearchInputForUserAsync(Arg.Any<Guid>(), searchInput).Returns(entityNodes);
 
@@ -149,7 +150,7 @@ public class GraphSearchServiceTests
         Assert.Equal(entityNodes.Count, result.Items.Count);
         await _graphNodeRepository.Received(1).GetNodeContainSearchInputForUserAsync(Arg.Any<Guid>(), searchInput);
     }
-    
+
     [Fact]
     public async Task SearchInEntityNodeNameAsync_ShouldReturnResults_WhenRoleIsUserAndSearchTypeEndsWith()
     {
@@ -161,8 +162,8 @@ public class GraphSearchServiceTests
 
         var entityNodes = new List<EntityNode>
         {
-            new() { Id = 1, Name = "MyNode" },
-            new() { Id = 2, Name = "YourNode" }
+            new() { Id = Guid.NewGuid(), Name = "MyNode" },
+            new() { Id = Guid.NewGuid(), Name = "YourNode" }
         };
         _graphNodeRepository.GetNodeEndsWithSearchInputForUserAsync(Arg.Any<Guid>(), searchInput).Returns(entityNodes);
 
@@ -173,7 +174,7 @@ public class GraphSearchServiceTests
         Assert.Equal(entityNodes.Count, result.Items.Count);
         await _graphNodeRepository.Received(1).GetNodeEndsWithSearchInputForUserAsync(Arg.Any<Guid>(), searchInput);
     }
-
+    
     [Fact]
     public async Task SearchInEntityNodeNameAsync_ShouldThrowNodeNotFoundException_WhenNoNodesExistForAdmin()
     {
@@ -193,7 +194,7 @@ public class GraphSearchServiceTests
         await Assert.ThrowsAsync<NodeNotFoundException>(action);
         await _graphNodeRepository.Received(1).GetNodeContainSearchInputForAdminAsync(searchInput);
     }
-
+    
     [Fact]
     public async Task SearchInEntityNodeNameAsync_ShouldThrowNodeNotFoundException_WhenNoNodesExistForUser()
     {

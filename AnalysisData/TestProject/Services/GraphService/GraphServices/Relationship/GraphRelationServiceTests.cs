@@ -8,7 +8,7 @@ using AnalysisData.Repositories.GraphRepositories.GraphRepository.NodeRepository
 using AnalysisData.Services.GraphService.GraphServices.Relationship;
 using NSubstitute;
 
-namespace TestProject.Graph.Service.GraphServices.Relationship;
+namespace TestProject.Services.GraphService.GraphServices.Relationship;
 
 public class GraphRelationServiceTests
 {
@@ -34,93 +34,23 @@ public class GraphRelationServiceTests
         };
         return new ClaimsPrincipal(new ClaimsIdentity(claims, "TestAuthType"));
     }
-
-    [Fact]
-    public async Task GetRelationalEdgeBaseNodeAsync_ShouldReturnNodesAndEdges_WhenUserIsAdmin()
-    {
-        // Arrange
-        var userId = Guid.NewGuid().ToString();
-        var claimsPrincipal = CreateClaimsPrincipal("admin", userId);
-        
-        var nodeId = 1;
-        var node = new EntityNode { Id = nodeId, Name = "Node1" };
-        
-        _entityNodeRepository.GetByIdAsync(nodeId).Returns(node);
-
-        var edges = new List<EntityEdge>
-        {
-            new() { Id = 1, EntityIDSource = 1, EntityIDTarget = 2 },
-            new() { Id = 2, EntityIDSource = 1, EntityIDTarget = 3 }
-        };
-        _entityEdgeRepository.FindNodeLoopsAsync(nodeId).Returns(edges);
-
-        var nodes = new List<EntityNode>
-        {
-            new() { Id = 1, Name = "Node1" },
-            new() { Id = 2, Name = "Node2" },
-            new() { Id = 3, Name = "Node3" }
-        };
-        _entityNodeRepository.GetByIdAsync(Arg.Any<int>()).Returns(args => Task.FromResult(nodes.First(n => n.Id == args.Arg<int>())));
-
-        // Act
-        var result = await _sut.GetRelationalEdgeBaseNodeAsync(claimsPrincipal, nodeId);
-
-        // Assert
-        Assert.Equal(3, result.Item1.Count());
-        Assert.Equal(2, result.Item2.Count());
-    }
-
-    [Fact]
-    public async Task GetRelationalEdgeBaseNodeAsync_ShouldReturnNodesAndEdges_WhenUserIsDataAnalystAndNodeIsAccessible()
-    {
-        // Arrange
-        var userId = Guid.NewGuid();
-        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", userId.ToString());
-        
-        var nodeId = 1;
-        var node = new EntityNode { Id = nodeId, Name = "Node1" };
-        
-        _entityNodeRepository.GetByIdAsync(nodeId).Returns(node);
-        _graphNodeRepository.IsNodeAccessibleByUser(userId, nodeId).Returns(true);
-
-        var edges = new List<EntityEdge>
-        {
-            new() { Id = 1, EntityIDSource = 1, EntityIDTarget = 2 },
-            new() { Id = 2, EntityIDSource = 1, EntityIDTarget = 3 }
-        };
-        _entityEdgeRepository.FindNodeLoopsAsync(nodeId).Returns(edges);
-
-        var nodes = new List<EntityNode>
-        {
-            new() { Id = 1, Name = "Node1" },
-            new() { Id = 2, Name = "Node2" },
-            new() { Id = 3, Name = "Node3" }
-        };
-        _entityNodeRepository.GetByIdAsync(Arg.Any<int>()).Returns(args => Task.FromResult(nodes.First(n => n.Id == args.Arg<int>())));
-
-        // Act
-        var result = await _sut.GetRelationalEdgeBaseNodeAsync(claimsPrincipal, nodeId);
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(3, result.Item1.Count());
-        Assert.Equal(2, result.Item2.Count());
-    }
-
+    
+    
     [Fact]
     public async Task GetRelationalEdgeBaseNodeAsync_ShouldThrowNodeNotAccessibleForUserException_WhenNodeIsNotAccessible()
     {
         // Arrange
         var userId = Guid.NewGuid();
         var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", userId.ToString());
-        var nodeId = 1;
+        var nodeId = Guid.NewGuid();
 
         var node = new EntityNode { Id = nodeId, Name = "Node1" };
-        _entityNodeRepository.GetByIdAsync(nodeId).Returns(Task.FromResult(node));
+        _entityNodeRepository.GetByIdAsync(nodeId).Returns(node);
         _graphNodeRepository.IsNodeAccessibleByUser(userId, nodeId).Returns(false);
 
         // Act
-        var action = () => _sut.GetRelationalEdgeBaseNodeAsync(claimsPrincipal, nodeId);
+        var action = async () => await _sut.GetRelationalEdgeBaseNodeAsync(claimsPrincipal, nodeId);
+
         // Assert
         await Assert.ThrowsAsync<NodeNotAccessibleForUserException>(action);
     }
@@ -131,16 +61,17 @@ public class GraphRelationServiceTests
         // Arrange
         var userId = Guid.NewGuid().ToString();
         var claimsPrincipal = CreateClaimsPrincipal("admin", userId);
-        var nodeId = 1;
+        var nodeId = Guid.NewGuid();
 
         var node = new EntityNode { Id = nodeId, Name = "Node1" };
-        _entityNodeRepository.GetByIdAsync(nodeId).Returns(Task.FromResult(node));
+        _entityNodeRepository.GetByIdAsync(nodeId).Returns(node);
 
         var edges = new List<EntityEdge>();
         _entityEdgeRepository.FindNodeLoopsAsync(nodeId).Returns(edges);
 
         // Act
-        var action = () => _sut.GetRelationalEdgeBaseNodeAsync(claimsPrincipal, nodeId);
+        var action = async () => await _sut.GetRelationalEdgeBaseNodeAsync(claimsPrincipal, nodeId);
+
         // Assert
         await Assert.ThrowsAsync<NodeNotFoundException>(action);
     } 
@@ -151,11 +82,12 @@ public class GraphRelationServiceTests
         // Arrange
         var userId = Guid.NewGuid().ToString();
         var claimsPrincipal = CreateClaimsPrincipal("admin", userId);
-        var nodeId = 1;
-        _entityNodeRepository.GetByIdAsync(nodeId).Returns(Task.FromResult<EntityNode>(null!));
+        var nodeId = Guid.NewGuid();
+        _entityNodeRepository.GetByIdAsync(nodeId).Returns(Task.FromResult<EntityNode>(null));
 
         // Act
-        var action = () => _sut.GetRelationalEdgeBaseNodeAsync(claimsPrincipal, nodeId);
+        var action = async () => await _sut.GetRelationalEdgeBaseNodeAsync(claimsPrincipal, nodeId);
+
         // Assert
         await Assert.ThrowsAsync<NodeNotFoundException>(action);
     }

@@ -3,11 +3,11 @@ using CsvHelper;
 
 namespace AnalysisData.Services.GraphService.Business.CsvManager;
 
-public class CsvReaderProcessorProcessor : ICsvReaderProcessor
+public class CsvReaderProcessor : ICsvReaderProcessor
 {
     private readonly CsvReader _csvReader;
 
-    public CsvReaderProcessorProcessor(CsvReader csvReader)
+    public CsvReaderProcessor(CsvReader csvReader)
     {
         _csvReader = csvReader ?? throw new ArgumentNullException(nameof(csvReader));
     }

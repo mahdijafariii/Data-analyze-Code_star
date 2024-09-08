@@ -9,15 +9,13 @@ public class NodeToDbProcessor : INodeToDbProcessor
     private readonly ICsvReaderManager _csvReaderManager;
     private readonly IHeaderProcessor _headerProcessor;
     private readonly INodeRecordProcessor _nodeRecordProcessor;
-    private readonly IValueNodeProcessor _valueNodeProcessor;
 
     public NodeToDbProcessor(ICsvReaderManager csvReaderManager, IHeaderProcessor headerProcessor,
-        INodeRecordProcessor nodeRecordProcessor, IValueNodeProcessor valueNodeProcessor)
+        INodeRecordProcessor nodeRecordProcessor)
     {
         _csvReaderManager = csvReaderManager;
         _headerProcessor = headerProcessor;
         _nodeRecordProcessor = nodeRecordProcessor;
-        _valueNodeProcessor = valueNodeProcessor;
     }
 
     public async Task ProcessCsvFileAsync(IFormFile file, string id, int fileId)
@@ -25,15 +23,9 @@ public class NodeToDbProcessor : INodeToDbProcessor
         var csv = _csvReaderManager.CreateCsvReader(file);
         var headers = _csvReaderManager.ReadHeaders(csv, new List<string> { id });
         
-        await _headerProcessor.ProcessHeadersAsync(headers, id);
+        var headersWithId = await _headerProcessor.ProcessHeadersAsync(headers, id);
         
-        csv = _csvReaderManager.CreateCsvReader(file);
-        headers = _csvReaderManager.ReadHeaders(csv, new List<string> { id });
         
-        var entityNodes = await _nodeRecordProcessor.ProcessEntityNodesAsync(csv, headers, id, fileId);
-        
-        csv = _csvReaderManager.CreateCsvReader(file);
-        headers = _csvReaderManager.ReadHeaders(csv, new List<string> { id });
-        await _valueNodeProcessor.ProcessValueNodesAsync(csv, entityNodes, headers, id);
+        await _nodeRecordProcessor.ProcessNodesAsync(csv, headersWithId, id, fileId);
     }
 }

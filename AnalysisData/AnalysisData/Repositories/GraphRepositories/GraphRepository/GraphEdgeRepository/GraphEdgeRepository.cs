@@ -14,7 +14,7 @@ public class GraphEdgeRepository : IGraphEdgeRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<EdgeInformationDto>> GetEdgeAttributeValues(int id)
+    public async Task<IEnumerable<EdgeInformationDto>> GetEdgeAttributeValues(Guid id)
     {
         var result = await _context.ValueEdges
             .Include(vn => vn.Entity)
@@ -28,7 +28,7 @@ public class GraphEdgeRepository : IGraphEdgeRepository
         return result;
     }
 
-    public async Task<bool> IsEdgeAccessibleByUser(string userName, int edgeName)
+    public async Task<bool> IsEdgeAccessibleByUser(string userName, Guid edgeName)
     {
         var userNameGuid = Guid.Parse(userName);
         var entityIdSource = await _context.EntityEdges

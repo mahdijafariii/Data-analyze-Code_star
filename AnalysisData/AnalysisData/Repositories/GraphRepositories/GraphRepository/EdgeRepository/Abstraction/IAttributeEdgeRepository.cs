@@ -7,8 +7,8 @@ public interface IAttributeEdgeRepository
     Task AddAsync(AttributeEdge entity);
     Task AddRangeAsync(IEnumerable<AttributeEdge> attributeEdges);
     Task<IEnumerable<AttributeEdge>> GetAllAsync();
-    Task<AttributeEdge> GetByIdAsync(int id);
-    Task<AttributeEdge> GetByNameAsync(string name);
+    Task<AttributeEdge> GetByIdAsync(Guid id);
+    Task<List<AttributeEdge>> GetByNamesAsync(IEnumerable<string> names);
 
-    Task DeleteAsync(int id);
+    Task DeleteAsync(Guid id);
 }

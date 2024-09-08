@@ -4,10 +4,10 @@ namespace AnalysisData.Models.GraphModel.Edge;
 
 public class ValueEdge
 {
-    [Key] public int Id { get; set; }
+    [Key] public Guid Id { get; set; }
 
-    public int EntityId { get; set; }
-    public int AttributeId { get; set; }
+    public Guid EntityId { get; set; }
+    public Guid AttributeId { get; set; }
 
     [Required] public string Value { get; set; }
 

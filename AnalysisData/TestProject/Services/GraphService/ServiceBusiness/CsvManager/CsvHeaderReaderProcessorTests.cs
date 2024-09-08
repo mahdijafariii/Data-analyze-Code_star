@@ -2,14 +2,14 @@
 using AnalysisData.Services.GraphService.Business.CsvManager.Abstractions;
 using NSubstitute;
 
-namespace TestProject.Graph.Service.ServiceBusiness;
+namespace TestProject.Services.GraphService.ServiceBusiness.CsvManager;
 
-public class CsvHeaderReaderTests
+public class CsvHeaderReaderProcessorTests
 {
     private readonly ICsvReaderProcessor _csvReaderProcessor;
     private readonly CsvHeaderReaderProcessor _sut;
     
-    public CsvHeaderReaderTests()
+    public CsvHeaderReaderProcessorTests()
     {
         _csvReaderProcessor = Substitute.For<ICsvReaderProcessor>();
         _sut = new CsvHeaderReaderProcessor();

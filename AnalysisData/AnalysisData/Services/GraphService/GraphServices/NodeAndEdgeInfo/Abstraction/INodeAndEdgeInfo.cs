@@ -4,6 +4,6 @@ namespace AnalysisData.Services.GraphService.GraphServices.NodeAndEdgeInfo.Abstr
 
 public interface INodeAndEdgeInfo
 {
-    Task<Dictionary<string, string>> GetNodeInformationAsync(ClaimsPrincipal claimsPrincipal, int nodeId);
-    Task<Dictionary<string, string>> GetEdgeInformationAsync(ClaimsPrincipal claimsPrincipal, int edgeId);
+    Task<Dictionary<string, string>> GetNodeInformationAsync(ClaimsPrincipal claimsPrincipal, Guid nodeId);
+    Task<Dictionary<string, string>> GetEdgeInformationAsync(ClaimsPrincipal claimsPrincipal, Guid edgeId);
 }

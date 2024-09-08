@@ -5,7 +5,6 @@ namespace AnalysisData.Services.GraphService.Business.EdgeManager;
 
 public class EdgeToDbProcessor : IEdgeToDbProcessor
 {
-    private readonly IValueEdgeProcessor _valueEdgeProcessor;
     private readonly IEntityEdgeRecordProcessor _entityEdgeRecordProcessor;
     private readonly IFromToProcessor _fromToProcessor;
     private readonly ICsvReaderManager _csvReaderManager;
@@ -13,13 +12,11 @@ public class EdgeToDbProcessor : IEdgeToDbProcessor
     public EdgeToDbProcessor(
         IFromToProcessor fromToProcessor,
         ICsvReaderManager csvReaderManager,
-        IEntityEdgeRecordProcessor entityEdgeRecordProcessor,
-        IValueEdgeProcessor valueEdgeProcessor)
+        IEntityEdgeRecordProcessor entityEdgeRecordProcessor)
     {
         _fromToProcessor = fromToProcessor;
         _csvReaderManager = csvReaderManager;
         _entityEdgeRecordProcessor = entityEdgeRecordProcessor;
-        _valueEdgeProcessor = valueEdgeProcessor;
     }
 
     public async Task ProcessCsvFileAsync(IFormFile file, string from, string to)
@@ -29,13 +26,9 @@ public class EdgeToDbProcessor : IEdgeToDbProcessor
         
         var headers = _csvReaderManager.ReadHeaders(csv, requiredHeaders);
         
-        await _fromToProcessor.ProcessFromToAsync(headers, from, to);
+        var headersWithId = await _fromToProcessor.ProcessFromToAsync(headers, from, to);
         
-        var entityEdges = await _entityEdgeRecordProcessor.ProcessEntityEdgesAsync(csv, from, to);
+        await _entityEdgeRecordProcessor.ProcessEdgesAsync(csv, headersWithId, from, to);
         
-        csv = _csvReaderManager.CreateCsvReader(file);
-        headers = _csvReaderManager.ReadHeaders(csv, requiredHeaders);
-        
-        await _valueEdgeProcessor.ProcessEntityEdgeValuesAsync(csv, headers, from, to, entityEdges);
     }
 }

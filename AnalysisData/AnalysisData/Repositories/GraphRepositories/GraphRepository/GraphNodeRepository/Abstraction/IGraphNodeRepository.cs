@@ -5,8 +5,8 @@ namespace AnalysisData.Repositories.GraphRepositories.GraphRepository.GraphNodeR
 
 public interface IGraphNodeRepository
 {
-    Task<IEnumerable<NodeInformationDto>> GetNodeAttributeValueAsync(int id);
-    Task<bool> IsNodeAccessibleByUser(Guid userName, int nodeId);
+    Task<IEnumerable<NodeInformationDto>> GetNodeAttributeValueAsync(Guid id);
+    Task<bool> IsNodeAccessibleByUser(Guid userName, Guid nodeId);
     Task<IEnumerable<EntityNode>> GetEntityNodesForAdminAsync();
     Task<IEnumerable<EntityNode>> GetNodeContainSearchInputForAdminAsync(string input);
     Task<IEnumerable<EntityNode>> GetNodeStartsWithSearchInputForAdminAsync(string input);

@@ -13,20 +13,46 @@ public class FromToProcessor : IFromToProcessor
         _attributeEdgeRepository = attributeEdgeRepository;
     }
 
-    public async Task ProcessFromToAsync(IEnumerable<string> headers, string from, string to)
+    public async Task<IEnumerable<AttributeEdge>> ProcessFromToAsync(IEnumerable<string> headers, string from, string to)
     {
-        var attributeEdges = headers
+        var attributeEdgesResult = new List<AttributeEdge>();
+        
+        var filteredHeaders = headers
             .Where(header => !header.Equals(from, StringComparison.OrdinalIgnoreCase) &&
                              !header.Equals(to, StringComparison.OrdinalIgnoreCase))
-            .Select(header => new AttributeEdge { Name = header })
             .ToList();
 
-        foreach (var attributeEdge in attributeEdges)
+        if (filteredHeaders.Count() != 0)
         {
-            if (await _attributeEdgeRepository.GetByNameAsync(attributeEdge.Name) == null)
+            var existingAttributeEdges = await _attributeEdgeRepository.GetByNamesAsync(filteredHeaders);
+            var existingEdgesDict = existingAttributeEdges
+                .ToDictionary(ae => ae.Name, StringComparer.OrdinalIgnoreCase);
+            var newAttributeEdges = new List<AttributeEdge>();
+
+            foreach (var header in filteredHeaders)
             {
-                await _attributeEdgeRepository.AddAsync(attributeEdge);
+                if (existingEdgesDict.TryGetValue(header, out var existingAttributeEdge))
+                {
+                    attributeEdgesResult.Add(existingAttributeEdge);
+                }
+                else
+                {
+                    var newAttributeEdge = new AttributeEdge
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = header
+                    };
+                
+                    newAttributeEdges.Add(newAttributeEdge);
+                    attributeEdgesResult.Add(newAttributeEdge);
+                }
+            }
+        
+            if (newAttributeEdges.Any())
+            {
+                await _attributeEdgeRepository.AddRangeAsync(newAttributeEdges);
             }
         }
+        return attributeEdgesResult;
     }
 }

@@ -34,11 +34,11 @@ public class EntityNodeRepository : IEntityNodeRepository
         await _context.EntityNodes.AddRangeAsync(entityNodes);
         await _context.SaveChangesAsync();
     }
-    public async Task<EntityNode> GetByIdAsync(int id)
+    public async Task<EntityNode> GetByIdAsync(Guid id)
     {
         return await _context.EntityNodes.FirstOrDefaultAsync(x => x.Id == id);
     }
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(Guid id)
     {
         var entity = await _context.EntityNodes.FindAsync(id);
         if (entity != null)

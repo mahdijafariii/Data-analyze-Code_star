@@ -3,7 +3,7 @@ using AnalysisData.Services.GraphService.Business.CsvManager.CsvHeaderManager.Ab
 
 namespace AnalysisData.Services.GraphService.Business.CsvManager.CsvHeaderManager;
 
-public class HeaderValidatorProcessorProcessor : IHeaderValidatorProcessor
+public class HeaderValidatorProcessor : IHeaderValidatorProcessor
 {
     public void ValidateHeaders(IEnumerable<string> headers, List<string> requiredHeaders)
     {

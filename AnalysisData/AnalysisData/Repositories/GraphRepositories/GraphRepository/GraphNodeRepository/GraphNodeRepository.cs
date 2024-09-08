@@ -61,7 +61,7 @@ public class GraphNodeRepository : IGraphNodeRepository
     }
 
 
-    public async Task<bool> IsNodeAccessibleByUser(Guid userName, int nodeId)
+    public async Task<bool> IsNodeAccessibleByUser(Guid userName, Guid nodeId)
     {
         var result = await _context.UserFiles
             .Include(uf => uf.FileEntity)
@@ -74,7 +74,7 @@ public class GraphNodeRepository : IGraphNodeRepository
         return result.Count != 0;
     }
 
-    public async Task<IEnumerable<NodeInformationDto>> GetNodeAttributeValueAsync(int id)
+    public async Task<IEnumerable<NodeInformationDto>> GetNodeAttributeValueAsync(Guid id)
     {
         var result = await _context.ValueNodes
             .Include(vn => vn.Entity)

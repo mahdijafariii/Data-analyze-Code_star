@@ -48,9 +48,9 @@ public class CategoriesController : ControllerBase
 
     [Authorize(Policy = "silver")]
     [HttpPut]
-    public async Task<IActionResult> UpdateCategory(int id, [FromBody] NewCategoryDto newCategory)
+    public async Task<IActionResult> UpdateCategory([FromBody] NewCategoryDto newCategory)
     {
-        await _categoryService.UpdateAsync(newCategory, id);
+        await _categoryService.UpdateAsync(newCategory);
         return Ok(new { massage = "updated successfully" });
     }
 }

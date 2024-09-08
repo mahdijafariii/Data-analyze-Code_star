@@ -6,6 +6,6 @@ namespace AnalysisData.Services.GraphService.GraphServices.Relationship.Abstract
 
 public interface IGraphRelationService
 {
-    Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNodeAsync(ClaimsPrincipal claimsPrincipal,
-        int id);
+    Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNodeAsync(
+        ClaimsPrincipal claimsPrincipal, Guid id);
 }

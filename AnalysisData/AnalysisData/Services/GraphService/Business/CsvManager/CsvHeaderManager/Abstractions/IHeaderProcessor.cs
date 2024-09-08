@@ -1,6 +1,8 @@
-﻿namespace AnalysisData.Services.GraphService.Business.CsvManager.CsvHeaderManager.Abstractions;
+﻿using AnalysisData.Models.GraphModel.Node;
+
+namespace AnalysisData.Services.GraphService.Business.CsvManager.CsvHeaderManager.Abstractions;
 
 public interface IHeaderProcessor
 {
-    Task ProcessHeadersAsync(IEnumerable<string> headers, string uniqueAttribute);
+    Task<IEnumerable<AttributeNode>> ProcessHeadersAsync(IEnumerable<string> headers, string uniqueAttribute);
 }

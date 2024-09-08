@@ -8,39 +8,64 @@ using AnalysisData.Services.GraphService.Business.EdgeManager.Abstractions;
 
 namespace AnalysisData.Services.GraphService.Business.EdgeManager;
 
-public class EntityEdgeRecordProcessor : IEntityEdgeRecordProcessor
+public class EdgeDataProcessor : IEntityEdgeRecordProcessor
 {
     private readonly IEntityNodeRepository _entityNodeRepository;
     private readonly IEntityEdgeRepository _entityEdgeRepository;
+    private readonly IValueEdgeRepository _valueEdgeRepository;
+    
     private readonly int _batchSize;
 
-    public EntityEdgeRecordProcessor(
+    public EdgeDataProcessor(
         IEntityNodeRepository entityNodeRepository, 
-        IEntityEdgeRepository entityEdgeRepository 
-        )
+        IEntityEdgeRepository entityEdgeRepository, 
+        IValueEdgeRepository valueEdgeRepository,
+        int batchSize = 10000)
     {
         _entityNodeRepository = entityNodeRepository;
         _entityEdgeRepository = entityEdgeRepository;
+        _valueEdgeRepository = valueEdgeRepository;
+        _batchSize = batchSize;
     }
 
-    public async Task<IEnumerable<EntityEdge>> ProcessEntityEdgesAsync(ICsvReaderProcessor csv, string from, string to)
+    public async Task ProcessEdgesAsync(ICsvReaderProcessor csv, IEnumerable<AttributeEdge> attributeEdges, string from, string to)
     {
         var entityEdges = new List<EntityEdge>();
-        var batch = new List<EntityEdge>();
+        var valueEdges = new List<ValueEdge>();
 
         while (csv.Read())
         {
             var entityEdge = await CreateEntityEdgeAsync(csv, from, to);
             entityEdges.Add(entityEdge);
-            batch.Add(entityEdge);
-        }
 
-        if (batch.Any())
+            foreach (var header in attributeEdges)
+            {
+                if (header.Name.Equals(from, StringComparison.OrdinalIgnoreCase) || 
+                    header.Name.Equals(to, StringComparison.OrdinalIgnoreCase)) 
+                    continue;
+                
+                var valueString = csv.GetField(header.Name);
+                valueEdges.Add(new ValueEdge
+                {
+                    Id = Guid.NewGuid(),
+                    EntityId = entityEdge.Id,
+                    AttributeId = header.Id,
+                    Value = valueString
+                });
+            }
+
+            if (entityEdges.Count >= _batchSize)
+            {
+                await BatchInsertAsync(entityEdges, valueEdges);
+                entityEdges.Clear();
+                valueEdges.Clear();
+            }
+        }
+        
+        if (entityEdges.Any())
         {
-            await InsertBatchAsync(batch);
+            await BatchInsertAsync(entityEdges, valueEdges);
         }
-
-        return entityEdges;
     }
 
     private async Task<EntityEdge> CreateEntityEdgeAsync(ICsvReaderProcessor csv, string from, string to)
@@ -55,9 +80,16 @@ public class EntityEdgeRecordProcessor : IEntityEdgeRecordProcessor
 
         return new EntityEdge
         {
+            Id = Guid.NewGuid(),
             EntityIDSource = fromNode.Id,
             EntityIDTarget = toNode.Id
         };
+    }
+
+    private async Task BatchInsertAsync(List<EntityEdge> entityEdges, List<ValueEdge> valueEdges)
+    {
+        await _entityEdgeRepository.AddRangeAsync(entityEdges);
+        await _valueEdgeRepository.AddRangeAsync(valueEdges);
     }
 
     private static void ValidateNodesExistence(EntityNode fromNode, EntityNode toNode, string entityFrom, string entityTo)
@@ -71,10 +103,5 @@ public class EntityEdgeRecordProcessor : IEntityEdgeRecordProcessor
         {
             throw new NodeNotFoundInEntityEdgeException(missingNodeIds);
         }
-    }
-
-    private async Task InsertBatchAsync(IEnumerable<EntityEdge> batch)
-    {
-        await _entityEdgeRepository.AddRangeAsync(batch);
     }
 }

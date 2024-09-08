@@ -37,7 +37,7 @@ public class GraphEavController : ControllerBase
 
     [Authorize(Policy = "bronze")]
     [HttpGet("nodes/{nodeId}/attributes")]
-    public async Task<IActionResult> GetNodeAttributes(int nodeId)
+    public async Task<IActionResult> GetNodeAttributes(Guid nodeId)
     {
         var user = User;
         var output = await _nodeAndEdgeInfo.GetNodeInformationAsync(user, nodeId);
@@ -46,7 +46,7 @@ public class GraphEavController : ControllerBase
 
     [Authorize(Policy = "bronze")]
     [HttpGet("edges/{edgeId}/attributes")]
-    public async Task<IActionResult> GetEdgeAttribute(int edgeId)
+    public async Task<IActionResult> GetEdgeAttribute(Guid edgeId)
     {
         var user = User;
         var output = await _nodeAndEdgeInfo.GetEdgeInformationAsync(user, edgeId);
@@ -55,7 +55,7 @@ public class GraphEavController : ControllerBase
 
     [Authorize(Policy = "bronze")]
     [HttpGet("nodes-relation")]
-    public async Task<IActionResult> GetRelationalEdgeByNodeId([FromQuery] int nodeId)
+    public async Task<IActionResult> GetRelationalEdgeByNodeId([FromQuery] Guid nodeId)
     {
         var user = User;
         var result = await _graphRelationService.GetRelationalEdgeBaseNodeAsync(user, nodeId);

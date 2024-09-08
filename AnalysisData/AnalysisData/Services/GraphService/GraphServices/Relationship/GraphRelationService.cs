@@ -26,7 +26,7 @@ public class GraphRelationService : IGraphRelationService
     }
 
     public async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetRelationalEdgeBaseNodeAsync(
-        ClaimsPrincipal claimsPrincipal, int id)
+        ClaimsPrincipal claimsPrincipal, Guid id)
     {
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
@@ -56,7 +56,7 @@ public class GraphRelationService : IGraphRelationService
         return result;
     }
 
-    private async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetNodeRelationsAsync(int id)
+    private async Task<(IEnumerable<NodeDto>, IEnumerable<EdgeDto>)> GetNodeRelationsAsync(Guid id)
     {
         var node = await _entityNodeRepository.GetByIdAsync(id);
         if (node is null)
@@ -73,7 +73,7 @@ public class GraphRelationService : IGraphRelationService
         return (nodeDto, edgeDto);
     }
     
-    private async Task<List<EntityNode>> GetEntityNodesByIdsAsync(IEnumerable<int> nodeIdes)
+    private async Task<List<EntityNode>> GetEntityNodesByIdsAsync(IEnumerable<Guid> nodeIdes)
     {
         var entityNodes = new List<EntityNode>();
         foreach (var nodeId in nodeIdes)

@@ -9,20 +9,20 @@ using NSubstitute;
 
 namespace TestProject.Graph.Service.ServiceBusiness;
 
-public class EntityEdgeRecordProcessorTests
+public class EdgeDataProcessorTests
 {
     private readonly IEntityNodeRepository _entityNodeRepository;
     private readonly IEntityEdgeRepository _entityEdgeRepository;
     private readonly ICsvReaderProcessor _csvReaderProcessor;
-    private readonly EntityEdgeRecordProcessor _sut;
+    private readonly EdgeDataProcessor _sut;
 
-    public EntityEdgeRecordProcessorTests()
+    public EdgeDataProcessorTests()
     {
         _entityNodeRepository = Substitute.For<IEntityNodeRepository>();
         _entityEdgeRepository = Substitute.For<IEntityEdgeRepository>();
         _csvReaderProcessor = Substitute.For<ICsvReaderProcessor>();
 
-        _sut = new EntityEdgeRecordProcessor(_entityNodeRepository, _entityEdgeRepository);
+        _sut = new EdgeDataProcessor(_entityNodeRepository, _entityEdgeRepository);
     }
 
     [Fact]

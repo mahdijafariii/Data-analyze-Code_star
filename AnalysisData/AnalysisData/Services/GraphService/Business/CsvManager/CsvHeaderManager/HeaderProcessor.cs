@@ -13,8 +13,9 @@ public class HeaderProcessor : IHeaderProcessor
         _attributeNodeRepository = attributeNodeRepository;
     }
 
-    public async Task ProcessHeadersAsync(IEnumerable<string> headers, string uniqueAttribute)
+    public async Task<IEnumerable<AttributeNode>> ProcessHeadersAsync(IEnumerable<string> headers, string uniqueAttribute)
     {
+        var attributeNodes = new List<AttributeNode>();
         foreach (var header in headers)
         {
             if (header == uniqueAttribute) continue;
@@ -22,9 +23,11 @@ public class HeaderProcessor : IHeaderProcessor
             var existingAttribute = await _attributeNodeRepository.GetByNameAsync(header);
             if (existingAttribute == null)
             {
-                var attributeNode = new AttributeNode { Name = header };
-                await _attributeNodeRepository.AddAsync(attributeNode);
+                existingAttribute = new AttributeNode { Id = new Guid(), Name = header };
             }
+            attributeNodes.Add(existingAttribute);
         }
+        _attributeNodeRepository.AddRangeAsync(attributeNodes);
+        return attributeNodes;
     }
 }

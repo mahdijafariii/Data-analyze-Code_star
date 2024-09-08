@@ -119,7 +119,7 @@ public static class ConfigService
         services.AddScoped<IPasswordService, PasswordService>();
         services.AddScoped<IHeaderProcessor, HeaderProcessor>();
         services.AddScoped<IValidtionPasswordManager, ValidationPasswordManager>();
-        services.AddScoped<INodeRecordProcessor, EntityNodeRecordProcessor>();
+        services.AddScoped<INodeRecordProcessor, NodeDataProcessor>();
         services.AddScoped<IFromToProcessor, FromToProcessor>();
         services.AddScoped<INodePaginationService, NodePaginationService>();
         services.AddScoped<IAdminService, AdminService>();
@@ -135,9 +135,7 @@ public static class ConfigService
         services.AddScoped<IPasswordHasherManager, PasswordHasherManager>();
         services.AddScoped<IS3FileStorageService, S3FileStorageService>();
         services.AddScoped<IUploadImageService, UploadImageService>();
-        services.AddScoped<IValueNodeProcessor, ValueNodeProcessor>();
-        services.AddScoped<IEntityEdgeRecordProcessor, EntityEdgeRecordProcessor>();
-        services.AddScoped<IValueEdgeProcessor, ValueEdgeProcessor>();
+        services.AddScoped<IEntityEdgeRecordProcessor, EdgeDataProcessor>();
         services.AddScoped<IEdgeToDbProcessor, EdgeToDbProcessor>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IResetPasswordRequestService, ResetPasswordRequestService>();

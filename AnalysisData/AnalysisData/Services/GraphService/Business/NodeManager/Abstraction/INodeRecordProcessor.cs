@@ -5,6 +5,5 @@ namespace AnalysisData.Services.GraphService.Business.NodeManager.Abstraction;
 
 public interface INodeRecordProcessor
 {
-    Task<IEnumerable<EntityNode>> ProcessEntityNodesAsync(ICsvReaderProcessor csv, IEnumerable<string> headers, string id,
-        int fileId);
+    Task ProcessNodesAsync(ICsvReaderProcessor csv, IEnumerable<AttributeNode> headers, string id, int fileId);
 }

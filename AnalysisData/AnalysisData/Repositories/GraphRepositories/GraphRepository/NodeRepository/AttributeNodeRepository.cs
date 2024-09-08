@@ -34,7 +34,13 @@ public class AttributeNodeRepository : IAttributeNodeRepository
     {
         return await _context.AttributeNodes.FirstOrDefaultAsync(x => x.Name == name);
     }
-
+    
+    public async Task AddRangeAsync(IEnumerable<AttributeNode> attributeNodes)
+    {
+        await _context.AttributeNodes.AddRangeAsync(attributeNodes);
+        await _context.SaveChangesAsync();
+    }
+    
     public async Task DeleteAsync(Guid id)
     {
         var entity = await _context.AttributeNodes.FindAsync(id);

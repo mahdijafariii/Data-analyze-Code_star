@@ -6,20 +6,20 @@ using NSubstitute;
 
 namespace TestProject.Graph.Service.ServiceBusiness;
 
-public class EntityNodeRecordProcessorTests
+public class NodeDataProcessorTests
 {
     private readonly IEntityNodeRepository _entityNodeRepository;
     private readonly ICsvReaderProcessor _csvReaderProcessor;
-    private readonly EntityNodeRecordProcessor _sut;
+    private readonly NodeDataProcessor _sut;
 
     private const int BatchSize = 3;
 
-    public EntityNodeRecordProcessorTests()
+    public NodeDataProcessorTests()
     {
         _entityNodeRepository = Substitute.For<IEntityNodeRepository>();
         _csvReaderProcessor = Substitute.For<ICsvReaderProcessor>();
         
-        _sut = new EntityNodeRecordProcessor(_entityNodeRepository, BatchSize);
+        _sut = new NodeDataProcessor(_entityNodeRepository, BatchSize);
     }
     [Fact]
     public async Task ProcessEntityNodesAsync_ShouldSkipRecords_WhenFieldIsEmpty()

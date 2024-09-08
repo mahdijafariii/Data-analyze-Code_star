@@ -26,8 +26,17 @@ public class ValueEdgeRepository : IValueEdgeRepository
     }
     public async Task AddRangeAsync(IEnumerable<ValueEdge> valueEdges)
     {
-        await _context.ValueEdges.AddRangeAsync(valueEdges);
-        await _context.SaveChangesAsync();
+        var existingEntityIds = await _context.EntityEdges.Select(ee => ee.Id).ToListAsync();
+
+        var validValueEdges = valueEdges
+            .Where(ve => existingEntityIds.Contains(ve.EntityId))
+            .ToList();
+
+        if (validValueEdges.Any())
+        {
+            await _context.ValueEdges.AddRangeAsync(validValueEdges);
+            await _context.SaveChangesAsync();
+        }
     }
     public async Task<ValueEdge> GetByIdAsync(Guid id)
     {

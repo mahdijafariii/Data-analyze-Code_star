@@ -52,7 +52,7 @@ public class JwtService : IJwtService
     }
 
 
-    public async Task RequestResetPassword(User user)
+    public async Task<string> RequestResetPassword(User user)
     {
         var token = Guid.NewGuid().ToString();
         var expiration = DateTime.UtcNow.AddMinutes(15); 
@@ -66,7 +66,7 @@ public class JwtService : IJwtService
         };
 
         await _resetTokensRepository.AddToken(resetToken);
-
+        return token;
     }
 
     public async Task UpdateUserCookie(string userName, bool rememberMe)

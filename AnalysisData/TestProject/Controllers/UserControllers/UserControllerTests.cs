@@ -25,7 +25,7 @@ public class UserControllerTests
         _permissionService = Substitute.For<IPermissionService>();
         _uploadImageService = Substitute.For<IUploadImageService>();
         _resetPasswordRequestService = Substitute.For<IResetPasswordRequestService>();
-        _sut = new UserController(_userService, _permissionService, _uploadImageService,_resetPasswordRequestService);
+        _sut = new UserController(_userService, _permissionService, _uploadImageService, _resetPasswordRequestService);
     }
 
     [Fact]
@@ -99,31 +99,64 @@ public class UserControllerTests
         await _permissionService.Received(1).GetPermission(claimsPrincipal);
     }
 
-    // [Fact]
-    // public async Task ResetPassword_ShouldReturnOk_WhenPasswordResetIsSuccessful()
-    // {
-    //     // Arrange
-    //     var resetPasswordDto = new ResetPasswordDto { NewPassword = "NewPass@123", ConfirmPassword = "NewPass@123" };
-    //     var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
-    //     await _userService.ResetPasswordAsync(claimsPrincipal, resetPasswordDto.NewPassword,
-    //         resetPasswordDto.ConfirmPassword);
-    //
-    //     _sut.ControllerContext = new ControllerContext
-    //     {
-    //         HttpContext = Substitute.For<HttpContext>()
-    //     };
-    //     _sut.HttpContext.User = claimsPrincipal;
-    //
-    //     // Act
-    //     var result = await _sut.ResetPassword(resetPasswordDto);
-    //
-    //     // Assert
-    //     var okResult = Assert.IsType<OkObjectResult>(result);
-    //     var responseContent = JsonConvert.SerializeObject(okResult.Value);
-    //     var expectedResponseContent = JsonConvert.SerializeObject(new { massage = "success" });
-    //     Assert.Equal(expectedResponseContent, responseContent);
-    // }
-    
+    [Fact]
+    public async Task ResetPassword_ShouldReturnOk_WhenPasswordResetIsSuccessful()
+    {
+        // Arrange
+        var resetPasswordDto = new ResetPasswordDto
+        {
+            Email = "user@gmail.com",
+            ResetPasswordToken = "resetPasswordToken",
+            NewPassword = "NewPass@123",
+            ConfirmPassword = "NewPass@123"
+        };
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
+        await _userService.ResetPasswordAsync(resetPasswordDto.Email, resetPasswordDto.NewPassword,
+            resetPasswordDto.ConfirmPassword, resetPasswordDto.ResetPasswordToken);
+
+        _sut.ControllerContext = new ControllerContext
+        {
+            HttpContext = Substitute.For<HttpContext>()
+        };
+        _sut.HttpContext.User = claimsPrincipal;
+
+        // Act
+        var result = await _sut.ResetPassword(resetPasswordDto);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var responseContent = JsonConvert.SerializeObject(okResult.Value);
+        var expectedResponseContent = JsonConvert.SerializeObject(new { massage = "success" });
+        Assert.Equal(expectedResponseContent, responseContent);
+    }
+
+    [Fact]
+    public async Task RequestResetPassword_ShouldReturnOk_WhenRequestResetPasswordIsSuccessful()
+    {
+        // Arrange
+        var emailForResetPasswordDto = new EmailForResetPasswordDto()
+        {
+            Email = "user@gmail.com",
+        };
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
+        await _resetPasswordRequestService.SendRequestToResetPassword(emailForResetPasswordDto.Email);
+
+        _sut.ControllerContext = new ControllerContext
+        {
+            HttpContext = Substitute.For<HttpContext>()
+        };
+        _sut.HttpContext.User = claimsPrincipal;
+
+        // Act
+        var result = await _sut.RequestResetPassword(emailForResetPasswordDto);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var responseContent = JsonConvert.SerializeObject(okResult.Value);
+        var expectedResponseContent = JsonConvert.SerializeObject(new { massage = "success" });
+        Assert.Equal(expectedResponseContent, responseContent);
+    }
+
 
     [Fact]
     public async Task UploadImage_ShouldReturnOk_WhenImageIsUploadedSuccessfully()
@@ -150,30 +183,30 @@ public class UserControllerTests
 
         await _uploadImageService.Received(1).UploadImageAsync(claimsPrincipal, fileMock);
     }
-    
-    // [Fact]
-    // public async Task UploadImage_ShouldReturnBadRequest_WhenImageIsNotUploadedSuccessfully()
-    // {
-    //     // Arrange
-    //     var fileMock = Substitute.For<IFormFile>();
-    //     fileMock.Length.Returns(0);
-    //     var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
-    //
-    //     _sut.ControllerContext = new ControllerContext
-    //     {
-    //         HttpContext = Substitute.For<HttpContext>()
-    //     };
-    //     _sut.HttpContext.User = claimsPrincipal;
-    //
-    //     // Act
-    //     var result = await _sut.UploadImage(fileMock);
-    //
-    //     // Assert
-    //     var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-    //     var responseContent = JsonConvert.SerializeObject(badRequestResult.Value);
-    //     var expectedResponseContent = JsonConvert.SerializeObject(new { massage = "No file uploaded." });
-    //     Assert.Equal(expectedResponseContent, responseContent);
-    // }
+
+    [Fact]
+    public async Task UploadImage_ShouldReturnBadRequest_WhenImageIsNotUploadedSuccessfully()
+    {
+        // Arrange
+        var fileMock = Substitute.For<IFormFile>();
+        fileMock.Length.Returns(0);
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
+
+        _sut.ControllerContext = new ControllerContext
+        {
+            HttpContext = Substitute.For<HttpContext>()
+        };
+        _sut.HttpContext.User = claimsPrincipal;
+
+        // Act
+        var result = await _sut.UploadImage(fileMock);
+
+        // Assert
+        var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+        var responseContent = JsonConvert.SerializeObject(badRequestResult.Value);
+        var expectedResponseContent = JsonConvert.SerializeObject(new { massage = "No file uploaded." });
+        Assert.Equal(expectedResponseContent, responseContent);
+    }
 
     [Fact]
     public async Task UpdateUser_ShouldReturnOk_WhenUserIsUpdatedSuccessfully()
@@ -231,7 +264,6 @@ public class UserControllerTests
         var responseContent = JsonConvert.SerializeObject(okResult.Value);
         var expectedResponseContent = JsonConvert.SerializeObject(new { massage = "reset successfully" });
         Assert.Equal(expectedResponseContent, responseContent);
-
     }
 
     [Fact]
@@ -268,7 +300,6 @@ public class UserControllerTests
             Email = "test@gmail.com",
             PhoneNumber = "09111111111",
             Image = "User do not have information yet !"
-
         });
         Assert.Equal(expectedResponseContent, responseContent);
 

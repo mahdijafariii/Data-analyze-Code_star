@@ -11,18 +11,15 @@ public class UserService : IUserService
     private readonly IUserManager _userManager;
     private readonly IPasswordService _passwordService;
     private readonly ILoginManager _loginManager;
-
-
-
     public UserService(IUserManager userManager, IPasswordService passwordService, ILoginManager loginManager)
     {
         _userManager = userManager;
         _passwordService = passwordService;
         _loginManager = loginManager;
     }
-    public async Task ResetPasswordAsync(ClaimsPrincipal userClaim, string password, string confirmPassword,string resetPasswordToken)
+    public async Task ResetPasswordAsync(string email, string password, string confirmPassword,string resetPasswordToken)
     {
-        var user = await _userManager.GetUserFromUserClaimsAsync(userClaim);
+        var user = await _userManager.GetUserFromEmail(email);
         await _passwordService.ResetPasswordAsync(user, password, confirmPassword,resetPasswordToken);
     }
 

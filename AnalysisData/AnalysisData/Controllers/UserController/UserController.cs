@@ -46,22 +46,18 @@ public class UserController : ControllerBase
         return Ok(new { image, firstName, lastName, permission });
     }
     
-    [Authorize(Policy = "bronze")]
     [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
     {
-        var userClaim = User;
-        await _userService.ResetPasswordAsync(userClaim, resetPasswordDto.NewPassword,
+        await _userService.ResetPasswordAsync(resetPasswordDto.Email, resetPasswordDto.NewPassword,
             resetPasswordDto.ConfirmPassword, resetPasswordDto.ResetPasswordToken);
         return Ok(new { massage = "success" });
     }
 
-    [Authorize(Policy = "bronze")]
     [HttpPost("request-reset-password")]
-    public async Task<IActionResult> RequestResetPassword()
+    public async Task<IActionResult> RequestResetPassword(EmailForResetPasswordDto resetPassword)
     {
-        var userClaim = User;
-        await _resetPasswordRequestService.SendRequestToResetPassword(userClaim);
+        await _resetPasswordRequestService.SendRequestToResetPassword(resetPassword.Email);
         return Ok(new { massage = "success" });
     }
     

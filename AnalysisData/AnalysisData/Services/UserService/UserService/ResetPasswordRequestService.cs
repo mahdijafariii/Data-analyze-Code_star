@@ -4,6 +4,7 @@ using AnalysisData.Repositories.UserRepository.Abstraction;
 using AnalysisData.Services.EmailService.Abstraction;
 using AnalysisData.Services.JwtService.Abstraction;
 using AnalysisData.Services.UserService.UserService.Abstraction;
+using AnalysisData.Services.ValidationService.Abstraction;
 
 namespace AnalysisData.Services.UserService.UserService;
 
@@ -12,24 +13,28 @@ public class ResetPasswordRequestService : IResetPasswordRequestService
     private readonly IJwtService _jwtService;
     private readonly IUserRepository _userRepository;
     private readonly IEmailService _emailService;
+    private readonly IValidationService _validationService;
 
-    public ResetPasswordRequestService(IJwtService jwtService, IUserRepository userRepository, IEmailService emailService)
+    public ResetPasswordRequestService(IJwtService jwtService, IUserRepository userRepository,
+        IEmailService emailService, IValidationService validationService)
     {
         _jwtService = jwtService;
         _userRepository = userRepository;
         _emailService = emailService;
+        _validationService = validationService;
     }
 
 
-    public async Task SendRequestToResetPassword(ClaimsPrincipal userClaim)
+    public async Task SendRequestToResetPassword(string email)
     {
-        var userName = userClaim.FindFirstValue("username");
-        var user = await _userRepository.GetUserByUsernameAsync(userName);
+        _validationService.EmailCheck(email);
+        var user = await _userRepository.GetUserByEmailAsync(email);
         if (user is null)
         {
             throw new UserNotFoundException();
         }
-        await _jwtService.RequestResetPassword(user);
-        await _emailService.SendPasswordResetEmail(user.Email, "www.digikala.com");
+
+        var token = await _jwtService.RequestResetPassword(user);
+        await _emailService.SendPasswordResetEmail(user.Email, "www.digikala.com",token);
     }
 }

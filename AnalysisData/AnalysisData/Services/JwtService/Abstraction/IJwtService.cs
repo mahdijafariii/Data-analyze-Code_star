@@ -6,5 +6,5 @@ public interface IJwtService
 {
     Task<string> GenerateJwtToken(string userName);
     Task UpdateUserCookie(string userName, bool rememberMe);
-    Task RequestResetPassword(User user);
+    Task<string> RequestResetPassword(User user);
 }

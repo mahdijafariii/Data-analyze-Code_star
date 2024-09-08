@@ -15,7 +15,8 @@ public class S3FileStorageService : IS3FileStorageService
         var awsCredentials = new Amazon.Runtime.BasicAWSCredentials(configuration["AWS:AccessKey"], configuration["AWS:SecretKey"]);
         var config = new AmazonS3Config
         {
-            ServiceURL = configuration["AWS:ServiceURL"] 
+            ServiceURL = configuration["AWS:ServiceURL"],
+            ForcePathStyle = true
         };
         _s3Client = new AmazonS3Client(awsCredentials, config);
         _bucketName = configuration["AWS:BucketName"];
@@ -23,20 +24,21 @@ public class S3FileStorageService : IS3FileStorageService
 
     public async Task<string> UploadFileAsync(IFormFile file, string folderName)
     {
-        var fileKey = Path.Combine(folderName, file.FileName).Replace("\\", "/");
+        var fileKey = Path.Combine(folderName, Guid.NewGuid().ToString()).Replace("\\", "/");
 
         var putRequest = new PutObjectRequest
         {
             BucketName = _bucketName,
             Key = fileKey,
             InputStream = file.OpenReadStream(),
-            ContentType = file.ContentType
+            ContentType = file.ContentType,
+            CannedACL = S3CannedACL.PublicRead
         };
 
         var response = await _s3Client.PutObjectAsync(putRequest);
         if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
         {
-            var fileUrl = $"https://{_bucketName}.s3.{RegionEndpoint.USEast1.SystemName}.amazonaws.com/{fileKey}";
+            var fileUrl = $"https://{_bucketName}.s3.ir-thr-at1.arvanstorage.ir/{fileKey}";
             return fileUrl;        
         }
         else

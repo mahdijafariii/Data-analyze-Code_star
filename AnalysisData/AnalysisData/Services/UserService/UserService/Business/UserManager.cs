@@ -45,6 +45,11 @@ public class UserManager : IUserManager
         user.ImageURL = imageUrl;
         await _userRepository.UpdateUserAsync(user.Id, user);
     }
+    
+    public async Task<User> GetUserFromEmail(string email)
+    {
+        return await _userRepository.GetUserByEmailAsync(email);
+    }
 
     private async Task ValidateEmailAsync(User user, string newEmail)
     {

@@ -8,7 +8,7 @@ public interface IUserService
 {
     Task<User> LoginAsync(UserLoginDto userLoginDto);
     Task<User> GetUserAsync(ClaimsPrincipal userClaim);
-    Task ResetPasswordAsync(ClaimsPrincipal userClaim, string password, string confirmPassword , string resetPasswordToken);
+    Task ResetPasswordAsync(string email, string password, string confirmPassword , string resetPasswordToken);
     Task UpdateUserInformationAsync(ClaimsPrincipal userClaim, UpdateUserDto updateUserDto);
     Task NewPasswordAsync(ClaimsPrincipal userClaim, string oldPassword, string password, string confirmPassword);
 }

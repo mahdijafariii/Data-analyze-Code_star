@@ -1,24 +1,25 @@
 ﻿using System.Security.Claims;
 using AnalysisData.Dtos.UserDto.UserDto;
+using AnalysisData.Models.UserModel;
+using AnalysisData.Services.UserService.UserService;
 using AnalysisData.Services.UserService.UserService.Abstraction;
 using AnalysisData.Services.UserService.UserService.Business.Abstraction;
 using NSubstitute;
 
-namespace TestProject.User.Services.UserService;
 
 public class UserServiceTests
 {
     private readonly IUserManager _userManager;
     private readonly IPasswordService _passwordService;
     private readonly ILoginManager _loginManager;
-    private readonly AnalysisData.Services.UserService.UserService.UserService _sut;
+    private readonly UserService _sut;
 
     public UserServiceTests()
     {
         _userManager = Substitute.For<IUserManager>();
         _passwordService = Substitute.For<IPasswordService>();
         _loginManager = Substitute.For<ILoginManager>();
-        _sut = new AnalysisData.Services.UserService.UserService.UserService(_userManager, _passwordService, _loginManager);
+        _sut = new UserService(_userManager, _passwordService, _loginManager);
     }
 
     [Fact]
@@ -26,17 +27,17 @@ public class UserServiceTests
     {
         // Arrange
         var userClaim = new ClaimsPrincipal();
-        var user = new AnalysisData.Models.UserModel.User();
-        _userManager.GetUserFromUserClaimsAsync(userClaim).Returns(Task.FromResult(user));
+        var user = new User();
+        _userManager.GetUserFromEmail("mahdijm.bb@gmail.com").Returns(Task.FromResult(user));
         var tokenGuid = Guid.NewGuid().ToString();
         _passwordService.ResetPasswordAsync(user, "password", "password", tokenGuid)
             .Returns(Task.FromResult(true));
 
         // Act
-        await _sut.ResetPasswordAsync(userClaim, "password", "password", tokenGuid);
+        await _sut.ResetPasswordAsync("mahdijm.bb@gmail.com", "password", "password", tokenGuid);
 
         // Assert
-        await _userManager.Received(1).GetUserFromUserClaimsAsync(userClaim);
+        await _userManager.Received(1).GetUserFromEmail("mahdijm.bb@gmail.com");
         await _passwordService.Received(1).ResetPasswordAsync(user, "password", "password", tokenGuid);
     }
 
@@ -45,7 +46,7 @@ public class UserServiceTests
     {
         // Arrange
         var userClaim = new ClaimsPrincipal();
-        var user = new AnalysisData.Models.UserModel.User();
+        var user = new User();
         _userManager.GetUserFromUserClaimsAsync(userClaim).Returns(Task.FromResult(user));
         _passwordService.NewPasswordAsync(user, "oldPassword", "newPassword", "newPassword")
             .Returns(Task.FromResult(true));
@@ -63,7 +64,7 @@ public class UserServiceTests
     {
         // Arrange
         var userLoginDto = new UserLoginDto { UserName = "test", Password = "password" };
-        var user = new AnalysisData.Models.UserModel.User();
+        var user = new User();
         _loginManager.LoginAsync(userLoginDto).Returns(Task.FromResult(user));
 
         // Act
@@ -79,7 +80,7 @@ public class UserServiceTests
     {
         // Arrange
         var userClaim = new ClaimsPrincipal();
-        var user = new AnalysisData.Models.UserModel.User();
+        var user = new User();
         _userManager.GetUserFromUserClaimsAsync(userClaim).Returns(Task.FromResult(user));
 
         // Act
@@ -96,7 +97,7 @@ public class UserServiceTests
         // Arrange
         var userClaim = new ClaimsPrincipal();
         var updateUserDto = new UpdateUserDto { FirstName = "John", LastName = "Doe" };
-        var user = new AnalysisData.Models.UserModel.User();
+        var user = new User();
         _userManager.GetUserFromUserClaimsAsync(userClaim).Returns(Task.FromResult(user));
         _userManager.UpdateUserInformationAsync(user, updateUserDto).Returns(Task.FromResult(true));
 

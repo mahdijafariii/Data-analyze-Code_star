@@ -8,5 +8,6 @@ public interface IUserManager
 {
     Task<User> GetUserFromUserClaimsAsync(ClaimsPrincipal userClaim);
     Task UpdateUserInformationAsync(User user, UpdateUserDto updateUserDto);
+    Task<User> GetUserFromEmail(string email);
     Task UploadImageAsync(User user, string imageUrl);
 }

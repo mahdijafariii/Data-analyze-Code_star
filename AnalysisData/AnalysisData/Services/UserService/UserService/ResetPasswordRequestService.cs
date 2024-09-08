@@ -34,7 +34,7 @@ public class ResetPasswordRequestService : IResetPasswordRequestService
             throw new UserNotFoundException();
         }
 
-        await _jwtService.RequestResetPassword(user);
-        await _emailService.SendPasswordResetEmail(user.Email, "www.digikala.com");
+        var token = await _jwtService.RequestResetPassword(user);
+        await _emailService.SendPasswordResetEmail(user.Email, "www.digikala.com",token);
     }
 }

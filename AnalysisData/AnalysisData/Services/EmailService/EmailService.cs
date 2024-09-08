@@ -22,11 +22,13 @@ public class EmailService : IEmailService
         _fromEmail = configuration["EmailSettings:FromEmail"];
     }
 
-    public async Task SendPasswordResetEmail(string toEmail, string resetLink)
+    public async Task SendPasswordResetEmail(string toEmail, string resetLink, string token)
     {
+        
         string htmlTemplatePath = @"Assets\email-template.html";
         string htmlContent = File.ReadAllText(htmlTemplatePath);
-        htmlContent = htmlContent.Replace("{resetLink}", resetLink);
+        string linkWithToken = $"{resetLink}&token={token}$email={toEmail}";
+        htmlContent = htmlContent.Replace("{resetLink}", linkWithToken);
 
         var mailMessage = new MailMessage
         {

@@ -70,7 +70,7 @@ public class AdminService : IAdminService
         {
             throw new RoleNotFoundException();
         }
-        user.Role = role;
+        user.RoleId = role.Id;
         await _userRepository.UpdateUserAsync(user.Id, user);
     }
     

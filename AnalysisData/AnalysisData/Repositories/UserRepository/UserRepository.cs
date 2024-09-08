@@ -23,6 +23,11 @@ namespace AnalysisData.Repositories.UserRepository
         {
             return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(x => x.Email == email);
         }
+        
+        public async Task<User> GetUserByPhoneNumberAsync(string phoneNumber)
+        {
+            return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
+        }
 
 
         public async Task<User> GetUserByIdAsync(Guid id)

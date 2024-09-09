@@ -7,7 +7,7 @@ using AnalysisData.Repositories.GraphRepositories.FileUploadedRepository.Abstrac
 using AnalysisData.Services.GraphService.FileUploadService;
 using NSubstitute;
 
-namespace TestProject.Graph.Service.FileUploadServiceTests;
+namespace TestProject.Services.GraphService.FileUploadServiceTests;
 
 public class UploadFileServiceTests
 {

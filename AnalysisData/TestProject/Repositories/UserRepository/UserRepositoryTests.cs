@@ -1,14 +1,14 @@
 ﻿using AnalysisData.Data;
 using AnalysisData.Models.UserModel;
+using AnalysisData.Repositories.UserRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TestProject.User.Repository.UserRepository;
 
 public class UserRepositoryTests
 {
     private readonly ServiceProvider _serviceProvider;
-    private readonly AnalysisData.Repositories.UserRepository.UserRepository _sut;
+    private readonly UserRepository _sut;
 
     public UserRepositoryTests()
     {
@@ -19,7 +19,7 @@ public class UserRepositoryTests
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddScoped(_ => new ApplicationDbContext(options));
         _serviceProvider = serviceCollection.BuildServiceProvider();
-        _sut = new AnalysisData.Repositories.UserRepository.UserRepository(CreateDbContext());
+        _sut = new UserRepository(CreateDbContext());
     }
 
     private ApplicationDbContext CreateDbContext()
@@ -188,7 +188,7 @@ public class UserRepositoryTests
 
         // Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
-        var users = new List<AnalysisData.Models.UserModel.User>
+        var users = new List<User>
         {
             new()
             {

@@ -3,7 +3,7 @@ using AnalysisData.Repositories.GraphRepositories.UserFileRepository.Abstraction
 using AnalysisData.Services.GraphService.FilePermissionService.AccessManagement;
 using Moq;
 
-namespace TestProject.Graph.Service.FilePermissionService.AccessManagement;
+namespace TestProject.Services.GraphService.FilePermissionService.AccessManagement;
 
 public class AccessManagementServiceTest
 {

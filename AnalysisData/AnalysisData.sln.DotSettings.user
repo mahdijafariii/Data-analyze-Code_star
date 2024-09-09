@@ -2,9 +2,40 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=098e78e2_002D707b_002D4922_002D926d_002Dcb148189e0cf/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="CheckExistenceOfRole_ShouldTNothrowRoleNotFoundException_WhenRoleExist" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="E:\CodeStar1403\Summer1403-Project-Group03-Backend\AnalysisData\TestProject" Presentation="&amp;lt;TestProject&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=0a0c68cd_002D6612_002D4ee1_002Da4be_002D74d8338333c4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetUploadedFilesAsync_ShouldReturnCorrectPagedFiles_WhenFilesExist" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::FileUploadedRepositoryTests.GetUploadedFilesAsync_ShouldReturnCorrectPagedFiles_WhenFilesExist&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::UserFileRepositoryTests.GetByFileIdAsync_ShouldReturnUserFiles_WhenFileIdExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::FileUploadedRepositoryTests.GetAllAsync_ShouldReturnAllFiles_WhenFilesExist&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::UserFileRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::UserRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::FileUploadedRepositoryTests.GetNumberOfFileWithCategoryIdAsync_ShouldReturnCorrectCount_WhenCategoryIdExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::FileUploadedRepositoryTests.GetTotalFilesCountAsync_ShouldReturnCorrectTotalCount_Whenever&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::FileUploadedRepositoryTests.GetByUserIdAsync_ShouldReturnEmpty_WhenUserIdDoesNotExist&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::FileUploadedRepositoryTests.GetByUserIdAsync_ShouldReturnFiles_WhenUserIdExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::FileUploadedRepositoryTests.GetByIdAsync_ShouldReturnNull_WhenIdDoesNotExist&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=219940aa_002Df21c_002D44cf_002D9307_002Dab482de92a14/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="RoleRepositoryTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::TestProject.User.Repository.RoleRepository.RoleRepositoryTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=22738958_002Da36f_002D4ca4_002Db394_002D396e1cf1b1f0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetByFileIdAsync_ShouldReturnUserFiles_WhenFileIdExists" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::FileUploadedRepositoryTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=31805794_002Dfd1c_002D4220_002Db413_002D166aeedc2c10/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="AddAsync_ShouldAddFileEntityToDatabase_Whenever" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::FileUploadedRepositoryTests.AddAsync_ShouldAddFileEntityToDatabase_Whenever&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=36bad8bd_002D26ce_002D4088_002Dbba7_002Dc82415c09c37/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetByIdAsync_ShouldReturnFileEntity_WhenIdExists" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::FileUploadedRepositoryTests.GetByIdAsync_ShouldReturnFileEntity_WhenIdExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::FileUploadedRepositoryTests.GetAllAsync_ShouldReturnAllFiles_WhenFilesExist&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::FileUploadedRepositoryTests.GetUploadedFilesAsync_ShouldReturnCorrectPagedFiles_WhenFilesExist&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5a6db5c4_002D6b10_002D4bf8_002D8325_002D71b5cea4c333/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="UpdateCategory_ShouldReturnOk_WhenCategoryIsUpdatedSuccessfully" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;

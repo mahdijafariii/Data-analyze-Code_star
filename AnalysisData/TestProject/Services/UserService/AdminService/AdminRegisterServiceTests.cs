@@ -10,7 +10,8 @@ using AnalysisData.Services.UserService.UserService.Business.Abstraction;
 using AnalysisData.Services.ValidationService.Abstraction;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
-namespace TestProject.User.Services.AdminService;
+
+namespace TestProject.Services.UserService.AdminService;
 
 public class AdminRegisterServiceTests
 {

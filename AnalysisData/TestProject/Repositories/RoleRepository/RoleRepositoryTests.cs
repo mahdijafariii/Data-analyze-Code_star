@@ -3,7 +3,7 @@ using AnalysisData.Models.UserModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TestProject.User.Repository.RoleRepository;
+namespace TestProject.Repositories.RoleRepository;
 
 public class RoleRepositoryTests
 {

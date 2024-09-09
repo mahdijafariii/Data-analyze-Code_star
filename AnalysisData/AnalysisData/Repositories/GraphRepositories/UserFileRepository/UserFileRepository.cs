@@ -32,7 +32,7 @@ public class UserFileRepository : IUserFileRepository
 
     public async Task<IEnumerable<UserFile>> GetByFileIdAsync(int fileId)
     {
-        return await _context.UserFiles
+        return await _context.UserFiles.Include(x=>x.User)
             .Where(u => u.FileId == fileId)
             .ToListAsync();
     }

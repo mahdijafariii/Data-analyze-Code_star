@@ -1,7 +1,7 @@
 ﻿using AnalysisData.Exception.InvalidFormatException;
 using AnalysisData.Exception.PasswordException;
 
-namespace TestProject.User.Services.ValidationService;
+namespace TestProject.Services.ValidationService;
 
 public class ValidationServiceTests
 {

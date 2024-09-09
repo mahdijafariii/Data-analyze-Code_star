@@ -1,14 +1,15 @@
 ﻿using AnalysisData.Data;
 using AnalysisData.Models.GraphModel.File;
+using AnalysisData.Models.UserModel;
+using AnalysisData.Repositories.GraphRepositories.UserFileRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TestProject.Repositories.UserFileRepository;
 
 public class UserFileRepositoryTests
 {
     private readonly ServiceProvider _serviceProvider;
-    private readonly AnalysisData.Repositories.GraphRepositories.UserFileRepository.UserFileRepository _sut;
+    private readonly UserFileRepository _sut;
 
     public UserFileRepositoryTests()
     {
@@ -20,7 +21,7 @@ public class UserFileRepositoryTests
         serviceCollection.AddScoped(_ => new ApplicationDbContext(options));
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
-        _sut = new AnalysisData.Repositories.GraphRepositories.UserFileRepository.UserFileRepository(CreateDbContext());
+        _sut = new UserFileRepository(CreateDbContext());
     }
 
     private ApplicationDbContext CreateDbContext()
@@ -29,7 +30,7 @@ public class UserFileRepositoryTests
     }
 
     [Fact]
-    public async Task AddAsync_ShouldAddUserFileToDatabase()
+    public async Task AddAsync_ShouldAddUserFileToDatabase_Whenever()
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
@@ -51,7 +52,7 @@ public class UserFileRepositoryTests
     }
 
     [Fact]
-    public async Task GetAllAsync_ShouldReturnAllUserFiles()
+    public async Task GetAllAsync_ShouldReturnAllUserFiles_WhenUserFilesExist()
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
@@ -97,7 +98,7 @@ public class UserFileRepositoryTests
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
-        
+
         // Arrange
         var userId = Guid.NewGuid();
         var userFile = new UserFile { UserId = userId, FileId = 1 };
@@ -117,11 +118,32 @@ public class UserFileRepositoryTests
         var context = CreateDbContext();
 
         // Arrange
+        var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
+        var userId1 = Guid.NewGuid();
+        var userId2 = Guid.NewGuid();
+        var users = new List<User>
+        {
+            new()
+            {
+                Id = userId1, Username = "user1", Password = "@Test11234",
+                Email = "user1@gmail.com", FirstName = "user1", LastName = "user1",
+                PhoneNumber = "09111111111", ImageURL = null, Role = role
+            },
+            new()
+            {
+                Id = userId2, Username = "user2", Password = "@Test21234",
+                Email = "user2@gmail.com", FirstName = "user2", LastName = "user2",
+                PhoneNumber = "09111111112", ImageURL = null, Role = role
+            }
+        };
+        context.Roles.Add(role);
+        context.Users.AddRange(users);
+
         var fileId = 1;
         var userFiles = new List<UserFile>
         {
-            new() { UserId = Guid.NewGuid(), FileId = fileId },
-            new() { UserId = Guid.NewGuid(), FileId = fileId }
+            new() { UserId = userId1, FileId = fileId },
+            new() { UserId = userId2, FileId = fileId }
         };
         await context.UserFiles.AddRangeAsync(userFiles);
         await context.SaveChangesAsync();
@@ -181,7 +203,7 @@ public class UserFileRepositoryTests
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
-        
+
         // Arrange
         var userId = Guid.NewGuid();
         var userFile = new UserFile { UserId = userId, FileId = 1 };

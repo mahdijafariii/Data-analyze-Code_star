@@ -38,4 +38,8 @@
       <ProjectReference Include="..\AnalysisData\AnalysisData.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Repositories\GraphRepositories\GraphRepository\" />
+    </ItemGroup>
+
 </Project>

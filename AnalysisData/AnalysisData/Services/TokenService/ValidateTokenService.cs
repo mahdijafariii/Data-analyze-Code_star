@@ -15,10 +15,8 @@ public class ValidateTokenService : IValidateTokenService
 
     public async Task ValidateResetToken(Guid userId, string resetPasswordToken)
     {
-        var resetToken = await _resetTokensRepository.GetToken(userId);
+        var resetToken = await _resetTokensRepository.GetToken(userId,resetPasswordToken);
         if (resetToken == null || resetToken.IsUsed)
-            throw new TokenIsInvalidException();
-        if (resetPasswordToken != resetToken.Token)
             throw new TokenIsInvalidException();
         if (resetToken.Expiration < DateTime.UtcNow)
             throw new TokenExpiredException();

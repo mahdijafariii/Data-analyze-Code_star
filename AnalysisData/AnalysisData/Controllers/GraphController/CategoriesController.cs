@@ -29,7 +29,7 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> GetAllCategoriesWithOutPagination()
     {
         var categories = await _categoryService.GetAllCategoriesWithoutPaginationAsync();
-        return Ok(categories);
+        return Ok(categories.Categories);
     }
 
     [Authorize(Policy = "silver")]

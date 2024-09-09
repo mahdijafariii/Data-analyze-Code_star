@@ -36,7 +36,7 @@ public class CategoryService : ICategoryService
     public async Task<GetAllCategoryDto> GetAllCategoriesWithoutPaginationAsync()
     {
         var allCategoryDto = await _categoryRepository.GetAllAsync();
-        return new GetAllCategoryDto() { Categories = allCategoryDto};
+        return new GetAllCategoryDto(allCategoryDto);
     }
 
     public async Task AddAsync(NewCategoryDto categoryDto)

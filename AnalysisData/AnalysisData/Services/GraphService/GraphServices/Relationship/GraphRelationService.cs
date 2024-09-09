@@ -31,7 +31,8 @@ public class GraphRelationService : IGraphRelationService
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
         var node = await _entityNodeRepository.GetByIdAsync(id);
-
+        
+        
         (IEnumerable<NodeDto> nodes, IEnumerable<EdgeDto> edges) result;
         var usernameGuid = Guid.Parse(username);
 
@@ -47,12 +48,7 @@ public class GraphRelationService : IGraphRelationService
         {
             throw new NodeNotAccessibleForUserException();
         }
-
-        if (!result.nodes.Any())
-        {
-            throw new NodeNotFoundException();
-        }
-
+        
         if (!result.edges.Any())
         {
             throw new NodeHasNotEdgesException();

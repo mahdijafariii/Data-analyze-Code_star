@@ -58,7 +58,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Assets\" />
       <Folder Include="Dtos\" />
       <Folder Include="Models\" />
       <Folder Include="Repositories\" />

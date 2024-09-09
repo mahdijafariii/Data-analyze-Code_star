@@ -33,7 +33,6 @@ public class AdminService : IAdminService
         {
             throw new AdminProtectedException();
         }
-
         await ValidateUserInformation(user, updateAdminDto);
         _validationService.EmailCheck(updateAdminDto.Email);
         _validationService.PhoneNumberCheck(updateAdminDto.PhoneNumber);
@@ -45,8 +44,8 @@ public class AdminService : IAdminService
     {
         var checkUsername = await _userRepository.GetUserByUsernameAsync(updateAdminDto.UserName);
         var checkEmail = await _userRepository.GetUserByEmailAsync(updateAdminDto.Email);
-
-        if ((checkUsername != null && !user.Equals(checkUsername)) || (checkEmail != null && !user.Equals(checkEmail)))
+        var checkPhoneNumber = await _userRepository.GetUserByPhoneNumberAsync(updateAdminDto.PhoneNumber);
+        if ((checkUsername != null && !user.Equals(checkUsername)) || (checkEmail != null && !user.Equals(checkEmail)) || (checkPhoneNumber != null && !user.Equals(checkPhoneNumber)))
             throw new DuplicateUserException();
     }
 

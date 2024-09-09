@@ -33,7 +33,7 @@ public class UserManager : IUserManager
     public async Task UpdateUserInformationAsync(User user, UpdateUserDto updateUserDto)
     {
         await ValidateEmailAsync(user, updateUserDto.Email);
-
+        await ValidatePhoneNumberAsync(user, updateUserDto.PhoneNumber);
         _validationService.EmailCheck(updateUserDto.Email);
         _validationService.PhoneNumberCheck(updateUserDto.PhoneNumber);
 
@@ -55,6 +55,15 @@ public class UserManager : IUserManager
     {
         var checkEmail = await _userRepository.GetUserByEmailAsync(newEmail);
         if (checkEmail != null && user.Email != newEmail)
+        {
+            throw new DuplicateUserException();
+        }
+    }
+    
+    private async Task ValidatePhoneNumberAsync(User user, string newPhoneNumber)
+    {
+        var checkPhoneNumber = await _userRepository.GetUserByPhoneNumberAsync(newPhoneNumber);
+        if (checkPhoneNumber != null && user.PhoneNumber != newPhoneNumber)
         {
             throw new DuplicateUserException();
         }

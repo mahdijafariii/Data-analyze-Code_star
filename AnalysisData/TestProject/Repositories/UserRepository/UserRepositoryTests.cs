@@ -128,6 +128,58 @@ public class UserRepositoryTests
         // Assert
         Assert.Null(result);
     }
+    
+    [Fact]
+    public async Task GetUserByPhoneNumberAsync_ShouldReturnsUserWithInputPhoneNumber_WhenUserWithInputPhoneNumberExists()
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = CreateDbContext();
+
+        //Arrange
+        var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
+        var user = new AnalysisData.Models.UserModel.User
+        {
+            Username = "test", Password = "@Test1234",
+            Email = "test@gmail.com",
+            FirstName = "test", LastName = "test",
+            PhoneNumber = "09111111111", ImageURL = null, Role = role
+        };
+        context.Users.Add(user);
+        await context.SaveChangesAsync();
+
+        // Act
+        var result = await _sut.GetUserByPhoneNumberAsync("09111111111");
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("test", result.Username);
+    }
+
+    [Fact]
+    public async Task GetUserByPhoneNumberAsync_ShouldReturnsNull_WhenUserWithInputPhoneNumberDoesNotExist()
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = CreateDbContext();
+
+        //Arrange
+        var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
+        var user = new AnalysisData.Models.UserModel.User
+        {
+            Username = "test", Password = "@Test1234",
+            Email = "test@gmail.com",
+            FirstName = "test", LastName = "test",
+            PhoneNumber = "09111111111", ImageURL = null, Role = role
+        };
+        context.Users.Add(user);
+        await context.SaveChangesAsync();
+
+        // Act
+        var result = await _sut.GetUserByPhoneNumberAsync("09111111112");
+
+        // Assert
+        Assert.Null(result);
+    }
+
 
     [Fact]
     public async Task GetUserByIdAsync_ShouldReturnsUserWithInputId_WhenUserWithInputIdExists()

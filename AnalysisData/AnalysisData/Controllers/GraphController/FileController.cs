@@ -47,7 +47,7 @@ public class FileController : ControllerBase
 
             return Ok(new
             {
-                message = "File uploaded successfully!"
+                message = "nodes saved successfully in the database."
             });
         }
         catch (System.Exception e)

@@ -22,7 +22,7 @@ public class GraphSearchService : IGraphSearchService
         var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
         var username = claimsPrincipal.FindFirstValue("id");
         IEnumerable<EntityNode> entityNodes;
-        if (role != "dataanalyst")
+        if (role != "data-analyst")
         {
             entityNodes = await SearchEntityInNodeNameForAdminAsync(inputSearch, type);
         }

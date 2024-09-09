@@ -56,20 +56,20 @@ public class NodePaginationService : INodePaginationService
         var username = claimsPrincipal.FindFirstValue("id");
         var usernameGuid = Guid.Parse(username);
         IEnumerable<EntityNode> valueNodes = new List<EntityNode>();
-        if (category == null && role != "dataanalyst")
+        if (category == null && role != "data-analyst")
         {
             valueNodes = await _graphNodeRepository.GetEntityNodesForAdminAsync();
         }
-        else if (role != "dataanalyst" && category != null)
+        else if (role != "data-analyst" && category != null)
         {
             valueNodes = await _graphNodeRepository.GetEntityNodesForAdminWithCategoryIdAsync(category.Value);
         }
-        else if (category != null && role == "dataanalyst")
+        else if (category != null && role == "data-analyst")
         {
             valueNodes =
                 await _graphNodeRepository.GetEntityNodeForUserWithCategoryIdAsync(usernameGuid, category.Value);
         }
-        else if (category == null && role == "dataanalyst")
+        else if (category == null && role == "data-analyst")
         {
             valueNodes = await _graphNodeRepository.GetEntityNodesForUserAsync(usernameGuid);
         }

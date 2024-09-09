@@ -35,7 +35,7 @@ public class GraphRelationService : IGraphRelationService
         (IEnumerable<NodeDto> nodes, IEnumerable<EdgeDto> edges) result;
         var usernameGuid = Guid.Parse(username);
 
-        if (role != "dataanalyst")
+        if (role != "data-analyst")
         {
             result = await GetNodeRelationsAsync(id);
         }

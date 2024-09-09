@@ -1,11 +1,11 @@
 ﻿using AnalysisData.Exception.PasswordException;
-using AnalysisData.Exception.UserException;
 using AnalysisData.Models.UserModel;
 using AnalysisData.Services.UserService.UserService.Business;
 using AnalysisData.Services.UserService.UserService.Business.Abstraction;
 using AnalysisData.Services.ValidationService.Abstraction;
 using NSubstitute;
 
+namespace TestProject.Services.UserService.UserSerivce.BuisinessTests;
 
 public class PasswordServiceTests
 {

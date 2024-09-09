@@ -1,13 +1,12 @@
 ﻿using AnalysisData.Controllers.UserController;
 using AnalysisData.Dtos.UserDto.UserDto;
 using AnalysisData.Exception.PasswordException;
-using AnalysisData.Exception.UserException;
 using AnalysisData.Services.UserService.AdminService.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NSubstitute;
 
-namespace TestProject.User.Controllers;
+namespace TestProject.Controllers.UserControllers;
 
 public class AdminControllerTests
 {

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NSubstitute;
 
-namespace TestProject.User.Controllers;
+namespace TestProject.Controllers.UserControllers;
 
 public class RoleControllerTests
 {

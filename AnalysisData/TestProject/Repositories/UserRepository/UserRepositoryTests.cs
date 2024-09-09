@@ -240,7 +240,7 @@ public class UserRepositoryTests
 
         // Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
-        var users = new List<AnalysisData.Models.UserModel.User>
+        var users = new List<User>
         {
             new()
             {

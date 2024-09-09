@@ -43,6 +43,9 @@
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::GraphEdgeRepositoryTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::GraphNodeRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::AttributeNodeRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::EntityNodeRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9AEC1F3F-B1B3-47C1-82D4-E432E2D77E0E::net8.0::ValueNodeRepositoryTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=fe4fe44b_002D7953_002D4423_002Dac04_002Da7f1b464e5c0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ResetPasswordAsync_ShouldCallPasswordCheck_WhenCalled" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;

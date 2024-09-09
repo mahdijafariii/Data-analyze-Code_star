@@ -1,50 +1,155 @@
 ﻿using AnalysisData.Data;
 using AnalysisData.Models.GraphModel.Node;
-using AnalysisData.Repositories.GraphRepositories.GraphRepository.NodeRepository.Abstraction;
+using AnalysisData.Repositories.GraphRepositories.GraphRepository.NodeRepository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace AnalysisData.Repositories.GraphRepositories.GraphRepository.NodeRepository;
-
-public class EntityNodeRepositoryTests : IEntityNodeRepository
+public class EntityNodeRepositoryTests
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ServiceProvider _serviceProvider;
+    private readonly EntityNodeRepository _sut;
 
-    public EntityNodeRepositoryTests(ApplicationDbContext context)
+    public EntityNodeRepositoryTests()
     {
-        _context = context;
-    }
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
 
-    public async Task AddAsync(EntityNode entity)
-    {
-        await _context.EntityNodes.AddAsync(entity);
-        await _context.SaveChangesAsync();
-    }
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddScoped(_ => new ApplicationDbContext(options));
+        _serviceProvider = serviceCollection.BuildServiceProvider();
 
-    public async Task<IEnumerable<EntityNode>> GetAllAsync()
-    {
-        return await _context.EntityNodes.ToListAsync();
+        _sut = new EntityNodeRepository(CreateDbContext());
     }
 
-    public async Task<EntityNode> GetByNameAsync(string name)
+    private ApplicationDbContext CreateDbContext()
     {
-        return await _context.EntityNodes.FirstOrDefaultAsync(x => x.Name == name);
+        return _serviceProvider.GetRequiredService<ApplicationDbContext>();
     }
-    public async Task AddRangeAsync(IEnumerable<EntityNode> entityNodes)
+
+    [Fact]
+    public async Task AddAsync_ShouldAddEntityNodeToDatabase_Whenever()
     {
-        await _context.EntityNodes.AddRangeAsync(entityNodes);
-        await _context.SaveChangesAsync();
-    }
-    public async Task<EntityNode> GetByIdAsync(Guid id)
-    {
-        return await _context.EntityNodes.FirstOrDefaultAsync(x => x.Id == id);
-    }
-    public async Task DeleteAsync(Guid id)
-    {
-        var entity = await _context.EntityNodes.FindAsync(id);
-        if (entity != null)
+        using var scope = _serviceProvider.CreateScope();
+        var context = CreateDbContext();
+
+        // Arrange
+        var entityNode = new EntityNode
         {
-            _context.EntityNodes.Remove(entity);
-            await _context.SaveChangesAsync();
-        }
+            Id = Guid.NewGuid(),
+            Name = "TestNode",
+            NodeFileReferenceId = 1
+        };
+
+        // Act
+        await _sut.AddAsync(entityNode);
+        var result = await context.EntityNodes.FindAsync(entityNode.Id);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("TestNode", result.Name);
+    }
+
+    [Fact]
+    public async Task GetAllAsync_ShouldReturnAllEntityNodes()
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = CreateDbContext();
+
+        // Arrange
+        var entityNode1 = new EntityNode { Id = Guid.NewGuid(), Name = "Node 1", NodeFileReferenceId = 1 };
+        var entityNode2 = new EntityNode { Id = Guid.NewGuid(), Name = "Node 2", NodeFileReferenceId = 2 };
+
+        await context.EntityNodes.AddRangeAsync(entityNode1, entityNode2);
+        await context.SaveChangesAsync();
+
+        // Act
+        var result = await _sut.GetAllAsync();
+
+        // Assert
+        Assert.Equal(2,result.Count());
+    }
+
+    [Fact]
+    public async Task GetByNameAsync_ShouldReturnEntityNodeWithGivenName()
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = CreateDbContext();
+
+        // Arrange
+        var entityNode = new EntityNode { Id = Guid.NewGuid(), Name = "UniqueNode", NodeFileReferenceId = 1 };
+        await context.EntityNodes.AddAsync(entityNode);
+        await context.SaveChangesAsync();
+
+        // Act
+        var result = await _sut.GetByNameAsync("UniqueNode");
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("UniqueNode", result.Name);
+    }
+
+    [Fact]
+    public async Task AddRangeAsync_ShouldAddNewEntityNodes()
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = CreateDbContext();
+
+        // Arrange
+        var existingNodeId = Guid.NewGuid();
+        var existingNode = new EntityNode { Id = existingNodeId, Name = "ExistingNode", NodeFileReferenceId = 1 };
+        await context.EntityNodes.AddAsync(existingNode);
+        await context.SaveChangesAsync();
+
+        var newEntityNodes = new List<EntityNode>
+        {
+            new() { Id = Guid.NewGuid(), Name = "NewNode1", NodeFileReferenceId = 2 },
+            new() { Id = Guid.NewGuid(), Name = "NewNode2", NodeFileReferenceId = 3 }
+        };
+
+        // Act
+        await _sut.AddRangeAsync(newEntityNodes);
+        var allNodes = await context.EntityNodes.ToListAsync();
+
+        // Assert
+        Assert.Equal(3,allNodes.Count);
+    }
+
+    [Fact]
+    public async Task GetByIdAsync_ShouldReturnEntityNodeWithGivenId()
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = CreateDbContext();
+
+        // Arrange
+        var entityNode = new EntityNode { Id = Guid.NewGuid(), Name = "TestNode", NodeFileReferenceId = 1 };
+        await context.EntityNodes.AddAsync(entityNode);
+        await context.SaveChangesAsync();
+
+        // Act
+        var result = await _sut.GetByIdAsync(entityNode.Id);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(entityNode.Id, result.Id);
+    }
+
+    [Fact]
+    public async Task DeleteAsync_ShouldRemoveEntityNodeFromDatabase()
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = CreateDbContext();
+
+        // Arrange
+        var entityNode = new EntityNode { Id = Guid.NewGuid(), Name = "TestNode", NodeFileReferenceId = 1 };
+        await context.EntityNodes.AddAsync(entityNode);
+        await context.SaveChangesAsync();
+
+        // Act
+        await _sut.DeleteAsync(entityNode.Id);
+
+        // Assert
+        var result = await context.EntityNodes.FindAsync(entityNode.Id);
+        Assert.Null(result);
     }
 }

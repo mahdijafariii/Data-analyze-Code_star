@@ -1,8 +1,7 @@
 ﻿using AnalysisData.Exception.PasswordException;
-using AnalysisData.Exception.UserException;
 using AnalysisData.Services.UserService.UserService.Business;
 
-namespace TestProject.User.Services.SecurityPasswordService;
+namespace TestProject.Services.UserService.UserSerivce.BuisinessTests;
 
 public class PasswordHasherManagerTests
 {

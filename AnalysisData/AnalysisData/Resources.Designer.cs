@@ -141,6 +141,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to failed to processing file ! .
+        /// </summary>
+        internal static string FileProcessingException {
+            get {
+                return ResourceManager.GetString("FileProcessingException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GUID format is invalid!.
         /// </summary>
         internal static string GuidNotCorrectFormatException {

@@ -1,4 +1,4 @@
-namespace TestProject.User.Services.PermissionService;
+namespace TestProject.Services.PermissionService;
 
 public class PermissionServiceTest
 {

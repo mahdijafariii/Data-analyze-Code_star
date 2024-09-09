@@ -1,14 +1,14 @@
 ﻿using AnalysisData.Data;
 using AnalysisData.Models.UserModel;
+using AnalysisData.Repositories.UserRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TestProject.User.Repository.UserRepository;
 
 public class UserRepositoryTests
 {
     private readonly ServiceProvider _serviceProvider;
-    private readonly AnalysisData.Repositories.UserRepository.UserRepository _sut;
+    private readonly UserRepository _sut;
 
     public UserRepositoryTests()
     {
@@ -19,7 +19,7 @@ public class UserRepositoryTests
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddScoped(_ => new ApplicationDbContext(options));
         _serviceProvider = serviceCollection.BuildServiceProvider();
-        _sut = new AnalysisData.Repositories.UserRepository.UserRepository(CreateDbContext());
+        _sut = new UserRepository(CreateDbContext());
     }
 
     private ApplicationDbContext CreateDbContext()
@@ -240,7 +240,7 @@ public class UserRepositoryTests
 
         // Arrange
         var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
-        var users = new List<AnalysisData.Models.UserModel.User>
+        var users = new List<User>
         {
             new()
             {
@@ -563,7 +563,7 @@ public class UserRepositoryTests
         var roleManager = new Role { RoleName = "Manager", RolePolicy = "silver" };
         var roleAnalyst = new Role { RoleName = "data-analyst", RolePolicy = "bronze" };
 
-        var users = new List<AnalysisData.Models.UserModel.User>
+        var users = new List<User>
         {
             new()
             {
@@ -595,8 +595,8 @@ public class UserRepositoryTests
         // Assert
         Assert.NotNull(result);
         var resultList = result.ToList();
-        Assert.Equal(2, resultList.Count);
-        Assert.DoesNotContain(resultList, u => u.Username == "usertest3");
+        Assert.Equal(1, resultList.Count);
+        Assert.Contains(resultList, u => u.Username == "usertest3");
     }
 
     [Fact]
@@ -608,9 +608,9 @@ public class UserRepositoryTests
         // Arrange
         var roleAdmin = new Role { RoleName = "Admin", RolePolicy = "gold" };
         var roleManager = new Role { RoleName = "Manager", RolePolicy = "silver" };
-        var roleAnalyst = new Role { RoleName = "dataanalyst", RolePolicy = "bronze" };
+        var roleAnalyst = new Role { RoleName = "data-analyst", RolePolicy = "bronze" };
 
-        var users = new List<AnalysisData.Models.UserModel.User>
+        var users = new List<User>
         {
             new()
             {

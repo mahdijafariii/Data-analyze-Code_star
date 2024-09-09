@@ -5,21 +5,20 @@ using AnalysisData.Exception.GraphException.EdgeException;
 using AnalysisData.Exception.GraphException.NodeException;
 using AnalysisData.Repositories.GraphRepositories.GraphRepository.GraphEdgeRepository.Abstraction;
 using AnalysisData.Repositories.GraphRepositories.GraphRepository.GraphNodeRepository.Abstraction;
+using AnalysisData.Services.GraphService.GraphServices.NodeAndEdgeInfo;
 using NSubstitute;
-
-namespace TestProject.Services.GraphService.GraphServices.NodeAndEdgeInfo;
 
 public class NodeAndEdgeInfoTests
 {
     private readonly IGraphNodeRepository _graphNodeRepository;
     private readonly IGraphEdgeRepository _graphEdgeRepository;
-    private readonly AnalysisData.Services.GraphService.GraphServices.NodeAndEdgeInfo.NodeAndEdgeInfo _sut;
+    private readonly NodeAndEdgeInfo _sut;
 
     public NodeAndEdgeInfoTests()
     {
         _graphNodeRepository = Substitute.For<IGraphNodeRepository>();
         _graphEdgeRepository = Substitute.For<IGraphEdgeRepository>();
-        _sut = new AnalysisData.Services.GraphService.GraphServices.NodeAndEdgeInfo.NodeAndEdgeInfo(_graphNodeRepository, _graphEdgeRepository);
+        _sut = new NodeAndEdgeInfo(_graphNodeRepository, _graphEdgeRepository);
     }
 
     [Fact]

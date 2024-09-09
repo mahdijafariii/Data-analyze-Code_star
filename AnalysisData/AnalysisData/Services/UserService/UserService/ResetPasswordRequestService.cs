@@ -35,6 +35,6 @@ public class ResetPasswordRequestService : IResetPasswordRequestService
         }
 
         var token = await _jwtService.RequestResetPassword(user);
-        await _emailService.SendPasswordResetEmail(user.Email, "https://myfronti.abriment.com",token);
+        await _emailService.SendPasswordResetEmail(user.Email, "https://myfronti.abriment.com/reset-password",token);
     }
 }

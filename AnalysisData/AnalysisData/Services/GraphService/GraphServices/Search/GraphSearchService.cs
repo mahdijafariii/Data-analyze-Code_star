@@ -74,7 +74,7 @@ public class GraphSearchService : IGraphSearchService
         string type)
     {
         IEnumerable<EntityNode> entityNodes;
-        var searchType = type.ToLower();
+        var searchType = type.ToLower().Trim();
         var usernameGuid = Guid.Parse(username);
         switch (searchType)
         {

@@ -41,7 +41,7 @@ public class GraphRelationServiceTests
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", userId.ToString());
+        var claimsPrincipal = CreateClaimsPrincipal("data-analyst", userId.ToString());
         var nodeId = Guid.NewGuid();
 
         var node = new EntityNode { Id = nodeId, Name = "Node1" };

@@ -1,14 +1,14 @@
 ﻿using AnalysisData.Data;
 using AnalysisData.Models.UserModel;
+using AnalysisData.Repositories.UserRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TestProject.User.Repository.UserRepository;
 
 public class UserRepositoryTests
 {
     private readonly ServiceProvider _serviceProvider;
-    private readonly AnalysisData.Repositories.UserRepository.UserRepository _sut;
+    private readonly UserRepository _sut;
 
     public UserRepositoryTests()
     {
@@ -19,7 +19,7 @@ public class UserRepositoryTests
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddScoped(_ => new ApplicationDbContext(options));
         _serviceProvider = serviceCollection.BuildServiceProvider();
-        _sut = new AnalysisData.Repositories.UserRepository.UserRepository(CreateDbContext());
+        _sut = new UserRepository(CreateDbContext());
     }
 
     private ApplicationDbContext CreateDbContext()
@@ -128,6 +128,58 @@ public class UserRepositoryTests
         // Assert
         Assert.Null(result);
     }
+    
+    [Fact]
+    public async Task GetUserByPhoneNumberAsync_ShouldReturnsUserWithInputPhoneNumber_WhenUserWithInputPhoneNumberExists()
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = CreateDbContext();
+
+        //Arrange
+        var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
+        var user = new AnalysisData.Models.UserModel.User
+        {
+            Username = "test", Password = "@Test1234",
+            Email = "test@gmail.com",
+            FirstName = "test", LastName = "test",
+            PhoneNumber = "09111111111", ImageURL = null, Role = role
+        };
+        context.Users.Add(user);
+        await context.SaveChangesAsync();
+
+        // Act
+        var result = await _sut.GetUserByPhoneNumberAsync("09111111111");
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("test", result.Username);
+    }
+
+    [Fact]
+    public async Task GetUserByPhoneNumberAsync_ShouldReturnsNull_WhenUserWithInputPhoneNumberDoesNotExist()
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = CreateDbContext();
+
+        //Arrange
+        var role = new Role { RoleName = "Admin", RolePolicy = "gold" };
+        var user = new AnalysisData.Models.UserModel.User
+        {
+            Username = "test", Password = "@Test1234",
+            Email = "test@gmail.com",
+            FirstName = "test", LastName = "test",
+            PhoneNumber = "09111111111", ImageURL = null, Role = role
+        };
+        context.Users.Add(user);
+        await context.SaveChangesAsync();
+
+        // Act
+        var result = await _sut.GetUserByPhoneNumberAsync("09111111112");
+
+        // Assert
+        Assert.Null(result);
+    }
+
 
     [Fact]
     public async Task GetUserByIdAsync_ShouldReturnsUserWithInputId_WhenUserWithInputIdExists()
@@ -509,7 +561,7 @@ public class UserRepositoryTests
         // Arrange
         var roleAdmin = new Role { RoleName = "Admin", RolePolicy = "gold" };
         var roleManager = new Role { RoleName = "Manager", RolePolicy = "silver" };
-        var roleAnalyst = new Role { RoleName = "dataanalyst", RolePolicy = "bronze" };
+        var roleAnalyst = new Role { RoleName = "data-analyst", RolePolicy = "bronze" };
 
         var users = new List<AnalysisData.Models.UserModel.User>
         {

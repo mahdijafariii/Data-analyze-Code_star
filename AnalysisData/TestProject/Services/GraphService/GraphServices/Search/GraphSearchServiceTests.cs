@@ -108,7 +108,7 @@ public class GraphSearchServiceTests
     {
         // Arrange
         var userId = Guid.NewGuid().ToString();
-        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", userId);
+        var claimsPrincipal = CreateClaimsPrincipal("data-analyst", userId);
         var searchInput = "Node";
         var searchType = "startswith";
 
@@ -132,7 +132,7 @@ public class GraphSearchServiceTests
     {
         // Arrange
         var userId = Guid.NewGuid().ToString();
-        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", userId);
+        var claimsPrincipal = CreateClaimsPrincipal("data-analyst", userId);
         var searchInput = "Node";
         var searchType = "contains";
 
@@ -156,7 +156,7 @@ public class GraphSearchServiceTests
     {
         // Arrange
         var userId = Guid.NewGuid().ToString();
-        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", userId);
+        var claimsPrincipal = CreateClaimsPrincipal("data-analyst", userId);
         var searchInput = "Node";
         var searchType = "endswith";
 
@@ -200,7 +200,7 @@ public class GraphSearchServiceTests
     {
         // Arrange
         var userId = Guid.NewGuid().ToString();
-        var claimsPrincipal = CreateClaimsPrincipal("dataanalyst", userId);
+        var claimsPrincipal = CreateClaimsPrincipal("data-analyst", userId);
         var searchInput = "Node";
         var searchType = "";
 

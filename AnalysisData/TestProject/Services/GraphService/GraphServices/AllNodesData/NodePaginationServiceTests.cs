@@ -7,9 +7,6 @@ using AnalysisData.Repositories.GraphRepositories.GraphRepository.GraphNodeRepos
 using AnalysisData.Services.GraphService.CategoryService.Abstraction;
 using AnalysisData.Services.GraphService.GraphServices.AllNodesData;
 using NSubstitute;
-
-namespace TestProject.Services.GraphService.GraphServices.AllNodesData;
-
 public class NodePaginationServiceTests
 {
     private readonly IGraphNodeRepository _graphNodeRepository;
@@ -82,7 +79,7 @@ public class NodePaginationServiceTests
         // Arrange
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
         {
-            new Claim(ClaimTypes.Role, "dataanalyst"),
+            new Claim(ClaimTypes.Role, "data-analyst"),
             new Claim("id", Guid.NewGuid().ToString())
         }));
 

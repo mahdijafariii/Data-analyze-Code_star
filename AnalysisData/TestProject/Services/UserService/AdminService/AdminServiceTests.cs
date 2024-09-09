@@ -5,17 +5,19 @@ using AnalysisData.Models.UserModel;
 using AnalysisData.Repositories.RoleRepository.Abstraction;
 using AnalysisData.Repositories.UserRepository.Abstraction;
 using AnalysisData.Services.JwtService.Abstraction;
+using AnalysisData.Services.UserService.AdminService;
 using AnalysisData.Services.ValidationService.Abstraction;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 
-namespace TestProject.User.Services.AdminService;
+
 public class AdminServiceTests
 {
     private readonly IUserRepository _userRepository;
     private readonly IValidationService _validationService;
     private readonly IRoleRepository _roleRepository;
     private readonly IJwtService _jwtService;
-    private readonly AnalysisData.Services.UserService.AdminService.AdminService _sut;
+    private readonly AdminService _sut;
 
     public AdminServiceTests()
     {
@@ -24,7 +26,7 @@ public class AdminServiceTests
         _roleRepository = Substitute.For<IRoleRepository>();
         _jwtService = Substitute.For<IJwtService>();
 
-        _sut = new AnalysisData.Services.UserService.AdminService.AdminService(
+        _sut = new AdminService(
             _userRepository,
             _validationService,
             _roleRepository,
@@ -37,7 +39,7 @@ public class AdminServiceTests
         // Arrange
         var userId = Guid.NewGuid();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        var user = new AnalysisData.Models.UserModel.User
+        var user = new User
         {
             Id = userId,
             Username = "Username",
@@ -60,8 +62,9 @@ public class AdminServiceTests
         };
 
         _userRepository.GetUserByIdAsync(userId).Returns(user);
-        _userRepository.GetUserByUsernameAsync(updateAdminDto.UserName).Returns((AnalysisData.Models.UserModel.User)null);
-        _userRepository.GetUserByEmailAsync(updateAdminDto.Email).Returns((AnalysisData.Models.UserModel.User)null);
+        _userRepository.GetUserByUsernameAsync(updateAdminDto.UserName)
+            .Returns((User)null);
+        _userRepository.GetUserByEmailAsync(updateAdminDto.Email).Returns((User)null);
         _roleRepository.GetRoleByNameAsync(updateAdminDto.RoleName).Returns(role);
 
 
@@ -71,7 +74,7 @@ public class AdminServiceTests
         // Assert
         await _userRepository
             .Received()
-            .UpdateUserAsync(userId, Arg.Is<AnalysisData.Models.UserModel.User>(u =>
+            .UpdateUserAsync(userId, Arg.Is<User>(u =>
                 u.Username == updateAdminDto.UserName &&
                 u.Email == updateAdminDto.Email &&
                 u.FirstName == updateAdminDto.FirstName &&
@@ -83,12 +86,50 @@ public class AdminServiceTests
     }
 
     [Fact]
+    public async Task UpdateUserInformationByAdminAsync_ShouldThrowsAdminProtectedException_WhenUsernameOfUserIsAdmin()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
+        var user = new User
+        {
+            Id = userId,
+            Username = "admin",
+            Password = "@Username123",
+            PhoneNumber = "09111111111",
+            FirstName = "admin",
+            LastName = "admin",
+            Email = "Email@gmail.com",
+            Role = role
+        };
+
+        var updateAdminDto = new UpdateAdminDto
+        {
+            UserName = "newUsername",
+            Email = "newEmail@gmail.com",
+            FirstName = "NewFirstName",
+            LastName = "NewLastName",
+            PhoneNumber = "1234567890",
+            RoleName = "Admin"
+        };
+
+        _userRepository.GetUserByIdAsync(userId).Returns(user);
+
+
+        // Act
+        var action = () => _sut.UpdateUserInformationByAdminAsync(userId, updateAdminDto);
+
+        // Assert
+        await Assert.ThrowsAsync<AdminProtectedException>(action);
+    }
+
+    [Fact]
     public async Task ValidateUserInformation_ShouldThrowDuplicateUserException_WhenUsernameOrEmailExists()
     {
         // Arrange
         var userId = Guid.NewGuid();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        var user = new AnalysisData.Models.UserModel.User
+        var user = new User
         {
             Username = "test", Password = "@Test1234",
             Email = "test@gmail.com",
@@ -102,9 +143,9 @@ public class AdminServiceTests
             Email = "existingEmail@test.com"
         };
 
-        var existingUserWithUsername = new AnalysisData.Models.UserModel.User
+        var existingUserWithUsername = new User
             { Id = Guid.NewGuid(), Username = "existingUsername", Email = "anotherEmail@gmail.com" };
-        var existingUserWithEmail = new AnalysisData.Models.UserModel.User
+        var existingUserWithEmail = new User
             { Id = Guid.NewGuid(), Username = "anotherUsername", Email = "existingEmail@gmail.com" };
 
         _userRepository.GetUserByIdAsync(userId).Returns(user);
@@ -124,7 +165,7 @@ public class AdminServiceTests
         // Arrange
         var userId = Guid.NewGuid();
         var role = new Role { Id = 1, RoleName = "Admin", RolePolicy = "gold" };
-        var user = new AnalysisData.Models.UserModel.User
+        var user = new User
         {
             Username = "test", Password = "@Test1234",
             Email = "test@gmail.com",
@@ -146,7 +187,7 @@ public class AdminServiceTests
         // Assert
         await Assert.ThrowsAsync<RoleNotFoundException>(action);
     }
-    
+
     [Fact]
     public async Task DeleteUserAsync_ShouldReturnTrue_WhenUserExists()
     {
@@ -159,6 +200,29 @@ public class AdminServiceTests
 
         // Assert
         Assert.True(result);
+    }
+
+    [Fact]
+    public async Task DeleteUserAsync_ShouldAdminProtectedException_WhenUserISAdmin()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var role = new Role { Id = 1, RoleName = "admin", RolePolicy = "gold" };
+        var user = new User
+        {
+            Username = "admin", Password = "@Test1234",
+            Email = "test@gmail.com",
+            FirstName = "test", LastName = "test",
+            PhoneNumber = "09111111111", ImageURL = null, Role = role
+        };
+        _userRepository.GetUserByIdAsync(userId).Returns(user);
+        _userRepository.DeleteUserAsync(userId).ThrowsAsync(new AdminProtectedException());
+
+        // Act
+        var action = () => _sut.DeleteUserAsync(userId);
+
+        // Assert
+        await Assert.ThrowsAsync<AdminProtectedException>(action);
     }
 
     [Fact]
@@ -193,7 +257,7 @@ public class AdminServiceTests
     public async Task GetAllUserAsync_ShouldReturnPaginatedUsers_WhenUsersExist()
     {
         // Arrange
-        var users = new List<AnalysisData.Models.UserModel.User>
+        var users = new List<User>
         {
             new()
             {

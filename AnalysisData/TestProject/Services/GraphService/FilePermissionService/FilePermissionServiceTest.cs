@@ -1,13 +1,14 @@
 using AnalysisData.Exception.UserException;
 using AnalysisData.Models.GraphModel.Category;
 using AnalysisData.Models.GraphModel.File;
+using AnalysisData.Models.UserModel;
 using AnalysisData.Repositories.GraphRepositories.FileUploadedRepository.Abstraction;
 using AnalysisData.Repositories.GraphRepositories.UserFileRepository.Abstraction;
 using AnalysisData.Repositories.UserRepository.Abstraction;
+using AnalysisData.Services.GraphService.FilePermissionService;
 using AnalysisData.Services.GraphService.FilePermissionService.AccessManagement.Abstractions;
 using Moq;
 
-namespace TestProject.Services.GraphService.FilePermissionService;
 
 public class FilePermissionServiceTest
 {
@@ -15,7 +16,7 @@ public class FilePermissionServiceTest
     private readonly Mock<IUserRepository> _userRepositoryMock;
     private readonly Mock<IUserFileRepository> _userFileRepositoryMock;
     private readonly Mock<IAccessManagementService> _accessManagementServiceMock;
-    private readonly AnalysisData.Services.GraphService.FilePermissionService.FilePermissionService _sut;
+    private readonly FilePermissionService _sut;
 
     public FilePermissionServiceTest()
     {
@@ -25,7 +26,7 @@ public class FilePermissionServiceTest
         _accessManagementServiceMock = new Mock<IAccessManagementService>();
         _fileUploadedRepositoryMock = new Mock<IFileUploadedRepository>();
         
-        _sut = new AnalysisData.Services.GraphService.FilePermissionService.FilePermissionService(
+        _sut = new FilePermissionService(
             _fileUploadedRepositoryMock.Object,
             _userRepositoryMock.Object,
             _userFileRepositoryMock.Object,
@@ -96,10 +97,10 @@ public class FilePermissionServiceTest
         int limit = 2;
         string username = "mahdi";
 
-        var mockUsers = new List<AnalysisData.Models.UserModel.User>()
+        var mockUsers = new List<User>()
         {
-            new AnalysisData.Models.UserModel.User {Id = Guid.NewGuid(), Username = "mahdijm", FirstName ="mahdi", LastName = "jafari"},
-            new AnalysisData.Models.UserModel.User {Id = Guid.NewGuid(), Username = "mahdijasem", FirstName ="mahdi", LastName = "jasemi"},
+            new User {Id = Guid.NewGuid(), Username = "mahdijm", FirstName ="mahdi", LastName = "jafari"},
+            new User {Id = Guid.NewGuid(), Username = "mahdijasem", FirstName ="mahdi", LastName = "jasemi"},
         };
 
         _userRepositoryMock.Setup(repo => repo.GetTopUsersByUsernameSearchAsync(username))
@@ -136,8 +137,8 @@ public class FilePermissionServiceTest
         
         var mockUserFiles = new List<UserFile>
         {
-            new UserFile { User = new AnalysisData.Models.UserModel.User { Id = userGuid1, Username = "user1" } },
-            new UserFile { User = new AnalysisData.Models.UserModel.User { Id = userGuid2, Username = "user2" } }
+            new UserFile { User = new User { Id = userGuid1, Username = "user1" } },
+            new UserFile { User = new User { Id = userGuid2, Username = "user2" } }
         };
 
         _userFileRepositoryMock.Setup(repo => repo.GetByFileIdAsync(1))
@@ -201,7 +202,7 @@ public class FilePermissionServiceTest
             .Returns(Task.CompletedTask);
 
         _userRepositoryMock.Setup(repo => repo.GetUserByIdAsync(It.IsAny<Guid>()))
-            .ReturnsAsync(new AnalysisData.Models.UserModel.User()); 
+            .ReturnsAsync(new User()); 
 
         // Act
         await _sut.AccessFileToUserAsync(inputUserIds, fileId);

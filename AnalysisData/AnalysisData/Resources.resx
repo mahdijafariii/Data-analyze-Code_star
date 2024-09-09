@@ -99,4 +99,7 @@
     <data name="AdminProtectedException" xml:space="preserve">
         <value>You can not delete or modify admin information !</value>
     </data>
+    <data name="FileProcessingException" xml:space="preserve">
+        <value>failed to processing file ! </value>
+    </data>
 </root>

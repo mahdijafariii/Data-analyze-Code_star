@@ -63,7 +63,7 @@ public class RoleControllerTests
         var roles = new List<RolePaginationDto>
         {
             new(){Name = "admin",Policy = "gold"},
-            new(){Name = "dataanalyst",Policy = "silver"}
+            new(){Name = "data-analyst",Policy = "silver"}
         };
         var page = 0;
         var limit = 10;

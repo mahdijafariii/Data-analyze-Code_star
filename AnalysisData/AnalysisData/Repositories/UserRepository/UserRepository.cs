@@ -23,6 +23,11 @@ namespace AnalysisData.Repositories.UserRepository
         {
             return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(x => x.Email == email);
         }
+        
+        public async Task<User> GetUserByPhoneNumberAsync(string phoneNumber)
+        {
+            return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
+        }
 
 
         public async Task<User> GetUserByIdAsync(Guid id)
@@ -69,7 +74,7 @@ namespace AnalysisData.Repositories.UserRepository
         public async Task<IEnumerable<User>> GetTopUsersByUsernameSearchAsync(string username)
         {
             return await _context.Users.Include(u => u.Role)
-                .Where(x => x.Username.ToLower().Contains(username.ToLower()) && x.Role.RoleName != "data-analyst").Take(10).ToListAsync();
+                .Where(x => x.Username.ToLower().Contains(username.ToLower()) && x.Role.RoleName == "data-analyst").Take(10).ToListAsync();
         }
     }
 }

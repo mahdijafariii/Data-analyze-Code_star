@@ -25,10 +25,10 @@ public class EmailService : IEmailService
     public async Task SendPasswordResetEmail(string toEmail, string resetLink, string token)
     {
         
-        string htmlTemplatePath = @"Assets\email-template.html";
+        string htmlTemplatePath = @"Assets/email-template.html";
         string htmlContent = File.ReadAllText(htmlTemplatePath);
-        string linkWithToken = $"{resetLink}&token={token}$email={toEmail}";
-        htmlContent = htmlContent.Replace("{resetLink}", linkWithToken);
+        string linkWithToken = $"{resetLink}?token={token}&email={toEmail}";
+        htmlContent = htmlContent.Replace("https://myfronti.abriment.com?token={token}&email={email}", linkWithToken);
 
         var mailMessage = new MailMessage
         {

@@ -6,6 +6,7 @@ public interface IUserRepository
 {
     Task<User> GetUserByUsernameAsync(string userName);
     Task<User> GetUserByEmailAsync(string email);
+    Task<User> GetUserByPhoneNumberAsync(string phoneNumber);
     Task<User> GetUserByIdAsync(Guid id);
     Task<List<User>> GetAllUserPaginationAsync(int page, int limit);
     Task<bool> DeleteUserAsync(Guid id);

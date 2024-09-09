@@ -67,7 +67,8 @@ public class AdminRegisterService : IAdminRegisterService
     {
         var existingUserByEmail = await _userRepository.GetUserByEmailAsync(userRegisterDto.Email);
         var existingUserByUsername = await _userRepository.GetUserByUsernameAsync(userRegisterDto.UserName);
-        if (existingUserByEmail != null || existingUserByUsername != null)
+        var existingUserByPhoneNumber = await _userRepository.GetUserByPhoneNumberAsync(userRegisterDto.PhoneNumber);
+        if (existingUserByEmail != null || existingUserByUsername != null || existingUserByPhoneNumber!=null)
             throw new DuplicateUserException();
     }
 

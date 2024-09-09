@@ -12,7 +12,6 @@ services:
 
 
   migrate:
-    #image: migrateimage
     image: yaghooli/dotnetdev:latest
     command: ["./migrateout"]  
     depends_on:
@@ -30,7 +29,6 @@ services:
 
   web:
     image: yaghooli/dotnetdev:latest
-    #build: .
     depends_on:
       migrate:
         condition: service_completed_successfully

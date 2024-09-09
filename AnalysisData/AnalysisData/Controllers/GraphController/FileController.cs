@@ -47,12 +47,12 @@ public class FileController : ControllerBase
 
             return Ok(new
             {
-                message = "File uploaded successfully!"
+                message = "nodes saved successfully in the database."
             });
         }
         catch (System.Exception e)
         {
-            return StatusCode(400, $"An error occurred while processing the file: {e.Message}");
+            throw new FileProcessingException(e.Message);
         }
     }
 
@@ -79,7 +79,7 @@ public class FileController : ControllerBase
         }
         catch (System.Exception e)
         {
-            return StatusCode(400, $"An error occurred while processing the file: {e.Message}");
+            throw new FileProcessingException(e.Message);
         }
     }
 }

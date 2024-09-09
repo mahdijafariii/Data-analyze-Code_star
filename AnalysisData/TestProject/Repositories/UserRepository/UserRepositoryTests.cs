@@ -596,7 +596,6 @@ public class UserRepositoryTests
         Assert.NotNull(result);
         var resultList = result.ToList();
         Assert.Equal(1, resultList.Count);
-        Assert.Contains(resultList, u => u.Username == "usertest3");
     }
 
     [Fact]

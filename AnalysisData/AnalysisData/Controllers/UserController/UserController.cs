@@ -79,7 +79,7 @@ public class UserController : ControllerBase
         return Ok(new { massage = "Uploaded successfully." });
     }
 
-    [Authorize(Policy = "gold")]
+    [Authorize(Policy = "bronze")]
     [HttpPut("update-user")]
     public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
     {

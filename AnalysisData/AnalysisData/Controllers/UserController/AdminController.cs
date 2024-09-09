@@ -48,7 +48,7 @@ public class AdminController : ControllerBase
         return Ok(new { message = "User deleted successfully." });
     }
 
-    [Authorize(Roles = "admin")]
+    [Authorize(Policy = "gold")]
     [HttpPut("users/{id}")]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateAdminDto updateAdminDto)
     {

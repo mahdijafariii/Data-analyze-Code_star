@@ -48,12 +48,7 @@ public class GraphRelationService : IGraphRelationService
             throw new NodeNotAccessibleForUserException();
         }
 
-        if (!result.nodes.Any())
-        {
-            throw new NodeNotFoundException();
-        }
-
-        if (!result.edges.Any())
+        if (!result.nodes.Any() && !result.edges.Any())
         {
             throw new NodeHasNotEdgesException();
         }

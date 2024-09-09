@@ -51,7 +51,7 @@ public class EntityNodeRepositoryTests
     }
 
     [Fact]
-    public async Task GetAllAsync_ShouldReturnAllEntityNodes()
+    public async Task GetAllAsync_ShouldReturnAllEntityNodes_WhenEntityNodesExist()
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
@@ -71,7 +71,7 @@ public class EntityNodeRepositoryTests
     }
 
     [Fact]
-    public async Task GetByNameAsync_ShouldReturnEntityNodeWithGivenName()
+    public async Task GetByNameAsync_ShouldReturnEntityNodeWithGivenName_WhenEntityNodeWithInputNameExist()
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
@@ -90,7 +90,7 @@ public class EntityNodeRepositoryTests
     }
 
     [Fact]
-    public async Task AddRangeAsync_ShouldAddNewEntityNodes()
+    public async Task AddRangeAsync_ShouldAddNewEntityNodes_Whenever()
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
@@ -116,7 +116,7 @@ public class EntityNodeRepositoryTests
     }
 
     [Fact]
-    public async Task GetByIdAsync_ShouldReturnEntityNodeWithGivenId()
+    public async Task GetByIdAsync_ShouldReturnEntityNodeWithGivenId_WhenEntityNodeWithInputIdExist()
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();
@@ -135,7 +135,7 @@ public class EntityNodeRepositoryTests
     }
 
     [Fact]
-    public async Task DeleteAsync_ShouldRemoveEntityNodeFromDatabase()
+    public async Task DeleteAsync_ShouldRemoveEntityNodeFromDatabase_WhenEntityNodeWithInputIdExist()
     {
         using var scope = _serviceProvider.CreateScope();
         var context = CreateDbContext();

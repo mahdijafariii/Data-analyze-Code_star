@@ -48,9 +48,14 @@ public class GraphRelationService : IGraphRelationService
             throw new NodeNotAccessibleForUserException();
         }
 
-        if (!result.nodes.Any() && !result.edges.Any())
+        if (!result.nodes.Any())
         {
             throw new NodeNotFoundException();
+        }
+
+        if (!result.edges.Any())
+        {
+            throw new NodeHasNotEdgesException();
         }
 
         return result;
@@ -72,7 +77,7 @@ public class GraphRelationService : IGraphRelationService
             { From = x.EntityIDSource, To = x.EntityIDTarget, Id = x.Id });
         return (nodeDto, edgeDto);
     }
-    
+
     private async Task<List<EntityNode>> GetEntityNodesByIdsAsync(IEnumerable<Guid> nodeIdes)
     {
         var entityNodes = new List<EntityNode>();
@@ -84,6 +89,7 @@ public class GraphRelationService : IGraphRelationService
                 entityNodes.Add(node);
             }
         }
+
         return entityNodes;
     }
 }

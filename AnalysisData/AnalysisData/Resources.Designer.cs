@@ -204,6 +204,15 @@ namespace AnalysisData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to no edges found for this node ! .
+        /// </summary>
+        internal static string NodeHasNotEdgesException {
+            get {
+                return ResourceManager.GetString("NodeHasNotEdgesException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Header(s) Node is not accessible for this user! {0}.
         /// </summary>
         internal static string NodeNotAccessibleForUserException {

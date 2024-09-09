@@ -102,4 +102,8 @@
     <data name="FileProcessingException" xml:space="preserve">
         <value>failed to processing file ! </value>
     </data>
+    <data name="NodeHasNotEdgesException" xml:space="preserve">
+        <value>no edges found for this node ! </value>
+    </data>
+    
 </root>

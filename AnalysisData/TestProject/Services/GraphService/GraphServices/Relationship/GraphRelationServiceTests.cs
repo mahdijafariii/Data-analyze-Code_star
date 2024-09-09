@@ -73,7 +73,7 @@ public class GraphRelationServiceTests
         var action = async () => await _sut.GetRelationalEdgeBaseNodeAsync(claimsPrincipal, nodeId);
 
         // Assert
-        await Assert.ThrowsAsync<NodeNotFoundException>(action);
+        await Assert.ThrowsAsync<NodeHasNotEdgesException>(action);
     } 
     
     [Fact]

@@ -23,7 +23,7 @@ namespace AnalysisData.Repositories.UserRepository
         {
             return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(x => x.Email == email);
         }
-        
+
         public async Task<User> GetUserByPhoneNumberAsync(string phoneNumber)
         {
             return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
@@ -73,8 +73,8 @@ namespace AnalysisData.Repositories.UserRepository
 
         public async Task<IEnumerable<User>> GetTopUsersByUsernameSearchAsync(string username)
         {
-            return await _context.Users.Include(u => u.Role)
-                .Where(x => x.Username.ToLower().Contains(username.ToLower()) && x.Role.RoleName == "data-analyst").Take(10).ToListAsync();
+            return await _context.Users
+                .Where(x => x.Username.ToLower().Contains(username.ToLower()) && x.RoleId == 2).Take(10).ToListAsync();
         }
     }
 }

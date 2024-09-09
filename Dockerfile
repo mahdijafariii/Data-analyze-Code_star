@@ -14,7 +14,7 @@ RUN dotnet ef migrations bundle --project AnalysisData/AnalysisData/AnalysisData
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 
-COPY --from=build /app/out /app/migrateout ./
+COPY --from=build /app/out /app/migrateout /app/AnalysisData/AnalysisData/Assets/email-template.html ./
 
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV ASPNETCORE_URLS=http://*:80

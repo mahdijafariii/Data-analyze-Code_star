@@ -42,7 +42,10 @@ public class UserController : ControllerBase
         var firstName = userClaims.FindFirstValue("firstname");
         var lastName = userClaims.FindFirstValue("lastname");
         var image = userClaims.FindFirstValue("image");
-
+        if (image is null)
+        {
+            image = "User do not have information yet !";
+        }
         return Ok(new { image, firstName, lastName, permission });
     }
     
@@ -96,7 +99,7 @@ public class UserController : ControllerBase
         return Ok(new { massage = "reset successfully" });
     }
 
-    [Authorize(Policy = "gold")]
+    [Authorize(Policy = "bronze")]
     [HttpGet("get-user-information")]
     public async Task<IActionResult> GetUserInformation()
     {

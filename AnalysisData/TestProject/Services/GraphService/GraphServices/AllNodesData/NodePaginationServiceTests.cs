@@ -7,9 +7,6 @@ using AnalysisData.Repositories.GraphRepositories.GraphRepository.GraphNodeRepos
 using AnalysisData.Services.GraphService.CategoryService.Abstraction;
 using AnalysisData.Services.GraphService.GraphServices.AllNodesData;
 using NSubstitute;
-
-namespace TestProject.Services.GraphService.GraphServices.AllNodesData;
-
 public class NodePaginationServiceTests
 {
     private readonly IGraphNodeRepository _graphNodeRepository;

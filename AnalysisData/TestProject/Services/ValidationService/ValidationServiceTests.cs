@@ -1,15 +1,15 @@
 ﻿using AnalysisData.Exception.InvalidFormatException;
 using AnalysisData.Exception.PasswordException;
+using AnalysisData.Services.ValidationService;
 
-namespace TestProject.User.Services.ValidationService;
 
 public class ValidationServiceTests
 {
-    private readonly AnalysisData.Services.ValidationService.ValidationService _validationService;
+    private readonly ValidationService _validationService;
 
     public ValidationServiceTests()
     {
-        _validationService = new AnalysisData.Services.ValidationService.ValidationService();
+        _validationService = new ValidationService();
     }
     
     

@@ -1,13 +1,13 @@
 ﻿using AnalysisData.Data;
 using AnalysisData.Models.UserModel;
+using AnalysisData.Repositories.RoleRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TestProject.User.Repository.RoleRepository;
 
 public class RoleRepositoryTests
 {
-    private readonly AnalysisData.Repositories.RoleRepository.RoleRepository _sut;
+    private readonly RoleRepository _sut;
     private readonly ServiceProvider _serviceProvider;
 
     public RoleRepositoryTests()
@@ -20,7 +20,7 @@ public class RoleRepositoryTests
         serviceCollection.AddScoped(_ => new ApplicationDbContext(options));
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
-        _sut = new AnalysisData.Repositories.RoleRepository.RoleRepository(CreateDbContext());
+        _sut = new RoleRepository(CreateDbContext());
     }
 
     private ApplicationDbContext CreateDbContext()

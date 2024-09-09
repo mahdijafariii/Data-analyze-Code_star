@@ -23,6 +23,14 @@ public class CategoriesController : ControllerBase
         var paginatedCategories = await _categoryService.GetAllCategoriesAsync(pageNumber, pageSize);
         return Ok(paginatedCategories);
     }
+    
+    [Authorize(Policy = "silver")]
+    [HttpGet("all-category-without-pagination")]
+    public async Task<IActionResult> GetAllCategoriesWithOutPagination()
+    {
+        var categories = await _categoryService.GetAllCategoriesWithoutPaginationAsync();
+        return Ok(categories);
+    }
 
     [Authorize(Policy = "silver")]
     [HttpPost]

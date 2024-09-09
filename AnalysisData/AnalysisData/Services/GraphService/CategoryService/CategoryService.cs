@@ -32,6 +32,12 @@ public class CategoryService : ICategoryService
 
         return new PaginationCategoryDto(paginatedItems, pageNumber, totalCount);
     }
+    
+    public async Task<GetAllCategoryDto> GetAllCategoriesWithoutPaginationAsync()
+    {
+        var allCategoryDto = await _categoryRepository.GetAllAsync();
+        return new GetAllCategoryDto() { Categories = allCategoryDto};
+    }
 
     public async Task AddAsync(NewCategoryDto categoryDto)
     {

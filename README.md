@@ -19,7 +19,7 @@ This system dynamically generates various types of graphs from different data se
 
 The database is designed using an Entity-Attribute-Value (EAV) model. This structure allows flexible and scalable data storage. Here's a simplified view of the database schema:
 
-![Database Structure](path/to/your/database-schema-image.png)
+![Database Structure](https://github.com/mahdijafariii/Data-analyze-Code_star/blob/main/resource/Untitled.png)
 
 
 ## Demo Video

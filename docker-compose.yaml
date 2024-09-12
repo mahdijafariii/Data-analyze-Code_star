@@ -38,6 +38,14 @@ services:
     ports:
       - "8085:80"
 
+  front:
+      image: mahdijm/frontangular:latest
+      restart: always
+      depends_on:
+        - web
+      ports:
+        - "44322:80"
+
 volumes:
   pgdata:
 

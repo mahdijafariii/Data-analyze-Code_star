@@ -36,6 +36,17 @@ builder.Services.AddScoped<Authorization>();
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
@@ -57,7 +68,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseRouting();
-// app.UseCors("AllowAngularApp");
+app.UseCors("AllowAngularApp");
+app.UseCors("AllowSpecificOrigin"); 
 app.UseMiddleware<JwtMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
